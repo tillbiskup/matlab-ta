@@ -142,7 +142,8 @@ data.parameters.transient = struct(...
 fh = fopen(fullfile(fPath,[fName '.off']));
 data.data.off = fread(fh,inf,'real*4');
 fclose(fh);
-
+% Swap rows and cols
+data.data.off = data.data.off';
 
 % Check for field on file and if exists, read it as well
 if exist(fullfile(fPath,[fName '.on']),'file')
@@ -150,6 +151,8 @@ if exist(fullfile(fPath,[fName '.on']),'file')
     data.data.on = fread(fh,inf,'real*4');
     fclose(fh);
 end
+% Swap rows and cols
+data.data.on = data.data.on';
 
 % Handle situation that there is more than one measurement in the file
 if parameters.MagPiont > 1
