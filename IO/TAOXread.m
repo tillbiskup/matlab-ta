@@ -154,20 +154,6 @@ end
 % Swap rows and cols
 data.data.on = data.data.on';
 
-% Handle situation that there is more than one measurement in the file
-if parameters.MagPiont > 1
-    data.data.off = reshape(...
-        data.data.off,...
-        parameters.TimePoint,...
-        parameters.MagPiont);
-    if isfield(data.data,'on')
-        data.data.on = reshape(...
-            data.data.on,...
-            parameters.TimePoint,...
-            parameters.MagPiont);
-    end
-end
-
 % Set x axis parameters
 data.axes.x.values = linspace(...
     -(parameters.TimeDiv.value-parameters.SamplInterval.value),...
@@ -187,6 +173,32 @@ data.axes.y.unit = 'nm';
 
 % Set file structure
 data.file.name = fullfile(fPath,fName);
-data.file.format = 'Oxford TA data (cryptochrome lab)';
+data.file.format = 'Oxford TA data';
+
+% Handle situation that there is more than one measurement in the file
+if parameters.MagPiont > 1
+    data.data.off = reshape(...
+        data.data.off,...
+        parameters.TimePoint,...
+        parameters.MagPiont);
+    if isfield(data.data,'on')
+        data.data.on = reshape(...
+            data.data.on,...
+            parameters.TimePoint,...
+            parameters.MagPiont);
+    end
+    mData = struct();
+    for k = 1:parameters.MagPiont
+        mData(k).data.off = data.data.off(:,k);
+        mData(k).axes = data.axes;
+        mData(k).file = data.file;
+        mData(k).parameters = data.parameters;
+        mData(k).header = data.header;
+        if isfield(data.data,'on')
+            mData(k).data.on = data.data.on(:,k);
+        end
+    end
+    data = mData;
+end
 
 end
