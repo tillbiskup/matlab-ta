@@ -93,19 +93,10 @@ try
     end
     switch evt.Key
         case 'f1'
-            trEPRgui_aboutwindow();
-            return;
-        case 'f2'
-            trEPRgui_infowindow();
-            return;
-        case 'f3'
-            trEPRgui_BLCwindow();
-            return;
-        case 'f4'
-            trEPRgui_ACCwindow();
+            TAgui_aboutwindow();
             return;
         case 'f9'
-            trEPRgui_statuswindow();
+            TAgui_statuswindow();
             return;
         otherwise
 %             disp(evt);
@@ -114,7 +105,7 @@ try
     end
 catch exception
     try
-        trEPRgui_bugreportwindow(exception);
+        TAgui_bugreportwindow(exception);
     catch exception2
         % If even displaying the bug report window fails...
         exception = addCause(exception2, exception);

@@ -31,6 +31,7 @@ try
     windowTags = struct();
     windowTags.TAgui = 'TA_gui_mainwindow';
     windowTags.TAgui_infowindow = 'TA_gui_infowindow';
+    windowTags.TAgui_statuswindow = 'TA_gui_statuswindow';
     % Add here list of other window tags
     
     % Define default tag

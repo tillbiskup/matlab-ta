@@ -1,16 +1,16 @@
 function status = add2status(statusmessage)
 % ADD2STATUS Helper function that adds a status message to the status cell 
-%   array of the trEPR GUI
+%   array of the TA GUI
 %
 %   STATUSMESSAGE: string/cell array containing the status message
 %
 %   STATUS: return value for the exit status
-%           -1: no trEPRgui window found
-%           -2: trEPRgui window appdata don't contain necessary fields
+%           -1: no TAgui window found
+%           -2: TAgui window appdata don't contain necessary fields
 %            0: successfully updated status
 
-% Is there currently a trEPRgui object?
-mainwindow = findobj('Tag','trepr_gui_mainwindow');
+% Is there currently a TAgui object?
+mainwindow = guiGetWindowHandle;
 if (isempty(mainwindow))
     status = -1;
     return;
