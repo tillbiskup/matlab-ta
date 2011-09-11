@@ -182,4 +182,8 @@ data.axes.y.values = str2double(fName(end-2:end));
 data.axes.y.measure = 'wavelength';
 data.axes.y.unit = 'nm';
 
+% Set file structure
+data.file.name = fullfile(fPath,fName);
+data.file.format = 'Oxford TA data (cryptochrome lab)';
+
 end
