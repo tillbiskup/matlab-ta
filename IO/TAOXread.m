@@ -30,7 +30,7 @@ if ~exist(fullfile(fPath,[fName '.off']),'file') ...
     return;
 end
 
-% TODO: Read and parse parameters file
+% Read and parse parameters file
 fh = fopen(fullfile(fPath,[fName '.par']));
 % Read content of the par file to cell array
 data.header = cell(0);
