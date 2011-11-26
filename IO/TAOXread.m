@@ -10,7 +10,7 @@
 %
 
 % (c) 2011, Till Biskup
-% 2011-09-11
+% 2011-11-26
 
 function data = TAOXread(fileName)
 
@@ -131,28 +131,34 @@ data.parameters.recorder = struct(...
     'unit',lower(parameters.SamplInterval.unit)),...
     'averages',parameters.AveNum...
     );
+% ATTENTION: Don't rely on the parameters "OsiroDataPoint" and "TrigDelay",
+% as they get added manually to the paramters file and are NOT
+% automatically read from the transient recorder. Therefore, the only
+% reliable way to get the length of the time trace (and therefore the right
+% axes) is to use "TimePoint".
 data.parameters.transient = struct(...
-    'points',parameters.OsiroDataPoint,...
-    'triggerPosition',parameters.TrigDelay,...
+    'points',parameters.TimePoint,...
+    'triggerPosition',parameters.TrigDelay/parameters.OsiroDataPoint...
+    *parameters.TimePoint,...
     'length',parameters.TimeDiv.value*10,...
     'unit',lower(parameters.TimeDiv.unit)...
     );
 
 % Read (first) data file (with field off)
 fh = fopen(fullfile(fPath,[fName '.off']));
-data.data.off = fread(fh,inf,'real*4');
+data.data = fread(fh,inf,'real*4');
 fclose(fh);
 % Swap rows and cols
-data.data.off = data.data.off';
+data.data = data.data';
 
 % Check for field on file and if exists, read it as well
 if exist(fullfile(fPath,[fName '.on']),'file')
     fh = fopen(fullfile(fPath,[fName '.on']));
-    data.data.on = fread(fh,inf,'real*4');
+    data.dataMFon = fread(fh,inf,'real*4');
     fclose(fh);
 end
 % Swap rows and cols
-data.data.on = data.data.on';
+data.dataMFon = data.dataMFon';
 
 % Set x axis parameters
 data.axes.x.values = linspace(...
@@ -178,24 +184,24 @@ data.file.format = 'Oxford TA data';
 % Handle situation that there is more than one measurement in the file
 if parameters.MagPiont > 1
     data.data.off = reshape(...
-        data.data.off,...
+        data.data,...
         parameters.TimePoint,...
         parameters.MagPiont);
-    if isfield(data.data,'on')
-        data.data.on = reshape(...
-            data.data.on,...
+    if isfield(data,'dataMFon')
+        data.dataMFon = reshape(...
+            data.dataMFon,...
             parameters.TimePoint,...
             parameters.MagPiont);
     end
     mData = struct();
     for k = 1:parameters.MagPiont
-        mData(k).data.off = data.data.off(:,k);
+        mData(k).data = data.data(:,k);
         mData(k).axes = data.axes;
         mData(k).file = data.file;
         mData(k).parameters = data.parameters;
         mData(k).header = data.header;
-        if isfield(data.data,'on')
-            mData(k).data.on = data.data.on(:,k);
+        if isfield(data,'dataMFon')
+            mData(k).dataMFon = data.dataMFon(:,k);
         end
     end
     data = mData;
