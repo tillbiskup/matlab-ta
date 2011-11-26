@@ -3,6 +3,9 @@ function guiClose()
 try
     % TODO: Check whether there is anything that is not saved...
     
+    % Close all GUI windows currently open
+    delete(findobj('-regexp','Tag','TAgui_*'));
+    
     % Close GUI
     delete(guiGetWindowHandle);
     
