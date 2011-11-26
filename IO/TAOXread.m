@@ -26,6 +26,7 @@ end
 % Check whether necessary files exists
 if ~exist(fullfile(fPath,[fName '.off']),'file') ...
         || ~exist(fullfile(fPath,[fName '.par']),'file')
+    disp('Necessary files don''t exist...')
     data = [];
     return;
 end

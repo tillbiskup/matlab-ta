@@ -81,21 +81,38 @@ try
                 case '8'
                     return;
                 case '9'
-                    status = switchMainPanel('Help');
+                    status = switchMainPanel('Configure');
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
                         add2status(msgStr);
                     end
                     return;
+                % SWITCH DISPLAY MODE: Ctrl/Cmd+x/y/z
+                case 'x'
+                    switchDisplayType('1D along x');
+                    return;
+                case 'y'
+                    switchDisplayType('1D along y');
+                    return;
+                case 'z'
+                    switchDisplayType('2D plot');
+                    return;
+                % Other commands
+                case 'i'
+%                     trEPRgui_infowindow();
+                    return;
             end
         end
     end
     switch evt.Key
         case 'f1'
+            TAgui_helpwindow();
+            return;
+        case 'f2'
             TAgui_aboutwindow();
             return;
-        case 'f9'
+        case 'f10'
             TAgui_statuswindow();
             return;
         otherwise

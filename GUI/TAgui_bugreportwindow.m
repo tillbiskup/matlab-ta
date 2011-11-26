@@ -12,6 +12,7 @@ function varargout = TAgui_bugreportwindow(varargin)
 
 % Check whether we have been called with parameter and whether that has the
 % right format
+
 if nargin && isa(varargin{1},'MException')
     [status,report] = TAbugReportHelper(varargin{1});
     if status disp('Hm... Something went wrong generating the bug report...'); end
@@ -21,7 +22,7 @@ else
 end
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TA_gui_bugreportwindow');
+singleton = findobj('Tag','TAgui_bugreportwindow');
 if (singleton)
     figure(singleton);
     return;
@@ -33,7 +34,7 @@ bugZillaBugReportUrl = ...
     'https://r3c.de/bugs/till/enter_bug.cgi?product=TA%20toolbox';
 
 %  Construct the components
-hMainFigure = figure('Tag','TA_gui_bugreportwindow',...
+hMainFigure = figure('Tag','TAgui_bugreportwindow',...
     'Visible','off',...
     'Name','TA GUI : Bug Report Window',...
     'Units','Pixels',...

@@ -15,6 +15,7 @@ function [status,bugReport] = TAbugReportHelper(exception)
 
 % Set name of Toolbox (makes it easier to reuse this script later on)
 tbname = 'TA toolbox';
+tbversion = TAinfo('version');
 
 % If we got no input show message and exit
 if ~nargin
@@ -47,19 +48,13 @@ dateTime = datestr(clock);
 msgString = getReport(exception, 'extended', 'hyperlinks', 'off');
 
 % Try to get further info about toolbox and system
-try
-    info = TAinfo();
-catch
-    % In case TAinfo() is still the old version with no output params
-    generalInfo = cell(0);
-	[ tbRevNo, tbRevDate ] = TAtoolboxRevision;
-    generalInfo{end+1} = sprintf('Toolbox Release:    %s (%s)',tbRevNo,tbRevDate);
-    generalInfo{end+1} = sprintf('Platform:           %s',platform);
-    generalInfo{end+1} = sprintf('MATLAB(TM) version: %s',version);
-end
+generalInfo = cell(0);
+generalInfo{end+1} = sprintf('Toolbox Release:    %s',tbversion);
+generalInfo{end+1} = sprintf('Platform:           %s',platform);
+generalInfo{end+1} = sprintf('MATLAB(TM) version: %s',version);
 
 % Try to get status message from toolbox GUI
-mainGuiWindow = findobj('Tag','TA_gui_mainwindow');
+mainGuiWindow = findobj('Tag','TAgui_mainwindow');
 if (mainGuiWindow)
     ad = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata
