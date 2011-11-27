@@ -1,13 +1,13 @@
 function handle = guiDisplayPanel(parentHandle,position)
-% GUIWELCOMEPANEL Add a panel for display settings to a gui
+% GUIDISPLAYPANEL Add a panel for display settings to a gui
 %       Should only be called from within a GUI defining function.
 %
 %       Arguments: parent Handle and position vector.
-%       TODO: Add guidata and appdata to list of arguments
 %
 %       Returns the handle of the added panel.
 
-% (Leave a blank line following the help.)
+% (c) 11, Till Biskup
+% 2011-11-27
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components

@@ -13,6 +13,9 @@ function varargout = msgWindow(varargin)
 % - Add basic error handling
 % - Better check of input parameters
 
+% (c) 2011, Till Biskup
+% 2011-11-27
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

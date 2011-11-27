@@ -10,7 +10,7 @@
 %
 
 % (c) 2011, Till Biskup
-% 2011-11-26
+% 2011-11-27
 
 function data = TAOXread(fileName)
 
@@ -21,7 +21,7 @@ if isempty(fileName)
 end
 
 % Separate fileName into its parts
-[fPath,fName,fExt] = fileparts(fileName);
+[fPath,fName,~] = fileparts(fileName);
 
 % Check whether necessary files exists
 if ~exist(fullfile(fPath,[fName '.off']),'file') ...
@@ -70,15 +70,11 @@ for k=1:length(parameterFileLines)
             if ~strcmp(parameterFileLines{k}{1}(1),'#')
                 % Fill parameters structure
                 if isnan(str2double(parameterFileLines{k}{2}))
-                    parameters = setfield(parameters,...
-                        strrep(parameterFileLines{k}{1},':',''),...
-                        parameterFileLines{k}{2}...
-                        );
+                    parameters.(strrep(parameterFileLines{k}{1},':','')) = ...
+                        parameterFileLines{k}{2};
                 else
-                    parameters = setfield(parameters,...
-                        strrep(parameterFileLines{k}{1},':',''),...
-                        str2double(parameterFileLines{k}{2})...
-                        );
+                    parameters.(strrep(parameterFileLines{k}{1},':','')) = ...
+                        str2double(parameterFileLines{k}{2});
                 end
             end
         case 3

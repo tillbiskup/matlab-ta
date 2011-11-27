@@ -1,6 +1,6 @@
 function status = update_visibleSpectra()
 % UPDATE_VISIBLESPECTRA Helper function that updates the panels 
-%   of the trEPR GUI, namely trEPR_gui_mainwindow, that list the
+%   of the TA GUI, namely TA_gui_mainwindow, that list the
 %   loaded and currently visible spectra.
 %
 %   At the same time, it updates the list of visible spectra in other
@@ -10,7 +10,10 @@ function status = update_visibleSpectra()
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated panels listing the spectra
 
-% Is there currently a trEPRgui object?
+% (c) 11, Till Biskup
+% 2011-11-27
+
+% Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;
@@ -48,7 +51,7 @@ set(visLbox,'String',labels);
 if (get(visLbox,'Value')>length(vis))
     set(visLbox,'Value',length(vis));
 end
-if ((get(visLbox,'Value')==0) && (length(vis)>0))
+if ((get(visLbox,'Value')==0) && (~isempty(vis)))
     set(visLbox,'Value',1);
 end
 

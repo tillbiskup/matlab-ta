@@ -1,13 +1,16 @@
 function status = update_invisibleSpectra()
 % UPDATE_INVISIBLESPECTRA Helper function that updates the panels 
-%   of the trEPR GUI, namely trEPRgui_statuswindow, that list the
+%   of the TA GUI, namely TAgui_statuswindow, that list the
 %   loaded but currently invisible spectra.
 %
 %   STATUS: return value for the exit status
 %           -1: no tEPRgui_statuswindow found
 %            0: successfully updated panels listing the spectra
 
-% Is there currently a trEPRgui object?
+% (c) 11, Till Biskup
+% 2011-11-27
+
+% Is there currently a TAgui object?
 %mainWindow = findobj('Tag','TA_gui_mainwindow');
 mainWindow = guiGetWindowHandle();
 if (isempty(mainWindow))
@@ -40,7 +43,7 @@ set(invLbox,'String',labels);
 if (get(invLbox,'Value')>length(inv))
     set(invLbox,'Value',length(inv));
 end
-if ((get(invLbox,'Value')==0) && (length(inv)>0))
+if ((get(invLbox,'Value')==0) && (~isempty(inv)))
     set(invLbox,'Value',1);
 end
 

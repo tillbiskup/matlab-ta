@@ -11,6 +11,9 @@ function status = update_statuswindow(statusmessages)
 %   Using the findjobj function from Y. Altman, it ensures that always
 %   the last (i.e., most current) line of the status window is visible.
 
+% (c) 2011, Till Biskup
+% 2011-11-27
+
 % Is there currently a TAgui_statuswindow object?
 statuswindow = guiGetWindowHandle('TAgui_statuswindow');
 if (isempty(statuswindow))

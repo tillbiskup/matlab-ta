@@ -1,6 +1,6 @@
 function status = update_mainAxis(varargin)
 % UPDATE_MAINAXIS Helper function that updates the main axis
-%   of the trEPR GUI, namely trEPR_gui_mainwindow.
+%   of the TA GUI, namely TA_gui_mainwindow.
 %
 %   handle (optional) - figure handle to plot to
 %
@@ -8,7 +8,10 @@ function status = update_mainAxis(varargin)
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% Is there currently a trEPRgui object?
+% (c) 11, Till Biskup
+% 2011-11-27
+
+% Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle();
 if (isempty(mainWindow))
     status = -1;
@@ -162,9 +165,9 @@ switch ad.control.axis.displayType
         % Do the actual plotting
         cla(mainAxes,'reset');
         hold(mainAxes,'on');
-        for k = 1 : length(ad.control.spectra.visible)
-            k = ad.control.spectra.visible(k);
-            [y,x] = size(ad.data{k}.data);
+        for l = 1 : length(ad.control.spectra.visible)
+            k = ad.control.spectra.visible(l);
+            [~,x] = size(ad.data{k}.data);
             x = linspace(1,x,x);
             if (isfield(ad.data{k},'axes') ...
                     && isfield(ad.data{k}.axes,'x') ...
@@ -299,9 +302,9 @@ switch ad.control.axis.displayType
         % Do the actual plotting
         cla(mainAxes,'reset');
         hold(mainAxes,'on');
-        for k = 1 : length(ad.control.spectra.visible)
-            k = ad.control.spectra.visible(k);
-            [y,x] = size(ad.data{k}.data);
+        for l = 1 : length(ad.control.spectra.visible)
+            k = ad.control.spectra.visible(l);
+            [y,~] = size(ad.data{k}.data);
             y = linspace(1,y,y);
             if (isfield(ad.data{k},'axes') ...
                     && isfield(ad.data{k}.axes,'y') ...

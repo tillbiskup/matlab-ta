@@ -6,12 +6,20 @@ function guiKeyBindings(src,evt)
 %     src - handle of calling source
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
+% (c) 11, Till Biskup
+% 2011-11-27
+
 try
     if isempty(evt.Character) && isempty(evt.Key)
         % In case "Character" is the empty string, i.e. only modifier key
         % was pressed...
         return;
     end
+    
+    % Get appdata and handles of main window
+    mainWindow = guiGetWindowHandle;
+    ad = getappdata(mainWindow);
+    gh = guihandles(mainWindow);
     
     % Use "src" to distinguish between callers - may be helpful later on
     
@@ -115,6 +123,25 @@ try
         case 'f10'
             TAgui_statuswindow();
             return;
+        case 'delete'
+            if ~ad.control.spectra.active
+                return;
+            end
+            if src == gh.data_panel_visible_listbox
+                if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
+                    [status,message] = removeDatasetFromMainGUI(...
+                        ad.control.spectra.active,'force',true);
+                    if status
+                        disp(message);
+                    end
+                else
+                    [status,message] = removeDatasetFromMainGUI(...
+                        ad.control.spectra.active);
+                    if status
+                        disp(message);
+                    end
+                end
+            end
         otherwise
 %             disp(evt);
 %             fprintf('       Caller: %i\n\n',src);

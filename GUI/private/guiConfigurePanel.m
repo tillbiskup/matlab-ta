@@ -1,13 +1,13 @@
 function handle = guiConfigurePanel(parentHandle,position)
-% GUICONFIGUREPANEL Add a panel displaying some help elements to a gui
+% GUICONFIGUREPANEL Add a panel for configuring tasks of a GUI to a gui
 %       Should only be called from within a GUI defining function.
 %
 %       Arguments: parent Handle and position vector.
-%       TODO: Add guidata and appdata to list of arguments
 %
 %       Returns the handle of the added panel.
 
-% (Leave a blank line following the help.)
+% (c) 11, Till Biskup
+% 2011-11-27
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components

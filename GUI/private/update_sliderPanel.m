@@ -6,6 +6,9 @@ function status = update_sliderPanel()
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
+% (c) 2011, Till Biskup
+% 2011-11-27
+
 % Is there currently a trEPRgui object?
 mainWindow = guiGetWindowHandle;
 if (isempty(mainWindow))

@@ -20,6 +20,9 @@ function handle = guiGetWindowHandle(varargin)
 %
 % If no handle could be found, an empty cell array will be returned.
 
+% (c) 11, Till Biskup
+% 2011-11-27
+
 try
     % Check whether we are called with input argument
     if nargin && ischar(varargin{1})
