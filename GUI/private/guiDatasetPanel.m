@@ -299,12 +299,13 @@ function pushbutton_Callback(~,~,action)
             case 'Hide'                
                 % Get selected item of listbox
                 selected = get(gh.data_panel_visible_listbox,'Value');
-                selectedId = ad.control.spectra.visible(selected);
                 
                 % Be on the save side if user is faster than Matlab
                 if selected == 0
                     return;
                 end
+                
+                selectedId = ad.control.spectra.visible(selected);
                 
                 % Move to invisible
                 ad.control.spectra.invisible = [...
@@ -342,6 +343,13 @@ function pushbutton_Callback(~,~,action)
                     'Currently invisible: [ %s]; currently visible: [ %s]; total: %i',...
                     invStr,visStr,length(ad.data));
                 add2status(msgStr);
+                
+                % Update both list boxes
+                update_invisibleSpectra();
+                update_visibleSpectra();
+                
+                %Update main axis
+                update_mainAxis();
             case 'Combine'
                 % If no datasets are loaded, return
                 if isempty(ad.data)

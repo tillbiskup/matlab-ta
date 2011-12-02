@@ -7,7 +7,7 @@ function status = update_displayPanel()
 %            0: successfully updated main axis
 
 % (c) 2011, Till Biskup
-% 2011-11-27
+% 2011-12-02
 
 % Is there currently a trEPRgui object?
 mainWindow = guiGetWindowHandle;
@@ -114,6 +114,29 @@ if ad.control.spectra.active
     set(gh.display_panel_3D_size_x_edit,'String',num2str(dimy));
     set(gh.display_panel_3D_size_y_edit,'String',num2str(dimx));
 end
+
+% Set threshold values
+if ad.control.spectra.active
+    if ad.data{ad.control.spectra.active}.display.threshold.min.enable
+        set(gh.display_panel_threshold_min_edit,'Enable','On');
+        set(gh.display_panel_threshold_min_checkbox,'Value',1);
+    else
+        set(gh.display_panel_threshold_min_edit,'Enable','Off');
+        set(gh.display_panel_threshold_min_checkbox,'Value',0);
+    end
+    set(gh.display_panel_threshold_min_edit,'String',...
+        num2str(ad.data{ad.control.spectra.active}.display.threshold.min.value));
+    if ad.data{ad.control.spectra.active}.display.threshold.max.enable
+        set(gh.display_panel_threshold_max_edit,'Enable','On');
+        set(gh.display_panel_threshold_max_checkbox,'Value',1);
+    else
+        set(gh.display_panel_threshold_max_edit,'Enable','Off');
+        set(gh.display_panel_threshold_max_checkbox,'Value',0);
+    end
+    set(gh.display_panel_threshold_max_edit,'String',...
+        num2str(ad.data{ad.control.spectra.active}.display.threshold.max.value));
+end
+
 
 status = 0;
 

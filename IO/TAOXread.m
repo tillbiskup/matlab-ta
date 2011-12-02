@@ -10,7 +10,7 @@
 %
 
 % (c) 2011, Till Biskup
-% 2011-11-27
+% 2011-12-02
 
 function data = TAOXread(fileName)
 
@@ -177,6 +177,10 @@ data.axes.x.unit = lower(parameters.TimeDiv.unit);
 data.axes.y.values = str2double(fName(end-2:end));
 data.axes.y.measure = 'wavelength';
 data.axes.y.unit = 'nm';
+
+% Write values for z axis (intensity)
+data.axes.z.measure = 'intensity';
+data.axes.z.unit = data.parameters.recorder.sensitivity.unit;
 
 % Set file structure
 data.file.name = fullfile(fPath,fName);
