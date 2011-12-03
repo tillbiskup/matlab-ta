@@ -206,13 +206,13 @@ switch ad.control.axis.displayType
                 y = y + ad.data{k}.display.displacement.z;
             end
             % Apply thresholds
-            if ad.data{active}.display.threshold.min.enable
-                y(y<ad.data{active}.display.threshold.min.value) = ...
-                    ad.data{active}.display.threshold.min.value;
+            if ad.data{k}.display.threshold.min.enable
+                y(y<ad.data{k}.display.threshold.min.value) = ...
+                    ad.data{k}.display.threshold.min.value;
             end
-            if ad.data{active}.display.threshold.max.enable
-                y(y>ad.data{active}.display.threshold.max.value) = ...
-                    ad.data{active}.display.threshold.max.value;
+            if ad.data{k}.display.threshold.max.enable
+                y(y>ad.data{k}.display.threshold.max.value) = ...
+                    ad.data{k}.display.threshold.max.value;
             end
             % Normalise if necessary
             switch ad.control.axis.normalisation
@@ -353,13 +353,13 @@ switch ad.control.axis.displayType
                 x = x + ad.data{k}.display.displacement.z;
             end
             % Apply thresholds
-            if ad.data{active}.display.threshold.min.enable
-                x(x<ad.data{active}.display.threshold.min.value) = ...
-                    ad.data{active}.display.threshold.min.value;
+            if ad.data{k}.display.threshold.min.enable
+                x(x<ad.data{k}.display.threshold.min.value) = ...
+                    ad.data{k}.display.threshold.min.value;
             end
-            if ad.data{active}.display.threshold.max.enable
-                x(x>ad.data{active}.display.threshold.max.value) = ...
-                    ad.data{active}.display.threshold.max.value;
+            if ad.data{k}.display.threshold.max.enable
+                x(x>ad.data{k}.display.threshold.max.value) = ...
+                    ad.data{k}.display.threshold.max.value;
             end
             % Normalise if necessary
             switch ad.control.axis.normalisation

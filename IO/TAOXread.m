@@ -31,10 +31,12 @@ if ~exist(fullfile(fPath,[fName '.off']),'file') ...
     return;
 end
 
+% Assign empty structure to output argument
+data = TAdataStructure();
+
 % Read and parse parameters file
 fh = fopen(fullfile(fPath,[fName '.par']));
 % Read content of the par file to cell array
-data.header = cell(0);
 k=1;
 while 1
     tline = fgetl(fh);
