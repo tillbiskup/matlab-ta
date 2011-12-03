@@ -136,7 +136,7 @@ uicontrol('Tag','load_panel_filetype_popupmenu',...
     'FontUnit','Pixel','Fontsize',12,...
     'Units','Pixels',...
     'Position',[10 10 handle_size(3)-40 20],...
-    'String','automatic|Oxford TA data',...
+    'String','automatic|Oxford TA data|Freiburg TA ASCII data',...
     'Value',2 ...
     );
 
@@ -219,9 +219,9 @@ function load_pushbutton_Callback(~,~)
             add2status(msg);
             return;
         end
-        
+
         % In case of files, not a directory, add path to filename
-        if exist('PathName','dir')
+        if exist(PathName,'dir')
             % In case of multiple files
             if iscell(FileName)
                 for k = 1 : length(FileName)
@@ -277,6 +277,22 @@ function load_pushbutton_Callback(~,~)
                 messageText = get(hMessageText,'String');
                 
                 data = TAOXread(FileName);
+            case 'Freiburg TA ASCII data'
+                % Adding status line
+                msgStr = cell(0);
+                msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
+                msg = [ msgStr FileName];
+                add2status(msg);
+                clear msgStr msg;
+                
+                hMsgBox = msgWindow(...
+                    'Loading spectra... please wait.',...
+                    'Loading spectra',...
+                    'Help','modal',0);
+                hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
+                messageText = get(hMessageText,'String');
+                
+                data = TAFRASCIIread(FileName);
             otherwise
                 disp('guiLoadPanel(): Unknown file type');
                 disp(fileType);

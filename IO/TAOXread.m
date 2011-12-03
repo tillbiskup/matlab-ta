@@ -188,6 +188,8 @@ data.axes.z.unit = data.parameters.recorder.sensitivity.unit;
 data.file.name = fullfile(fPath,fName);
 data.file.format = 'Oxford TA data';
 
+data.label = fName;
+
 % Handle situation that there is more than one measurement in the file
 if parameters.MagPiont > 1
     data.data.off = reshape(...

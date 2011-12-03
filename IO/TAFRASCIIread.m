@@ -27,6 +27,7 @@ data = TAdataStructure();
 % Therefore, the last empty line "wins".
 nLinesTestHeaderLength = 20;
 headerLength = 0;
+
 fh = fopen(fileName);
 for k=1:nLinesTestHeaderLength
     tline = fgetl(fh);
