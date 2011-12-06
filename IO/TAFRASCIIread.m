@@ -100,4 +100,8 @@ data.axes.x.unit = 'ns';
 data.axes.y.measure = 'wavelength';
 data.axes.z.unit = '';
 
+% Set file structure
+data.file.name = fileName;
+data.file.format = 'Freiburg ASCII TA data';
+
 end
