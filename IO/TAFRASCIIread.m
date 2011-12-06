@@ -47,6 +47,12 @@ if ~isfield(raw,'data')
     raw = importdata(fileName,',',headerLength);
 end
 
+% If there is still no "data" field in "raw", something went wrong...
+if ~isfield(raw,'data')
+    data = [];
+    return;
+end
+
 % Assign data
 % NOTE: The first column holds the x axis
 % NOTE: The data are columnwise, for the display we need it rowwise
