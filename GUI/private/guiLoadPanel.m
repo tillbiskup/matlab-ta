@@ -6,7 +6,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 11, Till Biskup
+% (c) 2011, Till Biskup
 % 2011-12-02
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
