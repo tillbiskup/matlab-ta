@@ -4,6 +4,9 @@
 %
 % This file serves as an example and documentation for the real
 % configuration in the file "TAgui.ini" in the same directory.
+%
+% To automatically generate a valid config file from this file, 
+% use TAconf('create') at the MATLAB(r) command line.
 
 % Configuration for the load panel
 [load]

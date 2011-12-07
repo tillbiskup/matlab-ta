@@ -1,4 +1,4 @@
-function TAconf(action)
+function varargout = TAconf(action)
 % TACONF Handling configuration of TA toolbox
 %
 % Usage
@@ -46,6 +46,19 @@ try
             end
             % Change directory back to original directory
             cd(PWD);
+        case 'files'
+            confFiles = dir(...
+                fullfile(TAinfo('dir'),'GUI','private','conf','*.ini'));
+            if isempty(confFiles)
+                varargout{1} = cell(0);
+                return;
+            end
+            confFileNames = cell(length(confFiles),1);
+            for k=1:length(confFiles)
+                confFileNames{k} = fullfile(...
+                    TAinfo('dir'),'GUI','private','conf',confFiles(k).name);
+            end
+            varargout{1} = confFileNames;
         otherwise
             fprintf('%s: Unknown action: %s\n',mfilename,action);
     end
