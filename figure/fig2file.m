@@ -1,3 +1,4 @@
+function status = fig2file(figHandle,fileName,varargin)
 % FIG2FILE Save Matlab figure window to file
 %
 % Usage
@@ -33,7 +34,6 @@
 % (c) 2011, Till Biskup
 % 2011-12-07
 
-function status = fig2file(figHandle,fileName,varargin)
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
 p.FunctionName = mfilename; % Function name to be included in error messages
