@@ -40,6 +40,12 @@ try
             ad = getappdata(handle);
             gh = guihandles(handle);
             
+            % NOTE: Be very defensive in general, as we cannot rely on the
+            % GUI having loaded a valid config file.
+            % This is true in particular due to the fact that only the
+            % .ini.dist files get distributed, but not the actual config
+            % files.
+            
             % Set load panel's settings
             if isfield(ad.configuration.load,'combine')
                 set(gh.load_panel_files_combine_checkbox,...
