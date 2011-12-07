@@ -15,7 +15,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011, Till Biskup
-% 2011-11-06
+% 2011-12-06
 
 status = 0;
 
