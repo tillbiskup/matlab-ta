@@ -89,7 +89,6 @@ try
     end
     fclose(fh);
 catch exception
-    warnings = sprintf('Problems reading ini file %s',fileName);
     throw(exception);
 end
 
@@ -105,7 +104,7 @@ for k=1:length(iniFileContents)
             blockname = iniFileContents{k}(2:end-1);
         else
             [names] = regexp(iniFileContents{k},...
-                '(?<key>[a-zA-Z0-9._-]+)\s*=\s*(?<val>.*)',...
+                ['(?<key>[a-zA-Z0-9._-]+)\s*' assignmentChar '\s*(?<val>.*)'],...
                 'names');
             if isfield(data,blockname)
                 if isfield(data.(blockname),names.key)
@@ -119,7 +118,7 @@ for k=1:length(iniFileContents)
                         blockname,key,oldFieldValue,val);
                 end
             end
-            data.(blockname).(names.key) = names.val;
+            data.(blockname).(strtrim(names.key)) = strtrim(names.val);
         end
     end
 end
