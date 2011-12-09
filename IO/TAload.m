@@ -1,18 +1,37 @@
-function varargout = TAload(filename, varargin)
+function [data,warnings] = TAload(fileName, varargin)
 % TALOAD Load files or scans whole directories for readable files
 %
 % Usage
 %   TAload(filename)
-%   [data] = TAload(filename)
+%   data = TAload(filename)
 %   [data,warnings] = TAload(filename)
+%   data = TAload(filename,...)
 %
-%   filename - string
-%              name of a valid filename (of a fsc2 file)
+%   filename - string|struct|cell array
+%              string: name of a valid filename
+%              struct: struct with files as returned by "dir"
+%              cell array: cell array of strings with filenames
+%
 %   data     - struct
 %              structure containing data and additional fields
 %
 %   warnings - cell array of strings
 %              empty if there are no warnings
+%
+%   You can pass optional parameters. For details see below.
+%
+% Parameters
+%
+%   format   - string
+%              One of the formats that are recognised. For a full list, see
+%              the 'TAload.ini' configuration file.
+%              If set to 'automatic', the function will try to
+%              automatically determine the file format.
+%              Default: 'automatic'
+%
+%   combine  - logical (true/false)
+%              Whether to combine files.
+%              Default: false
 %
 % If no data could be loaded, data is an empty struct.
 % In such case, warning may hold some further information what happened.
@@ -33,7 +52,7 @@ function varargout = TAload(filename, varargin)
 % See also TAOXREAD, TADATASTRUCTURE.
 
 % (c) 2011, Till Biskup
-% 2011-11-27
+% 2011-12-08
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -45,34 +64,196 @@ p.addRequired('filename', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('format','automatic',@ischar);
 p.addParamValue('combine',logical(false),@islogical);
-p.parse(filename,varargin{:});
+p.parse(fileName,varargin{:});
 
-if iscell(filename)
-    sort(filename);
-elseif isstruct(filename)
+% Assign optional arguments from parser
+format = p.Results.format;
+combine = p.Results.combine;
+
+warnings = cell(0);
+
+% If no filename given
+if isempty(fileName)
+    data = [];
+    warnings{end+1} = 'No filename.';
+    return;
+end
+
+if iscell(fileName)
+    sort(fileName);
+elseif isstruct(fileName)
     % That might be the case if the user uses "dir" as input for the
     % filenames, as this returns a structure with fields as "name"
-    if ~isfield(filename,'name')
-        varargout{1} = 0;
-        varargout{2} = 'Cannot determine filename(s).';
+    if ~isfield(fileName,'name')
+        data = [];
+        warnings{end+1} = 'Cannot determine filename(s).';
     end        
     % Convert struct to cell
-    filename = struct2cell(filename);
-    filename = filename(1,:)';
+    fileName = struct2cell(fileName);
+    fileName = fileName(1,:)';
     % Remove '.' and '..'
-    [~,ind] = max(strcmp('.',filename));
-    filename(ind) = [];
-    [~,ind] = max(strcmp('..',filename));
-    filename(ind) = [];
-    sort(filename);
+    [~,ind] = max(strcmp('.',fileName));
+    fileName(ind) = [];
+    [~,ind] = max(strcmp('..',fileName));
+    fileName(ind) = [];
+    sort(fileName);
 else
     % If filename is neither cell nor struct
     % Given the input parsing it therefore has to be a string
+    if exist(fileName,'dir')
+        % Read directory
+        fileName = dir(fileName);
+        % Convert struct to cell
+        fileName = strut2cell(fileName);
+        fileName = fileName(1,:)';
+        % Remove '.' and '..'
+        [~,ind] = max(strcmp('.',fileName));
+        fileName(ind) = [];
+        [~,ind] = max(strcmp('..',fileName));
+        fileName(ind) = [];
+        sort(fileName);
+    elseif exist(fileName,'file')
+        % For convenience, convert into cell array
+        fn = fileName;
+        fileName = cell(0);
+        fileName{1} = fn;
+    else
+        % If "filename" is neither a directory nor a file...
+        % Check whether it's only a basename
+        fileName = dir([fileName '*']);
+        if isempty(fileName)
+            data = 0;
+            warnings{end+1} = 'No valid filename.';
+            return;
+        end
+        % Convert struct to cell
+        fileName = struct2cell(fileName);
+        fileName = fileName(1,:)';
+        % Remove '.' and '..'
+        [~,ind] = max(strcmp('.',fileName));
+        fileName(ind) = [];
+        [~,ind] = max(strcmp('..',fileName));
+        fileName(ind) = [];
+        sort(fileName);
+    end
 end
 
-if ~exist('content','var') && nargout
-    varargout{1} = 0;
-    varargout{2} = [];
+% Get file formats from ini file
+fileFormats = iniFileRead([mfilename('fullpath') '.ini']);
+formatNames = fieldnames(fileFormats);
+        
+data = [];
+
+if strcmpi(format,'automatic')
+    % Now we have the nice task to try to determine the file type - from
+    % basically nothing than the file itself, with no reliable information,
+    % neither from the extension nor from the first two lines of a file (if
+    % it were an ASCII file). Life is hard and unfair...
+    %
+    % Therefore, we simply try to first determine whether we have a binary
+    % or an ascii file, and then apply sequentially each of the formats we
+    % know of until one of them returns data.
+    
+    % Get list of file extensions from ini file, and at the same time get a
+    % list of all ascii and binary file formats
+    fileExtensions = cell(0);
+    fileExtensionIndices = [];
+    asciiFileFormats = cell(0);
+    binaryFileFormats = cell(0);
+    for k = 1:length(formatNames)
+        if isfield(fileFormats.(formatNames{k}),'fileExtension')
+            exts = regexp(...
+                fileFormats.(formatNames{k}).fileExtension,'\|','split');
+            fileExtensionIndices = [ ...
+                fileExtensionIndices ones(1,length(exts))*k ];
+            fileExtensions = [ fileExtensions exts ];
+        end
+        switch fileFormats.(formatNames{k}).type
+            case 'ascii'
+                asciiFileFormats{end+1} = formatNames{k};
+            case 'binary'
+                binaryFileFormats{end+1} = formatNames{k};
+        end
+    end
+    
+    % Try to compress list of files to unique file basenames
+    % Therefore, first, get filenames with path but excluding extension
+    fileBaseNames = cell(length(fileName),1);
+    for k=1:length(fileName)
+        [p,f,~] = fileparts(fileName{k});
+        fileBaseNames{k} = fullfile(p,f);
+    end
+    [~,uniqueIndices,~] = unique(fileBaseNames);
+
+    for k=1:length(uniqueIndices)
+        % FIRST STEP: Determine whether we have a binary or an ascii file
+        % At the same time, if ascii, get first (or second) line of file.
+        % Open file
+        fid = fopen(fileName{uniqueIndices(k)});
+        % Initialize switch resembling binary or ascii data
+        isBinary = false;
+        % Read first characters of the file and try to determine whether it
+        % is binary 
+        firstChars = fread(fid,5);
+        for m=1:length(firstChars)
+            if firstChars(m) < 32 && firstChars(k) ~= 10 ...
+                    && firstChars(m) ~= 13
+                isBinary = true;
+            end
+        end
+        % Reset file pointer, then read first line and try to determine
+        % the filetype from that.
+        % PROBLEM: Some files tend to have a single empty comment line as
+        % the first line. Therefore, check whether the first line is too
+        % short for an identifier string, and in this case, read a second
+        % line.
+        fseek(fid,0,'bof');
+        firstLine = fgetl(fid);
+        if isempty(regexp(firstLine,'[a-zA-Z]','once'))
+            % If first line does not contain any characters necessary for
+            % an identifier string (problem with fsc2 files, see comment
+            % above), read another line.
+            firstLine = fgetl(fid);
+        end
+        % Close file
+        fclose(fid);
+        
+        % Get file extension from filename
+        [~,~,ext] = fileparts(fileName{1});
+        
+        if isBinary
+            for m = 1 : length(binaryFileFormats)
+                functionHandle = str2func(...
+                    fileFormats.(binaryFileFormats{m}).function);
+                [data{k},warnings{k}] = functionHandle(fileName{uniqueIndices(k)});
+                if ~isempty(data{k})
+                    break;
+                end
+            end
+        else
+            % else try to find a matching function from the ini file
+            for m = 1 : length(asciiFileFormats)
+                functionHandle = str2func(...
+                    fileFormats.(asciiFileFormats{m}).function);
+                [data{k},warnings{k}] = functionHandle(fileName{uniqueIndices(k)});
+                if ~isempty(data{k})
+                    break;
+                end
+            end
+        end
+    end
+    
+elseif max(strcmpi(format,formatNames))
+    % Basically that means that "format" has been found in the formats
+    functionHandle = str2func(fileFormats.(format).function);
+    [data,warnings] = functionHandle(fileName);
+else
+    warnings{end+1} = sprintf('File format %s not recognised.',format);
+end
+
+if ~exist('data','var') && nargout
+    data = 0;
+    warnings{end+1} = 'No data could be read.';
 end
 
     
