@@ -15,7 +15,7 @@ loaddir = 0
 POC = 0
 BGC = 0
 labels = 1
-format = Freiburg TA ASCII data
+format = EP LP920 ASCII
 
 % Configuration for the measure panel
 [measure]

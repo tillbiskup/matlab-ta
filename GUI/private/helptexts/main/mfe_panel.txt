@@ -1,0 +1,8 @@
+
+MAGNETIC FIELD EFFECT (MFE)
+
+This panel will provide tools to analyse the MFE.
+
+NOTE: Currently, no tools are implemented.
+
+

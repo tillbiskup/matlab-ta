@@ -1,0 +1,51 @@
+
+There are a couple of key bindings that may make life easier when working with this GUI.
+
+
+SWITCHING BETWEEN PANELS
+
+Ctrl-1 ... Ctrl-9
+
+(Mac: Ctrl or Command)
+
+
+
+SWITCHING DISPLAY MODE
+
+Ctrl-x ... Ctrl-z
+
+(Mac: Ctrl or Command)
+
+
+
+FUNCTION KEYS (F1...F12)
+
+F1  - Help
+
+F2  - "Help:About" window
+
+F3  - Informations about currently active dataset
+
+F4  - Baseline correction
+
+F5  - Accumulation
+
+F10 - "Status" window
+
+
+
+CLOSING THE GUI
+
+Ctrl-w
+
+(Mac: Ctrl or Command)
+
+
+
+ADDITIONAL KEY BINDINGS
+
+Ctrl-i - Informations about currently active dataset
+
+(Mac: Ctrl or Command)
+
+

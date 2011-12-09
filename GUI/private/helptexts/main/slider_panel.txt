@@ -1,0 +1,32 @@
+
+SLIDER VALUES
+
+The slider panel provides displays for the values of the sliders attached to the main axes. All values are given both as index and as actual units. It is completely in the responsibility of the user to ensure that the units are correct, as the GUI (and the toolbox as a whole) has no means of determining whether the units settings in the datasets loaded are reasonable.
+
+
+THE CONTROLS
+
+-= Position =-
+
+The position of the slider both in x and y direction.
+
+NOTE: x and y direction are fixed and always refer to x (abscissa) and y (ordinate) of the 2D display, i.e. time (x) and magnetic field (y).
+
+In case of 1D display types, the abscissa may vary, whereas the ordinate is always the intensity (usually in arbitrary units).
+
+
+-= Scaling =-
+
+The scaling factors in all three directions.
+
+
+-=Displacement =-
+
+The displacement in all three directions.
+
+NOTE: Displacement in y direction can be thought of as "frequency correction".
+
+
+To reset the scaling and displacement sliders to their default values (for the currently active dataset), simply press the "Reset" button that is located below the vertical sliders.
+
+

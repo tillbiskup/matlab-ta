@@ -1,0 +1,14 @@
+
+DATA ANALYSIS
+
+Tools for the in-depth data analysis.
+
+
+CONTROLS
+
+-= Export data =-
+
+Export data in various formats for analysis with external programs.
+
+Currently, the only format supported is the format used by glotaran (global analysis).
+

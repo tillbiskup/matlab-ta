@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011, Till Biskup
-% 2011-11-27
+% 2011-12-09
 
 % Make GUI effectively a singleton
 singleton = findobj('Tag','TAgui_mainwindow');

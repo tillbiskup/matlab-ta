@@ -1,0 +1,34 @@
+
+KEY CONCEPTS OF THE GUI
+
+The whole GUI was designed to be both modular and robust. Additional emphasis was on usability.
+
+The current piece of software is the result of nearly six years of development of TA data processing and analysis software and two years of GUI programming using MATLAB(TM).
+
+In the following, the probably less obvious aspects of data processing and analysis will be highlighted and key concepts introduced (but not yet fully implemented) with the TA GUI/toolbox described.
+
+
+METADATA
+
+A dataset not only consists of a "list" of numbers that represent the actual data, but as well, and not less important, of a list of additional information, including, but not restricted to, the measurement setup used, the typical device parameters, details about the sample, ...
+
+Different groups/people developed different stategies to save these important data (throughout "metadata") together with the pure data.
+
+The TA toolbox and GUI help both to collect all these metadata and to provide the user with a convenient interface to access and modify them.
+
+As the GUI save function saves the complete dataset record with its full structure to an XML file (compressed in a ZIP container), it retains the full information provided for a single dataset.
+
+
+HISTORY
+
+Closely related to the metadata, the "history" of a dataset, namely the list of operations performed during processing and analysis, is of high importance.
+
+Every dataset that gets loaded into the GUI has its own "history" and every function of the GUI that performs an operation on a given dataset creates a record in that history, including the function name, the parameters used, and the date of operation.
+
+Once the "history browser" is implemented, this provides the user with a convenient interface to explore the complete set of operations performed on a given dataset.
+
+
+STATUS WINDOW
+
+To keep track of what the GUI is currently doing, a "status window" has been added (press the "F2" key or the "Status" button on the bottom, left of this panel). Therein, all operations and some additional information are listed, each with a "time stamp" for convenient assignment.
+

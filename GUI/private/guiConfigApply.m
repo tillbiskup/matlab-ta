@@ -49,23 +49,23 @@ try
             % Set load panel's settings
             if isfield(ad.configuration.load,'combine')
                 set(gh.load_panel_files_combine_checkbox,...
-                    'Value',str2double(ad.configuration.load.combine));
+                    'Value',ad.configuration.load.combine);
             end
             if isfield(ad.configuration.load,'loaddir')
                 set(gh.load_panel_files_directory_checkbox,...
-                    'Value',str2double(ad.configuration.load.loaddir));
+                    'Value',ad.configuration.load.loaddir);
             end
             if isfield(ad.configuration.load,'POC')
                 set(gh.load_panel_preprocessing_offset_checkbox,...
-                    'Value',str2double(ad.configuration.load.POC));
+                    'Value',ad.configuration.load.POC);
             end
             if isfield(ad.configuration.load,'BGC')
                 set(gh.load_panel_preprocessing_background_checkbox,...
-                    'Value',str2double(ad.configuration.load.BGC));
+                    'Value',ad.configuration.load.BGC);
             end
             if isfield(ad.configuration.load,'labels')
                 set(gh.load_panel_axislabels_checkbox,...
-                    'Value',str2double(ad.configuration.load.labels));
+                    'Value',ad.configuration.load.labels);
             end
             if isfield(ad.configuration.load,'format')
                 % Get value from load_panel_filetype_popupmenu

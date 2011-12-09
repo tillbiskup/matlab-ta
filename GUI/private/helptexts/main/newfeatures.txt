@@ -1,0 +1,19 @@
+
+WHAT'S NEW IN THE TA TOOLBOX/GUI?
+
+Basically, at this stage, still the complete toolbox counts as "new". Nevertheless, the following list will grow and give you an impression of what got implemented.
+
+
+-= New features in v.0.0.1 =-
+
+An incomplete list of changes within v.0.0.1 as of December 2011, in decreasing order of their implementation date:
+
+* Data import improved: Now supports combine (for those formats supporting combining files)
+
+* Minor changes in data structure
+
+* Basic Configuration via "Configuration" panel
+
+* Figure export supports different (configurable) formats (i.e. paper sizes)
+
+* Help in MATLAB(r) Help Browser

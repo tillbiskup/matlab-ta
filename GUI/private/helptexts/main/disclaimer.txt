@@ -1,0 +1,11 @@
+
+THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+In terms of scientific data processing and analysis:
+
+Although great care has been taken to provide you with a set of functions that perform correct and in scientific means valid operations on the data you process with this software, the author of the software is in no way responsible nor liable for the results.
+
+It is solely your responsibility to keep a complete record of operations you performed on your datasets, including the details of the software used (i.e., names and versions of the routines).
+
+In general, this GUI writes records to the "history" array of a dataset each time it performs some operation, to help the user with keeping a complete record of performed tasks. Nevertheless, there is no warranty that these informations are correct nor complete.
+

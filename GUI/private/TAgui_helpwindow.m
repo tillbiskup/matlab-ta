@@ -61,10 +61,11 @@ hpm = uicontrol('Tag','helptopic_popupmenu',...
     'Units','Pixels',...
     'pos',[120 guiSize(2)-70 guiSize(1)-130 20],...
     'String',sprintf('%s%s',...
-    'Welcome|New features|Key bindings|',...
+    'Welcome|New features|Key concepts|Why a GUI?|',...
+    'Key bindings|Disclaimer|Bug reports|',...
     'Load panel|Datasets panel|Slider panel|',...
     'Measure panel|Display panel|Processing panel|',...
-    'Analysis panel|Configure panel'),...
+    'Analysis panel|MFE panel|Configure panel'),...
     'KeyPressFcn',@keypress_Callback,...
     'Callback',@helptext_popupmenu_Callback...
     );
@@ -152,7 +153,7 @@ try
     mainWindow = guiGetWindowHandle;
     mgh = guihandles(mainWindow);
     if get(get(mgh.mainButtonGroup,'SelectedObject'),'Tag')
-        helpTopicOffset = 3;
+        helpTopicOffset = 7;
         switch get(get(mgh.mainButtonGroup,'SelectedObject'),'Tag')
             case 'tbLoad'
                 helpText = 'Load panel';
@@ -175,9 +176,12 @@ try
             case 'tbAnalysis'
                 helpText = 'Analysis panel';
                 set(hpm,'Value',helpTopicOffset+7);
+            case 'tbMFE'
+                helpText = 'MFE panel';
+                set(hpm,'Value',helpTopicOffset+8);
             case 'tbConfigure'
                 helpText = 'Configure panel';
-                set(hpm,'Value',helpTopicOffset+8);
+                set(hpm,'Value',helpTopicOffset+9);
             otherwise
                 % That shall never happen
                 add2status('TAgui_helpwindow(): Unknown panel');
@@ -210,9 +214,6 @@ end
 
 function helptext_popupmenu_Callback(source,~)
     try
-        % Get handles of main window
-        gh = guihandles(hMainFigure);
-        
         helpTexts = cellstr(get(source,'String'));
         helpText = helpTexts{get(source,'Value')};
         
@@ -236,7 +237,7 @@ function helptext_popupmenu_Callback(source,~)
     end
 end
 
-function keypress_Callback(src,evt)
+function keypress_Callback(~,evt)
     try
         if isempty(evt.Character) && isempty(evt.Key)
             % In case "Character" is the empty string, i.e. only modifier key
@@ -289,6 +290,18 @@ function helptext_selector(helpText)
                 % buttons.
                 helpText(3:4) = [];
                 set(textdisplay,'String',helpText);
+            case 'Key concepts'
+                % Read text from file and display it
+                helpTextFile = fullfile(...
+                    TAinfo('dir'),'GUI','private','helptexts','main','keyconcepts.txt');
+                helpText = textFileRead(helpTextFile);
+                set(textdisplay,'String',helpText);
+            case 'Why a GUI?'
+                % Read text from file and display it
+                helpTextFile = fullfile(...
+                    TAinfo('dir'),'GUI','private','helptexts','main','whygui.txt');
+                helpText = textFileRead(helpTextFile);
+                set(textdisplay,'String',helpText);
             case 'New features'
                 % Read text from file and display it
                 helpTextFile = fullfile(...
@@ -299,6 +312,18 @@ function helptext_selector(helpText)
                 % Read text from file and display it
                 helpTextFile = fullfile(...
                     TAinfo('dir'),'GUI','private','helptexts','main','keybindings.txt');
+                helpText = textFileRead(helpTextFile);
+                set(textdisplay,'String',helpText);
+            case 'Disclaimer'
+                % Read text from file and display it
+                helpTextFile = fullfile(...
+                    TAinfo('dir'),'GUI','private','helptexts','main','disclaimer.txt');
+                helpText = textFileRead(helpTextFile);
+                set(textdisplay,'String',helpText);
+            case 'Bug reports'
+                % Read text from file and display it
+                helpTextFile = fullfile(...
+                    TAinfo('dir'),'GUI','private','helptexts','main','bugreport.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             case 'Load panel'
@@ -341,6 +366,12 @@ function helptext_selector(helpText)
                 % Read text from file and display it
                 helpTextFile = fullfile(...
                     TAinfo('dir'),'GUI','private','helptexts','main','analysis_panel.txt');
+                helpText = textFileRead(helpTextFile);
+                set(textdisplay,'String',helpText);
+            case 'MFE panel'
+                % Read text from file and display it
+                helpTextFile = fullfile(...
+                    TAinfo('dir'),'GUI','private','helptexts','main','mfe_panel.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             case 'Configure panel'

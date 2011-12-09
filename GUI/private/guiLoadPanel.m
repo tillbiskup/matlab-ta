@@ -7,13 +7,22 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011, Till Biskup
-% 2011-12-02
+% 2011-12-09
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 defaultBackground = get(parentHandle,'Color');
+
+% Get names of file formats that can be handled by TAload
+% Therefore, load TAload.ini and parse for "name" field.
+fileFormats = iniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
+fieldNames = fieldnames(fileFormats);
+fileFormatNames = cell(1,length(fieldNames));
+for k=1:length(fieldNames)
+    fileFormatNames{k} = fileFormats.(fieldNames{k}).name;
+end 
 
 handle = uipanel('Tag','load_panel',...
     'parent',parentHandle,...
@@ -136,7 +145,7 @@ uicontrol('Tag','load_panel_filetype_popupmenu',...
     'FontUnit','Pixel','Fontsize',12,...
     'Units','Pixels',...
     'Position',[10 10 handle_size(3)-40 20],...
-    'String','automatic|Oxford TA data|Freiburg TA ASCII data',...
+    'String',['automatic' fileFormatNames],...
     'Value',2 ...
     );
 
@@ -244,60 +253,21 @@ function load_pushbutton_Callback(~,~)
         fileTypes = cellstr(get(gh.load_panel_filetype_popupmenu,'String'));
         fileType = fileTypes{get(gh.load_panel_filetype_popupmenu,'Value')};
         
-        switch fileType
-            case 'automatic'
-                % Adding status line
-                msgStr = cell(0);
-                msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
-                msg = [ msgStr FileName];
-                add2status(msg);
-                clear msgStr msg;
-                
-                hMsgBox = msgWindow(...
-                    'Loading spectra... please wait.',...
-                    'Loading spectra',...
-                    'Help','modal',0);
-                hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
-                messageText = get(hMessageText,'String');
-                
-                data = TAload(FileName,'combine',state.comb);
-            case 'Oxford TA data'
-                % Adding status line
-                msgStr = cell(0);
-                msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
-                msg = [ msgStr FileName];
-                add2status(msg);
-                clear msgStr msg;
-                
-                hMsgBox = msgWindow(...
-                    'Loading spectra... please wait.',...
-                    'Loading spectra',...
-                    'Help','modal',0);
-                hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
-                messageText = get(hMessageText,'String');
-                
-                data = TAOXread(FileName);
-            case 'Freiburg TA ASCII data'
-                % Adding status line
-                msgStr = cell(0);
-                msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
-                msg = [ msgStr FileName];
-                add2status(msg);
-                clear msgStr msg;
-                
-                hMsgBox = msgWindow(...
-                    'Loading spectra... please wait.',...
-                    'Loading spectra',...
-                    'Help','modal',0);
-                hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
-                messageText = get(hMessageText,'String');
-                
-                data = TAFRASCIIread(FileName);
-            otherwise
-                disp('guiLoadPanel(): Unknown file type');
-                disp(fileType);
-                return;
-        end
+        % Adding status line
+        msgStr = cell(0);
+        msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
+        msg = [ msgStr FileName];
+        add2status(msg);
+        clear msgStr msg;
+        
+        hMsgBox = msgWindow(...
+            'Loading spectra... please wait.',...
+            'Loading spectra',...
+            'Help','modal',0);
+        hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
+        messageText = get(hMessageText,'String');
+        
+        data = TAload(FileName,'format',fileType,'combine',state.comb);
         
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
