@@ -48,10 +48,12 @@ p.StructExpand = true; % Enable passing arguments in a structure
 p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('checkFormat',logical(true),@islogical);
+p.addParamValue('sortfiles',logical(true),@islogical);
 p.parse(fileName);
 
 % Assign optional arguments from parser
 checkFormat = p.Results.checkFormat;
+sortfiles = p.Results.sortfiles;
 
 warnings = cell(0);
 
