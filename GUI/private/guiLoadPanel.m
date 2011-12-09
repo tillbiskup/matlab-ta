@@ -18,10 +18,10 @@ defaultBackground = get(parentHandle,'Color');
 % Get names of file formats that can be handled by TAload
 % Therefore, load TAload.ini and parse for "name" field.
 fileFormats = iniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
-fieldNames = fieldnames(fileFormats);
-fileFormatNames = cell(1,length(fieldNames));
-for k=1:length(fieldNames)
-    fileFormatNames{k} = fileFormats.(fieldNames{k}).name;
+fileFormatIdentifiers = fieldnames(fileFormats);
+fileFormatNames = cell(1,length(fileFormatIdentifiers));
+for k=1:length(fileFormatIdentifiers)
+    fileFormatNames{k} = fileFormats.(fileFormatIdentifiers{k}).name;
 end 
 
 handle = uipanel('Tag','load_panel',...
@@ -253,6 +253,9 @@ function load_pushbutton_Callback(~,~)
         fileTypes = cellstr(get(gh.load_panel_filetype_popupmenu,'String'));
         fileType = fileTypes{get(gh.load_panel_filetype_popupmenu,'Value')};
         
+        fileFormat = ...
+            fileFormatIdentifiers{strcmpi(fileType,fileFormatNames)};
+        
         % Adding status line
         msgStr = cell(0);
         msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
@@ -267,7 +270,7 @@ function load_pushbutton_Callback(~,~)
         hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
         messageText = get(hMessageText,'String');
         
-        data = TAload(FileName,'format',fileType,'combine',state.comb);
+        data = TAload(FileName,'format',fileFormat,'combine',state.comb);
         
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
