@@ -245,7 +245,11 @@ function load_pushbutton_Callback(~,~)
         if exist('PathName','dir')
             ad.control.lastLoadDir = PathName;
         else
-            ad.control.lastLoadDir = FileName;
+            if iscell(FileName)
+                ad.control.lastLoadDir = FileName{1};
+            else
+                ad.control.lastLoadDir = FileName;
+            end
         end
         setappdata(mainWindow,'control',ad.control);
         
@@ -253,8 +257,12 @@ function load_pushbutton_Callback(~,~)
         fileTypes = cellstr(get(gh.load_panel_filetype_popupmenu,'String'));
         fileType = fileTypes{get(gh.load_panel_filetype_popupmenu,'Value')};
         
-        fileFormat = ...
-            fileFormatIdentifiers{strcmpi(fileType,fileFormatNames)};
+        if strcmpi(fileType,'automatic')
+            fileFormat = fileType;
+        else
+            fileFormat = ...
+                fileFormatIdentifiers{strcmpi(fileType,fileFormatNames)};
+        end
         
         % Adding status line
         msgStr = cell(0);

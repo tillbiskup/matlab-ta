@@ -51,7 +51,7 @@ set(visLbox,'String',labels);
 if (get(visLbox,'Value')>length(vis))
     set(visLbox,'Value',length(vis));
 end
-if ((get(visLbox,'Value')==0) && (~isempty(vis)))
+if get(visLbox,'Value')==0
     set(visLbox,'Value',1);
 end
 

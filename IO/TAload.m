@@ -246,7 +246,7 @@ if strcmpi(format,'automatic')
 elseif max(strcmpi(format,formatNames))
     % Basically that means that "format" has been found in the formats
     functionHandle = str2func(fileFormats.(format).function);
-    [data,warnings] = functionHandle(fileName);
+    [data,warnings] = functionHandle(fileName,'combine',combine);
 else
     warnings{end+1} = sprintf('File format %s not recognised.',format);
 end
