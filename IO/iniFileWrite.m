@@ -41,6 +41,10 @@ function [ warnings ] = iniFileWrite ( fileName, data, varargin )
 %                         Character used for the assigning values to keys
 %                         Default: =
 %
+% See also: iniFileRead
+
+% (c) 2008-11, Till Biskup
+% 2011-12-08
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.

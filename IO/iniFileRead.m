@@ -33,9 +33,10 @@ function [ data, warnings ] = iniFileRead ( fileName, varargin )
 %                    Character used for starting a block
 %                    Default: [
 %
+% See also: iniFileWrite
 
 % (c) 2008-11, Till Biskup
-% 2011-12-07
+% 2011-12-08
 
 % TODO
 %	* Change handling of whitespace characters (subfunctions) thus that it
