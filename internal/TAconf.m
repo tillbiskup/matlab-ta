@@ -75,7 +75,7 @@ try
                         conf = iniFileRead(confDistFiles(k).name);
                         header = 'Configuration file for TA toolbox';
                         iniFileWrite(confDistFiles(k).name(1:end-5),...
-                            'header',header);
+                            conf,'header',header,'overwrite',true);
                     end
                 end
             else % If there is a nonempty "file" input argument
@@ -85,7 +85,8 @@ try
                         && p.Results.overwrite
                     conf = iniFileRead([p.Results.file '.dist']);
                     header = 'Configuration file for TA toolbox';
-                    iniFileWrite(p.Results.file,conf,'header',header);
+                    iniFileWrite(p.Results.file,conf,'header',header,...
+                        'overwrite',true);
                 end
             end
             % Change directory back to original directory

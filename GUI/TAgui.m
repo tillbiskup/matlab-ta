@@ -32,16 +32,6 @@ hMainFigure = figure('Tag','TAgui_mainwindow',...
 % Create appdata structure
 ad = guiDataStructure('guiappdatastructure');
 
-% Try to load and append configuration
-conf = guiConfigLoad(...
-    fullfile(TAinfo('dir'),'GUI','private','conf',[mfilename '.ini']));
-if ~isempty(conf)
-    confFields = fieldnames(conf);
-    for k=1:length(confFields)
-        ad.configuration.(confFields{k}) = conf.(confFields{k});
-    end
-end
-
 setappdata(hMainFigure,'data',ad.data);
 setappdata(hMainFigure,'origdata',ad.origdata);
 setappdata(hMainFigure,'configuration',ad.configuration);

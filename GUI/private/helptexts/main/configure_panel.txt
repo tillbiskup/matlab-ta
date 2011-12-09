@@ -37,7 +37,7 @@ To prevent the user from accidentially hitting "Reset", you need to select the c
 
 -= Configuration =-
 
-NOTE: Currenty, these two buttons don't work.
+NOTE: Currenty, the "Check" button doesn't work.
 
 Check - Check whether the configuration files seem valid. Note that this is no proper validation sensu strictu (and will never be). It is merely a first check for the correct fields in the config files.
 

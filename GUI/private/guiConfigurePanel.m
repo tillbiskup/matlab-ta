@@ -274,6 +274,13 @@ function pushbutton_Callback(~,~,action)
                     'Value')-1};
                 TAconf('create','overwrite',true,'file',confFile);
                 return;
+            case 'apply'
+                % For the time being, just apply configuration for TAgui
+                % main window
+                status = guiConfigApply('TAgui');
+                if status
+                    add2status(status);
+                end
             otherwise
                 fprintf('%s%s "%s"\n',...
                     'TAgui : guiAnalysisPanel() : ',...

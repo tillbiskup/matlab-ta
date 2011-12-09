@@ -21,7 +21,7 @@ status = 0;
 
 % If called without a GUI name, return
 if isempty(guiname)
-    status = -1;
+    status = sprintf('GUI "%s" could not be found',guiname);
     return;
 end
 
@@ -39,6 +39,18 @@ try
         case 'tagui'
             ad = getappdata(handle);
             gh = guihandles(handle);
+
+            % Try to load and append configuration
+            conf = guiConfigLoad(fullfile(...
+                TAinfo('dir'),'GUI','private','conf',[guiname '.ini']));
+            if ~isempty(conf)
+                confFields = fieldnames(conf);
+                for k=1:length(confFields)
+                    ad.configuration.(confFields{k}) = conf.(confFields{k});
+                end
+            end
+            
+            setappdata(handle,'configuration',ad.configuration);
             
             % NOTE: Be very defensive in general, as we cannot rely on the
             % GUI having loaded a valid config file.
