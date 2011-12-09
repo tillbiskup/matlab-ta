@@ -59,19 +59,23 @@ What is a GUI worth that does not allow to save the current display in an easy w
 
 To export the current display to a file, choose the file type (currently Matlab(r) FIG, EPS, PDF, PNG) and hit "Export".
 
-The "Format" popupmenu will later allow to specify a format (aspect ratio, size of the graphics) that makes it easier to use the saved figures, e.g., in reports.
+The "Format" popupmenu allows to specify a format (aspect ratio, size of the graphics) that makes it easier to use the saved figures, e.g., in reports. These formats can be fully customised using the "fig2file.ini" file in the same directory as the "fig2file" function.
 
 
 -= Export 1D data =-
 
-This function will allow the user to save the currently active 1D dataset as ASCII data, mainly for further analysis and processing in other software.
-
+This function allows the user to save the currently active 1D dataset as ASCII data, mainly for further analysis and processing in other software.
 
 
 PAGE 5: 3D DISPLAY
 
-A 3D representation of 2D datasets (with intensity as third dimension) is sometimes used for an overview of a given 2D dataset. The 3D display panel will allow the user to generate such datasets, that are normally restricted in their resolution (as a full 200x500 point or even larger dataset will be quite huge and slow in display).
+A 3D representation of 2D datasets (with intensity as third dimension) is sometimes used for an overview of a given 2D dataset. The 3D display panel allows the user to generate such datasets, that are normally restricted in their resolution (as a full 200x500 point or even larger dataset will be quite huge and slow in display).
 
+Furthermore, these 3D views can be exported in the same way as the main display. To export the current 3D display to a file, choose the file type (currently Matlab(r) FIG, EPS, PDF, PNG) and hit "Export".
+
+NOTE: If you just hit "Export" without having an actual 3D display window, no figure will be exported.
+
+The "Format" popupmenu allows to specify a format (aspect ratio, size of the graphics) that makes it easier to use the saved figures, e.g., in reports. These formats can be fully customised using the "fig2file.ini" file in the same directory as the "fig2file" function.
 
 
 PAGE 6: THRESHOLDS

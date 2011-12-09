@@ -7,8 +7,19 @@
 %
 % To automatically generate a valid config file from this file, 
 % use TAconf('create') at the MATLAB(r) command line.
+% Alternatively, you may use the functions provided by the "Configuration" 
+% panel of the GUI.
 
 % Configuration for the load panel
+%
+% The first lines, "combine/loaddir/POC/BGC/labels", are switches settin
+% the respective checkboxes of the load panel.
+% The "format" field controls which file format gets selected. For a list
+% of available formats see the file "TAload.ini" in the same directory as
+% the TAload function. The string of interest is the string in the field
+% "name" of the respective file format.
+% The file formats (that are displayed in the popupmenu) are automatically
+% read from TAload.ini as well.
 [load]
 combine = 0
 loaddir = 0

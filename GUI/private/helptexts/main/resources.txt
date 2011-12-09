@@ -1,0 +1,32 @@
+
+WHERE TO FIND OTHER HELP RESOURCES?
+
+
+Website
+
+Probably the best and most up-to-date source of information about the TA toolbox and this GUI is its website. Simply press the "Website" button above or see the "Help:About" window for the URL (press the "About" button above or the "F1" key to show the "Help:About" window).
+
+
+Supervisor
+
+Another invaluable source of information, not only regarding information about the TA toolbox and GUI, is normally your supervisor (if you have one).
+
+
+Manual
+
+Once the manual gets written, there should be some more detailed introduction to the toolbox and the GUI available there, access it via the MATLAB(TM) help browser (or simply press the "Manual" button above).
+
+
+Last option: toolbox author
+
+If all the above listed sources of information don't help, you may write an email to the toolbox author. Contact details can be found either on its website ("Website" button above) or in the "Help:About" dialogue ("About" button above or "F1" key).
+
+But please, don't contact the author of this toolbox with toolbox-related questions before having consulted the other sources of information, namely the toolbox homepage (Website) and its FAQ section.
+
+
+Bug report
+
+If you encounter a bug (or think that you have found one), please don't hesitate to file a bug report. Details how to do that can be found either in this help (Section "Report a bug") or at the toolbox website in the FAQ section.
+
+NOTE: Please, check first with the website whether this bug has been already reported. But if in doubt, send me an email. It's better to have the same bug reported twice than unnoticed and therefore not fixed.
+
