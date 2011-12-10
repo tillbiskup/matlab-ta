@@ -46,7 +46,7 @@ function [data,warnings] = TAOXread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011, Till Biskup
-% 2011-12-09
+% 2011-12-10
 
 % TODO: Combining - Handle different parameters for each time trace
 % properly, especially different filters etc.
@@ -161,15 +161,18 @@ if length(data)==1
 elseif combine
     % Preallocate some variables
     cdata = zeros(length(data),length(data{1}.data));
+    cdataMFon = zeros(length(data),length(data{1}.data));
     caxes_y_values = zeros(1,length(data));
     for k=1:length(data)
         % TODO: Account for different settings for each time trace, such as
         % filters etc.
         cdata(k,:) = data{k}.data;
+        cdataMFon(k,:) = data{k}.dataMFon;
         caxes_y_values(k) = data{k}.axes.y.values;
     end
     data = data{1};
     data.data = cdata;
+    data.dataMF = cdataMFon;
     data.axes.y.values = caxes_y_values;
 end
 
