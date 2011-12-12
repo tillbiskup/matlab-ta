@@ -1,7 +1,7 @@
 
 Welcome to the TA toolbox GUI.
 
-NOTE: This message will disappear once you press one of the above buttons. You can find it again in the help panel via the "Help" button above.
+NOTE: This message will disappear once you press one of the above buttons. You can find it again in the help: Press "F1" or either the "Help" button in the bottom left of this GUI window or the button with the blue "?" in the bottom right below the axes.
 
 
 HOW TO USE THE GUI?
@@ -39,4 +39,12 @@ For the advanced user, the "Processing" panel will provide all sorts of function
 7. Analysis
 
 To finally analyse your data, you might want to fit different functions to them, simulate data or perform deconvolutions. All those functions are grouped within and accessible from the "Analysis" panel.
+
+8. MFE
+
+A special feature only used for a minority of TA data is the handling of measurements of the magnetic field effect (MFE). In this case, TA time traces have been recorded both without and with a static field applied. The "MFE" panel lets you perform the usual tasks on those data.
+
+9. Configure
+
+Just added for completeness in this short description: The "Configure" panel lets you at least partly adjust the behaviour of the TA toolbox and especially the GUI to your needs.
 

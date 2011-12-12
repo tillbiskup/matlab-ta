@@ -7,14 +7,24 @@ A very special thanks
 for their outstanding support and encouragement
 goes to:
 
+
 Stefan Weber
 &
 Erik Schleicher
 
 
+They are to a big deal responsible for my understanding of what science is all about, and how to be a good scientist, and I'm deeply indebted to both of them that they convinced me that science is the place to be.
+
+Many thanks for all the years we spent together
+(not only) in science!
+
+
+***
+
 
 Many other people contributed ideas,
-helped with tips&tricks.
+helped with tips&tricks, patiently debugged.
+
 To name only the most important ones.
 
 
@@ -72,5 +82,36 @@ All the guys at Matlab Central & FileExchange
 
 
 A big "THANK YOU" to all users.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+And finally, a word of wisdom
+for all programmers of software:
+
+
+"If you make something idiotproof,
+someone'll build a better idiot!"
 
 

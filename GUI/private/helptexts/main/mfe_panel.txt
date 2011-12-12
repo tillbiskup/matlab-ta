@@ -1,8 +1,10 @@
 
 MAGNETIC FIELD EFFECT (MFE)
 
-This panel will provide tools to analyse the MFE.
+A special feature only used for a minority of TA data is the handling of measurements of the magnetic field effect (MFE). In this case, TA time traces have been recorded both without and with a static field applied.
+
+The "MFE" panel lets you perform the usual tasks on those data, such as showing the MF spectra (i.e. the data recorded with static magnetic field), subtracting traces from each other such as to show the MFE itself, or, in case of a very weak MFE, adding both traces (MF and w/o MF) together to enhance S/N.
+
 
 NOTE: Currently, no tools are implemented.
-
 

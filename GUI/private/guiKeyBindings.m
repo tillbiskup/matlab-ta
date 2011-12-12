@@ -87,6 +87,12 @@ try
                     end
                     return;
                 case '8'
+                    status = switchMainPanel('MFE');
+                    if status
+                        % Something went wrong...
+                        msgStr = 'Something went wrong with switching the panels.';
+                        add2status(msgStr);
+                    end
                     return;
                 case '9'
                     status = switchMainPanel('Configure');

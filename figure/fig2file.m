@@ -2,16 +2,23 @@ function status = fig2file(figHandle,fileName,varargin)
 % FIG2FILE Save Matlab figure window to file
 %
 % Usage
-%   fig2file(figHandle,fileName,fileType);
-%   status = fig2file(figHandle,fileName,fileType);
-%   status = fig2file(figHandle,fileName,'fileType','<fileType>');
-%   status = fig2file(figHandle,fileName,'exportFormat','<exportFormat>');
+%   fig2file(figHandle,fileName);
+%   status = fig2file(figHandle,fileName);
+%   status = fig2file(figHandle,fileName,...);
 %
 % figHandle    - handle
 %                Handle of the Matlab figure to be saved
 % fileName     - string
 %                Name of the file the figure should be saved to
 %                Should at least be a filename with extension
+%
+% status       - string
+%                Empty string if everything is fine
+%                Otherwise it contains an error description
+%
+% You can pass optional parameters. For details see below.
+%
+% Parameters
 %
 % fileType     - string
 %                Setting the file type used to save the figure to
@@ -26,13 +33,9 @@ function status = fig2file(figHandle,fileName,varargin)
 %                You can set all details and additional formats in the file
 %                'fig2file.ini' that is in the same directory as fig2file.m
 %
-% status       - string
-%                Empty string if everything is fine
-%                Otherwise it contains an error description
-%
 
 % (c) 2011, Till Biskup
-% 2011-12-07
+% 2011-12-12
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
