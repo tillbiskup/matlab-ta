@@ -30,6 +30,10 @@ function [data,warnings] = TAOXread(fileName,varargin)
 %             Whether to combine files.
 %             Default: false
 %
+% average   - logical (true/false)
+%             Whether to average multiple scans in one file.
+%             Default: false
+%
 % sortfiles - logical (true/false)
 %             Whether to sort files (prior to combining them)
 %             Sort is done by the MATLAB(r) command "sort", performing
@@ -64,11 +68,13 @@ p.StructExpand = true; % Enable passing arguments in a structure
 p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('combine',logical(false),@islogical);
+p.addParamValue('average',logical(false),@islogical);
 p.addParamValue('sortfiles',logical(true),@islogical);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 combine = p.Results.combine;
+average = p.Results.average;
 sortfiles = p.Results.sortfiles;
 
 warnings = cell(0);
@@ -150,7 +156,7 @@ end
 
 data = cell(length(uniqueIndices),1);
 for k=1:length(uniqueIndices)
-    [data{k},warning] = loadFile(fileName{uniqueIndices(k)});
+    [data{k},warning] = loadFile(fileName{uniqueIndices(k)},average);
     if ~isempty(warning)
         warnings{end+1} = warning;
     end
@@ -178,11 +184,14 @@ end
 
 end
 
-function [data,warnings] = loadFile(fileName)
+function [data,warnings] = loadFile(fileName,average)
 % LOADFILE Load file and return contents. 
 %
 % fileName    - string
 %               Name of a file (normally including full path)
+%
+% average     - logical
+%               Whether or not to average multiple scans in one file
 %
 % data        - structure
 %               According to the toolbox data structure
@@ -387,20 +396,25 @@ if parameters.MagPiont > 1
             parameters.TimePoint,...
             parameters.MagPiont);
     end
-    mData = cell(0);
-    for k = 1:parameters.MagPiont
-        mData{k}.data = data.data(:,k);
-        mData{k}.data = mData{k}.data';
-        mData{k}.axes = data.axes;
-        mData{k}.file = data.file;
-        mData{k}.parameters = data.parameters;
-        mData{k}.header = data.header;
-        if isfield(data,'dataMFon')
-            mData{k}.dataMFon = data.dataMFon(:,k);
-            mData{k}.dataMFon = mData{k}.dataMFon';
+    if average
+        data.data = mean(data.data,2)';
+        data.dataMFon = mean(data.dataMFon,2)';
+    else
+        mData = cell(0);
+        for k = 1:parameters.MagPiont
+            mData{k}.data = data.data(:,k);
+            mData{k}.data = mData{k}.data';
+            mData{k}.axes = data.axes;
+            mData{k}.file = data.file;
+            mData{k}.parameters = data.parameters;
+            mData{k}.header = data.header;
+            if isfield(data,'dataMFon')
+                mData{k}.dataMFon = data.dataMFon(:,k);
+                mData{k}.dataMFon = mData{k}.dataMFon';
+            end
         end
+        data = mData;
     end
-    data = mData;
 end
 
 end

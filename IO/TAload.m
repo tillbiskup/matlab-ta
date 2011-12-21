@@ -33,6 +33,10 @@ function [data,warnings] = TAload(fileName, varargin)
 %              Whether to combine files.
 %              Default: false
 %
+%   average  - logical (true/false)
+%              Whether to average multiple scans in one file.
+%              Default: false
+%
 % If no data could be loaded, data is an empty struct.
 % In such case, warning may hold some further information what happened.
 %
@@ -52,7 +56,7 @@ function [data,warnings] = TAload(fileName, varargin)
 % See also TAOXREAD, TADATASTRUCTURE.
 
 % (c) 2011, Till Biskup
-% 2011-12-08
+% 2011-12-21
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -64,11 +68,13 @@ p.addRequired('filename', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('format','automatic',@ischar);
 p.addParamValue('combine',logical(false),@islogical);
+p.addParamValue('average',logical(false),@islogical);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 format = p.Results.format;
 combine = p.Results.combine;
+average = p.Results.average;
 
 warnings = cell(0);
 
@@ -225,7 +231,9 @@ if strcmpi(format,'automatic')
             for m = 1 : length(binaryFileFormats)
                 functionHandle = str2func(...
                     fileFormats.(binaryFileFormats{m}).function);
-                [data{k},warnings{k}] = functionHandle(fileName{uniqueIndices(k)});
+                [data{k},warnings{k}] = ...
+                    functionHandle(fileName{uniqueIndices(k)},...
+                    'average',average);
                 if ~isempty(data{k})
                     break;
                 end
@@ -235,7 +243,9 @@ if strcmpi(format,'automatic')
             for m = 1 : length(asciiFileFormats)
                 functionHandle = str2func(...
                     fileFormats.(asciiFileFormats{m}).function);
-                [data{k},warnings{k}] = functionHandle(fileName{uniqueIndices(k)});
+                [data{k},warnings{k}] = ...
+                    functionHandle(fileName{uniqueIndices(k)},...
+                    'average',average);
                 if ~isempty(data{k})
                     break;
                 end
@@ -246,7 +256,8 @@ if strcmpi(format,'automatic')
 elseif max(strcmpi(format,formatNames))
     % Basically that means that "format" has been found in the formats
     functionHandle = str2func(fileFormats.(format).function);
-    [data,warnings] = functionHandle(fileName,'combine',combine);
+    [data,warnings] = functionHandle(fileName,'combine',combine,...
+        'average',average);
 else
     warnings{end+1} = sprintf('File format %s not recognised.',format);
 end
