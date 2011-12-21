@@ -356,6 +356,12 @@ data.axes.x.unit = lower(parameters.TimeDiv.unit);
 % Try to determine wavelength
 % (by convention last three characters of the file basename)
 data.axes.y.values = str2double(fName(end-2:end));
+% If that is not the case, for whatever reason, set to default to prevent
+% further errors.
+if isnan(data.axes.y.values)
+    data.axes.y.values = 0;
+    warnings{end+1} = 'WARNING: Wavelengh could not be detected!';
+end
 data.axes.y.measure = 'wavelength';
 data.axes.y.unit = 'nm';
 
@@ -371,7 +377,7 @@ data.label = fName;
 
 % Handle situation that there is more than one measurement in the file
 if parameters.MagPiont > 1
-    data.data.off = reshape(...
+    data.data = reshape(...
         data.data,...
         parameters.TimePoint,...
         parameters.MagPiont);
@@ -381,15 +387,17 @@ if parameters.MagPiont > 1
             parameters.TimePoint,...
             parameters.MagPiont);
     end
-    mData = struct();
+    mData = cell(0);
     for k = 1:parameters.MagPiont
-        mData(k).data = data.data(:,k);
-        mData(k).axes = data.axes;
-        mData(k).file = data.file;
-        mData(k).parameters = data.parameters;
-        mData(k).header = data.header;
+        mData{k}.data = data.data(:,k);
+        mData{k}.data = mData{k}.data';
+        mData{k}.axes = data.axes;
+        mData{k}.file = data.file;
+        mData{k}.parameters = data.parameters;
+        mData{k}.header = data.header;
         if isfield(data,'dataMFon')
-            mData(k).dataMFon = data.dataMFon(:,k);
+            mData{k}.dataMFon = data.dataMFon(:,k);
+            mData{k}.dataMFon = mData{k}.dataMFon';
         end
     end
     data = mData;
