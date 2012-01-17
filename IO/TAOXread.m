@@ -178,7 +178,7 @@ elseif combine
     end
     data = data{1};
     data.data = cdata;
-    data.dataMF = cdataMFon;
+    data.dataMFon = cdataMFon;
     data.axes.y.values = caxes_y_values;
 end
 

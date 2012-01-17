@@ -6,5 +6,32 @@ A special feature only used for a minority of TA data is the handling of measure
 The "MFE" panel lets you perform the usual tasks on those data, such as showing the MF spectra (i.e. the data recorded with static magnetic field), subtracting traces from each other such as to show the MFE itself, or, in case of a very weak MFE, adding both traces (MF and w/o MF) together to enhance S/N.
 
 
-NOTE: Currently, no tools are implemented.
+THE CONTROLS
+
+-= MFE display type =-
+
+This menu determines what is shown. In case of MFE data, i.e. data that were recorded both with an external magnetic field (MF) switched on (MFon) and without such a field (MFoff), there are three traces that can be shown:
+
+  * MFoff - default, just the data without external magnetic field are shown
+
+  * MFon - just the data recorded with external magnetic field switched on are shown
+
+  * DeltaMF - just the difference between MFoff and MFon is shown
+
+Additionally, there are two sensible permutations of several traces being shown at the same time:
+
+  * MFoff + MFon
+
+  * MFoff + MFon + DeltaMF
+
+Hint: If you feel that these two permutations are not enough, there is a simple way to achieve any possible display of different traces - simply duplicate datasets (using the "Duplicate" button in the "Display" panel) and set the MFE display mode for each of these datasets according to your needs.
+
+
+-= Line settings =-
+
+Normally, the line settings are controlled via the "Display" panel (third page). Still, you can set there the settings that apply only for the MFoff trace (as this is the trace that's there with every sort of TA data).
+
+For the MFE data, you can control the line settings for each of the traces separately.
+
+Note: Be aware that the settings in the "Display" panel only apply to the MFoff trace. Therefore, don't be surprised if you change there something and nothing happens due to having the MFE display mode set to not showing the MFoff trace.
 
