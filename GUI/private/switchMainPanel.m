@@ -92,6 +92,8 @@ try
             set(buttons,'Value',0);
             set(gh.mfe_panel,'Visible','on');
             set(gh.tbMFE,'Value',1);
+            % Update MFE panel
+            update_MFEPanel();
         case 'Configure'
             set(panels,'Visible','off');
             set(buttons,'Value',0);

@@ -67,6 +67,10 @@ try
                 set(gh.load_panel_files_directory_checkbox,...
                     'Value',ad.configuration.load.loaddir);
             end
+            if isfield(ad.configuration.load,'AVG')
+                set(gh.load_panel_preprocessing_avg_checkbox,...
+                    'Value',ad.configuration.load.AVG);
+            end
             if isfield(ad.configuration.load,'POC')
                 set(gh.load_panel_preprocessing_offset_checkbox,...
                     'Value',ad.configuration.load.POC);

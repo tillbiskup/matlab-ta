@@ -1,15 +1,15 @@
 function status = update_displayPanel()
 % UPDATE_DISPLAYPANEL Helper function that updates the display panel
-%   of the trEPR GUI, namely trEPR_gui_mainwindow.
+%   of the TA GUI, namely TA_gui_mainwindow.
 %
 %   STATUS: return value for the exit status
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% (c) 2011, Till Biskup
-% 2011-12-02
+% (c) 2011-12, Till Biskup
+% 2012-01-17
 
-% Is there currently a trEPRgui object?
+% Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;
@@ -21,6 +21,13 @@ gh = guidata(mainWindow);
 
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
+
+% Toggle "Highlight active"
+if isempty(ad.control.axis.highlight.method)
+    set(gh.display_panel_highlight_checkbox,'Value',0);
+else
+    set(gh.display_panel_highlight_checkbox,'Value',1);
+end
 
 % Set axis labels fields
 set(gh.display_panel_axislabels_x_measure_edit,'String',...

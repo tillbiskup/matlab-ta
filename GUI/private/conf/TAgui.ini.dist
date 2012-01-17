@@ -23,6 +23,7 @@
 [load]
 combine = 0
 loaddir = 0
+AVG = 0
 POC = 0
 BGC = 0
 labels = 1

@@ -7,7 +7,7 @@ function handle = guiDatasetPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 11, Till Biskup
-% 2011-11-27
+% 2011-12-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -215,7 +215,7 @@ uicontrol('Tag','data_panel_getinfo_pushbutton',...
     'Units','Pixels',...
     'Position',[floor((panel_size(3)-40)/3)+10 10 floor((panel_size(3)-40)/3) 25],...
     'String','Get info',...
-    'Callback', {@trEPRgui_infowindow}...
+    'Callback', {@TAgui_infowindow}...
     );
 uicontrol('Tag','data_panel_duplicate_pushbutton',...
     'Style','pushbutton',...
@@ -355,7 +355,7 @@ function pushbutton_Callback(~,~,action)
                 if isempty(ad.data)
                     return;
                 end
-                trEPRgui_combinewindow();
+                TAgui_combinewindow();
                 return;
             case 'ShowAll'
                 % If there are no invisible datasets, return immediately
@@ -462,7 +462,8 @@ function pushbutton_Callback(~,~,action)
                 removeDatasetFromMainGUI(selectedId);
             case 'Duplicate'
                 % Get selected item of listbox
-                selected = get(gh.data_panel_visible_listbox,'Value');
+                selected = ad.control.spectra.visible(...
+                    get(gh.data_panel_visible_listbox,'Value'));
                 
                 % Create label for duplicate
                 % That is, add number in brackets at the end: (n)
@@ -536,7 +537,7 @@ function pushbutton_Callback(~,~,action)
                 %Update main axis
                 update_mainAxis();
             otherwise
-                disp('trEPRgui : guiDatasetPanel() : pushbutton_Callback(): Unknown action');
+                disp('TAgui : guiDatasetPanel() : pushbutton_Callback(): Unknown action');
                 disp(action);
                 return;
         end
@@ -550,7 +551,7 @@ function pushbutton_Callback(~,~,action)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -601,7 +602,7 @@ function visible_listbox_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -634,7 +635,7 @@ function invisible_listbox_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -653,7 +654,7 @@ function datasetChangeLabel(index)
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
         
-        ad.data{index}.label = trEPRgui_setLabelWindow(ad.data{index}.label);
+        ad.data{index}.label = TAgui_setLabelWindow(ad.data{index}.label);
         % Update appdata of main window
         setappdata(mainWindow,'data',ad.data);
         
@@ -681,7 +682,7 @@ function datasetChangeLabel(index)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
