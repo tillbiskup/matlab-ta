@@ -47,7 +47,12 @@ hMainFigure = figure('Tag','TAgui_help_about',...
     'CloseRequestFcn',{@closeWindow});
 
 defaultBackground = [1 1 1];
-scrollPanelHeight = position(4)+2400;
+% Set length of scrolling panel depending on the platform
+if ~isempty(strfind(platform,'Linux'))
+    scrollPanelHeight = position(4)+2750;
+else
+    scrollPanelHeight = position(4)+2400;
+end
 
 hMainPanel = uipanel('Tag','main_panel',...
     'parent',hMainFigure,...
