@@ -7,8 +7,8 @@ function status = appendDatasetToMainGUI(dataset,varargin)
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
-% (c) 2011, Till Biskup
-% 2011-07-04
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -22,7 +22,7 @@ p.parse(dataset,varargin{:});
 
 try
     % First, find main GUI window
-    mainWindow = guiGetWindowHandle('trEPRgui');
+    mainWindow = guiGetWindowHandle();
     
     % If there is no main GUI window, silently return
     if isempty(mainWindow)

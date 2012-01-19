@@ -203,7 +203,7 @@ function [data,warnings] = loadFile(fileName,average)
 
 % A few important settings
 % Name of the format as it appears in the file.format field
-formatNameString = 'Oxford TA data';
+formatNameString = 'Oxford TA/MFE binary';
 
 warnings = cell(0);
 

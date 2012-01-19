@@ -6,8 +6,8 @@ function handle = guiLoadPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011, Till Biskup
-% 2011-12-09
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -432,8 +432,8 @@ function load_pushbutton_Callback(~,~)
         newDataIdx = length(ad.data)+1 : 1 : length(ad.data)+length(data);
         
         % Add data to main GUI (appdata)
-        ad.data = [ ad.data data ];
-        ad.origdata = [ ad.origdata data ];
+        ad.data = [ ad.data data' ];
+        ad.origdata = [ ad.origdata data' ];
         
         setappdata(mainWindow,'data',ad.data);
         setappdata(mainWindow,'origdata',ad.origdata);

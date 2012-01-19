@@ -3,22 +3,22 @@ function varargout = TAgui_statuswindow(varargin)
 %                    Comments displayed at the command line in response 
 %                    to the help command. 
 
-% (c) 2011, Till Biskup
-% 2011-09-11
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TA_gui_statuswindow');
+singleton = findobj('Tag','TAgui_statuswindow');
 if (singleton)
     figure(singleton);
     return;
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TA_gui_statuswindow',...
+hMainFigure = figure('Tag','TAgui_statuswindow',...
     'Visible','off',...
     'Name','TA GUI : Status Window',...
     'Units','Pixels',...
