@@ -15,7 +15,10 @@ function status = trackPointer(varargin)
 %           -4: no datasets displayed
 %            0: successful
 
-% Is there currently a trEPRgui object?
+% (c) 2011-12, Till Biskup
+% 2012-01-19
+
+% Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;

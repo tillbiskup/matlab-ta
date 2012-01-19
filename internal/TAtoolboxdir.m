@@ -1,4 +1,4 @@
-function path = trEPRtoolboxdir()
+function path = TAtoolboxdir()
 
 [path,~,~] = fileparts(mfilename('fullpath'));
 path = path(1:end-9);

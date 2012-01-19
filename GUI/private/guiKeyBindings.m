@@ -6,8 +6,8 @@ function guiKeyBindings(src,evt)
 %     src - handle of calling source
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
-% (c) 11, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -114,7 +114,7 @@ try
                     return;
                 % Other commands
                 case 'i'
-%                     trEPRgui_infowindow();
+%                     TAgui_infowindow();
                     return;
             end
         end

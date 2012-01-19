@@ -6,8 +6,8 @@ function handle = guiSliderPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -464,7 +464,7 @@ function position_edit_Callback(source,~,value)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -602,7 +602,7 @@ function scaling_edit_Callback(source,~,value)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -731,7 +731,7 @@ function displacement_edit_Callback(source,~,value)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -780,7 +780,7 @@ function reset_pushbutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);

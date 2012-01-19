@@ -6,8 +6,8 @@ function handle = guiDisplayPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011, Till Biskup
-% 2011-12-02
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1405,7 +1405,7 @@ function pages_buttongroup_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1459,7 +1459,7 @@ function axislabels_edit_Callback(source,~,label)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1529,7 +1529,7 @@ function axislabels_getfromactivedataset_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1607,7 +1607,7 @@ function axislimits_edit_Callback(source,~,limit)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1642,7 +1642,7 @@ function axislimits_auto_checkbox_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1693,7 +1693,7 @@ function highlight_checkbox_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1759,7 +1759,7 @@ function highlight_method_popupmenu_Callback(source,eventdata)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1836,7 +1836,7 @@ function highlight_value_popupmenu_Callback(source,eventdata)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1872,7 +1872,7 @@ function grid_x_togglebutton_Callback(source,eventdata)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1908,7 +1908,7 @@ function grid_y_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1944,7 +1944,7 @@ function grid_minor_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -1976,7 +1976,7 @@ function grid_zero_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2067,7 +2067,7 @@ function grid_legend_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2131,7 +2131,7 @@ function normalise_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2185,7 +2185,7 @@ function datasets_listbox_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2229,7 +2229,7 @@ function colour_type_popupmenu_Callback(source,~)
                 set(gh.display_panel_colour_b_edit,'Enable','On');
             otherwise
                 % That shall never happen
-                add2status('trEPRgui_infowindow(): Unknown colour type');
+                add2status('TAgui_infowindow(): Unknown colour type');
         end
     catch exception
         try
@@ -2241,7 +2241,7 @@ function colour_type_popupmenu_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2278,7 +2278,7 @@ function colour_type2_popupmenu_Callback(source,~)
             case 'RGB'
             otherwise
                 % That shall never happen
-                add2status('trEPRgui : guiDisplayPanel: Unknown colour type');
+                add2status('TAgui : guiDisplayPanel: Unknown colour type');
         end
     catch exception
         try
@@ -2290,7 +2290,7 @@ function colour_type2_popupmenu_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2331,7 +2331,7 @@ function linewidth_popupmenu_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2368,7 +2368,7 @@ function linestyle_popupmenu_Callback(~,~)
                     ad.data{ad.control.spectra.active}.line.style = 'none';
                 otherwise
                     % That shall never happen
-                    add2status('trEPRgui : guiDisplayPanel: Unknown line style');
+                    add2status('TAgui : guiDisplayPanel: Unknown line style');
             end
             % Update appdata of main window
             setappdata(mainWindow,'data',ad.data);
@@ -2385,7 +2385,7 @@ function linestyle_popupmenu_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2440,7 +2440,7 @@ function linemarker_popupmenu_Callback(~,~)
                     ad.data{ad.control.spectra.active}.line.marker = 'h';
                 otherwise
                     % That shall never happen
-                    add2status('trEPRgui : guiDisplayPanel: Unknown line marker');
+                    add2status('TAgui : guiDisplayPanel: Unknown line marker');
             end
             % Update appdata of main window
             setappdata(mainWindow,'data',ad.data);
@@ -2457,7 +2457,7 @@ function linemarker_popupmenu_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2535,7 +2535,7 @@ function axesexport_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2610,7 +2610,7 @@ function dataexport_pushbutton_Callback(~,~)
         
         % Save 1D cross section, depending on settings for file type and
         % additional parameters
-        status = trEPRexport1D(...
+        status = TAexport1D(...
             ad.data{ad.control.spectra.active},fileName,export1Dparameters);
         if status
             add2status(status);
@@ -2625,7 +2625,7 @@ function dataexport_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2722,7 +2722,7 @@ function show3d_edit_Callback(source,~,label)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2796,7 +2796,7 @@ function show3d_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2872,7 +2872,7 @@ function export3d_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2933,7 +2933,7 @@ function threshold_checkbox_Callback(source,~,label)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -2996,7 +2996,7 @@ function threshold_edit_Callback(source,~,label)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -3016,7 +3016,7 @@ function datasetChangeLabel(index)
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
         
-        ad.data{index}.label = trEPRgui_setLabelWindow(ad.data{index}.label);
+        ad.data{index}.label = TAgui_setLabelWindow(ad.data{index}.label);
         % Update appdata of main window
         setappdata(mainWindow,'data',ad.data);
         
@@ -3044,7 +3044,7 @@ function datasetChangeLabel(index)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);

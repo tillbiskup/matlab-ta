@@ -5,8 +5,8 @@ function status = switchDisplayType(displayType)
 %
 % status      - return value of the function. Either 0 (OK) or -1 (failed)
 
-% (c) 2011, Till Biskup
-% 2011-12-01
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 try
     % Get appdata and handles of main window
@@ -33,7 +33,7 @@ try
     status = 0;
 catch exception
     try
-        trEPRgui_bugreportwindow(exception);
+        TAgui_bugreportwindow(exception);
     catch exception2
         % If even displaying the bug report window fails, what lasts to do?
         exception = addCause(exception2, exception);

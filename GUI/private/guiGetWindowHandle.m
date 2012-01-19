@@ -54,7 +54,7 @@ try
     end
 catch exception
     try
-        trEPRgui_bugreportwindow(exception);
+        TAgui_bugreportwindow(exception);
     catch exception2
         % If even displaying the bug report window fails...
         exception = addCause(exception2, exception);

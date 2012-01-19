@@ -1,15 +1,15 @@
 function status = update_measurePanel()
 % UPDATE_MEASUREPANEL Helper function that updates the measure panel
-%   of the trEPR GUI, namely trEPR_gui_mainwindow.
+%   of the TA GUI, namely TA_gui_mainwindow.
 %
 %   STATUS: return value for the exit status
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
-% Is there currently a trEPRgui object?
+% Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;

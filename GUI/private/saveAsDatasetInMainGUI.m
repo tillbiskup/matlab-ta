@@ -11,8 +11,8 @@ function [status,message] = saveAsDatasetInMainGUI(id,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -118,7 +118,7 @@ try
     
     % Do the actual saving
     [ saveStatus, exception ] = ...
-        trEPRsave(ad.data{id}.file.name,ad.data{id});
+        TAsave(ad.data{id}.file.name,ad.data{id});
     
     % In case something went wrong
     if saveStatus
@@ -132,8 +132,8 @@ try
         clear msgStr;
         return;
     else
-        % Get second output parameter from trEPRsave, i.e. filename
-        % (See help of trEPRsave for details)
+        % Get second output parameter from TAsave, i.e. filename
+        % (See help of TAsave for details)
         filename = exception;
     end
     
@@ -171,7 +171,7 @@ catch exception
         disp(msgStr);
     end
     try
-        trEPRgui_bugreportwindow(exception);
+        TAgui_bugreportwindow(exception);
     catch exception3
         % If even displaying the bug report window fails...
         exception = addCause(exception3, exception);

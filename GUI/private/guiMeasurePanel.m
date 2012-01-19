@@ -6,8 +6,8 @@ function handle = guiMeasurePanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -362,7 +362,7 @@ catch exception
         disp(msgStr);
     end
     try
-        trEPRgui_bugreportwindow(exception);
+        TAgui_bugreportwindow(exception);
     catch exception3
         % If even displaying the bug report window fails...
         exception = addCause(exception3, exception);
@@ -402,7 +402,7 @@ function measure_setslider_checkbox_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -462,7 +462,7 @@ function measure_1point_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -519,7 +519,7 @@ function measure_2points_togglebutton_Callback(source,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -542,7 +542,7 @@ function clear_pushbutton_Callback(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -597,7 +597,7 @@ function switchMeasurePointer(~,~)
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -645,7 +645,7 @@ function measureEnd()
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -718,7 +718,7 @@ function assignPointsToDataStructure()
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
@@ -767,7 +767,7 @@ function clearFields()
             disp(msgStr);
         end
         try
-            trEPRgui_bugreportwindow(exception);
+            TAgui_bugreportwindow(exception);
         catch exception3
             % If even displaying the bug report window fails...
             exception = addCause(exception3, exception);

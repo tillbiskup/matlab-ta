@@ -1,18 +1,18 @@
-function data = trEPRfilter_boxcar(data,window)
+function data = TAfilter_boxcar(data,window)
 % TREPRFILTER_BOXCAR Filter 1D data with a boxcar filter with given window
 % length.
 %
 %
 % Usage
-%   data = trEPRfilter_boxcar(data,window)
+%   data = TAfilter_boxcar(data,window)
 %
 %   data   - data to filter
 %
 %   window - filter window width
 %
 
-% (c) 11, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-19
 
 [x,y] = size(data);
 if (x == 1) % data is column vector
