@@ -26,6 +26,10 @@ Additionally, there are two sensible permutations of several traces being shown 
 
 Hint: If you feel that these two permutations are not enough, there is a simple way to achieve any possible display of different traces - simply duplicate datasets (using the "Duplicate" button in the "Display" panel) and set the MFE display mode for each of these datasets according to your needs.
 
+As a last, rather special case, there is the possibility to add MFoff and MFon data together for a better signal-to-noise ratio. This is achieved with the display mode
+
+  * sum(MFoff,MFon)
+
 
 -= Line settings =-
 
@@ -34,4 +38,13 @@ Normally, the line settings are controlled via the "Display" panel (third page).
 For the MFE data, you can control the line settings for each of the traces separately.
 
 Note: Be aware that the settings in the "Display" panel only apply to the MFoff trace. Therefore, don't be surprised if you change there something and nothing happens due to having the MFE display mode set to not showing the MFoff trace.
+
+
+-= Calculate MFE =-
+
+To calculate the absolute MFE, the following formula is used:
+
+MFE = 1/(t2-t1) Int_t1^t2 ((DeltaDeltaA(B,t))/(DeltaA(0 mT,t))) dt
+
+The MFE may also be calculated as a function of time: at any time t the instantaneous MFE can be calculated as the ratio of DeltaDeltaA(B,t) and DeltaA(0 mT,t). However, for noisy data, or at points where DeltaA(0 mT,t) is close to zero, this can lead to large variations in the calculated MFE. Therefore, use of time-averaged MFEs is preferential.
 
