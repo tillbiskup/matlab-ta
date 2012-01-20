@@ -55,8 +55,8 @@ function [data,warnings] = TAload(fileName, varargin)
 %
 % See also TAOXREAD, TADATASTRUCTURE.
 
-% (c) 2011, Till Biskup
-% 2011-12-21
+% (c) 2011-12, Till Biskup
+% 2012-01-20
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -110,7 +110,7 @@ else
         % Read directory
         fileName = dir(fileName);
         % Convert struct to cell
-        fileName = strut2cell(fileName);
+        fileName = struct2cell(fileName);
         fileName = fileName(1,:)';
         % Remove '.' and '..'
         [~,ind] = max(strcmp('.',fileName));

@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-01-20
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -223,6 +223,7 @@ function load_pushbutton_Callback(~,~)
                 startDir,...
                 'Select directory to load'...
                 );
+            PathName = '';
         else
             [FileName,PathName,~] = uigetfile(...
                 FilterSpec,...
@@ -322,7 +323,10 @@ function load_pushbutton_Callback(~,~)
         nNoData = [];
         if iscell(data)
             for k=1:length(data)
-                if not(isnumeric(data{k}.data))
+                if not(isfield(data{k},'data'))
+                    fnNoData{k} = 'unknown';
+                    nNoData = [ nNoData k ];
+                elseif not(isnumeric(data{k}.data))
                     fnNoData{k} = data{k}.file.name;
                     nNoData = [ nNoData k ];
                 end
