@@ -37,6 +37,7 @@ try
     windowTags.TAgui_statuswindow = 'TAgui_statuswindow';
     % Add here list of other window tags
     windowTags.TAgui_combinewindow = 'TAgui_combinewindow';
+    windowTags.TAgui_combine_settingswindow = 'TAgui_combine_settingswindow';
     windowTags.TAgui_bugreportwindow = 'TAgui_bugreportwindow';
     
     % Define default tag
