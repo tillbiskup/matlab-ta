@@ -8,7 +8,7 @@ function varargout = TAgui_combinewindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-20
+% 2012-01-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -347,8 +347,7 @@ uicontrol('Tag','info_panel_dimension_x_edit',...
     'Position',[100 40 75 25],...
     'String','25000',...
     'TooltipString','Dimension in x direction',...
-    'Enable','inactive',...
-    'Callback',{@edit_Callback,'label'}...
+    'Enable','inactive'...
     );
 uicontrol('Tag','info_panel_dimension_times_text',...
     'Style','text',...
@@ -402,8 +401,7 @@ uicontrol('Tag','info_panel_length_value_edit',...
     'Position',[100 10 135 25],...
     'String','000',...
     'TooltipString','Length value',...
-    'Enable','inactive',...
-    'Callback',{@edit_Callback,'label'}...
+    'Enable','inactive'...
     );
 uicontrol('Tag','info_panel_length_unit_edit',...
     'Style','edit',...
@@ -436,7 +434,7 @@ uicontrol('Tag','scale_panel_method_popupmenu',...
     'FontUnit','Pixel','Fontsize',12,...
     'Units','Pixels',...
     'Position',[90 73 100 20],...
-    'String','min(diff)|time avg',...
+    'String','time avg|min(diff)',...
     'Value',1, ...
     'Callback',{@popupmenu_Callback,'scalingmethod'} ...
     );
@@ -620,6 +618,7 @@ end
 updateFileformats()
 updateBasenames();
 updateSpectra();
+updateInfo();
 updateLabel();
 
 % Add keypress function to every element that can have one...
@@ -648,8 +647,11 @@ function listbox_Callback(source,~,field)
                 updateFileformats();
                 updateBasenames();
                 updateSpectra();
+                updateInfo();
             case 'filebasename'
+                updateInfo();
             case 'notcombine'
+                updateInfo();
             case 'combine'
             otherwise
                 disp('TAgui_combinewindow: listbox_Callback(): Unknown field');
@@ -686,9 +688,42 @@ function edit_Callback(source,~,field)
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
+        % Get handles of main window
+        gh = guihandles(mainWindow);
+        
         value = get(source,'String');
         
         switch field
+            case 'wavelengthStart'
+                if isnan(str2double(get(source,'String'))) || ....
+                        isempty(get(gh.notcombine_listbox,'String'))
+                    updateInfo();
+                    return;
+                end
+                % Get number of first selected dataset
+                selectedSpectra = ad.combine.spectra.notcombine(...
+                    get(gh.notcombine_listbox,'Value'));
+                % Set first value of y axis
+                ad.data{selectedSpectra(1)}.axes.y.values(1) = ...
+                    str2double(get(source,'String'));
+                % Set appdata and update info panel
+                setappdata(mainWindow,'data',ad.data);
+                updateInfo();
+            case 'wavelengthEnd'
+                if isnan(str2double(get(source,'String'))) || ....
+                        isempty(get(gh.notcombine_listbox,'String'))
+                    updateInfo();
+                    return;
+                end
+                % Get number of first selected dataset
+                selectedSpectra = ad.combine.spectra.notcombine(...
+                    get(gh.notcombine_listbox,'Value'));
+                % Set first value of y axis
+                ad.data{selectedSpectra(1)}.axes.y.values(end) = ...
+                    str2double(get(source,'String'));
+                % Set appdata and update info panel
+                setappdata(hMainFigure,'data',ad.data);
+                updateInfo();
             case 'label'
                 ad.combine.label = value;
                 setappdata(mainWindow,'combine',ad.combine);
@@ -746,6 +781,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Remove basename'
                 baseNames = get(gh.filebasename_listbox,'String');
@@ -764,6 +800,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Add'
                 toadd = ad.combine.spectra.notcombine(...
@@ -779,6 +816,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Remove'
                 toremove = ad.combine.spectra.combine(...
@@ -794,6 +832,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Add all'
                 ad.combine.spectra.combine = [...
@@ -802,6 +841,7 @@ function pushbutton_Callback(~,~,action)
                 ad.combine.spectra.notcombine = [];
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Remove all'
                 ad.combine.spectra.notcombine = [...
@@ -810,6 +850,7 @@ function pushbutton_Callback(~,~,action)
                 ad.combine.spectra.combine = [];
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
                 updateLabel();
             case 'Sort'
                 ad.combine.spectra.notcombine = ...
@@ -818,6 +859,7 @@ function pushbutton_Callback(~,~,action)
                     sort(ad.combine.spectra.combine);
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
+                updateInfo();
             case 'methodSettings'
                 TAgui_combine_settingswindow();
             case 'Combine'
@@ -852,6 +894,7 @@ function pushbutton_Callback(~,~,action)
                 updateFileformats()
                 updateBasenames();
                 updateSpectra();
+                updateInfo();
                 updateLabel();
                 % Bring combine GUI to fromt
                 TAgui_combinewindow();
@@ -859,12 +902,8 @@ function pushbutton_Callback(~,~,action)
                 msgStr = 'combine GUI window closed.';
                 add2status(msgStr);
 
-                % Look for combine GUI Help window and if its there, close as
-                % well
-                hHelpWindow = guiGetWindowHandle('TAgui_combine_helpwindow');
-                if ishandle(hHelpWindow)
-                    delete(hHelpWindow);
-                end
+                % Look for all subwindows and delete them if necessary
+                delete(findobj('-regexp','Tag','TAgui_combine_*'));
                 delete(guiGetWindowHandle(mfilename));
             otherwise
                 disp('TAgui_combinewindow: pushbutton_Callback(): Unknown action');
@@ -1145,6 +1184,11 @@ function updateSpectra()
             fileNames{k} = [filebasenames{k} fileexts{k}];
         end
         set(gh.notcombine_listbox,'String',fileNames);
+        % Cope with multiple selects
+        selected = get(gh.notcombine_listbox,'Value');
+        if length(selected)>length(fileNames)
+            set(gh.notcombine_listbox,'Value',selected(1:length(fileNames)));
+        end
         if (get(gh.notcombine_listbox,'Value')>length(fileNames))
             if isempty(fileNames)
                 set(gh.notcombine_listbox,'Value',1);
@@ -1152,7 +1196,7 @@ function updateSpectra()
                 set(gh.notcombine_listbox,'Value',length(fileNames));
             end
         end
-        if ~(get(gh.notcombine_listbox,'Value'))
+        if isempty(get(gh.notcombine_listbox,'Value'))
             set(gh.notcombine_listbox,'Value',1);
         end
         
@@ -1165,6 +1209,14 @@ function updateSpectra()
             fileNames{k} = [filebasenames{k} fileexts{k}];
         end
         set(gh.combine_listbox,'String',fileNames);        
+        % Cope with multiple selects
+        selected = get(gh.combine_listbox,'Value');
+        if isempty(selected)
+            set(gh.combine_listbox,'Value',1);
+        end
+        if length(selected)>length(fileNames)
+            set(gh.combine_listbox,'Value',selected(1:length(fileNames)));
+        end
         if (get(gh.combine_listbox,'Value')>length(fileNames))
             if isempty(fileNames)
                 set(gh.combine_listbox,'Value',1);
@@ -1173,9 +1225,67 @@ function updateSpectra()
                 set(gh.combine_listbox,'Value',length(fileNames));
             end
         end
-        if ~(get(gh.combine_listbox,'Value'))
+        if isempty(get(gh.combine_listbox,'Value'))
             set(gh.combine_listbox,'Value',1);
         end
+    catch exception
+        try
+            msgstr = ['an exception occurred. '...
+                'the bug reporter should have been opened'];
+            add2status(msgstr);
+        catch exception2
+            exception = addcause(exception2, exception);
+            disp(msgstr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % if even displaying the bug report window fails...
+            exception = addcause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
+
+function updateInfo()
+    try
+        mainWindow = guiGetWindowHandle(mfilename);
+        % Get appdata of combine GUI
+        ad = getappdata(mainWindow);
+        
+        % Get handles of combine GUI
+        gh = guihandles(mainWindow);
+        
+        if isempty(get(gh.notcombine_listbox,'String'))
+            set(gh.info_panel_wavelength_startvalue_edit,'String','');
+            set(gh.info_panel_wavelength_endvalue_edit,'String','');
+            set(gh.info_panel_wavelength_unit_edit,'String','nm');
+            set(gh.info_panel_dimension_x_edit,'String','0');
+            set(gh.info_panel_dimension_y_edit,'String','0');
+            set(gh.info_panel_length_value_edit,'String','0');
+            set(gh.info_panel_length_unit_edit,'String','s');
+            return;
+        end
+        
+        % Get first selected entry
+        selectedSpectra = ad.combine.spectra.notcombine(...
+            get(gh.notcombine_listbox,'Value'));
+        set(gh.info_panel_wavelength_startvalue_edit,'String',...
+            num2str(ad.data{selectedSpectra(1)}.axes.y.values(1)));
+        set(gh.info_panel_wavelength_endvalue_edit,'String',...
+            num2str(ad.data{selectedSpectra(1)}.axes.y.values(end)));
+        set(gh.info_panel_wavelength_unit_edit,'String',...
+            ad.data{selectedSpectra(1)}.axes.y.unit);
+        [y,x] = size(ad.data{selectedSpectra(1)}.data);
+        set(gh.info_panel_dimension_x_edit,'String',num2str(x));
+        set(gh.info_panel_dimension_y_edit,'String',num2str(y));
+        set(gh.info_panel_length_value_edit,'String',...
+            num2str(...
+            ad.data{selectedSpectra(1)}.parameters.transient.length...
+            ));
+        set(gh.info_panel_length_unit_edit,'String',...
+            ad.data{selectedSpectra(1)}.axes.x.unit);
+        
     catch exception
         try
             msgstr = ['an exception occurred. '...
