@@ -5,10 +5,14 @@ function varargout = TAgui_combinewindow(varargin)
 %
 % Normally, this window is called from within the TAgui window.
 %
-% See also TAGUI
+% IMPORTANT: The actual work is NOT performed by this GUI function, but by
+%            TAcombine (and TAscale). This is according to the toolbox
+%            philosophy to not mix GUI and routines processing data.
+%
+% See also TAGUI, TAGUI_COMBINE_SETTINGSWINDOW, TACOMBINE, TASCALE
 
 % (c) 2012, Till Biskup
-% 2012-01-21
+% 2012-01-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -578,11 +582,37 @@ ad.combine.spectra.notcombine = [];
 ad.combine.spectra.combine = [];
 ad.combine.label = '';
 
+% TODO: This has to go to the correct config file.
+%       Therefore, config files should be able to cope with field names
+%       containing dots...
+ad.configuration.scaling = struct(...
+    'avg',struct(...
+        'index',[0.15 1],...
+        'patch',struct(...
+            'edge','none',...
+            'color',[0.5 0.5 1],...
+            'alpha',0.4 ...
+            )...
+        ),...
+    'smoothing',struct(...
+        'method','boxcar',...
+        'index',1 ...
+        )...
+    );
+
+% Scale - struct
+ad.scale = struct(...
+    'method','time avg',...
+    'master',1,...
+    'factor',1 ...
+    );
+
 setappdata(hMainFigure,'data',ad.data);
 setappdata(hMainFigure,'origdata',ad.origdata);
 setappdata(hMainFigure,'configuration',ad.configuration);
 setappdata(hMainFigure,'control',ad.control);
 setappdata(hMainFigure,'combine',ad.combine);
+setappdata(hMainFigure,'scale',ad.scale);
 
 % Load data from Main GUI
 mainGuiWindow = guiGetWindowHandle();
@@ -619,6 +649,7 @@ updateFileformats()
 updateBasenames();
 updateSpectra();
 updateInfo();
+updateScale();
 updateLabel();
 
 % Add keypress function to every element that can have one...
@@ -636,7 +667,7 @@ end
 %  Callbacks
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function listbox_Callback(source,~,field)
+function listbox_Callback(~,~,field)
     try
         mainWindow = guiGetWindowHandle(mfilename);
         % Get appdata from combine GUI
@@ -770,18 +801,19 @@ function pushbutton_Callback(~,~,action)
                 [~,fileBaseNames,~] = cellfun(@(x) fileparts(x.file.name),...
                     ad.data,'UniformOutput',false);
                 toadd = find(strcmp(baseName,fileBaseNames));
-                for k=1:length(toadd)
-                    if any(ad.combine.spectra.notcombine==toadd(k))
+                for l=1:length(toadd)
+                    if any(ad.combine.spectra.notcombine==toadd(l))
                         ad.combine.spectra.notcombine(...
-                            ad.combine.spectra.notcombine==toadd(k)) = [];
+                            ad.combine.spectra.notcombine==toadd(l)) = [];
                     end
-                    if ~any(ad.combine.spectra.combine==toadd(k))
-                        ad.combine.spectra.combine(end+1) = toadd(k);
+                    if ~any(ad.combine.spectra.combine==toadd(l))
+                        ad.combine.spectra.combine(end+1) = toadd(l);
                     end
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Remove basename'
                 baseNames = get(gh.filebasename_listbox,'String');
@@ -789,50 +821,59 @@ function pushbutton_Callback(~,~,action)
                 [~,fileBaseNames,~] = cellfun(@(x) fileparts(x.file.name),...
                     ad.data,'UniformOutput',false);
                 toremove = find(strcmp(baseName,fileBaseNames));
-                for k=1:length(toremove)
-                    if any(ad.combine.spectra.combine==toremove(k))
+                for l=1:length(toremove)
+                    if any(ad.combine.spectra.combine==toremove(l))
                         ad.combine.spectra.combine(...
-                            ad.combine.spectra.combine==toremove(k)) = [];
+                            ad.combine.spectra.combine==toremove(l)) = [];
                     end
-                    if ~any(ad.combine.spectra.notcombine==toremove(k))
-                        ad.combine.spectra.notcombine(end+1) = toremove(k);
+                    if ~any(ad.combine.spectra.notcombine==toremove(l))
+                        ad.combine.spectra.notcombine(end+1) = toremove(l);
                     end
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Add'
+                if isempty(get(gh.notcombine_listbox,'String'))
+                    return;
+                end
                 toadd = ad.combine.spectra.notcombine(...
                     get(gh.notcombine_listbox,'Value'));
-                for k=1:length(toadd)
-                    if any(ad.combine.spectra.notcombine==toadd(k))
+                for l=1:length(toadd)
+                    if any(ad.combine.spectra.notcombine==toadd(l))
                         ad.combine.spectra.notcombine(...
-                            ad.combine.spectra.notcombine==toadd(k)) = [];
+                            ad.combine.spectra.notcombine==toadd(l)) = [];
                     end
-                    if ~any(ad.combine.spectra.combine==toadd(k))
-                        ad.combine.spectra.combine(end+1) = toadd(k);
+                    if ~any(ad.combine.spectra.combine==toadd(l))
+                        ad.combine.spectra.combine(end+1) = toadd(l);
                     end
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Remove'
+                if isempty(get(gh.combine_listbox,'String'))
+                    return;
+                end
                 toremove = ad.combine.spectra.combine(...
                     get(gh.combine_listbox,'Value'));
-                for k=1:length(toremove)
-                    if any(ad.combine.spectra.combine==toremove(k))
+                for l=1:length(toremove)
+                    if any(ad.combine.spectra.combine==toremove(l))
                         ad.combine.spectra.combine(...
-                            ad.combine.spectra.combine==toremove(k)) = [];
+                            ad.combine.spectra.combine==toremove(l)) = [];
                     end
-                    if ~any(ad.combine.spectra.notcombine==toremove(k))
-                        ad.combine.spectra.notcombine(end+1) = toremove(k);
+                    if ~any(ad.combine.spectra.notcombine==toremove(l))
+                        ad.combine.spectra.notcombine(end+1) = toremove(l);
                     end
                 end
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Add all'
                 ad.combine.spectra.combine = [...
@@ -842,6 +883,7 @@ function pushbutton_Callback(~,~,action)
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Remove all'
                 ad.combine.spectra.notcombine = [...
@@ -851,6 +893,7 @@ function pushbutton_Callback(~,~,action)
                 setappdata(mainWindow,'combine',ad.combine);
                 updateSpectra();
                 updateInfo();
+                updateScale();
                 updateLabel();
             case 'Sort'
                 ad.combine.spectra.notcombine = ...
@@ -861,12 +904,61 @@ function pushbutton_Callback(~,~,action)
                 updateSpectra();
                 updateInfo();
             case 'methodSettings'
-                TAgui_combine_settingswindow();
+                [combinable,overlappingWavelength] = TAscale('check',...
+                    ad.data(ad.combine.spectra.combine(1:2)));
+                if combinable
+                    parameters = struct(...
+                        'method',ad.scale.method,...
+                        'master',ad.scale.master, ...
+                        'overlappingWavelength',overlappingWavelength ...
+                        );
+                    ad.scale = TAgui_combine_settingswindow(...
+                        ad.data(ad.combine.spectra.combine(1:2)),...
+                        parameters,ad.configuration.scaling);
+                    setappdata(mainWindow,'scale',ad.scale);
+                    
+                    % Update scale panel
+                    updateScale();
+                end
+            case 'Calculate'
+                [combinable,overlappingWavelength] = TAscale('check',...
+                    ad.data(ad.combine.spectra.combine(1:2)));
+                if combinable
+                    parameters = struct(...
+                        'method',ad.scale.method,...
+                        'master',ad.scale.master, ...
+                        'overlappingWavelength',overlappingWavelength,...
+                        'parameters',struct(...
+                            'avg',struct(...
+                                'index',ad.configuration.scaling.avg.index...
+                                ),...
+                            'smoothing',ad.configuration.scaling.smoothing ...
+                            )...
+                        );
+                    ad.scale = TAscale('factor',...
+                        ad.data(ad.combine.spectra.combine(1:2)),...
+                        parameters);
+                    setappdata(mainWindow,'scale',ad.scale);
+                    ad.scale.parameters.avg
+                    
+                    % Update scale panel
+                    updateScale();
+                end                
             case 'Combine'
                 if isempty(ad.combine.spectra.combine)
                     return;
                 end
                 % And here has to go the real stuff
+                % Scale if scaling factor unequal 1
+                [combinable] = TAscale('check',...
+                    ad.data(ad.combine.spectra.combine(1:2)));
+                if ad.scale.factor ~= 1 && combinable
+                    [datasets,~,scaleHistory] = TAscale('scale',...
+                        ad.data(ad.combine.spectra.combine(1:2)),...
+                        ad.scale);
+                    ad.data(ad.combine.spectra.combine(1:2)) = datasets;
+                end
+                
                 [combinedDataset,status] = TAcombine(...
                     ad.data(ad.combine.spectra.combine),...
                     'Label',ad.combine.label);
@@ -874,6 +966,25 @@ function pushbutton_Callback(~,~,action)
                     msgbox(status,'An error occurred','Error','modal');
                     return;
                 end
+                
+                % Add scale history if available
+                if exist('scaleHistory','var')
+                    % Use trick to get scale history entry before combine
+                    % history entry, but be careful only to do that if the
+                    % last entry is actuall a combine entry (as it should)
+                    if isfield(combinedDataset,'history') || ...
+                            ~isempty(combinedDataset.history) || ...
+                            strmpi(combinedDataset.history{end}.method,...
+                            'TAcombine')
+                        combinedDataset.history{end+1} = ...
+                            combinedDataset.history{end};
+                        combinedDataset.history{end-1} = scaleHistory;
+                    else
+                        combinedDataset.history{end+1} = scaleHistory;
+                    end
+                end
+
+                % Append dataset to main GUI
                 status = appendDatasetToMainGUI(...
                     combinedDataset,'modified',true);
                 if status
@@ -906,8 +1017,8 @@ function pushbutton_Callback(~,~,action)
                 delete(findobj('-regexp','Tag','TAgui_combine_*'));
                 delete(guiGetWindowHandle(mfilename));
             otherwise
-                disp('TAgui_combinewindow: pushbutton_Callback(): Unknown action');
-                disp(action);
+                disp(['TAgui_combinewindow: pushbutton_Callback(): '...
+                    'Unknown action "' action '"']);
                 return;
         end
     catch exception
@@ -944,7 +1055,14 @@ function popupmenu_Callback(source,~,action)
         
         switch lower(action)
             case 'scalingmethod'
+                ad.scale.method = value;
+                setappdata(mainWindow,'scale',ad.scale);
+            case 'scalingmaster'
+                ad.scale.master = get(source,'Value');
+                setappdata(mainWindow,'scale',ad.scale);
             otherwise
+                disp(['TAgui_combinewindow() : popupmenu_Callback() : '...
+                    'Unknown action "' action '"']);
                 return;
         end
     catch exception
@@ -1032,9 +1150,9 @@ function status = checkForCombinableDatasets()
         uniqueFormats = unique(formats);
 
         % If one of the formats is combinable, set output to true
-        for k=1:length(uniqueFormats)
-            if max(strcmpi(uniqueFormats{k},combinableFormats)) ...
-                    && length(find(strcmpi(uniqueFormats{k},formats)))>1
+        for l=1:length(uniqueFormats)
+            if max(strcmpi(uniqueFormats{l},combinableFormats)) ...
+                    && length(find(strcmpi(uniqueFormats{l},formats)))>1
                 status = true;
             end
         end
@@ -1074,10 +1192,10 @@ function updateFileformats()
         % Compile list of combinable file formats from datasets loaded in
         % the main GUI
         displayFormats = cell(0);
-        for k=1:length(uniqueFormats)
-            if max(strcmp(uniqueFormats{k},combinableFormats)) ...
-                    && length(find(strcmpi(uniqueFormats{k},formats)))>1
-                displayFormats{end+1} = uniqueFormats{k};
+        for l=1:length(uniqueFormats)
+            if max(strcmp(uniqueFormats{l},combinableFormats)) ...
+                    && length(find(strcmpi(uniqueFormats{l},formats)))>1
+                displayFormats{end+1} = uniqueFormats{l};
             end
         end
         % Display combinable file formats in listbox
@@ -1180,8 +1298,8 @@ function updateSpectra()
             ad.data(ad.combine.spectra.notcombine),...
             'UniformOutput',false);
         fileNames = cell(0);
-        for k=1:length(filebasenames)
-            fileNames{k} = [filebasenames{k} fileexts{k}];
+        for l=1:length(filebasenames)
+            fileNames{l} = [filebasenames{l} fileexts{l}];
         end
         set(gh.notcombine_listbox,'String',fileNames);
         % Cope with multiple selects
@@ -1205,8 +1323,8 @@ function updateSpectra()
             ad.data(ad.combine.spectra.combine),...
             'UniformOutput',false);
         fileNames = cell(0);
-        for k=1:length(filebasenames)
-            fileNames{k} = [filebasenames{k} fileexts{k}];
+        for l=1:length(filebasenames)
+            fileNames{l} = [filebasenames{l} fileexts{l}];
         end
         set(gh.combine_listbox,'String',fileNames);        
         % Cope with multiple selects
@@ -1286,6 +1404,57 @@ function updateInfo()
         set(gh.info_panel_length_unit_edit,'String',...
             ad.data{selectedSpectra(1)}.axes.x.unit);
         
+    catch exception
+        try
+            msgstr = ['an exception occurred. '...
+                'the bug reporter should have been opened'];
+            add2status(msgstr);
+        catch exception2
+            exception = addcause(exception2, exception);
+            disp(msgstr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % if even displaying the bug report window fails...
+            exception = addcause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
+
+function updateScale()
+    try
+        mainWindow = guiGetWindowHandle(mfilename);
+        % Get appdata of combine GUI
+        ad = getappdata(mainWindow);
+        
+        % Get handles of combine GUI
+        gh = guihandles(mainWindow);
+        
+        % Get handles of all children of scaling panel
+        panelChildren = allchild(gh.scaling_panel);
+        
+        % Check number of spectra to combine
+        % IDEA: Activate panel only if there are exactly two spectra
+        if length(ad.combine.spectra.combine) ~= 2
+            set(panelChildren,'Enable','off');
+            return;
+        end
+        
+        % Check whether there is an identical wavelength in both spectra
+        if ~TAscale('check',ad.data(ad.combine.spectra.combine(1:2)))
+            return;
+        end
+        
+        % Set values according to ad.scale
+        methods = cellstr(get(gh.scale_panel_method_popupmenu,'String'));
+        set(gh.scale_panel_method_popupmenu,'Value',...
+            find(strcmpi(ad.scale.method,methods)));
+        set(gh.scale_panel_master_popupmenu,'Value',ad.scale.master);
+        set(gh.scale_panel_factor_edit,'String',num2str(ad.scale.factor));
+        
+        set(panelChildren,'Enable','on');
     catch exception
         try
             msgstr = ['an exception occurred. '...

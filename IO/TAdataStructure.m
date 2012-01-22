@@ -30,12 +30,17 @@ function varargout = TAdataStructure(varargin)
 % See also TALOAD.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-21
+% 2012-01-22
 
 % If called without parameter, do something useful: display help
-if ~nargin && ~nargout
+if nargin==0 && nargout==0
     help TAdataStructure
+    return;
 end
+
+% TODO: Needs better handling - most probably via optional input argument
+% Determine debug level
+debugLevel = 0;
 
 % Create empty TA toolbox data structure
 dataStructure = struct();
@@ -202,7 +207,6 @@ dataModel.axes = struct(...
         ), ...
     'y',struct(...
         'values','isvector', ...
-        'calibratedValues','isscalar', ...
         'measure','ischar', ...
         'unit','ischar' ...
         ), ...
@@ -358,15 +362,31 @@ if nargin && ischar(varargin{1})
         case 'check'
             if nargin < 2
                 fprintf('No structure to check...\n');
+                if nargout
+                    for k=1:nargout
+                        varargout{k} = struct();
+                    end
+                end
                 return;
             end
             if ~isstruct(varargin{2})
                 fprintf('%s has wrong type',inputname(2));
+                if nargout
+                    for k=1:nargout
+                        varargout{k} = struct();
+                    end
+                end
                 return;
             end
             
             [missingFields,wrongType] = ...
                 checkStructure(dataModel,varargin{2},inputname(2));
+            if nargout
+                varargout{1} = missingFields;
+                if nargout == 2
+                    varargout{2} = wrongType;
+                end
+            end
 
             if ~isempty(missingFields)
                 fprintf('There are missing fields:\n');
@@ -382,7 +402,9 @@ if nargin && ischar(varargin{1})
                 return;
             end
             if isempty(missingFields) && isempty(wrongType)
-                fprintf('Basic test passed! Structure seems fine...\n');
+                if debugLevel > 0
+                    fprintf('Basic test passed! Structure seems fine...\n');
+                end
                 return;
             end
         otherwise

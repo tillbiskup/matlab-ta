@@ -49,8 +49,8 @@ function [data,warnings] = TAOXread(fileName,varargin)
 %
 % See also: TAload, TAdataStructure
 
-% (c) 2011, Till Biskup
-% 2011-12-10
+% (c) 2011-12, Till Biskup
+% 2012-01-22
 
 % TODO: Combining - Handle different parameters for each time trace
 % properly, especially different filters etc.
@@ -220,7 +220,7 @@ if ~exist(fullfile(fPath,[fName '.off']),'file') ...
 end
 
 % Assign empty structure to output argument
-data = TAdataStructure();
+data = TAdataStructure('structure');
 
 % Read and parse parameters file
 fh = fopen(fullfile(fPath,[fName '.par']));
@@ -309,15 +309,13 @@ end
 
 % Assign values to parameters struct
 data.parameters.runs = parameters.MagPiont;
-data.parameters.recorder = struct(...
-    'sensitivity',struct(...
+data.parameters.recorder.sensitivity = struct(...
     'value',parameters.VoltDiv.value,...
-    'unit',parameters.VoltDiv.unit),...
-    'timeBase',struct(...
+    'unit',parameters.VoltDiv.unit);
+data.parameters.recorder.timeBase = struct(...
     'value',parameters.SamplInterval.value,...
-    'unit',lower(parameters.SamplInterval.unit)),...
-    'averages',parameters.AveNum...
-    );
+    'unit',lower(parameters.SamplInterval.unit));
+data.parameters.recorder.averages = parameters.AveNum;
 % ATTENTION: Don't rely on the parameters "OsiroDataPoint" and "TrigDelay",
 % as they get added manually to the parameters file and are NOT
 % automatically read from the transient recorder. Therefore, the only

@@ -26,7 +26,7 @@ function [combinedDataset,status] = TAcombine(datasets,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-01-19
+% 2012-01-22
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -67,6 +67,13 @@ try
     if ~isempty(p.Results.label)
         combinedDataset.label = p.Results.label;
     end
+    % Change filename
+    combinedDataset.file.name = [combinedDataset.file.name '_cmb'];
+    
+    fileNames = cell(1,length(datasets));
+    for k=1:length(datasets)
+        fileNames{k} = datasets{k}.file.name;
+    end
     
     if (length(unique(dimensions(:,1)))==1) ...
             && (length(unique(dimensions(:,2)))==1) ...
@@ -91,7 +98,46 @@ try
     if (length(unique(dimensions(:,2)))==1) ...
             && unique(dimensions(:,2)) > max(unique(dimensions(:,1))) ...
             && max(unique(dimensions(:,1))) > 1
+        for k=2:length(datasets)
+            combinedDataset.data = ...
+                [ combinedDataset.data; datasets{k}.data ];
+            combinedDataset.dataMFon = ...
+                [ combinedDataset.dataMFon; datasets{k}.dataMFon ];
+        end
+        combinedDataset.axes.y.values = [];
+        for k=1:length(datasets)
+            combinedDataset.axes.y.values = ...
+                [combinedDataset.axes.y.values datasets{k}.axes.y.values];
+        end
     end
+            
+    % Write history record
+    history = struct(...
+        'date',datestr(now,31),...
+        'method',mfilename,...
+        'system',struct(...
+            'username','',...
+            'platform',deblank(platform),...
+            'matlab',version,...
+            'TA',TAinfo('version')...
+            ),...
+        'parameters',struct(...
+            'label',p.Results.label),...
+        'info',struct()...
+        );
+    history.info.filenames = fileNames;
+    
+    % Get username of current user
+    % In worst case, username is an empty string. So nothing should
+    % really rely on it.
+    % Windows style
+    history.system.username = getenv('UserName');
+    % Unix style
+    if isempty(history.system.username)
+        history.system.username = getenv('USER');
+    end
+    
+    combinedDataset.history{end+1} = history;
     
 catch exception
     throw(exception);

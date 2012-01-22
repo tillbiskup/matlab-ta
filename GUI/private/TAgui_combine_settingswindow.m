@@ -1,14 +1,18 @@
-function varargout = TAgui_combine_settingswindow(varargin)
+function varargout = TAgui_combine_settingswindow(data,varargin)
 % TAGUI_COMBINE_SETTINGSWINDOW Set parameters for scaling different parts
 % of a spectrum that is to be combined to a single spectrum
 %
 % Normally, this window is called from the TAgui_combinewindow in context
 % of the TAgui window.
 %
-% See also TAGUI, TAGUI_COMBINEWINDOW
+% IMPORTANT: The actual work is NOT performed by this GUI function, but by
+%            TAscale. This is according to the toolbox philosophy to not
+%            mix GUI and routines processing data.
+%
+% See also TAGUI, TAGUI_COMBINEWINDOW, TASCALE
 
 % (c) 2012, Till Biskup
-% 2012-01-20
+% 2012-01-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -18,11 +22,10 @@ function varargout = TAgui_combine_settingswindow(varargin)
 singleton = findobj('Tag','TAgui_combine_settingswindow');
 if (singleton)
     figure(singleton);
-    varargout{1} = singleton;
     return;
 end
 
-%  Construct the components
+% Construct the components
 hMainFigure = figure('Tag','TAgui_combine_settingswindow',...
     'Visible','off',...
     'Name','TA GUI : Combine Settings Window',...
@@ -34,13 +37,13 @@ hMainFigure = figure('Tag','TAgui_combine_settingswindow',...
     'Menu','none','Toolbar','none');
 
 defaultBackground = get(hMainFigure,'Color');
-noneditableBackground = [0.92 0.92 0.92];
+%noneditableBackground = [0.92 0.92 0.92];
 editableBackground = [1 1 1];
 mainPanelWidth = 260;
 guiSize = get(hMainFigure,'Position');
 guiSize = guiSize([3,4]);
 
-hPlotAxes = axes(...         % the axes for plotting selected plot
+axes(...
     'Tag','mainAxis',...
 	'Parent', hMainFigure, ...
     'Box','on',...
@@ -60,7 +63,7 @@ pp1 = uipanel('Tag','method_panel',...
     'Title','Method & Factor'...
     );
 
-pp2 = uipanel('Tag','settings_panel',...
+pp2 = uipanel('Tag','timeavg_panel',...
     'Parent',hMainFigure,...
     'BackgroundColor',defaultBackground,...
     'FontUnit','Pixel','Fontsize',12,...
@@ -70,7 +73,7 @@ pp2 = uipanel('Tag','settings_panel',...
     'Visible','On'...
     );
 
-pp3 = uipanel('Tag','settings_panel',...
+pp3 = uipanel('Tag','mindiff_panel',...
     'Parent',hMainFigure,...
     'BackgroundColor',defaultBackground,...
     'FontUnit','Pixel','Fontsize',12,...
@@ -397,43 +400,83 @@ uicontrol('Tag','close_pushbutton',...
 % Store handles in guidata
 guidata(hMainFigure,guihandles);
 
-% Create appdata structure
-ad = guiDataStructure('guiappdatastructure');
+% Set default parameters for parameters and configuration (to be on the
+% safe side) - if there is more than one input parameter, these parameters
+% will be overwritten.
+ad.parameters = struct(...
+    'method','time avg',...
+    'master',1 ...
+    );
+ad.configuration = struct(...
+    'avg',struct(...
+        'start',0.15,...
+        'end',1,...
+        'patch',struct(...
+            'edge','none',...
+            'color',[0.5 0.5 1],...
+            'alpha',0.4 ...
+            )...
+        ),...
+    'smoothing',struct(...
+        'method','boxcar',...
+        'index',1 ...
+        )...
+    );
 
-% Combine - struct
-ad.combine = struct();
-ad.combine.spectra.notcombine = [];
-ad.combine.spectra.combine = [];
-ad.combine.label = '';
-
-setappdata(hMainFigure,'data',ad.data);
-setappdata(hMainFigure,'origdata',ad.origdata);
-setappdata(hMainFigure,'configuration',ad.configuration);
-setappdata(hMainFigure,'control',ad.control);
-setappdata(hMainFigure,'combine',ad.combine);
-
-% Load data from Main GUI
-mainGuiWindow = guiGetWindowHandle();
-if (mainGuiWindow)
-    admain = getappdata(mainGuiWindow);
-    % Check for availability of necessary fields in appdata
-    if (isfield(admain,'data') ~= 0)
-        ad.data = admain.data;
-        setappdata(hMainFigure,'data',ad.data);
-        ad.origdata = admain.data;
-        setappdata(hMainFigure,'origdata',ad.origdata);
+% Check for additional parameters (be very error tolerant)
+if nargin > 1
+    ad.parameters = varargin{1};
+    if nargin > 2
+        ad.configuration = varargin{2};
     end
-    ad = getappdata(hMainFigure);
 end
+
+% Scale - struct
+% Used to store all necessary parameters of the scaling procedure.
+% Gets finally returned to the caller.
+ad.scale = struct(...
+    'method',ad.parameters.method,...
+    'master',ad.parameters.master,...
+    'factor',1,...
+    'parameters',struct(...
+        'avg',struct(...
+            'index',[],...
+            'values',[],...
+            'unit',''...
+            ),...
+        'smoothing',struct(...
+            'index',[],...
+            'values',[],...
+            'unit',''...
+            )...
+        ),...
+    'overlappingWavelength',[], ...
+    'scaledArea',[] ...
+    );
+
+% TEMPORARY FIX
+scaleTraces(1,:) = data{1}.data(...
+    data{1}.axes.y.values==ad.parameters.overlappingWavelength,:);
+scaleTraces(2,:) = data{2}.data(...
+    data{2}.axes.y.values==ad.parameters.overlappingWavelength,:);
+
+ad.scale.parameters.avg.index(1) = round(...
+    length(scaleTraces(1,:))*ad.configuration.avg.index(1));
+ad.scale.parameters.avg.index(2) = round(...
+    length(scaleTraces(1,:))*ad.configuration.avg.index(2));
+ad.scale.factor = 1;
+
+setappdata(hMainFigure,'configuration',ad.configuration);
+setappdata(hMainFigure,'parameters',ad.parameters);
+setappdata(hMainFigure,'scale',ad.scale);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
-msgStr = 'combine GUI window opened';
+msgStr = 'combine GUI scaling parameters window opened';
 add2status(msgStr);
 
-if (nargout == 1)
-    varargout{1} = hMainFigure;
-end
+updateAxis();
+updatePanel();
 
 % Add keypress function to every element that can have one...
 handles = findall(...
@@ -445,6 +488,15 @@ handles = findall(...
 for m=1:length(handles)
     set(handles(m),'KeyPressFcn',@keypress_Callback);
 end
+
+% Assign default to output argument in case we get killed instead of
+% properly closed...
+if nargout
+    varargout{1} = ad.scale;
+end
+
+% Important for the return parameter. Otherwise Matlab will throw errors.
+uiwait;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks
@@ -465,7 +517,7 @@ function edit_Callback(source,~,field)
         switch field
             case 'label'
                 ad.combine.label = value;
-                setappdata(mainWindow,'combine',ad.combine);
+                setappdata(mainWindow,'scale',ad.scale);
                 updateLabel();
             otherwise
                 return;
@@ -498,149 +550,19 @@ function pushbutton_Callback(~,~,action)
         % Get appdata of main window
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
-        
-        % Get handles of main window
-        gh = guihandles(mainWindow);
 
         switch action
-            case 'Add basename'
-                baseNames = get(gh.filebasename_listbox,'String');
-                baseName = baseNames{get(gh.filebasename_listbox,'Value')};
-                [~,fileBaseNames,~] = cellfun(@(x) fileparts(x.file.name),...
-                    ad.data,'UniformOutput',false);
-                toadd = find(strcmp(baseName,fileBaseNames));
-                for k=1:length(toadd)
-                    if any(ad.combine.spectra.notcombine==toadd(k))
-                        ad.combine.spectra.notcombine(...
-                            ad.combine.spectra.notcombine==toadd(k)) = [];
-                    end
-                    if ~any(ad.combine.spectra.combine==toadd(k))
-                        ad.combine.spectra.combine(end+1) = toadd(k);
-                    end
-                end
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Remove basename'
-                baseNames = get(gh.filebasename_listbox,'String');
-                baseName = baseNames{get(gh.filebasename_listbox,'Value')};
-                [~,fileBaseNames,~] = cellfun(@(x) fileparts(x.file.name),...
-                    ad.data,'UniformOutput',false);
-                toremove = find(strcmp(baseName,fileBaseNames));
-                for k=1:length(toremove)
-                    if any(ad.combine.spectra.combine==toremove(k))
-                        ad.combine.spectra.combine(...
-                            ad.combine.spectra.combine==toremove(k)) = [];
-                    end
-                    if ~any(ad.combine.spectra.notcombine==toremove(k))
-                        ad.combine.spectra.notcombine(end+1) = toremove(k);
-                    end
-                end
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Add'
-                toadd = ad.combine.spectra.notcombine(...
-                    get(gh.notcombine_listbox,'Value'));
-                for k=1:length(toadd)
-                    if any(ad.combine.spectra.notcombine==toadd(k))
-                        ad.combine.spectra.notcombine(...
-                            ad.combine.spectra.notcombine==toadd(k)) = [];
-                    end
-                    if ~any(ad.combine.spectra.combine==toadd(k))
-                        ad.combine.spectra.combine(end+1) = toadd(k);
-                    end
-                end
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Remove'
-                toremove = ad.combine.spectra.combine(...
-                    get(gh.combine_listbox,'Value'));
-                for k=1:length(toremove)
-                    if any(ad.combine.spectra.combine==toremove(k))
-                        ad.combine.spectra.combine(...
-                            ad.combine.spectra.combine==toremove(k)) = [];
-                    end
-                    if ~any(ad.combine.spectra.notcombine==toremove(k))
-                        ad.combine.spectra.notcombine(end+1) = toremove(k);
-                    end
-                end
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Add all'
-                ad.combine.spectra.combine = [...
-                    ad.combine.spectra.combine ...
-                    ad.combine.spectra.notcombine];
-                ad.combine.spectra.notcombine = [];
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Remove all'
-                ad.combine.spectra.notcombine = [...
-                    ad.combine.spectra.notcombine ...
-                    ad.combine.spectra.combine];
-                ad.combine.spectra.combine = [];
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-                updateLabel();
-            case 'Sort'
-                ad.combine.spectra.notcombine = ...
-                    sort(ad.combine.spectra.notcombine);
-                ad.combine.spectra.combine = ...
-                    sort(ad.combine.spectra.combine);
-                setappdata(mainWindow,'combine',ad.combine);
-                updateSpectra();
-            case 'Combine'
-                if isempty(ad.combine.spectra.combine)
-                    return;
-                end
-                % And here has to go the real stuff
-                [combinedDataset,status] = TAcombine(...
-                    ad.data(ad.combine.spectra.combine),...
-                    'Label',ad.combine.label);
-                if isempty(combinedDataset)
-                    msgbox(status,'An error occurred','Error','modal');
-                    return;
-                end
-                status = appendDatasetToMainGUI(...
-                    combinedDataset,'modified',true);
-                if status
-                    disp('Hmm... some problems with appending combined dataset to main GUI.');
-                end
-                status = removeDatasetFromMainGUI(...
-                    ad.combine.spectra.combine,'Force',true);
-                if status
-                    disp('Hmm... some problems with removing dataset(s) from main GUI.');
-                end
-                % After successful update of main GUI, refresh GUI data
-                mainGuiWindow = guiGetWindowHandle();
-                adMain = getappdata(mainGuiWindow);
-                ad.data = adMain.data;
-                setappdata(hMainFigure,'data',ad.data);
-                ad.origdata = adMain.data;
-                setappdata(hMainFigure,'origdata',ad.origdata);
-                updateFileformats()
-                updateBasenames();
-                updateSpectra();
-                updateLabel();
-                % Bring combine GUI to fromt
-                TAgui_combinewindow();
+            case 'Apply'
+                calculateScalingFactor()
             case 'Close'
-                msgStr = 'combine GUI window closed.';
+                msgStr = 'combine GUI settings window closed.';
                 add2status(msgStr);
-
-                % Look for combine GUI Help window and if its there, close as
-                % well
-                hHelpWindow = guiGetWindowHandle('TAgui_combine_helpwindow');
-                if ishandle(hHelpWindow)
-                    delete(hHelpWindow);
-                end
                 delete(guiGetWindowHandle(mfilename));
+                varargout{1} = ad.scale;
             otherwise
-                disp('TAgui_combinewindow: pushbutton_Callback(): Unknown action');
-                disp(action);
+                disp(['TAgui_combine_settingswindow: '...
+                    'pushbutton_Callback(): Unknown action "'...
+                    action '"']);
                 return;
         end
     catch exception
@@ -739,16 +661,10 @@ function popupmenu_Callback(source,~,action)
         
         switch lower(action)
             case 'scalingmethod'
-                switch value
-                    case 'time avg'
-                        set(pp2,'Visible','on');
-                        set(pp3,'Visible','off');
-                    case 'min(diff)'
-                        set(pp3,'Visible','on');
-                        set(pp2,'Visible','off');
-                    otherwise
-                        return;
-                end
+                ad.scale.method = value;
+                setappdata(mainWindow,'scale',ad.scale);
+                updatePanel();
+                updateAxis();
             otherwise
                 return;
         end
@@ -824,8 +740,7 @@ end
 %  Utility functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-function updateSpectra()
+function updatePanel()
     try
         mainWindow = guiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
@@ -834,45 +749,38 @@ function updateSpectra()
         % Get handles of combine GUI
         gh = guihandles(mainWindow);
         
-        % Get not to combine datasets and display in respective listbox
-        [~,filebasenames,fileexts] = cellfun(@(x) fileparts(x.file.name),...
-            ad.data(ad.combine.spectra.notcombine),...
-            'UniformOutput',false);
-        fileNames = cell(0);
-        for k=1:length(filebasenames)
-            fileNames{k} = [filebasenames{k} fileexts{k}];
-        end
-        set(gh.notcombine_listbox,'String',fileNames);
-        if (get(gh.notcombine_listbox,'Value')>length(fileNames))
-            if isempty(fileNames)
-                set(gh.notcombine_listbox,'Value',1);
-            else
-                set(gh.notcombine_listbox,'Value',length(fileNames));
-            end
-        end
-        if ~(get(gh.notcombine_listbox,'Value'))
-            set(gh.notcombine_listbox,'Value',1);
-        end
+        % Set method popupmenu according to chosen method
+        methods = cellstr(get(gh.method_panel_method_popupmenu,'String'));
+        set(gh.method_panel_method_popupmenu,'Value',...
+            find(strcmpi(ad.scale.method,methods)));
         
-        % Get to combine datasets and display in respective listbox
-        [~,filebasenames,fileexts] = cellfun(@(x) fileparts(x.file.name),...
-            ad.data(ad.combine.spectra.combine),...
-            'UniformOutput',false);
-        fileNames = cell(0);
-        for k=1:length(filebasenames)
-            fileNames{k} = [filebasenames{k} fileexts{k}];
-        end
-        set(gh.combine_listbox,'String',fileNames);        
-        if (get(gh.combine_listbox,'Value')>length(fileNames))
-            if isempty(fileNames)
-                set(gh.combine_listbox,'Value',1);
-                updateLabel();
-            else
-                set(gh.combine_listbox,'Value',length(fileNames));
-            end
-        end
-        if ~(get(gh.combine_listbox,'Value'))
-            set(gh.combine_listbox,'Value',1);
+        switch ad.scale.method
+            case 'time avg'
+                % Switch visibility of panels
+                set(pp2,'Visible','on');
+                set(pp3,'Visible','off');
+
+                % Update fields
+                ad.scale.parameters.avg.values = data{1}.axes.x.values(...
+                    ad.scale.parameters.avg.index);
+                set(gh.average_start_index_edit,'String',num2str(...
+                    ad.scale.parameters.avg.index(1)));
+                set(gh.average_start_unit_edit,'String',num2str(...
+                    ad.scale.parameters.avg.values(1)));
+                set(gh.average_stop_index_edit,'String',num2str(...
+                    ad.scale.parameters.avg.index(2)));
+                set(gh.average_stop_unit_edit,'String',num2str(...
+                    ad.scale.parameters.avg.values(2)));
+                setappdata(mainWindow,'scale',ad.scale);
+            case 'min(diff)'
+                % Switch visibility of panels
+                set(pp3,'Visible','on');
+                set(pp2,'Visible','off');
+                
+                % Update fields
+            otherwise
+                disp(['TAgui_combine_settingswindow : updateAxis() : '...
+                    'unknown method "' ad.scale.method '"']);
         end
     catch exception
         try
@@ -893,7 +801,7 @@ function updateSpectra()
     end
 end
 
-function updateLabel()
+function updateAxis()
     try
         mainWindow = guiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
@@ -902,16 +810,72 @@ function updateLabel()
         % Get handles of combine GUI
         gh = guihandles(mainWindow);
         
-        if isempty(get(gh.combine_listbox,'String'))
-            ad.combine.label = '';
-        elseif isempty(ad.combine.label)
-            ad.combine.label = ad.data{ad.combine.spectra.combine(...
-                get(gh.combine_listbox,'Value'))}.label;
+        % Clear axis
+        cla(gh.mainAxis);
+        
+        switch ad.scale.method
+            case 'time avg'
+                % Plot traces
+                hold on;
+                plot(gh.mainAxis,scaleTraces(1,:),'k-');
+                plot(gh.mainAxis,scaleTraces(2,:),'r-');
+                hold off;
+                ylim = get(gh.mainAxis,'YLim');
+                % Plot AVG area
+                patch(...
+                    'XData',[...
+                    ad.scale.parameters.avg.index(1) ad.scale.parameters.avg.index(1)...
+                    ad.scale.parameters.avg.index(2) ad.scale.parameters.avg.index(2)],...
+                    'YData',[ylim(1) ylim(end) ylim(end) ylim(1)],...
+                    'ZData',[0 0 0 0],...
+                    'EdgeColor',ad.configuration.avg.patch.edge,...
+                    'FaceColor',ad.configuration.avg.patch.color,...
+                    'FaceAlpha',ad.configuration.avg.patch.alpha,...
+                    'Parent',gh.mainAxis);
+            case 'min(diff)'
+                % TODO: Apply smoothing if necessary
+                % Plot traces
+                hold on;
+                plot(gh.mainAxis,scaleTraces(1,:),'k-');
+                plot(gh.mainAxis,scaleTraces(2,:),'r-');
+                hold off;
+            otherwise
+                disp(['TAgui_combine_settingswindow : updateAxis() : '...
+                    'unknown method "' ad.scale.method '"']);
         end
+    catch exception
+        try
+            msgstr = ['an exception occurred. '...
+                'the bug reporter should have been opened'];
+            add2status(msgstr);
+        catch exception2
+            exception = addcause(exception2, exception);
+            disp(msgstr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % if even displaying the bug report window fails...
+            exception = addcause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
 
-        set(gh.label_edit,'String',ad.combine.label);
-        setappdata(mainWindow,'combine',ad.combine);
+function calculateScalingFactor()
+    try
+        mainWindow = guiGetWindowHandle(mfilename);
+        % Get appdata of combine GUI
+        ad = getappdata(mainWindow);
+        
+        % Get handles of combine GUI
+        gh = guihandles(mainWindow);
+        
+        ad.scale = TAscale('factor',data,ad.scale);
 
+        setappdata(mainWindow,'scale',ad.scale);
+        set(gh.method_panel_factor_edit,'String',...
+            num2str(ad.scale.factor));
     catch exception
         try
             msgstr = ['an exception occurred. '...
