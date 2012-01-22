@@ -6,7 +6,20 @@ Basically, at this stage, still the complete toolbox counts as "new". Neverthele
 
 -= New features in v.0.0.1 =-
 
-An incomplete list of changes within v.0.0.1 as of December 2011, in decreasing order of their implementation date:
+An incomplete list of changes within v.0.0.1, in decreasing order of their implementation date:
+
+January 2012
+
+* AVG window
+
+* Saving datasets (as ZIP-compressed XML)
+
+* Scaling of two datasets that should be combined works (basically)
+
+* Combining datasets works
+
+
+December 2011
 
 * Data import improved: Now supports combine (for those formats supporting combining files)
 

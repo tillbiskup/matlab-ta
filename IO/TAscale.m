@@ -170,6 +170,10 @@ try
                 % Remove overlapping trace from non-master dataset
                datasets{2}.data(datasets{2}.axes.y.values==...
                    parameters.overlappingWavelength,:) = [];
+               if isfield(datasets{2},'dataMFon')
+                   datasets{2}.dataMFon(datasets{2}.axes.y.values==...
+                       parameters.overlappingWavelength,:) = [];
+               end
                datasets{2}.axes.y.values(datasets{2}.axes.y.values==...
                    parameters.overlappingWavelength) = [];
             else
@@ -177,6 +181,10 @@ try
                 % Remove overlapping trace from non-master dataset
                datasets{1}.data(datasets{1}.axes.y.values==...
                    parameters.overlappingWavelength,:) = [];
+               if isfield(datasets{1},'dataMFon')
+                   datasets{1}.dataMFon(datasets{1}.axes.y.values==...
+                       parameters.overlappingWavelength,:) = [];
+               end
                datasets{1}.axes.y.values(datasets{1}.axes.y.values==...
                    parameters.overlappingWavelength) = [];
             end
