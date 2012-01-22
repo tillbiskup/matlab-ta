@@ -193,13 +193,24 @@ uicontrol('Tag','load_panel_load_pushbutton_text',...
 function load_pushbutton_Callback(~,~)
     try
         state = struct();
-        FilterSpec = '*.*';
         
         % Get appdata and guihandles of main window
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
         gh = guihandles(mainWindow);
         
+        % Get value from load_panel_filetype_popupmenu
+        fileTypes = cellstr(get(gh.load_panel_filetype_popupmenu,'String'));
+        fileType = fileTypes{get(gh.load_panel_filetype_popupmenu,'Value')};
+
+        if strcmpi(fileType,'automatic')
+            FilterSpec = '*.*';
+        else
+            fileExtensions = fileFormats.(fileFormatIdentifiers{...
+                strcmpi(fileType,fileFormatNames)}).fileExtension;
+            FilterSpec = ['*.' strrep(fileExtensions,'|',';*.')];
+        end
+      
         % Set directory where to load files from
         if isfield(ad,'control') && isfield(ad.control,'lastLoadDir')
             startDir = ad.control.lastLoadDir;
@@ -264,10 +275,6 @@ function load_pushbutton_Callback(~,~)
             end
         end
         setappdata(mainWindow,'control',ad.control);
-        
-        % Get value from load_panel_filetype_popupmenu
-        fileTypes = cellstr(get(gh.load_panel_filetype_popupmenu,'String'));
-        fileType = fileTypes{get(gh.load_panel_filetype_popupmenu,'Value')};
         
         if strcmpi(fileType,'automatic')
             fileFormat = fileType;
