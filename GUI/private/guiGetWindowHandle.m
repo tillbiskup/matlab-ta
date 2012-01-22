@@ -39,6 +39,8 @@ try
     windowTags.TAgui_combinewindow = 'TAgui_combinewindow';
     windowTags.TAgui_combine_settingswindow = 'TAgui_combine_settingswindow';
     windowTags.TAgui_bugreportwindow = 'TAgui_bugreportwindow';
+    windowTags.TAgui_AVGwindow = 'TAgui_AVGwindow';
+    windowTags.TAgui_AVG_helpwindow = 'TAgui_AVG_helpwindow';
     
     % Define default tag
     defaultTag = windowTags.TAgui;

@@ -126,6 +126,9 @@ try
         case 'f2'
             TAgui_aboutwindow();
             return;
+        case 'f6'
+            TAgui_AVGwindow();
+            return;
         case 'f10'
             TAgui_statuswindow();
             return;

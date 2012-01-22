@@ -1,0 +1,35 @@
+
+DISPLAY
+
+The display panel lets you choose which of the datasets currently loaded in the main GUI should be baseline corrected, set the display type and the slider parameters.
+
+
+Datasets
+
+When opening the BLC GUI, all datasets that were set to "visible" in the main GUI show up in the list of datasets. Here, you can choose the dataset you want to perform the BLC for.
+
+
+Display type
+
+The display type popupmenu is the well-known control element from the main GUI that allows you to switch between 2D and 1D representations.
+
+
+Slider position
+
+Given that you loaded a 2D dataset and are currently displaying a 1D representation along one of the two axes, you can set and get the axis positions along x and y here, both as index and unit (if available).
+
+The checkbox "Show position in main display" toggles between the display of red lines for the position in x and y in the main (upper) display of the BLC GUI.
+
+With "Set to maximum" you can conveniently set the position both in x and y to the maximum of the dataset.
+
+
+Measure
+
+To measure a point in the currently displayed dataset, press the "Pick" button and move the pointer to inside the main axes. The x and y values in the "Measure" panel will display the current pointer position in coordinates of the currently displayed dataset.
+
+To measure a certain point, simply click. That will leave the measure mode and show the measured point permanently in the "Measure" panel.
+
+To leave the measure mode, you can click on the "Pick" button once again.
+
+To clear a measurement, press the "Clear" button in the "Measure" panel.
+

@@ -1,0 +1,25 @@
+
+SETTINGS
+
+The settings panel lets you make a few settings regarding the appearance of the AVG GUI.
+
+
+Grid
+
+Whether or not to display a grid can be set with the controls of this panel. Default is to display a zero line (as a dashed line), but no grid.
+
+
+Average area
+
+To change the way the averaged area is displayed both in the auxilliary and main axes (the latter depending on the current display mode), you can change both colour and transparency ("Alpha", meaning the alpha value that defines the transparency) of the area.
+
+
+Averaged data line settings
+
+To change the way the averaged data are displayed in the main axes, you can change here both colour and line settings, the latter being style and width.
+
+
+Defaults
+
+Pressing this button will reset all settings to the default values.
+
