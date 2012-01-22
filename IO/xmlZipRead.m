@@ -1,4 +1,4 @@
-function varargout = xmlZipRead(filename)
+function varargout = xmlZipRead(filename,varargin)
 % XMLZIPREAD Read ZIP-compressed XML file and data (if available)
 %
 % Usage:
@@ -14,8 +14,8 @@ function varargout = xmlZipRead(filename)
 %              Contains warnings if there are any, otherwise empty
 %
 
-% (c) 2011, Till Biskup
-% 2011-11-05
+% (c) 2011-12, Till Biskup
+% 2012-01-22
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -24,7 +24,11 @@ parser.KeepUnmatched = true; % Enable errors on unmatched arguments
 parser.StructExpand = true; % Enable passing arguments in a structure
 parser.addRequired('filename', @(x)ischar(x) || iscell(x));
 parser.parse(filename);
+
 % Do the real stuff
+if iscell(filename)
+    filename = filename{1};
+end
 if ~exist(filename,'file')
     fprintf('"%s" seems not to be a valid filename. Abort.',filename);
     if nargout, varargout{1} = logical(false); end;

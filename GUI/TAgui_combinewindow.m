@@ -939,7 +939,6 @@ function pushbutton_Callback(~,~,action)
                         ad.data(ad.combine.spectra.combine(1:2)),...
                         parameters);
                     setappdata(mainWindow,'scale',ad.scale);
-                    ad.scale.parameters.avg
                     
                     % Update scale panel
                     updateScale();
