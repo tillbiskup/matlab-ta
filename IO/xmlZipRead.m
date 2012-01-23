@@ -45,7 +45,8 @@ cd(tempdir);
 % Unzip and delete ZIP archive afterwards
 try
     filenames = unzip(filename);
-    delete(filename);
+    [~, name, ext] = fileparts(filename);
+    delete(fullfile(tempdir,[name ext]));
 catch exception
     warning = sprintf('%s\n%s\n"%s"\n%s\n',...
         exception.identifier,...
