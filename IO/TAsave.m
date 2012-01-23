@@ -2,7 +2,7 @@ function varargout = TAsave(filename,struct)
 % Save data from the TA toolbox as ZIP-compressed XML files
 
 % (c) 2012, Till Biskup
-% 2012-01-22
+% 2012-01-23
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -20,27 +20,40 @@ try
         data = struct.data;
         struct = rmfield(struct,'data');
         save(fullfile(tempdir,[name '.dat']),'data','-ascii');
+        if isfield(struct,'dataMFon')
+            dataMFon = struct.dataMFon;
+            struct = rmfield(struct,'dataMFon');
+            save(fullfile(tempdir,[name '.on']),'dataMFon','-ascii');
+        end
         [structpathstr, structname] = fileparts(struct.file.name);
-        struct.file.name = fullfile(structpathstr,[structname '.zip']);
+        struct.file.name = fullfile(structpathstr,[structname '.xml.zip']);
         docNode = struct2xml(struct);
         xmlwrite(fullfile(tempdir,[name '.xml']),docNode);
-        zip(fullfile(pathstr,[name '.zip']),...
-            {fullfile(tempdir,[name '.dat']),...
-            fullfile(tempdir,[name '.xml'])});
+        if exist('dataMFon','var')
+            zip(fullfile(pathstr,[name '.xml.zip']),...
+                {fullfile(tempdir,[name '.dat']),...
+                fullfile(tempdir,[name '.on']),...
+                fullfile(tempdir,[name '.xml'])});
+            delete(fullfile(tempdir,[name '.on']));
+        else
+            zip(fullfile(pathstr,[name '.xml.zip']),...
+                {fullfile(tempdir,[name '.dat']),...
+                fullfile(tempdir,[name '.xml'])});
+        end
         delete(fullfile(tempdir,[name '.xml']));
         delete(fullfile(tempdir,[name '.dat']));
     else
         [structpathstr, structname] = fileparts(struct.file.name);
-        struct.file.name = fullfile(structpathstr,[structname '.zip']);
+        struct.file.name = fullfile(structpathstr,[structname '.xml.zip']);
         docNode = struct2xml(struct);
         xmlwrite(fullfile(tempdir,[name '.xml']),docNode);
-        zip(fullfile(pathstr,[name '.zip']),fullfile(tempdir,[name '.xml']));
+        zip(fullfile(pathstr,[name '.xml.zip']),fullfile(tempdir,[name '.xml']));
         delete(fullfile(tempdir,[name '.xml']));
     end
     % Set status
     status = 0;
     % Second parameter is filename with full path
-    exception = fullfile(pathstr,[name '.zip']);
+    exception = fullfile(pathstr,[name '.xml.zip']);
 catch exception
     status = -1;
 end

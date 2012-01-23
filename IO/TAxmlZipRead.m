@@ -1,4 +1,4 @@
-function varargout = xmlZipRead(filename,varargin)
+function varargout = TAxmlZipRead(filename,varargin)
 % XMLZIPREAD Read ZIP-compressed XML file and data (if available)
 %
 % Usage:
@@ -72,6 +72,9 @@ try
             case '.dat'
                 data = load(fullfile(pathstr,[name ext]));
                 delete(fullfile(pathstr,[name ext]));
+            case '.on'
+                dataMFon = load(fullfile(pathstr,[name ext]));
+                delete(fullfile(pathstr,[name ext]));
             otherwise
                 delete(fullfile(pathstr,[name ext]));
         end
@@ -90,6 +93,9 @@ catch errmsg
 end
 if exist('data','var')
     struct.data = data;
+end
+if exist('dataMFon','var')
+    struct.dataMFon = dataMFon;
 end
 if nargout
     varargout{1} = struct;
