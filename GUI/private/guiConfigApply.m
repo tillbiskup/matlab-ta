@@ -14,8 +14,8 @@ function status = guiConfigApply(guiname)
 %
 % See also GUICONFIGLOAD, INIFILEREAD
 
-% (c) 2011, Till Biskup
-% 2011-12-06
+% (c) 2011-12, Till Biskup
+% 2012-01-23
 
 status = 0;
 
@@ -40,9 +40,18 @@ try
             ad = getappdata(handle);
             gh = guihandles(handle);
 
+            % Define config file
+            confFile = fullfile(...
+                TAinfo('dir'),'GUI','private','conf',[guiname '.ini']);
+            % If that file does not exist, try to create it from the
+            % distributed config file sample
+            if ~exist(confFile,'file')
+                disp(['Config file "' confFile '" seems not to exist. '...
+                    'Trying to create it from distributed file.']);
+                TAconf('create',confFile);
+            end
             % Try to load and append configuration
-            conf = guiConfigLoad(fullfile(...
-                TAinfo('dir'),'GUI','private','conf',[guiname '.ini']));
+            conf = guiConfigLoad(confFile);
             if ~isempty(conf)
                 confFields = fieldnames(conf);
                 for k=1:length(confFields)

@@ -7,7 +7,7 @@ function handle = guiConfigurePanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-17
+% 2012-01-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -17,6 +17,7 @@ function handle = guiConfigurePanel(parentHandle,position)
 configFiles = TAconf('files');
 % If there are no config files yet, try to create them
 if isempty(configFiles)
+    disp('No config files yet. Trying to create them...');
     TAconf('create');
     configFiles = TAconf('files');
 end
