@@ -1,2 +1,2 @@
 % TA Toolbox
-% Version 0.0.1 (alpha2) 22-Jan-2012
+% Version 0.0.2 (alpha3) 23-Jan-2012
