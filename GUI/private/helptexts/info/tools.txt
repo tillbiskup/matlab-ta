@@ -1,0 +1,46 @@
+
+TOOLS
+
+This panel provides you with additional tools such as reading and writing metafiles (files containing information about measurements/datasets in a format that is both machine and human readable).
+
+PLEASE NOTE: Currently, the whole panel is just a technical preview without any functionality. As soon as time allows, fuctions will be added. That may well lead to a complete restructuring of the panel.
+
+Below is just a short explanation of what functions are planned.
+
+
+METAFILE READ
+
+All the information contained in the "display" structure of a dataset that was loaded into the main GUI.
+
+File - Name of the metafile to read. The button on the right, marked "...", will fire up a file selection dialogue that let's the user choose a file interactively.
+
+Format - Format of the metafile to be read.
+
+Apply - Apply the values of the (recognised, see below under "Metafile display") parameters read from the metafile to the currently active dataset.
+
+Load - Load the metafile selected above.
+
+
+METAFILE WRITE
+
+Same as above, but for writing metafiles rather than reading them.
+
+The idea behind writing metafiles is to have a nice and handy way of summing up all necessary information for one dataset that could be even printed out and put into a lab book.
+
+
+METAFILE DISPLAY
+
+Used to display both the metafile read via the "Metafile read" panel or the file generated via the "Metafile write" panel above. In case you display a metafile that has been read, the lines that got recognised will be marked left to the line numbers, thus helping the user to immediately recognise which of the parameters of a given metafile have been recognised by the system and can be applied straight away to the parameters of the currently selected dataset.
+
+
+REPORT
+
+Some may remember from earlier versions of the toolbox that there was such thing as a report generator that created PDF files (via LaTeX) giving both a summary of all parameters of a dataset and display the dataset via a series of figures showing different of its aspects.
+
+This panel will provide the user with all necessary controls to create such reports.
+
+
+LIS
+
+Try to find out what "LIS" may stand for, if you don't already know. Plans are that this panel will give you - at some point in the far future - access to such a system (that beforehand has to be layed out, implemented, and installed), and therefore provide you with all functionality necessary to have a structured, accessible and useful storage of both data and information.
+

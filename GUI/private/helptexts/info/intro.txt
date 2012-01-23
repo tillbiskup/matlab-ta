@@ -1,0 +1,30 @@
+
+INTRODUCTION
+
+A short introduction to the Info GUI
+
+
+-=IF IN A HURRY=-
+
+On the top right, you can select the dataset you want to see more information for. Below this listbox you will find four buttons that let you switch between the different panels on the left, each with information about certain aspects of the dataset.
+
+A short description of each of these panels can be found below the buttons. Below that is an explanation of the colour codes of the edit fields explaining which fields are editable and with which you should be careful.
+
+
+-=TO THE GENTLE READER=-
+
+The "Info GUI" is designed to give you both a good overview of and full access to every parameter that is stored within the GUI for a certain dataset.
+
+At the same time, you can use this GUI to manipulate many of the parameters.
+
+
+LAYOUT
+
+The GUI is divided into two parts: On the right, you have the main controls that let you switch between all datasets that are currently loaded into the GUI, and the different panels each presenting a different subset of information about the currently selected dataset.
+
+Additionally, you can find a short description for each of the four panels below the panel switches, followed by an explanation of the colour coding of the fields in the respective panels.
+
+The small button with the blue question mark opens this help, as you may have realised already.
+
+A more detailed description of each of the four panels can be found in this help. Just select the respective topic with the popup menu above.
+

@@ -1,0 +1,26 @@
+
+GENERAL INFORMATION
+
+This panel contains general information about the dataset.
+
+
+FILE
+
+All fields are read-only. Nevertheless, you can copy&paste things from these fields (and therefore, strictly speaking, edit them, although any edits made here will make no difference to the dataset). 
+
+Path - The path of the file that was loaded into the GUI containing the data of the dataset. Normally, that should be the full path and not a relative path.
+
+Filename - The name of the actual file that was loaded into the GUI containing the data of the dataset.
+
+Format - !Not supported yet! Will display the file format (fsc2, Bruker BES3T, ...)
+
+
+DATASET
+
+Label - The label used to display the dataset in the GUI. In case of Bruker BES3T files, this defaults to the label specified in Xepr. Of course, this field is editable.
+
+
+HEADER
+
+Contains the header of the original file containing the data of the dataset. In case of Bruker BES3T files, this is the contents of the DSC file.
+
