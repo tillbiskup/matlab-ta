@@ -15,7 +15,7 @@ function varargout = xmlZipRead(filename,varargin)
 %
 
 % (c) 2011-12, Till Biskup
-% 2012-01-22
+% 2012-01-23
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -42,12 +42,13 @@ if ~status
 end
 PWD = pwd;
 cd(tempdir);
+% Unzip and delete ZIP archive afterwards
 try
     filenames = unzip(filename);
-catch
-    err = lasterror;
+    delete(filename);
+catch exception
     warning = sprintf('%s\n%s\n"%s"\n%s\n',...
-        err.identifier,...
+        exception.identifier,...
         'Problems with unzipping:',...
         filename,...
         'seems not to be a valid zip file. Aborted.');
@@ -57,6 +58,7 @@ catch
     end
     return;
 end
+% Read different files of the archive
 try
     for k=1:length(filenames)
         [pathstr, name, ext] = fileparts(filenames{k});
