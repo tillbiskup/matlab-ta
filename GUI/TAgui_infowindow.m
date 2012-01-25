@@ -2971,7 +2971,6 @@ function parameter_edit_Callback(source,~,value)
         % If value is in matching cell array
         [matches,index] = max(strcmp(value,matching(:,1)));
         if matches
-            matching{index,2}
             % Check whether there is some function to apply first
             if ~isempty(matching{index,3})
                 fun = str2func(matching{index,3});
