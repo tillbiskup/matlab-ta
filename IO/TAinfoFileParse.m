@@ -440,23 +440,9 @@ function value = getCascadedField (struct, fieldName)
                 fieldName(nDots(1)+1:end));
         end
     catch exception
-        try
-            disp(fieldName);
-            disp(struct);
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
+        disp(fieldName);
+        disp(struct);
+        throw(exception);
     end 
 end
 
