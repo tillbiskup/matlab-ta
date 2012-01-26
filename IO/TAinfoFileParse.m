@@ -236,7 +236,7 @@ try
         % TRANSIENT
         'transient.points','parameters.transient.points','numeric';...
         'transient.triggerPosition','parameters.transient.triggerPosition','numeric';...
-        'transient.length','parameters.transient.length','valueunit';...
+        % transient length needs special handling
         % SPECTROGRAPH
         'spectrograph.type','parameters.spectrograph.type','copy';...
         'spectrograph.model','parameters.spectrograph.model','copy';...
@@ -355,6 +355,10 @@ try
                     getCascadedField(parameters,matchingWavelengths{k,1}));
         end
     end
+    % Handle the special case of transient length
+    parts = regexp(parameters.transient.length,' ','split','once');
+    dataStructure.parameters.transient.length = str2double(parts{1});
+    dataStructure.parameters.transient.unit = parts{2};
     
     % TODO: Handle timeProfiles, especially the filters at different
     %       wavelengths
