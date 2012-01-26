@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-01-25
+% 2012-01-26
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout

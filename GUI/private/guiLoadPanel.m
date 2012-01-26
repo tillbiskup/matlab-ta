@@ -17,7 +17,7 @@ defaultBackground = get(parentHandle,'Color');
 
 % Get names of file formats that can be handled by TAload
 % Therefore, load TAload.ini and parse for "name" field.
-fileFormats = iniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
+fileFormats = TAiniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
 fileFormatIdentifiers = fieldnames(fileFormats);
 fileFormatNames = cell(1,length(fileFormatIdentifiers));
 for k=1:length(fileFormatIdentifiers)

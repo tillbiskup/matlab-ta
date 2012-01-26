@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-23
+% 2012-01-26
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
