@@ -24,11 +24,6 @@ gh = guidata(mainWindow);
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
 
-% Get handle of main axis
-mainAxis = findobj(...
-    'Parent',gh.mainAxes_panel,...
-    '-and','Type','axes');
-
 % Change enable status of pushbuttons and other elements
 mainAxisChildren = findobj(...
     'Parent',gh.mainAxes_panel,...
@@ -55,9 +50,8 @@ ad = getappdata(mainWindow);
 if (nargin > 0) && ishandle(varargin{1})
     mainAxes = newplot(varargin{1});
 else
-    mainAxes = findobj(allchild(gh.mainAxes_panel),...
-        'Type','axes','-not','Tag','legend');
-    set(mainWindow,'CurrentAxes',mainAxes);
+    mainAxes = gh.mainAxis;
+    set(mainWindow,'CurrentAxes',gh.mainAxis);
 end
 
 % Just to be on the save side, check whether we have a currently active
@@ -69,7 +63,7 @@ if ~(ad.control.spectra.active)
 end
 
 % IMPORTANT: Set main axis to active axis
-axes(mainAxis);
+axes(mainAxes);
 
 % For shorter and easier to read code:
 active = ad.control.spectra.active;

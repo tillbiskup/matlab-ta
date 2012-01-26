@@ -63,7 +63,8 @@ hPlotAxes = axes(...         % the axes for plotting selected plot
 	'Parent', hPanelAxis, ...
     'FontUnit','Pixel','Fontsize',14,...
     'Units', 'Pixels', ...
-    'Position',[70 95 500 500]);
+    'Position',[70 95 500 500],...
+    'HandleVisibility','on');
 %    'HandleVisibility','callback', ...
 
 % Create the sliders
@@ -586,7 +587,9 @@ catch exception
     throw(exception);
 end
 
-guidata(hMainFigure,guihandles);
+handles = guihandles;
+handles.mainAxis = hPlotAxes;
+guidata(hMainFigure,handles);
 if (nargout == 1)
     varargout{1} = hMainFigure;
 end
