@@ -1,11 +1,11 @@
-function [ warnings ] = iniFileWrite ( fileName, data, varargin )
-% iniFileWrite Write a Windows-style ini file and return them as MATLAB(r)
+function [ warnings ] = TAiniFileWrite ( fileName, data, varargin )
+% TAINIFILEWRITE Write a Windows-style ini file and return them as MATLAB(r)
 % struct structure. 
 %
 % Usage
-%   iniFileWrite(filename,data)
-%   status = iniFileWrite(filename,data)
-%   iniFileWrite(filename,data,'<parameter>','<option>')
+%   TAiniFileWrite(filename,data)
+%   status = TAiniFileWrite(filename,data)
+%   TAiniFileWrite(filename,data,'<parameter>','<option>')
 %
 %   filename - string
 %              Name of the ini file to write
@@ -41,10 +41,10 @@ function [ warnings ] = iniFileWrite ( fileName, data, varargin )
 %                         Character used for the assigning values to keys
 %                         Default: =
 %
-% See also: iniFileRead
+% See also: TAiniFileRead
 
-% (c) 2008-11, Till Biskup
-% 2011-12-08
+% (c) 2008-12, Till Biskup
+% 2012-01-26
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
@@ -117,12 +117,17 @@ for k = 1 : length(blockNames)
     fieldNames = fieldnames(data.(blockNames{k}));
     
     for m = 1 : length(fieldNames)
-        fieldValue = data.(blockNames{k}).(fieldNames{m});
-        % in case the value is not a string, but numeric
-        if isnumeric(fieldValue)
-            fieldValue = num2str(fieldValue);
+        if isstruct(data.(blockNames{k}).(fieldNames{m}))
+            traverse(data.(blockNames{k}).(fieldNames{m}),fieldNames{m},...
+                assignmentChar,fh);
+        else
+            fieldValue = data.(blockNames{k}).(fieldNames{m});
+            % in case the value is not a string, but numeric
+            if isnumeric(fieldValue)
+                fieldValue = num2str(fieldValue);
+            end
+            fprintf(fh,'%s%s %s\n',fieldNames{m},assignmentChar,fieldValue);
         end
-        fprintf(fh,'%s%s %s\n',fieldNames{m},assignmentChar,fieldValue);
     end
     
 end
@@ -137,6 +142,33 @@ try
     end
 catch exception
     throw(exception);
+end
+
+end
+
+
+function traverse(structure,parent,assignmentChar,fileHandle)
+
+fieldNames = fieldnames(structure);
+for k=1:length(fieldNames)
+    if isstruct(structure.(fieldNames{k}))
+        traverse(...
+            structure.(fieldNames{k}),[parent '.' fieldNames{k}],...
+            assignmentChar,fileHandle);
+    else
+        field = sprintf('%s.%s',parent,fieldNames{k});
+        if isnumeric(structure.(fieldNames{k}))
+            value = num2str(structure.(fieldNames{k}));
+            fprintf(fileHandle,'%s.%s%s %s\n',...
+                parent,fieldNames{k},assignmentChar,...
+                num2str(structure.(fieldNames{k})));
+        elseif ischar(structure.(fieldNames{k}))
+            value = structure.(fieldNames{k});
+            fprintf(fileHandle,'%s.%s%s %s\n',...
+                parent,fieldNames{k},assignmentChar,...
+                structure.(fieldNames{k}));
+        end
+    end
 end
 
 end

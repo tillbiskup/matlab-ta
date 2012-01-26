@@ -1,6 +1,6 @@
 function conf = guiConfigLoad(inifile)
 
-conf = iniFileRead(inifile);
+conf = TAiniFileRead(inifile);
 
 % Parse config values
 blockNames = fieldnames(conf);

@@ -30,7 +30,7 @@ end
 % In this INI file, all formats that allow to combine datasets have the
 % field 'combineMultiple' set to 'true'
 combinableFormats = cell(0);
-fileFormats = iniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
+fileFormats = TAiniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
 formatNames = fieldnames(fileFormats);
 for k=1:length(formatNames)
     if isfield(fileFormats.(formatNames{k}),'combineMultiple') && ...

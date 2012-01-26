@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-01-24
+% 2012-01-25
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -308,7 +308,7 @@ try
                         ' ','split','once');
                     dataStructure = setCascadedField(dataStructure,...
                         [matching{k,2} '.value'],...
-                        str2double(parts{1}));
+                        str2num(parts{1}));
                     dataStructure = setCascadedField(dataStructure,...
                         [matching{k,2} '.unit'],...
                         parts{2});

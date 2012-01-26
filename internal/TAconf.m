@@ -72,9 +72,9 @@ try
                     % create it by copying from the "ini.dist" file.
                     if ~exist(confDistFiles(k).name(1:end-5),'file') ...
                             || p.Results.overwrite
-                        conf = iniFileRead(confDistFiles(k).name);
+                        conf = TAiniFileRead(confDistFiles(k).name);
                         header = 'Configuration file for TA toolbox';
-                        iniFileWrite(confDistFiles(k).name(1:end-5),...
+                        TAiniFileWrite(confDistFiles(k).name(1:end-5),...
                             conf,'header',header,'overwrite',true);
                     end
                 end
@@ -83,9 +83,9 @@ try
                 % overwrite is true - and only then write file.
                 if exist([p.Results.file '.dist'],'file') ...
                         && p.Results.overwrite
-                    conf = iniFileRead([p.Results.file '.dist']);
+                    conf = TAiniFileRead([p.Results.file '.dist']);
                     header = 'Configuration file for TA toolbox';
-                    iniFileWrite(p.Results.file,conf,'header',header,...
+                    TAiniFileWrite(p.Results.file,conf,'header',header,...
                         'overwrite',true);
                 end
             end

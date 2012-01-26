@@ -145,7 +145,7 @@ else
 end
 
 % Get file formats from ini file
-fileFormats = iniFileRead([mfilename('fullpath') '.ini']);
+fileFormats = TAiniFileRead([mfilename('fullpath') '.ini']);
 formatNames = fieldnames(fileFormats);
         
 data = [];

@@ -1360,7 +1360,7 @@ uicontrol('Tag','display_panel_threshold_max_pushbutton',...
 
 % Read configuration for export formats (geometries) from ini file
 exportFormatsConfigFile = fullfile(TAinfo('dir'),'figure','fig2file.ini');
-exportFormats = iniFileRead(exportFormatsConfigFile);
+exportFormats = TAiniFileRead(exportFormatsConfigFile);
 % Set export formats (geometries)
 set(hAxesExportFormat,'String',fieldnames(exportFormats));
 set(h3DExportFormat,'String',fieldnames(exportFormats));
