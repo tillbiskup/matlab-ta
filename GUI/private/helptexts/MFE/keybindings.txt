@@ -1,0 +1,34 @@
+
+KEY BINDINGS
+
+There are a couple of key bindings that may make life easier when working with this GUI.
+
+
+SWITCHING BETWEEN PANELS
+
+Ctrl-1 ... Ctrl-3
+
+(Mac: Ctrl or Command)
+
+
+
+SWITCHING DISPLAY MODE
+
+Ctrl-x ... Ctrl-z
+
+(Mac: Ctrl or Command)
+
+
+
+FUNCTION KEYS (F1...F12)
+
+F1 - Help window
+
+
+
+CLOSING THE GUI
+
+Ctrl-w
+
+(Mac: Ctrl or Command)
+

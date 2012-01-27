@@ -41,8 +41,12 @@ try
     windowTags.TAgui_bugreportwindow = 'TAgui_bugreportwindow';
     windowTags.TAgui_infowindow = 'TAgui_infowindow';
     windowTags.TAgui_info_helpwindow = 'TAgui_info_helpwindow';
+    windowTags.TAgui_ACCwindow = 'TAgui_ACCwindow';
+    windowTags.TAgui_ACC_helpwindow = 'TAgui_ACC_helpwindow';
     windowTags.TAgui_AVGwindow = 'TAgui_AVGwindow';
     windowTags.TAgui_AVG_helpwindow = 'TAgui_AVG_helpwindow';
+    windowTags.TAgui_MFEwindow = 'TAgui_MFEwindow';
+    windowTags.TAgui_MFE_helpwindow = 'TAgui_MFE_helpwindow';
     
     % Define default tag
     defaultTag = windowTags.TAgui;

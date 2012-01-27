@@ -132,6 +132,9 @@ try
         case 'f5'
             TAgui_AVGwindow();
             return;
+        case 'f6'
+            TAgui_MFEwindow();
+            return;
         case 'f10'
             TAgui_statuswindow();
             return;
