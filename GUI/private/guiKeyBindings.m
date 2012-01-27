@@ -129,7 +129,7 @@ try
         case 'f3'
             TAgui_infowindow();
             return;
-        case 'f6'
+        case 'f5'
             TAgui_AVGwindow();
             return;
         case 'f10'

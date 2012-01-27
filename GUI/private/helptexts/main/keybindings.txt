@@ -26,9 +26,7 @@ F2  - "Help:About" window
 
 F3  - Informations about currently active dataset
 
-F4  - Baseline correction
-
-F5  - Accumulation
+F5  - Average
 
 F10 - "Status" window
 
