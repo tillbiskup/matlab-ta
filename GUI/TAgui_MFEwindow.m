@@ -1053,28 +1053,28 @@ uicontrol('Tag','help_pushbutton',...
     );
 
 
-uicontrol('Tag','apply_pushbutton',...
-    'Style','pushbutton',...
-	'Parent', hMainFigure, ...
-    'BackgroundColor',defaultBackground,...
-    'FontUnit','Pixel','Fontsize',12,...
-    'String','Apply',...
-    'TooltipString','Apply averaging(s) and append dataset(s) to main GUI',...
-    'pos',[guiSize(1)-((mainPanelWidth))-20 20 (mainPanelWidth)/3 40],...
-    'Enable','on',...
-    'Callback',{@pushbutton_Callback,'Apply'}...
-    );
-uicontrol('Tag','discard_pushbutton',...
-    'Style','pushbutton',...
-	'Parent', hMainFigure, ...
-    'BackgroundColor',defaultBackground,...
-    'FontUnit','Pixel','Fontsize',12,...
-    'String','Discard',...
-    'TooltipString','Discard current or all averagings',...
-    'pos',[guiSize(1)-((mainPanelWidth)/3*2)-20 20 (mainPanelWidth)/3 40],...
-    'Enable','on',...
-    'Callback',{@pushbutton_Callback,'Discard'}...
-    );
+% uicontrol('Tag','apply_pushbutton',...
+%     'Style','pushbutton',...
+% 	'Parent', hMainFigure, ...
+%     'BackgroundColor',defaultBackground,...
+%     'FontUnit','Pixel','Fontsize',12,...
+%     'String','Apply',...
+%     'TooltipString','Apply averaging(s) and append dataset(s) to main GUI',...
+%     'pos',[guiSize(1)-((mainPanelWidth))-20 20 (mainPanelWidth)/3 40],...
+%     'Enable','on',...
+%     'Callback',{@pushbutton_Callback,'Apply'}...
+%     );
+% uicontrol('Tag','discard_pushbutton',...
+%     'Style','pushbutton',...
+% 	'Parent', hMainFigure, ...
+%     'BackgroundColor',defaultBackground,...
+%     'FontUnit','Pixel','Fontsize',12,...
+%     'String','Discard',...
+%     'TooltipString','Discard current or all averagings',...
+%     'pos',[guiSize(1)-((mainPanelWidth)/3*2)-20 20 (mainPanelWidth)/3 40],...
+%     'Enable','on',...
+%     'Callback',{@pushbutton_Callback,'Discard'}...
+%     );
 uicontrol('Tag','close_pushbutton',...
     'Style','pushbutton',...
 	'Parent', hMainFigure, ...
@@ -1316,21 +1316,27 @@ function position_edit_Callback(source,~,position)
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
+        active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
+        
         % Be as robust as possible: if there is no axes, default is indices
-        [y,x] = size(ad.data{ad.control.spectra.active}.data);
+        [y,x] = size(ad.data{active}.data);
         x = linspace(1,x,x);
         y = linspace(1,y,y);
-        if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes,'x') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes.x,'values') ...
-                && not (isempty(ad.data{ad.control.spectra.active}.axes.x.values)))
-            x = ad.data{ad.control.spectra.active}.axes.x.values;
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'x') ...
+                && isfield(ad.data{active}.axes.x,'values') ...
+                && not (isempty(ad.data{active}.axes.x.values)))
+            x = ad.data{active}.axes.x.values;
         end
-        if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes,'y') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes.y,'values') ...
-                && not (isempty(ad.data{ad.control.spectra.active}.axes.y.values)))
-            y = ad.data{ad.control.spectra.active}.axes.y.values;
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'y') ...
+                && isfield(ad.data{active}.axes.y,'values') ...
+                && not (isempty(ad.data{active}.axes.y.values)))
+            y = ad.data{active}.axes.y.values;
         end
         
         switch position
@@ -1338,25 +1344,23 @@ function position_edit_Callback(source,~,position)
                 value = round(str2double(get(source,'String')));
                 if (value > length(x)) value = length(x); end
                 if (value < 1) value = 1; end
-                ad.data{ad.control.spectra.active}.display.position.x = ...
-                    value;
+                ad.data{active}.display.position.x = value;
             case 'xunit'
                 value = str2double(get(source,'String'));
                 if (value < x(1)) value = x(1); end
                 if (value > x(end)) value = x(end); end
-                ad.data{ad.control.spectra.active}.display.position.x = ...
+                ad.data{active}.display.position.x = ...
                     interp1(x,[1:length(x)],value,'nearest');
             case 'yindex'
                 value = round(str2double(get(source,'String')));
                 if (value > length(y)) value = length(y); end
                 if (value < 1) value = 1; end
-                ad.data{ad.control.spectra.active}.display.position.y = ...
-                    value;
+                ad.data{active}.display.position.y = value;
             case 'yunit'
                 value = str2double(get(source,'String'));
                 if (value < y(1)) value = y(1); end
                 if (value > y(end)) value = y(end); end
-                ad.data{ad.control.spectra.active}.display.position.y = ...
+                ad.data{active}.display.position.y = ...
                     interp1(y,1:length(y),value,'nearest');
             otherwise
                 return;
@@ -1445,6 +1449,10 @@ function area_edit_Callback(source,~,position)
         
         % Make code lines shorter and code easier to read
         active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
         
         % Be as robust as possible: if there is no axes, default is indices
         [y,x] = size(ad.data{active}.data);
@@ -1720,6 +1728,10 @@ function edit_Callback(source,~,field)
         
         % Make life easier and lines shorter
         active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
         
         switch field
             case 'smoothxindex'
@@ -2040,16 +2052,22 @@ function pushbutton_Callback(~,~,action)
         % Get handles of main window
         gh = guihandles(mainWindow);
 
+        active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
+        
         switch action
             case 'showMaximum'
                 % If no datasets are loaded, return
                 if isempty(ad.data)
                     return;
                 end
-                [~,ximax] = max(max(ad.data{ad.control.spectra.active}.data));
-                [~,yimax] = max(ad.data{ad.control.spectra.active}.data(:,ximax));
-                ad.data{ad.control.spectra.active}.display.position.x = ximax;
-                ad.data{ad.control.spectra.active}.display.position.y = yimax;
+                [~,ximax] = max(max(ad.data{active}.data));
+                [~,yimax] = max(ad.data{active}.data(:,ximax));
+                ad.data{active}.display.position.x = ximax;
+                ad.data{active}.display.position.y = yimax;
                 
                 % Set appdata from MFE GUI
                 setappdata(mainWindow,'data',ad.data);
@@ -2071,21 +2089,20 @@ function pushbutton_Callback(~,~,action)
                 set(gh.measure_y_unit_edit,'String','0');
                 return;
             case 'averageClear'
-                ad.data{ad.control.spectra.active}.mfe.start = 1;
-                ad.data{ad.control.spectra.active}.mfe.stop = 1;
-                ad.data{ad.control.spectra.active}.mfe.delta = 0;
+                ad.data{active}.mfe.start = 1;
+                ad.data{active}.mfe.stop = 1;
+                ad.data{active}.mfe.delta = 0;
                 setappdata(mainWindow,'data',ad.data);
                 updateMFEPanel();
                 updateAxes();
                 return;
             case 'MFE'
-                if ~ad.data{ad.control.spectra.active}.mfe.delta
+                if ~ad.data{active}.mfe.delta
                     set(gh.mfereport_edit,'String',...
                         'No area selected for MFE calculation.');
                     return;
                 end
-                mfe = TAMFE(ad.data{ad.control.spectra.active},...
-                    ad.data{ad.control.spectra.active}.mfe);
+                mfe = TAMFE(ad.data{active},ad.data{active}.mfe);
                 set(gh.mfereport_edit,'String',mfe.report);
                 updateMFEPanel();
                 updateAxes();
@@ -2173,9 +2190,9 @@ function pushbutton_Callback(~,~,action)
                         updateMFEPanel();
                         updateAxes();
                     case 'Current'
-                        ad.data{ad.control.spectra.active}.mfe.start = 1;
-                        ad.data{ad.control.spectra.active}.mfe.stop = 1;
-                        ad.data{ad.control.spectra.active}.mfe.delta = 0;
+                        ad.data{active}.mfe.start = 1;
+                        ad.data{active}.mfe.stop = 1;
+                        ad.data{active}.mfe.delta = 0;
                         setappdata(mainWindow,'data',ad.data);
                         updateMFEPanel();
                         updateAxes();
@@ -2761,6 +2778,10 @@ function updateSettingsPanel(varargin)
             'String',...
             num2str(ad.mfe.smoothing.value)...
             );
+        
+        if isempty(ad.data)
+            return;
+        end
         
         % Update average x unit display
         [x,y] = size(ad.data{ad.control.spectra.active}.data);
