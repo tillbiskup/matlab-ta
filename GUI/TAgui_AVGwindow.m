@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-27
+% 2012-01-28
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1826,7 +1826,7 @@ function pushbutton_Callback(~,~,action)
                             ad.avgdata{k},...
                             'modified',true);
                         if status
-                            disp('Hmm... some problems with appending baseline-correced dataset to main GUI.');
+                            disp('Hmm... some problems with appending averaged dataset to main GUI.');
                         end
                     end
                 end

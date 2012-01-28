@@ -7,7 +7,7 @@ function varargout = TAgui_MFEwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-27
+% 2012-01-28
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -206,7 +206,7 @@ uicontrol('Tag','mfe_displaytype_popupmenu',...
     'Units','Pixels',...
     'Position',[10 10 mainPanelWidth-40 20],...
     'String','MFoff|MFoff+MFon|MFoff+MFon+DeltaMF|MFon|DeltaMF|sum(MFoff,MFon)',...
-    'Callback', {@displaytype_popupmenu_Callback}...
+    'Callback', {@popupmenu_Callback,'mfedisplaytype'}...
     );
 
 pp1_p4 = uipanel('Tag','sliderposition_panel',...
@@ -596,7 +596,7 @@ uicontrol('Tag','mfe_display_avgarea_checkbox',...
     'Value',0,...
     'Callback',{@checkbox_Callback,'avgarea'}...
     );
-uicontrol('Tag','mfe_display_smooth_checkbox',...
+uicontrol('Tag','mfe_display_smoothing_checkbox',...
     'Style','checkbox',...
     'Parent',pp2_p2,...
     'BackgroundColor',defaultBackground,...
@@ -607,7 +607,7 @@ uicontrol('Tag','mfe_display_smooth_checkbox',...
     'Position',[120 40 100 25],...
     'String','Smoothing',...
     'Value',0,...
-    'Callback',{@checkbox_Callback,'smooth'}...
+    'Callback',{@checkbox_Callback,'smoothing'}...
     );
 uicontrol('Tag','mfe_display_mfemean_checkbox',...
     'Style','checkbox',...
@@ -622,7 +622,7 @@ uicontrol('Tag','mfe_display_mfemean_checkbox',...
     'Value',0,...
     'Callback',{@checkbox_Callback,'mfemean'}...
     );
-uicontrol('Tag','mfe_display_mfestd_checkbox',...
+uicontrol('Tag','mfe_display_mfestdev_checkbox',...
     'Style','checkbox',...
     'Parent',pp2_p2,...
     'BackgroundColor',defaultBackground,...
@@ -633,7 +633,7 @@ uicontrol('Tag','mfe_display_mfestd_checkbox',...
     'Position',[120 10 100 25],...
     'String','MFE std dev',...
     'Value',0,...
-    'Callback',{@checkbox_Callback,'mfestd'}...
+    'Callback',{@checkbox_Callback,'mfestdev'}...
     );
 
 uicontrol('Tag','average_pushbutton',...
@@ -1026,13 +1026,13 @@ ad = guiDataStructure('guiappdatastructure');
 % Assign configuration parameters
 % TODO: Later on, read this from a file
 % MFE-specific settings
-ad.configuration.avg.dimension = 'x';
-ad.configuration.avg.area.patch.color = [0.5 0.5 1];
-ad.configuration.avg.area.patch.alpha = 0.4;
-ad.configuration.avg.area.patch.edge = 'none';
-ad.configuration.avg.line.style = '-';
-ad.configuration.avg.line.color = [1 0 0];
-ad.configuration.avg.line.width = 2;
+ad.configuration.mfe.area.patch.color = [0.5 0.5 1];
+ad.configuration.mfe.area.patch.alpha = 0.4;
+ad.configuration.mfe.area.patch.edge = 'none';
+ad.configuration.mfe.display.avg = 1;
+ad.configuration.mfe.display.smoothing = 0;
+ad.configuration.mfe.display.mean = 0;
+ad.configuration.mfe.display.stdev = 0;
 % Axis-specific settings
 ad.configuration.axis.position = false;
 ad.configuration.axis.grid.zero = true;
@@ -1041,24 +1041,14 @@ ad.configuration.axis.grid.y = 'off';
 ad.configuration.axis.grid.minor = 'off';
 
 % MFE - struct
-ad.avg = struct();
-ad.avg.dimension = ad.configuration.avg.dimension;
-ad.avg.area.patch.color = ad.configuration.avg.area.patch.color;
-ad.avg.area.patch.alpha = ad.configuration.avg.area.patch.alpha;
-ad.avg.area.patch.edge = ad.configuration.avg.area.patch.edge;
-ad.avg.line.style = ad.configuration.avg.line.style;
-ad.avg.line.color = ad.configuration.avg.line.color;
-ad.avg.line.width = ad.configuration.avg.line.width;
-
-% avgdata - cell array
-ad.avgdata = cell(0);
+ad.mfe = struct();
+ad.mfe = ad.configuration.mfe;
 
 setappdata(hMainFigure,'data',ad.data);
 setappdata(hMainFigure,'origdata',ad.origdata);
 setappdata(hMainFigure,'configuration',ad.configuration);
 setappdata(hMainFigure,'control',ad.control);
-setappdata(hMainFigure,'avg',ad.avg);
-setappdata(hMainFigure,'avgdata',ad.avgdata);
+setappdata(hMainFigure,'mfe',ad.mfe);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
@@ -1075,11 +1065,9 @@ if (mainGuiWindow)
         ad.data = admain.data;
         % Add MFE struct to each dataset
         for l=1:length(ad.data)
-            ad.data{l}.avg.start = 1;
-            ad.data{l}.avg.stop = 1;
-            ad.data{l}.avg.delta = 0;
-            ad.data{l}.avg.label = '';
-            ad.data{l}.avg.dimension = ad.configuration.avg.dimension;
+            ad.data{l}.mfe.start = 1;
+            ad.data{l}.mfe.stop = 1;
+            ad.data{l}.mfe.delta = 0;
         end
         setappdata(hMainFigure,'data',ad.data);
         ad.origdata = admain.data;
@@ -1361,149 +1349,141 @@ function area_edit_Callback(source,~,position)
             y = ad.data{active}.axes.y.values;
         end
         
-        if strcmpi(ad.avg.dimension,'x')
-            dim = x;
-        else
-            dim = y;
-        end
+        dim = x;
         
         switch position
             case 'startindex'
                 value = round(str2double(get(source,'String')));
                 if (value > length(dim)) value = length(dim); end
                 if (value < 1) value = 1; end
-                ad.data{active}.avg.start = value;
+                ad.data{active}.mfe.start = value;
                 % Set stop value not overlapping
-                if ad.data{active}.avg.start > ad.data{active}.avg.stop
+                if ad.data{active}.mfe.start > ad.data{active}.mfe.stop
                     % Check whether start + delta > length(dim)
-                    if (ad.data{active}.avg.start + ad.data{active}.avg.delta > length(dim))
-                        ad.data{active}.avg.stop = length(dim);
-                        ad.data{active}.avg.delta = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                    if (ad.data{active}.mfe.start + ad.data{active}.mfe.delta > length(dim))
+                        ad.data{active}.mfe.stop = length(dim);
+                        ad.data{active}.mfe.delta = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                     else
-                        ad.data{active}.avg.stop = ...
-                            ad.data{active}.avg.start+ad.data{active}.avg.delta;
+                        ad.data{active}.mfe.stop = ...
+                            ad.data{active}.mfe.start+ad.data{active}.mfe.delta;
                     end
                 end
                 % Set delta value
-                ad.data{active}.avg.delta = ...
-                    ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                ad.data{active}.mfe.delta = ...
+                    ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
             case 'startunit'
                 value = str2double(get(source,'String'));
                 if (value < dim(1)) value = dim(1); end
                 if (value > dim(end)) value = dim(end); end
-                ad.data{active}.avg.start = ...
+                ad.data{active}.mfe.start = ...
                     interp1(...
                     dim,1:length(dim),...
                     value,...
                     'nearest'...
                     );
                 % Set stop value not overlapping
-                if ad.data{active}.avg.start > ad.data{active}.avg.stop
+                if ad.data{active}.mfe.start > ad.data{active}.mfe.stop
                     % Check whether start + delta > length(dim)
-                    if (ad.data{active}.avg.start + ad.data{active}.avg.delta > length(dim))
-                        ad.data{active}.avg.stop = length(dim);
-                        ad.data{active}.avg.delta = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                    if (ad.data{active}.mfe.start + ad.data{active}.mfe.delta > length(dim))
+                        ad.data{active}.mfe.stop = length(dim);
+                        ad.data{active}.mfe.delta = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                     else
-                        ad.data{active}.avg.stop = ...
-                            ad.data{active}.avg.start+ad.data{active}.avg.delta;
+                        ad.data{active}.mfe.stop = ...
+                            ad.data{active}.mfe.start+ad.data{active}.mfe.delta;
                     end
                 end
                 % Set delta value
-                ad.data{active}.avg.delta = ...
-                    ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                ad.data{active}.mfe.delta = ...
+                    ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
             case 'stopindex'
                 value = round(str2double(get(source,'String')));
                 if (value > length(dim)) value = length(dim); end
                 if (value < 1) value = 1; end
-                ad.data{active}.avg.stop = value;
+                ad.data{active}.mfe.stop = value;
                 % Set start value not overlapping
-                if ad.data{active}.avg.start > ad.data{active}.avg.stop
+                if ad.data{active}.mfe.start > ad.data{active}.mfe.stop
                     % Check whether stop - delta < length(dim)
-                    if (ad.data{active}.avg.stop - ad.data{active}.avg.delta < 1)
-                        ad.data{active}.avg.start = 1;
-                        ad.data{active}.avg.delta = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                    if (ad.data{active}.mfe.stop - ad.data{active}.mfe.delta < 1)
+                        ad.data{active}.mfe.start = 1;
+                        ad.data{active}.mfe.delta = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                     else
-                        ad.data{active}.avg.start = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.delta;
+                        ad.data{active}.mfe.start = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.delta;
                     end
                 end
                 % Set delta value
-                ad.data{active}.avg.delta = ...
-                    ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                ad.data{active}.mfe.delta = ...
+                    ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
             case 'stopunit'
                 value = str2double(get(source,'String'));
                 if (value < dim(1)) value = dim(1); end
                 if (value > dim(end)) value = dim(end); end
-                ad.data{active}.avg.stop = ...
+                ad.data{active}.mfe.stop = ...
                     interp1(...
                     dim,1:length(dim),...
                     value,...
                     'nearest'...
                     );
                 % Set start value not overlapping
-                if ad.data{active}.avg.start > ad.data{active}.avg.stop
+                if ad.data{active}.mfe.start > ad.data{active}.mfe.stop
                     % Check whether stop - delta < length(dim)
-                    if (ad.data{active}.avg.stop - ad.data{active}.avg.delta < 1)
-                        ad.data{active}.avg.start = 1;
-                        ad.data{active}.avg.delta = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                    if (ad.data{active}.mfe.stop - ad.data{active}.mfe.delta < 1)
+                        ad.data{active}.mfe.start = 1;
+                        ad.data{active}.mfe.delta = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                     else
-                        ad.data{active}.avg.start = ...
-                            ad.data{active}.avg.stop-ad.data{active}.avg.delta;
+                        ad.data{active}.mfe.start = ...
+                            ad.data{active}.mfe.stop-ad.data{active}.mfe.delta;
                     end
                 end
                 % Set delta value
-                ad.data{active}.avg.delta = ...
-                    ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                ad.data{active}.mfe.delta = ...
+                    ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
             case 'deltaindex'
                 value = round(str2double(get(source,'String')));
                 if (value > length(dim)) value = length(dim); end
                 if (value < 0) value = 0; end
-                ad.data{active}.avg.delta = value;
+                ad.data{active}.mfe.delta = value;
                 % Check whether start + delta > length(dim)
-                if (ad.data{active}.avg.start + ad.data{active}.avg.delta > length(dim))
-                    ad.data{active}.avg.stop = length(dim);
-                    ad.data{active}.avg.delta = ...
-                        ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                if (ad.data{active}.mfe.start + ad.data{active}.mfe.delta > length(dim))
+                    ad.data{active}.mfe.stop = length(dim);
+                    ad.data{active}.mfe.delta = ...
+                        ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                 else
-                    ad.data{active}.avg.stop = ...
-                        ad.data{active}.avg.start+ad.data{active}.avg.delta;
+                    ad.data{active}.mfe.stop = ...
+                        ad.data{active}.mfe.start+ad.data{active}.mfe.delta;
                 end
             case 'deltaunit'
                 value = str2double(get(source,'String'));
                 if (value < 0) value = 0; end
                 if (value > dim(end)-dim(1)) value = dim(end)-dim(1); end
-                ad.data{active}.avg.delta = ...
+                ad.data{active}.mfe.delta = ...
                     interp1(...
                     0+abs(dim(2)-dim(1)):abs(dim(2)-dim(1)):(abs(dim(2)-dim(1))*(length(dim))),...
                     1:length(dim),...
                     value,...
                     'nearest'...
                     );
-                if isnan(ad.data{active}.avg.delta)
-                    ad.data{active}.avg.delta = 0;
+                if isnan(ad.data{active}.mfe.delta)
+                    ad.data{active}.mfe.delta = 0;
                 end
                 % Check whether start + delta > length(dim)
-                if (ad.data{active}.avg.start + ad.data{active}.avg.delta > length(dim))
-                    ad.data{active}.avg.stop = length(dim);
-                    ad.data{active}.avg.delta = ...
-                        ad.data{active}.avg.stop-ad.data{active}.avg.start;
+                if (ad.data{active}.mfe.start + ad.data{active}.mfe.delta > length(dim))
+                    ad.data{active}.mfe.stop = length(dim);
+                    ad.data{active}.mfe.delta = ...
+                        ad.data{active}.mfe.stop-ad.data{active}.mfe.start;
                 else
-                    ad.data{active}.avg.stop = ...
-                        ad.data{active}.avg.start+ad.data{active}.avg.delta;
+                    ad.data{active}.mfe.stop = ...
+                        ad.data{active}.mfe.start+ad.data{active}.mfe.delta;
                 end
             otherwise
                 disp('TAgui_MFEwindow() : area_edit_Callback() : Unknown action');
                 disp(action);
                 return;
         end
-        
-        % Set dimension and label for current averaging
-        ad.data{active}.avg.dimension = ad.avg.dimension;
-        ad.data{active}.avg.label = get(gh.label_edit,'String');
         
         % Update appdata of main window
         setappdata(mainWindow,'data',ad.data);
@@ -1538,14 +1518,26 @@ function checkbox_Callback(source,~,action)
             return;
         end
         
-        get(source,'Value');
+        % Get appdata of MFE GUI
+        mainWindow = guiGetWindowHandle(mfilename);
+        ad = getappdata(mainWindow);
         
         switch action
+            case 'avgarea'
+                ad.mfe.display.avg = get(source,'Value');
+            case 'smoothing'
+                ad.mfe.display.smoothing = get(source,'Value');
+            case 'mfemean'
+                ad.mfe.display.mfemean = get(source,'Value');
+            case 'mfestdev'
+                ad.mfe.display.mfestdev = get(source,'Value');
             otherwise
                 disp(['TAgui_MFEwindow() : pushbutton_Callback() : '...
                     'Unknown action "' action '"']);
                 return;
         end
+        setappdata(mainWindow,'mfe',ad.mfe);
+        updateAxes();
         
     catch exception
         try
@@ -1614,8 +1606,8 @@ function edit_Callback(source,~,field)
         
         switch field
             case 'label'
-                if ~isempty(value) && ad.data{ad.control.spectra.active}.avg.delta
-                    ad.data{ad.control.spectra.active}.avg.label = value;
+                if ~isempty(value) && ad.data{ad.control.spectra.active}.mfe.delta
+                    ad.data{ad.control.spectra.active}.mfe.label = value;
                     setappdata(mainWindow,'data',ad.data);
                 end
                 updateMFEPanel();
@@ -1655,21 +1647,19 @@ function popupmenu_Callback(source,~,action)
         value = values{get(source,'Value')};
         
         switch action
-            case 'dimension'
-                ad.avg.dimension = value(1);
-                setappdata(mainWindow,'avg',ad.avg);
-                % Reset average values (safest way to prevent trouble)
-                pushbutton_Callback('','','averageClear');
+            case 'mfedisplaytype'
+                ad.control.axis.MFEdisplay = value;
+                setappdata(mainWindow,'control',ad.control);
                 updateAxes();
             case 'avglineWidth'
-                ad.avg.line.width = str2double(value(1));
-                setappdata(mainWindow,'avg',ad.avg);
+                ad.mfe.line.width = str2double(value(1));
+                setappdata(mainWindow,'mfe',ad.mfe);
                 updateAxes();
             case 'avglineStyle'
                 % Get line style
                 [~,ind] = max(strcmp(value,lineStyles(:,1)));
-                ad.avg.line.style = char(lineStyles(ind,2));
-                setappdata(mainWindow,'avg',ad.avg);
+                ad.mfe.line.style = char(lineStyles(ind,2));
+                setappdata(mainWindow,'mfe',ad.mfe);
                 updateAxes();
             otherwise
                 disp('Unknown popupmenu')
@@ -1853,33 +1843,36 @@ function pushbutton_Callback(~,~,action)
                 set(gh.measure_y_unit_edit,'String','0');
                 return;
             case 'averageClear'
-                ad.data{ad.control.spectra.active}.avg.start = 1;
-                ad.data{ad.control.spectra.active}.avg.stop = 1;
-                ad.data{ad.control.spectra.active}.avg.delta = 0;
+                ad.data{ad.control.spectra.active}.mfe.start = 1;
+                ad.data{ad.control.spectra.active}.mfe.stop = 1;
+                ad.data{ad.control.spectra.active}.mfe.delta = 0;
                 setappdata(mainWindow,'data',ad.data);
                 updateMFEPanel();
                 updateAxes();
                 return;
-            case 'Average'
-                if strcmp('x',ad.avg.dimension)
-                    ad.control.axis.displayType = '1D along y';
-                else
-                    ad.control.axis.displayType = '1D along x';
+            case 'MFE'
+                if ~ad.data{ad.control.spectra.active}.mfe.delta
+                    set(gh.mfereport_edit,'String',...
+                        'No area selected for MFE calculation.');
+                    return;
                 end
-                setappdata(mainWindow,'control',ad.control);
+                mfe = TAMFE(ad.data{ad.control.spectra.active},...
+                    ad.data{ad.control.spectra.active}.mfe);
+                set(gh.mfereport_edit,'String',mfe.report);
+                updateMFEPanel();
                 updateAxes();
                 return;
             case 'averageareaColourPalette'
-                ad.avg.area.patch.color = uisetcolor(...
-                    ad.avg.area.patch.color,'Set average area colour');
-                setappdata(mainWindow,'avg',ad.avg);
+                ad.mfe.area.patch.color = uisetcolor(...
+                    ad.mfe.area.patch.color,'Set average area colour');
+                setappdata(mainWindow,'mfe',ad.mfe);
                 updateSettingsPanel();
                 updateAxes();
                 return;
             case 'avglineColourPalette'
-                ad.avg.line.color = uisetcolor(...
-                    ad.avg.line.color,'Set averaged data line colour');
-                setappdata(mainWindow,'avg',ad.avg);
+                ad.mfe.line.color = uisetcolor(...
+                    ad.mfe.line.color,'Set averaged data line colour');
+                setappdata(mainWindow,'mfe',ad.mfe);
                 updateSettingsPanel();
                 updateAxes();
                 return;
@@ -1890,22 +1883,22 @@ function pushbutton_Callback(~,~,action)
             case 'Apply'
                 % Check for every dataset whether an average has been
                 % performed (avg.delta ~= 0) and if so, do proper MFE
-                ad.avgdata = cell(0);
+                ad.mfedata = cell(0);
                 for k=1:length(ad.data)
-                    if ad.data{k}.avg.delta
+                    if ad.data{k}.mfe.delta
                         avgparams = struct(...
-                            'dimension',ad.data{k}.avg.dimension,...
-                            'start',ad.data{k}.avg.start,...
-                            'stop',ad.data{k}.avg.stop,...
-                            'label',ad.data{k}.avg.label...
+                            'dimension',ad.data{k}.mfe.dimension,...
+                            'start',ad.data{k}.mfe.start,...
+                            'stop',ad.data{k}.mfe.stop,...
+                            'label',ad.data{k}.mfe.label...
                             );
-                        ad.avgdata{end+1} = TAMFE(ad.data{k},avgparams);
+                        ad.mfedata{end+1} = TAMFE(ad.data{k},avgparams);
                     end
                 end
-                setappdata(mainWindow,'avgdata',ad.avgdata);
+                setappdata(mainWindow,'avgdata',ad.mfedata);
                 return;
             case 'Discard'
-                if isempty(ad.avgdata)
+                if isempty(ad.mfedata)
                     return;
                 end
                 answer = questdlg(...
@@ -1917,29 +1910,29 @@ function pushbutton_Callback(~,~,action)
                 switch answer
                     case 'All'
                         for k=1:length(ad.data)
-                            ad.data{k}.avg.start = 1;
-                            ad.data{k}.avg.stop = 1;
-                            ad.data{k}.avg.delta = 0;
+                            ad.data{k}.mfe.start = 1;
+                            ad.data{k}.mfe.stop = 1;
+                            ad.data{k}.mfe.delta = 0;
                         end
                         setappdata(mainWindow,'data',ad.data);
-                        % Remove all datasets from ad.avgdata
-                        ad.avgdata = cell(0);
-                        setappdata(mainWindow,'avgdata',ad.avgdata);
+                        % Remove all datasets from ad.mfedata
+                        ad.mfedata = cell(0);
+                        setappdata(mainWindow,'avgdata',ad.mfedata);
                         updateMFEPanel();
                         updateAxes();
                     case 'Current'
-                        ad.data{ad.control.spectra.active}.avg.start = 1;
-                        ad.data{ad.control.spectra.active}.avg.stop = 1;
-                        ad.data{ad.control.spectra.active}.avg.delta = 0;
+                        ad.data{ad.control.spectra.active}.mfe.start = 1;
+                        ad.data{ad.control.spectra.active}.mfe.stop = 1;
+                        ad.data{ad.control.spectra.active}.mfe.delta = 0;
                         setappdata(mainWindow,'data',ad.data);
                         updateMFEPanel();
                         updateAxes();
-                        for k=length(ad.avgdata):-1:1
-                            if strcmp(ad.avgdata{k}.label,...
+                        for k=length(ad.mfedata):-1:1
+                            if strcmp(ad.mfedata{k}.label,...
                                     get(gh.label_edit,'String'))
-                                ad.avgdata(k) = [];
+                                ad.mfedata(k) = [];
                             end
-                        setappdata(mainWindow,'avgdata',ad.avgdata);
+                        setappdata(mainWindow,'avgdata',ad.mfedata);
                         end
                     case 'Cancel'
                         return;
@@ -1948,30 +1941,6 @@ function pushbutton_Callback(~,~,action)
                 end
                 return;
             case 'Close'
-                if ~isempty(ad.avgdata)
-                    msgStr = {...
-                        ['Trying to append averaged data as new '...
-                        'datasets to main GUI.']...
-                        };
-                    add2status(msgStr);
-                    % Return BLC data to main GUI
-                    for k=1:length(ad.avgdata)
-                        % Remove avg field in data structure
-                        if isfield(ad.avgdata{k},'avg')
-                            ad.avgdata{k} = rmfield(ad.avgdata{k},'avg');
-                        end
-                        % Remove display field in data structure
-                        if isfield(ad.avgdata{k},'display')
-                            ad.avgdata{k} = rmfield(ad.avgdata{k},'display');
-                        end
-                        status = appendDatasetToMainGUI(...
-                            ad.avgdata{k},...
-                            'modified',true);
-                        if status
-                            disp('Hmm... some problems with appending baseline-correced dataset to main GUI.');
-                        end
-                    end
-                end
                 msgStr = 'MFE GUI window closed.';
                 add2status(msgStr);
 
@@ -2025,8 +1994,8 @@ function slider_Callback(source,~,action)
         switch lower(action)
             case 'averageareaalpha'
                 set(gh.averageareasettings_alpha_edit,'String',num2str(value));
-                ad.avg.area.patch.alpha = value;
-                setappdata(mainWindow,'avg',ad.avg);
+                ad.mfe.area.patch.alpha = value;
+                setappdata(mainWindow,'mfe',ad.mfe);
                 updateAxes();
             otherwise
                 disp('TAgui_fitwindow: slider_Callback(): Unknown action');
@@ -2319,6 +2288,16 @@ function updateMFEPanel()
                 'Style','Edit'),'String','1');
             return;
         end
+        
+        % Set MFE display options
+        set(gh.mfe_display_avgarea_checkbox,...
+            'Value',ad.mfe.display.avg);
+        set(gh.mfe_display_smoothing_checkbox,...
+            'Value',ad.mfe.display.smoothing);
+        set(gh.mfe_display_mfemean_checkbox,...
+            'Value',ad.mfe.display.mean);
+        set(gh.mfe_display_mfestdev_checkbox,...
+            'Value',ad.mfe.display.stdev);
 
         % Make codelines shorter and easier to read
         active = ad.control.spectra.active;
@@ -2351,40 +2330,28 @@ function updateMFEPanel()
         set(...
             gh.average_start_index_edit,...
             'string',...
-            ad.data{active}.avg.start...
+            ad.data{active}.mfe.start...
             );
         set(...
             gh.average_stop_index_edit,...
             'string',...
-            ad.data{active}.avg.stop...
+            ad.data{active}.mfe.stop...
             );
         set(...
             gh.average_delta_index_edit,...
             'string',...
-            ad.data{active}.avg.delta...
+            ad.data{active}.mfe.delta...
             );
 
-        if strcmpi(ad.avg.dimension,'x')
-            set(gh.average_start_unit_edit,...
-                'string',num2str(x(ad.data{active}.avg.start))...
-                );
-            set(gh.average_stop_unit_edit,...
-                'string',num2str(x(ad.data{active}.avg.stop))...
-                );
-            set(gh.average_delta_unit_edit,...
-                'string',num2str(abs(x(2)-x(1))*ad.data{active}.avg.delta)...
-                );
-        else
-            set(gh.average_start_unit_edit,...
-                'string',num2str(y(ad.data{active}.avg.start))...
-                );
-            set(gh.average_stop_unit_edit,...
-                'string',num2str(y(ad.data{active}.avg.stop))...
-                );
-            set(gh.average_delta_unit_edit,...
-                'string',num2str(abs(y(2)-y(1))*ad.data{active}.avg.delta)...
-                );
-        end
+        set(gh.average_start_unit_edit,...
+            'string',num2str(x(ad.data{active}.mfe.start))...
+            );
+        set(gh.average_stop_unit_edit,...
+            'string',num2str(x(ad.data{active}.mfe.stop))...
+            );
+        set(gh.average_delta_unit_edit,...
+            'string',num2str(abs(x(2)-x(1))*ad.data{active}.mfe.delta)...
+            );
     catch exception
         try
             msgstr = ['an exception occurred. '...
@@ -2420,12 +2387,12 @@ function updateSettingsPanel(varargin)
             ad.control.axis.grid.minor = ad.configuration.axis.grid.minor;
             ad.control.axis.grid.zero = ad.configuration.axis.grid.zero;
             % Reset avg settings
-            ad.avg.area.patch.color = ad.configuration.avg.area.patch.color;
-            ad.avg.area.patch.alpha = ad.configuration.avg.area.patch.alpha;
-            ad.avg.line.color = ad.configuration.avg.line.color;
-            ad.avg.line.width = ad.configuration.avg.line.width;
-            ad.avg.line.style = ad.configuration.avg.line.style;
-            setappdata(mainWindow,'avg',ad.avg);
+            ad.mfe.area.patch.color = ad.configuration.mfe.area.patch.color;
+            ad.mfe.area.patch.alpha = ad.configuration.mfe.area.patch.alpha;
+            ad.mfe.line.color = ad.configuration.mfe.line.color;
+            ad.mfe.line.width = ad.configuration.mfe.line.width;
+            ad.mfe.line.style = ad.configuration.mfe.line.style;
+            setappdata(mainWindow,'mfe',ad.mfe);
             setappdata(mainWindow,'control',ad.control);
         end
         
@@ -2447,11 +2414,11 @@ function updateSettingsPanel(varargin)
         set(gh.grid_zero_togglebutton,'Value',ad.control.axis.grid.zero);
         
         set(gh.averageareasettings_coloursample_text,'Background',...
-            ad.avg.area.patch.color);
+            ad.mfe.area.patch.color);
         set(gh.averageareasettings_alpha_edit,'String',...
-            num2str(ad.avg.area.patch.alpha));
+            num2str(ad.mfe.area.patch.alpha));
         set(gh.averageareasettings_alpha_slider,'Value',...
-            ad.avg.area.patch.alpha);
+            ad.mfe.area.patch.alpha);
         
     catch exception
         try
@@ -2533,18 +2500,24 @@ function updateSpectra()
 end
 
 function update_position_display()
-    mainWindow = guiGetWindowHandle(mfilename);
-    % Get appdata from MFE GUI
-    ad = getappdata(mainWindow);
-
-    if isempty(ad.data) || isempty(ad.control.spectra.visible)
-        return;
-    end
-    
-    % Get handle for visible spectra listbox
-    gh = guidata(mainWindow);
-
     try
+        mainWindow = guiGetWindowHandle(mfilename);
+        % Get appdata from MFE GUI
+        ad = getappdata(mainWindow);
+        
+        if isempty(ad.data) || isempty(ad.control.spectra.visible)
+            return;
+        end
+        
+        % Get handles from main window
+        gh = guidata(mainWindow);
+        
+        % Set MFE display type
+        MFEdisplayTypes = ...
+            cellstr(get(gh.mfe_displaytype_popupmenu,'String'));
+        set(gh.mfe_displaytype_popupmenu,'Value',...
+            find(strcmp(ad.control.axis.MFEdisplay,MFEdisplayTypes)));
+        
         % Set position in time edit boxes
         set(gh.sliderposition_y_index_edit,...
             'String',...
@@ -2622,10 +2595,9 @@ function updateAxes()
     
     try
         % Set displayType popupmenu
-        displayTypes = cellstr(...
-            get(gh.displaytype_popupmenu,'String'));
-        [~,index] = max(strcmp(ad.control.axis.displayType,displayTypes));
-        set(gh.displaytype_popupmenu,'Value',index);
+        displayTypes = cellstr(get(gh.displaytype_popupmenu,'String'));
+        set(gh.displaytype_popupmenu,'Value',...
+            find(strcmp(ad.control.axis.displayType,displayTypes)));
         
         active = ad.control.spectra.active;
         
@@ -2735,16 +2707,6 @@ function updateAxes()
                         ZLim,...
                         'r-');
                 end
-                if ad.data{active}.avg.delta && strcmpi(ad.avg.dimension,'y')
-                    % Plot average spectrum
-                    plot(gh.axis,...
-                        xvalues,...
-                        mean(data(ad.data{active}.avg.start:...
-                        ad.data{active}.avg.stop,:),1),...
-                        'LineStyle',ad.avg.line.style,...
-                        'Color',ad.avg.line.color,...
-                        'LineWidth',ad.avg.line.width);
-                end
                 hold off;
                 if (ad.control.axis.grid.zero)
                     line(...
@@ -2755,19 +2717,19 @@ function updateAxes()
                 end
                 xlabel(gh.axis,sprintf('{\\it %s} / %s',xmeasure,xunit));
                 ylabel(gh.axis,sprintf('{\\it %s} / %s',zmeasure,zunit));
-                if ad.data{active}.avg.delta && strcmpi(ad.avg.dimension,'x')
+                if ad.data{active}.mfe.delta && ad.mfe.display.avg
                     ylim = get(gh.axis,'YLim');
                     patch(...
                         'XData',[...
-                        xvalues(ad.data{active}.avg.start) ...
-                        xvalues(ad.data{active}.avg.start)...
-                        xvalues(ad.data{active}.avg.stop) ...
-                        xvalues(ad.data{active}.avg.stop)],...
+                        xvalues(ad.data{active}.mfe.start) ...
+                        xvalues(ad.data{active}.mfe.start)...
+                        xvalues(ad.data{active}.mfe.stop) ...
+                        xvalues(ad.data{active}.mfe.stop)],...
                         'YData',[ylim(1) ylim(end) ylim(end) ylim(1)],...
                         'ZData',[0 0 0 0],...
-                        'EdgeColor',ad.avg.area.patch.edge,...
-                        'FaceColor',ad.avg.area.patch.color,...
-                        'FaceAlpha',ad.avg.area.patch.alpha,...
+                        'EdgeColor',ad.mfe.area.patch.edge,...
+                        'FaceColor',ad.mfe.area.patch.color,...
+                        'FaceAlpha',ad.mfe.area.patch.alpha,...
                         'Parent',gh.axis);
                 end
             case '1D along y'
@@ -2811,14 +2773,14 @@ function updateAxes()
                         ZLim,...
                         'r-');
                 end
-                if ad.data{active}.avg.delta && strcmpi(ad.avg.dimension,'x')
+                if ad.data{active}.mfe.delta
                     % Plot average spectrum
                     plot(gh.axis,...
                         yvalues,...
-                        mean(data(:,ad.data{active}.avg.start:ad.data{active}.avg.stop),2),...
-                        'LineStyle',ad.avg.line.style,...
-                        'Color',ad.avg.line.color,...
-                        'LineWidth',ad.avg.line.width);
+                        mean(data(:,ad.data{active}.mfe.start:ad.data{active}.mfe.stop),2),...
+                        'LineStyle',ad.mfe.line.style,...
+                        'Color',ad.mfe.line.color,...
+                        'LineWidth',ad.mfe.line.width);
                 end
                 hold off;
                 if (ad.control.axis.grid.zero)
@@ -2830,21 +2792,6 @@ function updateAxes()
                 end
                 xlabel(gh.axis,sprintf('{\\it %s} / %s',ymeasure,yunit));
                 ylabel(gh.axis,sprintf('{\\it %s} / %s',zmeasure,zunit));
-                if ad.data{active}.avg.delta && strcmpi(ad.avg.dimension,'y')
-                    ylim = get(gh.axis,'YLim');
-                    patch(...
-                        'XData',[...
-                        yvalues(ad.data{active}.avg.start)...
-                        yvalues(ad.data{active}.avg.start)...
-                        yvalues(ad.data{active}.avg.stop)...
-                        yvalues(ad.data{active}.avg.stop)],...
-                        'YData',[ylim(1) ylim(end) ylim(end) ylim(1)],...
-                        'ZData',[0 0 0 0],...
-                        'EdgeColor',ad.avg.area.patch.edge,...
-                        'FaceColor',ad.avg.area.patch.color,...
-                        'FaceAlpha',ad.avg.area.patch.alpha,...
-                        'Parent',gh.axis);
-                end
         end
 
         % Plot on second axis
@@ -2875,19 +2822,19 @@ function updateAxes()
         end
         ylabel(gh.axis2,sprintf('{\\it %s} / %s',zmeasure,zunit));
         xlabel(gh.axis2,sprintf('{\\it %s} / %s',xmeasure,xunit));
-        if ad.data{active}.avg.delta
+        if ad.data{active}.mfe.delta
             ylim = get(gh.axis2,'YLim');
             patch(...
                 'XData',[...
-                xvalues(ad.data{active}.avg.start)...
-                xvalues(ad.data{active}.avg.start)...
-                xvalues(ad.data{active}.avg.stop)...
-                xvalues(ad.data{active}.avg.stop)],...
+                xvalues(ad.data{active}.mfe.start)...
+                xvalues(ad.data{active}.mfe.start)...
+                xvalues(ad.data{active}.mfe.stop)...
+                xvalues(ad.data{active}.mfe.stop)],...
                 'YData',[ylim(1) ylim(end) ylim(end) ylim(1)],...
                 'ZData',[0 0 0 0],...
-                'EdgeColor',ad.avg.area.patch.edge,...
-                'FaceColor',ad.avg.area.patch.color,...
-                'FaceAlpha',ad.avg.area.patch.alpha,...
+                'EdgeColor',ad.mfe.area.patch.edge,...
+                'FaceColor',ad.mfe.area.patch.color,...
+                'FaceAlpha',ad.mfe.area.patch.alpha,...
                 'Parent',gh.axis2);
         end
         
