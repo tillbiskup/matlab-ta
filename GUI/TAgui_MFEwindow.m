@@ -1080,40 +1080,9 @@ guidata(hMainFigure,guihandles);
 % Create appdata structure
 ad = guiDataStructure('guiappdatastructure');
 
-% Assign configuration parameters
-% TODO: Later on, read this from a file
-% MFE-specific settings
-ad.configuration.mfe.area.patch.color = [0.5 0.5 1];
-ad.configuration.mfe.area.patch.alpha = 0.4;
-ad.configuration.mfe.area.patch.edge = 'none';
-ad.configuration.mfe.MFoff.line.color = [0 0 0];
-ad.configuration.mfe.MFoff.line.style = '-';
-ad.configuration.mfe.MFoff.line.marker = 'none';
-ad.configuration.mfe.MFoff.line.width = 1;
-ad.configuration.mfe.MFon.line.color = [0 0.5 0];
-ad.configuration.mfe.MFon.line.style = '-';
-ad.configuration.mfe.MFon.line.marker = 'none';
-ad.configuration.mfe.MFon.line.width = 1;
-ad.configuration.mfe.DeltaMF.line.color = [1 0 0];
-ad.configuration.mfe.DeltaMF.line.style = '-';
-ad.configuration.mfe.DeltaMF.line.marker = 'none';
-ad.configuration.mfe.DeltaMF.line.width = 1;
-ad.configuration.mfe.smoothing.filterfun = 'TAfilter_boxcar';
-ad.configuration.mfe.smoothing.value = 1;
-ad.configuration.mfe.smoothing.line.color = [0.5 0 0];
-ad.configuration.mfe.smoothing.line.style = '-';
-ad.configuration.mfe.smoothing.line.marker = 'none';
-ad.configuration.mfe.smoothing.line.width = 3;
-ad.configuration.mfe.display.avg = 1;
-ad.configuration.mfe.display.smoothing = 0;
-ad.configuration.mfe.display.mean = 0;
-ad.configuration.mfe.display.stdev = 0;
-% Axis-specific settings
-ad.configuration.axis.position = false;
-ad.configuration.axis.grid.zero = true;
-ad.configuration.axis.grid.x = 'off';
-ad.configuration.axis.grid.y = 'off';
-ad.configuration.axis.grid.minor = 'off';
+% Apply configuration
+guiConfigApply(mfilename);
+ad.configuration = getappdata(hMainFigure,'configuration');
 
 % MFE - struct
 ad.mfe = struct();

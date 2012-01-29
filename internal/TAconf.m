@@ -83,7 +83,8 @@ try
                 % overwrite is true - and only then write file.
                 if exist([p.Results.file '.dist'],'file') ...
                         && p.Results.overwrite
-                    conf = TAiniFileRead([p.Results.file '.dist']);
+                    [~,fname,fext] = fileparts(p.Results.file);
+                    conf = TAiniFileRead([fname fext '.dist']);
                     header = 'Configuration file for TA toolbox';
                     TAiniFileWrite(p.Results.file,conf,'header',header,...
                         'overwrite',true);

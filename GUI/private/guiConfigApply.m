@@ -15,7 +15,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-12, Till Biskup
-% 2012-01-23
+% 2012-01-29
 
 status = 0;
 
@@ -33,34 +33,33 @@ try
         status = -2;
         return;
     end
+
+    % Define config file
+    confFile = fullfile(...
+        TAinfo('dir'),'GUI','private','conf',[guiname '.ini']);
+    % If that file does not exist, try to create it from the
+    % distributed config file sample
+    if ~exist(confFile,'file')
+        disp(['Config file "' confFile '" seems not to exist. '...
+            'Trying to create it from distributed file.']);
+        TAconf('create','overwrite',true,'file',confFile);
+    end
+    ad = getappdata(handle);
+    gh = guihandles(handle);
     
+    % Try to load and append configuration
+    conf = TAiniFileRead(confFile);
+    if isempty(conf)
+        status = -1;
+        return;
+    end
+    
+    ad.configuration = conf;
+    setappdata(handle,'configuration',ad.configuration);
+
     % Switch depending on GUI name - use GUI mfilename therefore
     switch lower(guiname)
         case 'tagui'
-            ad = getappdata(handle);
-            gh = guihandles(handle);
-
-            % Define config file
-            confFile = fullfile(...
-                TAinfo('dir'),'GUI','private','conf',[guiname '.ini']);
-            % If that file does not exist, try to create it from the
-            % distributed config file sample
-            if ~exist(confFile,'file')
-                disp(['Config file "' confFile '" seems not to exist. '...
-                    'Trying to create it from distributed file.']);
-                TAconf('create',confFile);
-            end
-            % Try to load and append configuration
-            conf = guiConfigLoad(confFile);
-            if ~isempty(conf)
-                confFields = fieldnames(conf);
-                for k=1:length(confFields)
-                    ad.configuration.(confFields{k}) = conf.(confFields{k});
-                end
-            end
-            
-            setappdata(handle,'configuration',ad.configuration);
-            
             % NOTE: Be very defensive in general, as we cannot rely on the
             % GUI having loaded a valid config file.
             % This is true in particular due to the fact that only the
@@ -102,6 +101,7 @@ try
                     end
                 end
             end
+        case 'tagui_mfewindow'
         otherwise
             % That shall not happen normally
             fprintf('Unknown GUI: %s',guiname);

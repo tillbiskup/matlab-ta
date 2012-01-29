@@ -36,7 +36,7 @@ function [ data, warnings ] = TAiniFileRead ( fileName, varargin )
 % See also: iniFileWrite
 
 % (c) 2008-12, Till Biskup
-% 2012-01-25
+% 2012-01-29
 
 % TODO
 %	* Change handling of whitespace characters (subfunctions) thus that it
@@ -136,7 +136,11 @@ function struct = setCascadedField (struct, fieldName, value)
     % Get number of "." in fieldName
     nDots = strfind(fieldName,'.');
     if isempty(nDots)
-        struct.(fieldName) = value;
+        if isempty(str2num(value))
+            struct.(fieldName) = value;
+        else
+            struct.(fieldName) = str2num(value);
+        end
     else
         if ~isfield(struct,fieldName(1:nDots(1)-1))
             struct.(fieldName(1:nDots(1)-1)) = [];

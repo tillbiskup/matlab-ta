@@ -124,7 +124,7 @@ for k = 1 : length(blockNames)
             fieldValue = data.(blockNames{k}).(fieldNames{m});
             % in case the value is not a string, but numeric
             if isnumeric(fieldValue)
-                fieldValue = num2str(fieldValue);
+                fieldValue = mat2str(fieldValue);
             end
             fprintf(fh,'%s%s %s\n',fieldNames{m},assignmentChar,fieldValue);
         end
@@ -158,12 +158,10 @@ for k=1:length(fieldNames)
     else
         field = sprintf('%s.%s',parent,fieldNames{k});
         if isnumeric(structure.(fieldNames{k}))
-            value = num2str(structure.(fieldNames{k}));
             fprintf(fileHandle,'%s.%s%s %s\n',...
                 parent,fieldNames{k},assignmentChar,...
-                num2str(structure.(fieldNames{k})));
+                mat2str(structure.(fieldNames{k})));
         elseif ischar(structure.(fieldNames{k}))
-            value = structure.(fieldNames{k});
             fprintf(fileHandle,'%s.%s%s %s\n',...
                 parent,fieldNames{k},assignmentChar,...
                 structure.(fieldNames{k}));
