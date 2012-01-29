@@ -81,12 +81,9 @@ end
 
 % Set line settings
 if ad.control.spectra.active
-    % Set line colour
-    if ischar(ad.data{ad.control.spectra.active}.line.color)
-        set(gh.display_panel_colour_type2_popupmenu,...
-            'Value',strfind('bgrcmyk',...
-            ad.data{ad.control.spectra.active}.line.color));
-    end
+    % Set colour sample
+    set(gh.display_panel_linecoloursample_text,'BackgroundColor',...
+        ad.data{ad.control.spectra.active}.line.color);
     
     % Set line width
     set(gh.display_panel_linewidth_popupmenu,'Value',...

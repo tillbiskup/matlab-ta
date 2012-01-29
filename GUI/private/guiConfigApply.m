@@ -101,10 +101,8 @@ try
                     end
                 end
             end
-        case 'tagui_mfewindow'
         otherwise
-            % That shall not happen normally
-            fprintf('Unknown GUI: %s',guiname);
+            return;
     end
 catch exception
     % If this happens, something probably more serious went wrong...
