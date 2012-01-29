@@ -16,7 +16,7 @@ To change the way the averaged area is displayed both in the auxilliary and main
 
 Averaged data line settings
 
-To change the way the averaged data are displayed in the main axes, you can change here both colour and line settings, the latter being style and width.
+To change the way the different traces of the averaged data are displayed in the main axes, you can change here both colour and line settings, the latter being style, marker, and width.
 
 
 Defaults
