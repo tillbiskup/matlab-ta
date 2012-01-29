@@ -6,6 +6,12 @@ Basically, at this stage, still the complete toolbox counts as "new". Neverthele
 An incomplete list of changes within the last versions, in decreasing order of their implementation date.
 
 
+-= v.0.0.4 =-
+
+* MFE window
+* Function to write text files
+
+
 -= v.0.0.3 =-
 
 * Info window
