@@ -6,6 +6,13 @@ Basically, at this stage, still the complete toolbox counts as "new". Neverthele
 An incomplete list of changes within the last versions, in decreasing order of their implementation date.
 
 
+-= v.0.0.5 =-
+
+* Main GUI can display standard deviation from AVG
+* AVG calculates standard deviation
+* AVG window now displays all MFE display modes
+
+
 -= v.0.0.4 =-
 
 * MFE window
