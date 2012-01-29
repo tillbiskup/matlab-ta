@@ -40,15 +40,15 @@ try
     % If that file does not exist, try to create it from the
     % distributed config file sample
     if ~exist(confFile,'file')
-        disp(['Config file "' confFile '" seems not to exist. '...
-            'Trying to create it from distributed file.']);
+        fprintf('Config file\n  %s\nseems not to exist. %s\n',...
+            confFile,'Trying to create it from distributed file.');
         TAconf('create','overwrite',true,'file',confFile);
     end
     ad = getappdata(handle);
     gh = guihandles(handle);
     
     % Try to load and append configuration
-    conf = TAiniFileRead(confFile);
+    conf = TAiniFileRead(confFile,'typeConversion',true);
     if isempty(conf)
         status = -1;
         return;

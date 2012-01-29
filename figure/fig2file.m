@@ -58,7 +58,8 @@ exportFormat = p.Results.exportFormat;
 try
     % Read configuration for export formats (geometries) from ini file
     exportFormatsConfigFile = [mfilename('full') '.ini'];
-    exportFormats = TAiniFileRead(exportFormatsConfigFile);
+    exportFormats = ...
+        TAiniFileRead(exportFormatsConfigFile,'typeConversion',false);
 
     % Set export format only in case of not having "fig" as fileType
     if ~strcmpi(fileType,'fig')
@@ -123,6 +124,7 @@ try
                 end
             end
         end
+        
         % Try to set axis such that it fills the paper position
         % rectangle, but taking care of tick marks, labels, and title
         % Therefore, try to get axis handle, and if there is one, set

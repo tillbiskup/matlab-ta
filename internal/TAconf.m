@@ -72,7 +72,8 @@ try
                     % create it by copying from the "ini.dist" file.
                     if ~exist(confDistFiles(k).name(1:end-5),'file') ...
                             || p.Results.overwrite
-                        conf = TAiniFileRead(confDistFiles(k).name);
+                        conf = TAiniFileRead(confDistFiles(k).name,...
+                            'typeConversion',true);
                         header = 'Configuration file for TA toolbox';
                         TAiniFileWrite(confDistFiles(k).name(1:end-5),...
                             conf,'header',header,'overwrite',true);
@@ -84,7 +85,8 @@ try
                 if exist([p.Results.file '.dist'],'file') ...
                         && p.Results.overwrite
                     [~,fname,fext] = fileparts(p.Results.file);
-                    conf = TAiniFileRead([fname fext '.dist']);
+                    conf = TAiniFileRead([fname fext '.dist'],...
+                        'typeConversion',true);
                     header = 'Configuration file for TA toolbox';
                     TAiniFileWrite(p.Results.file,conf,'header',header,...
                         'overwrite',true);
