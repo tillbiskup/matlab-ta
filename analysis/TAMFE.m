@@ -17,7 +17,7 @@ function mfe = TAMFE(data,parameters)
 %              fields: mfe, stdev
 
 % (c) 2012, Till Biskup
-% 2012-01-28
+% 2012-01-29
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -48,7 +48,10 @@ try
         deltaMF = (data.dataMFon(k,parameters.start:parameters.stop)-...
             data.data(k,parameters.start:parameters.stop));
         MFoff = data.data(k,parameters.start:parameters.stop);
-        mfe.mfe(k) = mean(deltaMF./MFoff);
+        % Multiply with sign(mean(MFoff)) rather than applying abs to MFoff
+        % to prevent noisy data from getting distorted (noisy being too
+        % close to zero, already with the MFoff trace).
+        mfe.mfe(k) = mean(deltaMF./MFoff)*sign(mean(MFoff));
         mfe.stdev(k) = std(deltaMF./MFoff);
         mfe.report{end+1} = sprintf('Wavelength: %i %s',...
             data.axes.y.values(k),data.axes.y.unit);

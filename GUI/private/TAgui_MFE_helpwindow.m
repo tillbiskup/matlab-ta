@@ -4,7 +4,7 @@ function varargout = TAgui_MFE_helpwindow(varargin)
 %          to the help command. 
 
 % (c) 2012, Till Biskup
-% 2012-01-27
+% 2012-01-29
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -60,7 +60,7 @@ uicontrol('Tag','helptopic_popupmenu',...
     'FontUnit','Pixel','Fontsize',12,...
     'Units','Pixels',...
     'pos',[120 guiSize(2)-70 guiSize(1)-130 20],...
-    'String','Introduction|Display|Average|Settings|Key bindings',...
+    'String','Introduction|Display|MFE|Settings|Key bindings',...
     'KeyPressFcn',@keypress_Callback,...
     'Callback',@helptext_popupmenu_Callback...
     );
@@ -106,7 +106,8 @@ try
         varargout{1} = hMainFigure;
     end
     % Read text for welcome message from file and display it
-    helpTextFile = fullfile(TAinfo('dir'),'GUI','private','helptexts','MFE','intro.txt');
+    helpTextFile = fullfile(TAinfo('dir'),...
+        'GUI','private','helptexts','MFE','intro.txt');
     helpText = textFileRead(helpTextFile);
     set(textdisplay,'String',helpText);
 catch exception
@@ -139,32 +140,32 @@ function helptext_popupmenu_Callback(source,~)
         switch helpText
             case 'Introduction'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','MFE','intro.txt');
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','MFE','intro.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             case 'Display'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','MFE','display.txt');
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','MFE','display.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
-            case 'Average'
+            case 'MFE'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','MFE','average.txt');
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','MFE','mfe.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             case 'Settings'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','MFE','settings.txt');
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','MFE','settings.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             case 'Key bindings'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','MFE','keybindings.txt');
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','MFE','keybindings.txt');
                 helpText = textFileRead(helpTextFile);
                 set(textdisplay,'String',helpText);
             otherwise

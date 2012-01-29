@@ -6,12 +6,12 @@ A rather short introduction to the MFE GUI
 
 -=IF IN A HURRY=-
 
-Select the dataset you want to calculate the MFE for in the "Visible datasets" listbox in the "Display" panel, ...
+Select the dataset you want to calculate the MFE for in the "Visible datasets" listbox in the "Display" panel, switch to the MFE panel, set the area to average over for calculating the MFE, press the "Calculate MFE" button and see the results in the "MFE report" subpanel.
 
 
 -=TO THE GENTLE READER=-
 
-The Magnetic Field Effect (MFE) GUI is dedicated to the task of calculating the magnetic field effect of spectra. ...
+The Magnetic Field Effect (MFE) GUI is dedicated to the task of calculating the magnetic field effect of spectra. Whereas the "MFE action spectrum" can already be displayed in the main GUI window, this MFE GUI is dedicated to calculating time-averaged MFEs and give a bit of statistics.
 
 
 GUI layout
@@ -23,11 +23,11 @@ More details to all the different panels and the meaning of their control elemen
 
 Normal operation
 
-Normally, you simply go through the panels, first deciding about which dataset to average, set the axes to a reasonable point that allows you to observe in the lower, auxilliary axes the area you are averaging over (the easiest way to achieve that might be to press the "Maximum" button in the "Slider position" panel in the "Display" panel), then switch to the "Magnetic Field Effect" panel, set the area to average over, and finally hit the "Magnetic Field Effect" button.
+Normally, you simply go through the panels, first deciding about which dataset to calculate the MFE for, then switch to the "Magnetic Field Effect" panel, set the area (along the time axis) to average over for calculating the MFE, and finally hit the "Calculate MFE" button.
 
-After you did that, you will see the result in the main axis, where you can inspect it in the ususal way, and compare it to the full (original) dataset.
+After you did that, you will see the result as a report in the subpanel below the "Calculate MFE" button, and if you change the display mode to "1D along y", as well in the main axis.
 
-If happy with the results, press the "Apply" button, perform the same tasks with any other dataset, and in the end, simply "Close" the GUI and your data will be written to the main GUI as new datasets. If unhappy, hit "Discard" and either start a new round with different parameters or "Close" the GUI without writing back anything to the main GUI.
+You can perform the same tasks with any other dataset, and in the end, simply "Close" the GUI. As there is nothing that can sensibly be written to the main GUI as new datasets, that will simply close the MFE GUI.
 
 
 BTW: The button with the questionmark shows this help, as you might have figured out already.
