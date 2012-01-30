@@ -129,6 +129,9 @@ try
         case 'f3'
             TAgui_infowindow();
             return;
+        case 'f4'
+            TAgui_ACCwindow();
+            return;
         case 'f5'
             TAgui_AVGwindow();
             return;

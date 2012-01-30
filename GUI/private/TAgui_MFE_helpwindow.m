@@ -1,10 +1,12 @@
 function varargout = TAgui_MFE_helpwindow(varargin)
-% TAGUI_MFE_HELPWINDOW Brief description of GUI.
-%          Comments displayed at the command line in response 
-%          to the help command. 
+% TAGUI_MFE_HELPWINDOW Help window for the MFE GUI.
+%
+% Normally, this window is called from within the TAgui_MFEwindow window.
+%
+% See also TAGUI_MFEWINDOW
 
 % (c) 2012, Till Biskup
-% 2012-01-29
+% 2012-01-30
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
