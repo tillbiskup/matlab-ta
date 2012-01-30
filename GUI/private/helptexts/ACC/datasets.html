@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+    </head>
+    <body>
+		<h1>Datasets</h1>
+		<p class="intro">
+			The datasets panel lets you choose which of the datasets currently loaded in the main GUI should be accumulated, and define which dataset to use as a "master" (more about that below).
+		</p>
+		<h2>Datasets lists</h2>
+		<p>
+			There are two lists of datasets, the upper being the one with the datasets not to accumulate, the lower showing the datasets that should be accumulated. The two buttons "Add" and "Remove" move the dataset selected in the respective list to the other list.
+		</p>
+		<p>
+			When opening the ACC GUI, all datasets that were set to "invisible" in the main GUI show up in the list of not accumulated datasets, whereas all datasets set to "visible" in the main GUI will be in the list of accumulated (i.e., "to accumulate") spectra.
+		</p>
+		<h2>Master dataset</h2>
+		<p>
+			Only important if you have datasets with different spacing of the axes and/or if you use interpolation (i.e., in case of nonidentical axis values, but overlapping axes regions), this popup menu lets you choose which dataset to use as a master defining the "template" the axes of all other datasets get interpolated to (if necessary).
+		</p>
+		<h2>Dimensions</h2>
+		<p>
+			Critically for deciding which datasets to accumulate and which one to define as "master" is an overview of the crucial parameters for each dataset, i.e. its size, the min and max values and steppings of the axes. All that can be conveniently read from the dimensions panel for the dataset currently highlighted in the list of accumulated (i.e. "to accumulate) datasets.
+		</p>
+	</body>
+</html>

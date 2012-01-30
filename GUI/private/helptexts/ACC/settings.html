@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+    </head>
+    <body>
+		<h1>Accumulation settings</h1>
+		<p class="intro">
+			The accumulation settings panel lets you choose between (currently two) different types of accumulation: cumulative sum and weighted sum.
+		</p>
+		<p>
+			Normally you want to choose the first option, cumulative sum. This performs a simple sum operation on the selected datasets (of course handling all other things as choosing the overlapping part of the axes and interpolate if necessary).
+		</p>
+		<p>
+			If you choose "Weighted" it performs a sum weighted by the best achievable signal to noise ratio. Additionally, you can specify the minimum and maximum weighting factor.
+		</p>
+		<h2>S/N determination</h2>
+		<p>
+			To determine the signal to noise ratio (S/N) it is necessary to specify a part of the dataset that counts for as noise to determine the noise amplitude. This will then be compared to the overall amplitude of the dataset.
+		</p>
+		<p>
+			Given a typical 2D dataset as obtained from TREPR spectroscopy, you can use the spectrum at the first point in time to determine the noise amplitude. For 1D datasets you need to choose an area of the axis. Be aware of that the settings for the noise area need to be such that they can be used for the accumulated dataset. Especially in case of 1D datasets, that means that you should choose an area small enough not to cover signal parts even in case the dimensions get cut due to not totally overlapping axes dimensions.
+		</p>
+		<p>
+			For convenience, you may type "end" instead of a number to get the last position (index) of a given dataset.
+		</p>
+		<h2>Interpolation methods</h2>
+		<p>
+			Given the fact that you want to accumulate datasets that do not share identical values for their axes, you need to perform an interpolation on at least one of them to be able to sum them up.
+		</p>
+		<p>
+			Here, the "master dataset" settings from the datasets panel becomes important, as it sets the reference all other datasets get interpolated to.
+		</p>
+		<p>
+			In the simplest case, you have just different step sizes of the axes with partly identical values (e.g., one spectrum with 1 G field resolution, another one with 0.5 G field resolution).
+		</p>
+		<p>
+			If you want to go for the larger stepping, you can set the interpolation method to none and simply select the dataset with the larger stepping as the master.
+		</p>
+		<p>
+			Otherwise, you need to choose between one of several interpolation methods:
+		</p>
+		<dl>
+			<dt>linear</dt>
+			<dd>Linear interpolation</dd>
+			<dt>spline</dt>
+			<dd>Cubic spline interpolation</dd>
+			<dt>cubic</dt>
+			<dd>Piecewise cubic Hermite interpolation</dd>
+		</dl>
+		<p>
+			For further details, refer to the MATLAB(r) documentation for the "interp1" function.
+		</p>
+		<p>
+			<strong>Note:</strong> If you specify here whatever interpolation method, but the accumulation function detects that no interpolation is necessary, it will not perform any interpolation and state that fact in the accumulation report.
+		</p>
+		<p>
+			Vice versa, if the accumulation function detects that interpolation is necessary to accumulate datasets, but you didn't specify an interpolation method here, it will use "linear" as a default and tell you about it in the accumulation report.
+		</p>
+	</body>
+</html>
