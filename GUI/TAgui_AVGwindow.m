@@ -2836,23 +2836,23 @@ end
 
 
 function updateAxes()
-    mainWindow = guiGetWindowHandle(mfilename);
-    % Get appdata from AVG GUI
-    ad = getappdata(mainWindow);
-
-    % Get handles from main window
-    gh = guidata(mainWindow);
-    
-    if isempty(ad.data) || isempty(ad.control.spectra.visible)
-        return;
-    end
-    
     try
+        mainWindow = guiGetWindowHandle(mfilename);
+        % Get appdata from AVG GUI
+        ad = getappdata(mainWindow);
+        
+        % Get handles from main window
+        gh = guidata(mainWindow);
+        
         % Set displayType popupmenu
         displayTypes = cellstr(...
             get(gh.displaytype_popupmenu,'String'));
         [~,index] = max(strcmp(ad.control.axis.displayType,displayTypes));
         set(gh.displaytype_popupmenu,'Value',index);
+        
+        if isempty(ad.data) || isempty(ad.control.spectra.visible)
+            return;
+        end
         
         active = ad.control.spectra.active;
         

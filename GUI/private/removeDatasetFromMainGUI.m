@@ -12,8 +12,8 @@ function [status,message] = removeDatasetFromMainGUI(dataset,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-01-31
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -119,7 +119,9 @@ try
                         ad.control.spectra.modified>dataset(k)) = ...
                         ad.control.spectra.modified(...
                         ad.control.spectra.modified>dataset(k)) -1;
-                    if ad.control.spectra.active >= dataset(k)
+                    if isempty(ad.control.spectra.visible)
+                        ad.control.spectra.active = 0;
+                    elseif ad.control.spectra.active >= dataset(k)
                         ad.control.spectra.active = ad.control.spectra.active-1;
                     end
                 end
@@ -146,7 +148,9 @@ try
                 ad.control.spectra.modified>dataset(k)) = ...
                 ad.control.spectra.modified(...
                 ad.control.spectra.modified>dataset(k)) -1;
-            if ad.control.spectra.active >= dataset(k)
+            if isempty(ad.control.spectra.visible)
+                ad.control.spectra.active = 0;
+            elseif ad.control.spectra.active >= dataset(k)
                 ad.control.spectra.active = ad.control.spectra.active-1;
             end
         end

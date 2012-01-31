@@ -1,0 +1,41 @@
+% Sample configuration file for the TAgui_ACCwindow function of the 
+% TA toolbox
+%
+% (c) 2012, Till Biskup <till@till-biskup.de>
+%
+% This file serves as an example and documentation for the real
+% configuration in the file "TAgui_ACCwindow.ini" in the same directory.
+%
+% To automatically generate a valid config file from this file, 
+% use TAconf('create') at the MATLAB(r) command line.
+% Alternatively, you may use the functions provided by the "Configuration" 
+% panel of the TA toolbox main GUI.
+
+[acc]
+weights.min = 1
+weights.max = 1
+noise.x.min = 1
+noise.x.max = 1
+noise.y.min = 1
+noise.y.max = 1
+interpolation = 
+method = 
+MFoff.line.style = -
+MFoff.line.color = [0 0 0.55]
+MFoff.line.width = 2
+MFoff.line.marker = none
+MFon.line.color = [0 0.25 0]
+MFon.line.style = -
+MFon.line.width = 2
+MFon.line.marker = none
+DeltaMF.line.color = [0.45 0 0]
+DeltaMF.line.style = -
+DeltaMF.line.width = 2
+DeltaMF.line.marker = none
+
+[axis]
+grid.zero = 1
+grid.x = off
+grid.y = off
+grid.minor = off
+onlyActive = 1

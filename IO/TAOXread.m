@@ -50,7 +50,7 @@ function [data,warnings] = TAOXread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011-12, Till Biskup
-% 2012-01-22
+% 2012-01-31
 
 % TODO: Combining - Handle different parameters for each time trace
 % properly, especially different filters etc.
@@ -410,6 +410,8 @@ if parameters.MagPiont > 1
                 mData{k}.dataMFon = data.dataMFon(:,k);
                 mData{k}.dataMFon = mData{k}.dataMFon';
             end
+            mData{k}.label = sprintf('(%i/%i) %s',...
+                k,parameters.MagPiont,data.label);
         end
         data = mData;
     end
