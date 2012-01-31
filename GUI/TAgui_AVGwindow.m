@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-30
+% 2012-01-31
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -206,7 +206,7 @@ uicontrol('Tag','mfe_displaytype_popupmenu',...
     'Units','Pixels',...
     'Position',[10 10 mainPanelWidth-40 20],...
     'String','MFoff|MFoff+MFon|MFoff+MFon+DeltaMF|MFon|DeltaMF|sum(MFoff,MFon)',...
-    'Callback', {@popupmenu_Callback,'avgdisplaytype'}...
+    'Callback', {@popupmenu_Callback,'mfedisplaytype'}...
     );
 
 pp1_p4 = uipanel('Tag','sliderposition_panel',...
@@ -1735,7 +1735,7 @@ function popupmenu_Callback(source,~,action)
         MFEline = MFElines{get(gh.avg_panel_line_popupmenu,'Value')};
         
         switch action
-            case 'avgdisplaytype'
+            case 'mfedisplaytype'
                 ad.control.axis.MFEdisplay = value;
                 setappdata(mainWindow,'control',ad.control);
                 updateAxes();
