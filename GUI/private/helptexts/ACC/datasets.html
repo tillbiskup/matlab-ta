@@ -9,22 +9,34 @@
     <body>
 		<h1>Datasets</h1>
 		<p class="intro">
-			The datasets panel lets you choose which of the datasets currently loaded in the main GUI should be accumulated, and define which dataset to use as a "master" (more about that below).
+			The datasets panel lets you choose which of the datasets currently loaded in the main GUI should be accumulated.
 		</p>
 		<h2>Datasets lists</h2>
 		<p>
-			There are two lists of datasets, the upper being the one with the datasets not to accumulate, the lower showing the datasets that should be accumulated. The two buttons "Add" and "Remove" move the dataset selected in the respective list to the other list.
+			There are two lists of datasets, the upper being the one with the datasets not to accumulate, the lower showing the datasets that should be accumulated. The four buttons connecting the two listboxes move the currently selected dataset or all datasets, respectively, between the two list. Here, the double arrows, <key>&uArr;</key> and <key>&dArr;</key>, move all datasets, whereas the single arrow, <key>&uarr;</key> and <key>&darr;</key>, move only the currently selected dataset.
 		</p>
 		<p>
 			When opening the ACC GUI, all datasets that were set to "invisible" in the main GUI show up in the list of not accumulated datasets, whereas all datasets set to "visible" in the main GUI will be in the list of accumulated (i.e., "to accumulate") spectra.
 		</p>
-		<h2>Master dataset</h2>
+		<h2>Scrolling through the datasets</h2>
 		<p>
-			Only important if you have datasets with different spacing of the axes and/or if you use interpolation (i.e., in case of nonidentical axis values, but overlapping axes regions), this popup menu lets you choose which dataset to use as a master defining the "template" the axes of all other datasets get interpolated to (if necessary).
+			Critically for deciding which datasets to accumulate and which one to define as "master" is to get an overview of all datasets loaded. To make this task as easy as possible, you can scroll through all datasets that are currently listed as "to be accumulated" in the lower of the two listboxes. To scroll through, just use the two buttons on the right, <key>&lt;&lt;</key> and <key>&gt;&gt;</key>. If you want so see just one dataset at a time and not all datasets at once<a href="#fnt1" name="fnm1" class="fnmark">1</a>, tick the box saying "Show only active dataset".
+		</p>
+		<p>
+			<strong>Note:</strong> Be aware of the fact that in case of datasets measured with and without applied magnetic field it could be interesting and important as well to have a look at the respective different display options in order to decide which dataset to include in the accumulation. This might be especially important if you use the ACC GUI to accumulate traces from one experiment where you know that one or few of these traces should not be included (e.g. due to problems with the PMT gain or shutters or similar things).
 		</p>
 		<h2>Dimensions</h2>
 		<p>
-			Critically for deciding which datasets to accumulate and which one to define as "master" is an overview of the crucial parameters for each dataset, i.e. its size, the min and max values and steppings of the axes. All that can be conveniently read from the dimensions panel for the dataset currently highlighted in the list of accumulated (i.e. "to accumulate) datasets.
+			Another crucial part of information for deciding which datasets to accumulate and which one to define as "master" is an overview of the crucial parameters for each dataset, i.e. its size, the min and max values and steppings of the axes. All that can be conveniently read from the dimensions panel for the dataset currently highlighted in the list of accumulated (i.e. "to accumulate) datasets.
 		</p>
+		<h2>Display type</h2>
+		<p>
+			The display type popupmenu is the well-known control element from the main GUI that allows you to switch between 2D and 1D representations - and in case that you have datasets that were recorded both with and without an applied magnetic field, as well the corresponding display modes.
+		</p>
+		<div class="footnotes">
+		<p>
+			<a href="#fnm1" name="fnt1" class="fnmark">1</a>This is, of course, only true for the 1D display modes, as in the 2D display mode anyway only the currently selected (aka "active") dataset gets displayed.
+		</p>
+		</div>
 	</body>
 </html>

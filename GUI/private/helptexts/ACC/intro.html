@@ -14,7 +14,7 @@
 		<div class="hurry">
 		<h2>If in a hurry</h2>
 		<p>
-			Given that you want to accumulate similar datasets and did not do any special things to them, the default settings should be fine. Select your datasets to accumulate, hit "Apply", inspect your results (using the display settings in the results panel), have a look at the proposed label for the accumulated data, and if everything is fine, "Close" the GUI and your accumulated data will be in the main GUI. If unhappy, "Discard" and try other settings, or "Discard" and "Close".
+			Given that you want to accumulate similar datasets and did not do any special things to them, the default settings should be fine. Select your datasets to accumulate, switch to the "Accumulate" panel, have a look at the proposed label for the accumulated data, hit "Accumulate" or "Apply" (as you like) and if everything is fine, "Close" the GUI and your accumulated data will be in the main GUI. If unhappy, "Discard" and try other settings, or "Discard" and "Close".
 		</p>
 		<p>
 			<strong>Note:</strong> The accumulated data gets written to the main GUI only when closing the ACC GUI (and only if you hit "Apply" before).
@@ -22,11 +22,14 @@
 		</div>
 		<h2>To the gentle reader</h2>
 		<p>
-			The accumulation (ACC) GUI is dedicated to the task of accumulating multiple datasets. Basically, it does not care about what data you want to accumulate, as long as they share at least a minimum amount of similar parameters and are of a format that the GUI recognises. It provides the user with the necessary controls to perform the accumulation itself. Whether it makes sense to perform the accumulation with the given set of data remains totally with the user.
+			The accumulation (ACC) GUI is dedicated to the task of accumulating multiple datasets. Basically, it does not care about what data you want to accumulate, as long as they share at least a minimum amount of similar parameters and are of a format that the GUI recognises. It provides the user with the necessary controls to perform the accumulation itself.
+		</p>
+		<p>
+			<strong>Note:</strong> Whether it makes sense to perform the accumulation with the given set of data remains totally with the user.
 		</p>
 		<h3>GUI layout</h3>
 		<p>
-			Basically, the ACC GUI window is divided into three panels<a href="#fnt1" name="fnm1" class="fnmark">1</a> that are all located to the right. You can switch between them with the buttons on the top or via shortcuts Ctrl-1 to Ctrl-3.
+			Basically, the ACC GUI window is divided into three parts<a href="#fnt1" name="fnm1" class="fnmark">1</a>: The main axis to the left, the panels to the right (again, there are three different panels there), and the report panel on the bottom left. You can switch between the panels on the right with the buttons on the top or via shortcuts <key>Ctrl-1</key> to <key>Ctrl-3</key>.
 		</p>
 		<p>
 			More details to all the different panels and the meaning of their control elements can be found in the respective help topic:
@@ -35,14 +38,22 @@
 			<li><a href="datasets.html">Datasets</a></li>
 			<li><a href="accumulate.html">Accumulate</a></li>
 			<li><a href="settings.html">Settings</a></li>
+		</ul>
+		<ul>
 			<li><a href="report.html">Report</a></li>
 		</ul>
-		<h3>Normal operation</h3>
 		<p>
-			Normally, you simply go through the panels, first deciding about which datasets to accumulate, then checking the accumulation settings, the interpolation method, and then, after you have setup all things, you hit "Apply" to apply those parameters to the selected datasets and perform the actual accumulation.
+			What follows is a sketch of the typical operation of this GUI.
 		</p>
 		<p>
-			After you did that, you will see the result in the main axis, where you can inspect it in the ususal way, as 2D or 1D plots, and for the latter at any position of the other axis, respectively. Of course, the latter only applies to the case where you have 2D data. All controls for this can be found in the "Results" panel on the right. 
+			BTW: The button with the questionmark shows this help, as you might have figured out already.
+		</p>
+		<h3>Normal operation</h3>
+		<p>
+			Normally, you simply go through the panels, first deciding about which datasets to accumulate, then checking the accumulation settings, the interpolation method, and then, after you have setup all things, you hit "Accumulate" or "Apply" to apply those parameters to the selected datasets and perform the actual accumulation.
+		</p>
+		<p>
+			After you did that, you will see the result in the main axis, where you can inspect it in the ususal way, as 2D or 1D plots, and for the latter at any position of the other axis, respectively. Of course, the latter only applies to the case where you have 2D data. The controls for switching the display modes are located at the bottom of the "Datasets" panel, whereas the current position of the slider get's displayed on the bottom of the "Accumulate" panel.
 		</p>
 		<p>
 			Additionally, you will find a summary of the performed action in the "Report" panel below the axes.
@@ -50,11 +61,9 @@
 		<p>
 			If happy with the results, simply "Close" the GUI and your data will be written to the main GUI. If unhappy, hit "Discard" and either start a new round with different parameters or "Close" the GUI without writing back anything to the main GUI.
 		</p>
+		<h3>What gets displayed in the main axis?</h3>
 		<p>
-			&nbsp;
-		</p>
-		<p>
-			BTW: The button with the questionmark shows this help, as you might have figured out already.
+			As long as you have not done an actual accumulation, the main axis will show the datasets you selected to accumulate. If the checkbox "Show only selected dataset" is ticked, only the currently selected spectrum will be displayed, otherwise all spectra that have been selected to be accumulated. Once you hit "Accumulate" or "Apply" and successfully performed an accumulation, the accumulated dataset will be displayed in the main axis.
 		</p>
 		<div class="footnotes">
 		<p>

@@ -1,4 +1,8 @@
-dt {font-weight:bold}
+/* Define general styles */
+html {
+	line-height:1.4em;
+}
+/* Define single elements */
 h1 {
 	font-size:160%;
 	background:#eee;
@@ -20,6 +24,14 @@ h4 {
 	border-bottom:1px solid #ccc;
 	margin-top:1.5em;
 	}
+dt {font-weight:bold}
+key {
+	border:1px solid #ccc;
+	border-style:outset;
+	padding:2px 2px 0px 2px;
+	background:#eee;
+	}
+/* Define classes */
 .intro {
 	font-style:italic;
 	}

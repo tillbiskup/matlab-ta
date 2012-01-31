@@ -9,15 +9,28 @@
     <body>
 		<h1>Accumulation settings</h1>
 		<p class="intro">
-			The accumulation settings panel lets you choose between (currently two) different types of accumulation: cumulative sum and weighted sum.
+			The accumulation settings panel lets you set display options and further details in case the accumulation method "weighted" has been selected.
+		</p>
+		<h2>Grid</h2>
+		<p>
+			This options let you define whether or not to display a grid and whether to show a horizontal line at zero. They are basically identical to the respective display settings of the main GUI.
+		</p>
+		<h2>Line settings</h2>
+		<p>
+			These settings let you define how the lines of the accumulated dataset in the 1D representations are displayed. In case of MFE data you can control here in detail the appearance of each of the three possible lines (MFoff, MFon, DeltaMF).
+		</p>
+		<h2>Weighting &amp; S/N determination</h2>
+		<p>
+			If you choose "weighted" as accumulation method, you can control the limits of the weights and set the area that is used to determine the noise level of a dataset.
 		</p>
 		<p>
-			Normally you want to choose the first option, cumulative sum. This performs a simple sum operation on the selected datasets (of course handling all other things as choosing the overlapping part of the axes and interpolate if necessary).
+			<strong>Note:</strong> Currently, only the "cumulative" accumulation method is supported, therefore, these control have no meaning (yet).
 		</p>
+		<h3>Weighting</h3>
 		<p>
-			If you choose "Weighted" it performs a sum weighted by the best achievable signal to noise ratio. Additionally, you can specify the minimum and maximum weighting factor.
+			Set here the lower and upper limits for the weights that are used in the weighted accumulation.
 		</p>
-		<h2>S/N determination</h2>
+		<h3>S/N determination</h3>
 		<p>
 			To determine the signal to noise ratio (S/N) it is necessary to specify a part of the dataset that counts for as noise to determine the noise amplitude. This will then be compared to the overall amplitude of the dataset.
 		</p>
@@ -27,38 +40,12 @@
 		<p>
 			For convenience, you may type "end" instead of a number to get the last position (index) of a given dataset.
 		</p>
-		<h2>Interpolation methods</h2>
+		<h2>"Save" and "Defaults" buttons</h2>
 		<p>
-			Given the fact that you want to accumulate datasets that do not share identical values for their axes, you need to perform an interpolation on at least one of them to be able to sum them up.
+			If you press <key>Defaults</key>, that will reset all your settings to the defaults as read from the respective configuration file of this GUI.
 		</p>
 		<p>
-			Here, the "master dataset" settings from the datasets panel becomes important, as it sets the reference all other datasets get interpolated to.
-		</p>
-		<p>
-			In the simplest case, you have just different step sizes of the axes with partly identical values (e.g., one spectrum with 1 G field resolution, another one with 0.5 G field resolution).
-		</p>
-		<p>
-			If you want to go for the larger stepping, you can set the interpolation method to none and simply select the dataset with the larger stepping as the master.
-		</p>
-		<p>
-			Otherwise, you need to choose between one of several interpolation methods:
-		</p>
-		<dl>
-			<dt>linear</dt>
-			<dd>Linear interpolation</dd>
-			<dt>spline</dt>
-			<dd>Cubic spline interpolation</dd>
-			<dt>cubic</dt>
-			<dd>Piecewise cubic Hermite interpolation</dd>
-		</dl>
-		<p>
-			For further details, refer to the MATLAB(r) documentation for the "interp1" function.
-		</p>
-		<p>
-			<strong>Note:</strong> If you specify here whatever interpolation method, but the accumulation function detects that no interpolation is necessary, it will not perform any interpolation and state that fact in the accumulation report.
-		</p>
-		<p>
-			Vice versa, if the accumulation function detects that interpolation is necessary to accumulate datasets, but you didn't specify an interpolation method here, it will use "linear" as a default and tell you about it in the accumulation report.
+			The <key>Save</key> button will allow you in the future to save your altered settings to the configuration file.
 		</p>
 	</body>
 </html>
