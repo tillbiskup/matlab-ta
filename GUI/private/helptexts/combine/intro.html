@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Combine window : Introduction</title>
+    </head>
+    <body>
+		<h1>Introduction</h1>
+		<p class="intro">
+			A rather short introduction to the Combine GUI.
+		</p>
+		<p>
+			<strong>Important note:</strong> This GUI does not prevent the user from doing stupid things. Therefore, <em>you are entirely responsible by yourself</em> for any results you obtain.
+		</p>
+		<div class="hurry">
+		<h2>If in a hurry</h2>
+		<p>
+			In the simplest case there is only one set of datasets that can be combined to a single dataset, e.g. if you just loaded such data and simply forgot to check the "Combine datasets" checkbox before hitting "Load" in the main GUI. In such case just hit "Add" in the upper panel and then "Combine" and "Close".
+		</p>
+		<p>
+			If there is more than one set of datasets that can be combined, select the datasets you want to combine, by selecting first the format and then the file basename and hitting "Add" in the upper panel, followed by pressing "Combine" and "Close".
+		</p>
+		<p>
+			For all more complicated situations, please refer to the more detailed description below.
+		</p>
+		</div>
+		<h2>To the gentle reader</h2>
+		<p>
+			Combining several datasets into a single dataset can be quite a tricky task. Therefore, the Combine GUI will give you full control over this process. You can specifically select all datasets that you want to combine into a single dataset, and all that comfortably by selecting by file format and file basename of the datasets loaded.
+		</p>
+		<h3>GUI layout</h3>
+		<p>
+			Basically, the Combine GUI window is divided into three panels that are arranged vertically. These three panels reflect the three stages of combining datasets.
+		</p>
+		<p>
+			??? More details to all the different panels and the meaning of their control elements can be found in the respective help topic.
+		</p>
+		<h3>Normal operation</h3>
+		<p>
+			In the simplest case, i.e. if there is only one set of datasets in the GUI that can be combined to a single dataset, the lists in the first panel contain each only one entry. Therefore, just hit "Add" in the upper panel and then "Combine" and "Close".
+		</p>
+		<p>
+			Normally, such situation stems from loading datasets that contain of multiple files, but forgetting to check the "Combine datasets" checkbox before hitting "Load" in the main GUI.
+		</p>
+		<p>
+			If there is more than one set of datasets that can be combined, e.g. if you loaded a whole directory with several measurements consisting of multiple files each, select the datasets you want to combine, by selecting first the format (if there is more than one) and then the file basename and hitting "Add" in the upper panel, followed by pressing "Combine" and "Close".
+		</p>
+		<h3>Limitations</h3>
+		<p>
+			Combining datasets is limited to datasets of the same file format.<a href="#fnt1" name="fnm1" class="fnmark">1</a>
+		</p>
+		<p>
+			BTW: The button with the questionmark shows this help, as you might have figured out already.
+		</p>
+		<div class="footnotes">
+		<p>
+			<a href="#fnm1" name="fnt1" class="fnmark">1</a>Currently, I cannot see any good reason why somebody wants to combine datasets that stem from files with different file formats. The only reason for combining datasets is where a single dataset has been recorded as set of files (mostly, every time profile in a single file), and in such cases, every dataset (i.e., time profile) should have been loaded from a file with the same file format.
+		</p>
+		</div>
+	</body>
+</html>
