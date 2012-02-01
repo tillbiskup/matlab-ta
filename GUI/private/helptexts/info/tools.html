@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Info window : Tools</title>
+    </head>
+    <body>
+		<h1>Tools</h1>
+		<p class="intro">
+			This panel provides you with additional tools such as reading and writing metafiles (files containing information about measurements/datasets in a format that is both machine and human readable).
+		</p>
+		<p>
+			<strong>Please note:</strong> Currently, most of the panel is just a technical preview without any functionality. As soon as time allows, fuctions will be added. That may well lead to a complete restructuring of the panel.
+		</p>
+		<p>
+			Below is just a short explanation of what functions are planned.
+		</p>
+		<h2>Info file read</h2>
+		<p>
+			All the information contained in the "display" structure of a dataset that was loaded into the main GUI.
+		</p>
+		<dl>
+			<dt>File</dt>
+			<dd>Name of the metafile to read. The button on the right, marked "...", will fire up a file selection dialogue that let's the user choose a file interactively.</dd>
+			<dt>Format</dt>
+			<dd>Format of the metafile to be read.</dd>
+			<dt>Show</dt>
+			<dd>Show the metafile selected above in the "Info file display" below.</dd>
+			<dt>Apply</dt>
+			<dd>Apply the values of the (recognised, see below under "Metafile display") parameters read from the metafile to the currently active dataset.</dd>
+		</dl>
+		<h2>Info file write</h2>
+		<p>
+			Same as above, but for writing metafiles rather than reading them.
+		</p>
+		<p>
+			The idea behind writing metafiles is to have a nice and handy way of summing up all necessary information for one dataset that could be even printed out and put into a lab book.
+		</p>
+		<h2>Info file display</h2>
+		<p>
+			Used to display both the metafile read via the "Metafile read" panel or the file generated via the "Metafile write" panel above. In case you display a metafile that has been read, the lines that got recognised will be marked left to the line numbers, thus helping the user to immediately recognise which of the parameters of a given metafile have been recognised by the system and can be applied straight away to the parameters of the currently selected dataset.
+		</p>
+		<h2>Report</h2>
+		<p>
+			Some may remember from earlier versions of the toolbox that there was such thing as a report generator that created PDF files (via LaTeX) giving both a summary of all parameters of a dataset and display the dataset via a series of figures showing different of its aspects.
+		</p>
+		<p>
+			This panel will provide the user with all necessary controls to create such reports.
+		</p>
+		<h2>LIS</h2>
+		<p>
+			Try to find out what "LIS" may stand for, if you don't already know. Plans are that this panel will give you - at some point in the far future - access to such a system (that beforehand has to be layed out, implemented, and installed), and therefore provide you with all functionality necessary to have a structured, accessible and useful storage of both data and information.
+		</p>
+	</body>
+</html>

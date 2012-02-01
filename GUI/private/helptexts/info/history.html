@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Info window : History</title>
+    </head>
+    <body>
+		<h1>History</h1>
+		<p class="intro">
+			This panel gives you full access to the history of the currently selected dataset, including all the parameters.
+		</p>
+		<p>
+			As we are not in Orwell's world, none of these fields can be edited.
+		</p>
+		<h2>History record</h2>
+		<p>
+			A listbox for selecting the history record you want to see more information for. If there is no history for the currently selected dataset, this listbox will be empty.
+		</p>
+		<h2>Summary</h2>
+		<p>
+			A short summary of the history record currently selected.
+		</p>
+		<dl>
+			<dt>Date</dt>
+			<dd>The date the action was performed on the current dataset.</dd>
+			<dt>Method</dt>
+			<dd>The name of the Matlab(r) function used to perform the actual task.</dd>
+			<dt>Operator</dt>
+			<dd>The username of the user logged in to the system when performing the task.</dd>
+		</dl>
+		<h2>System</h2>
+		<p>
+			Some general information about the system used to perform the task.
+		</p>
+		<dl>
+			<dt>Platform</dt>
+			<dd>The operating system.</dd>
+			<dt>Matlab version</dt>
+			<dd>The Matlab(r) version used.</dd>
+			<dt>Toolbox version</dt>
+			<dd>The version of the TA toolbox used.</dd>
+		</dl>
+		<h2>Parameters</h2>
+		<p>
+			A textual report of the parameters used to perform the task.
+		</p>
+		<p>
+			Details will follow as soon as I sorted out how to implement that properly.
+		</p>
+		<h2>Report</h2>
+		<p>
+			A textual report of the task performed. Currently, especially the accumulation will write such reports including all necessary information in a nicely readable way.
+		</p>
+	</body>
+</html>

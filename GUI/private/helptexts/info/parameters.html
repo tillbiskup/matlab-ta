@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Info window : Parameters</title>
+    </head>
+    <body>
+		<h1>Parameters of the measurement</h1>
+		<p class="intro">
+			This panel displays all the parameters of the dataset that are stored in the parameters structure of the current dataset.
+		</p>
+		<p>
+Not every dataset has originally values for all the fields, and not every field is editable (especially, a few of the units for different fields are fixed).
+		</p>
+		<p>
+			Be especially careful with the fields marked accordingly, as changing their values might corrupt your dataset.
+		</p>
+		<p>
+			If you change some of the parameters in a way that would obviously corrupt your dataset, the respective fields get marked in red, and those parameters are not applied to the dataset.
+		</p>
+		<p>
+			Due to the wealth of parameters, the panel has been divided into several subpanels, called "pages" here. To switch between the pages, use the buttons on top.
+		</p>
+		<h2>Sample</h2>
+		<p>
+			Information about the sample. With most raw data read in to the GUI, these fields will be empty. Nevertheless, the fields provide you with means to at least add the most important bits of information regarding the sample measured directly to the dataset.
+		</p>
+		<dl>
+			<dt>Name</dt>
+			<dd>A rather short name of the sample that helps you recognising it. May well be "lab slang"</dd>
+			<dt>Cuvette</dt>
+			<dd>Type of the optical cuvette used</dd>
+			<dt>Description</dt>
+			<dd>More comprehensive description of the sample. Multiline without fixed limit, but be aware of that this information gets stored along with the data, so please, no short stories...</dd>
+			<dt>Preparation</dt>
+			<dd>Details of the sample preparation. Multiline without fixed limit, but same limits as for the description apply.</dd>
+		</dl>
+		<h2>General</h2>
+		<p>
+			General information about the current dataset.
+		</p>
+		<dl>
+			<dt>Date (start)</dt>
+			<dd>Starting date the data were recorded at. Use "yyyy-mm-dd" as format. If you really want to add time as well, the format of choice would "yyyy-mm-dd HH:MM:SS".</dd>
+			<dt>Date (end)</dt>
+			<dd>End date the data were recorded at. Use "yyyy-mm-dd" as format. If you really want to add time as well, the format of choice would "yyyy-mm-dd HH:MM:SS".</dd>
+			<dt>Operator</dt>
+			<dd>The username/real name of the person recording the data.</dd>
+			<dt>No. of runs</dt>
+			<dd>Number of runs, that is not the number of averages, but the number of complete runs.</dd>
+		<h2>Axis labels</h2>
+		<p>
+			Axis labels for all three axes. Normally, x is the time axis, y the field axis, and z the intensity.
+		</p>
+		<p>
+			For correct typesetting, all fields are split in "measure" and "unit" and get divided by a slash ("/") on display.
+		</p>
+		<h2>Temperature</h2>
+		<p>
+			Information about the temperature the sample was measured at and how it was achieved.
+		</p>
+		<dl>
+			<dt>Temperature</dt>
+			<dd>The actual temperature the sample was measured at.</dd>
+			<dt>Controller</dt>
+			<dd>Controlling unit used to keep the temperature, if any.</dd>
+			<dt>Cryostat</dt>
+			<dd>Model name of the cryostat used.</dd>
+			<dt>Cryogen</dt>
+			<dd>Cryogen used for setting the temperature, e.g. "LN2", "LHe", "H2O"</dd>
+		</dl>
+		<h2>Spectrometer</h2>
+		<p>
+			Information about the spectrometer used to measure the data.
+		</p>
+		<dl>
+			<dt>Name</dt>
+			<dd>Either the model name (in case of commercial setups) or a short unique identifier.</dd>
+			<dt>Software</dt>
+			<dd>Software and version used to record the data.</dd>
+		</dl>
+		<h2>Pump</h2>
+		<p>
+			Information about that part of the setup that was used to generate the pump beam. Normally, this is some kind of laser setup.
+		</p>
+		<dl>
+			<dt>Type</dt>
+			<dd>Type of light source used for pumping (laser, ...).</dd>
+			<dt>Model</dt>
+			<dd>Model name of pump light source.</dd>
+			<dt>Wavelength</dt>
+			<dd>Wavelength of pump light source.</dd>
+			<dt>Rep. rate</dt>
+			<dd>Repetition rate of pump light beam.</dd>
+			<dt>Power</dt>
+			<dd>Power of pump light beam.</dd>
+		</dl>
+		<p>
+			Additional information about the kind of <strong>tunable</strong> used to achieve the wavelength. The two standard types of tunables are either a dye laser or an optical parametric oscillator (OPO).
+		</p>
+		<dl>
+			<dt>Type</dt>
+			<dd>Type of tunable light source used (OPO or dye laser).</dd>
+			<dt>Model</dt>
+			<dd>Model name of tunable light source used.</dd>
+			<dt>Dye</dt>
+			<dd>In case of dye laser: Name of the laser dye.</dd>
+		</dl>
+		<h2>Probe</h2>
+		<p>
+			Information about that part of the setup that was used to generate the probe beam. Typically, this is either an arc lamp or another laser.
+		</p>
+		<dl>
+			<dt>Type</dt>
+			<dd>Type of proble light source.</dd>
+			<dt>Model</dt>
+			<dd>Model name of proble light source.</dd>
+			<dt>Power</dt>
+			<dd>Power of probe light beam.</dd>
+			<dt>Filter</dt>
+			<dd>Filter(s) used (comma separated list).</dd>
+			<dt>Background</dt>
+			<dd>Background correction used (none/lamp/fluorescence).</dd>
+		</dl>
+		<p>
+			Some additional information about the <strong>wavelength</strong> region measured over.
+		</p>
+		<dl>
+			<dt>Start</dt>
+			<dd>Start value of wavelength axis.</dd>
+			<dt>Stop</dt>
+			<dd>End value of wavelength axis.</dd>
+			<dt>Step</dt>
+			<dd>Step width of wavelength axis.</dd>
+			<dt>Sequence</dt>
+			<dd>Direction of measurement (up/down/stochastic) or comma-separated list of wavelength regions measured.</dd>
+		</dl>
+		<h2>Detection</h2>
+		<p>
+			Information about the detection system used. Typically, this is either a photomultiplier tube (PMT) or a CCD camera.
+		</p>
+		<dl>
+			<dt>Type</dt>
+			<dd>Type of detector (PMT, CCD).</dd>
+			<dt>Model</dt>
+			<dd>Model name of the detector used.</dd>
+			<dt>Power supply</dt>
+			<dd>Power supply of detector.</dd>
+			<dt>Impedance</dt>
+			<dd>Impedance of the detection.</dd>
+			<dt>Time constant</dt>
+			<dd>Time constant that typically results from the impedance. The actual time resolution of the recorder should be accordingly faster.</dd>
+		</dl>
+		<h2>Spectrograph</h2>
+		<p>
+			Information about the spectrograph (monochromator) used.
+		</p>
+		<dl>
+			<dt>Type</dt>
+			<dd>Type of spectrograph used.</dd>
+			<dt>Model</dt>
+			<dd>Model name of spectrograph used.</dd>
+			<dt>Aperture front</dt>
+			<dd>Aperture at the front of the spectrograph.</dd>
+			<dt>Aperture back</dt>
+			<dd>Aperture at the back of the spectrograph.</dd>
+		</dl>
+		<h2>Transient</h2>
+		<p>
+			Information about the time traces (transients) the dataset consists of.
+		</p>
+		<dl>
+			<dt>Dimension</dt>
+			<dd>Length of the time trace in points, read-only field.</dd>
+			<dt>Trigger pos.</dt>
+			<dd>Position of the trigger pulse within the time trace; in points.</dd>
+			<dt>Length</dt>
+			<dd>Length of the time trace in actual units; you can specify the unit as well.</dd>
+		</dl>
+		<h2>Recorder</h2>
+		<p>
+			Information about the transient recorder used to record the time traces.
+		</p>
+		<dl>
+			<dt>Model</dt>
+			<dd>A string identifying the model of the transient recorder, e.g. "Tektronix TDS520A".</dd>
+			<dt>Averages</dt>
+			<dd>Number of averages as set at the recorder. Normally, that means that this averaging is already done within the recorder. To be distinguished from measurements where you get data for each single measurement.</dd>
+			<dt>Coupling</dt>
+			<dd>Type of coupling of the transient recorder, usually one out of "AC"/"DC"/"GND".</dd>
+			<dt>Time base</dt>
+			<dd>Time base of the transient recorder (oscilloscope) used to acquire the data. Normally, this is given as "per division".</dd>
+			<dt>Sensitivity</dt>
+			<dd>The sensitivity setting of the transient recorder (oscilloscope) used to acquire the data. Normally, this is given as "per division". </dd>
+			<dt>Bandwidth</dt>
+			<dd>Bandwidth of the transient recorder (oscilloscope).</dd>
+		</dl>
+		<h2>MFE</h2>
+		<p>
+			Information about coils, power supply etcetera used for generating the external magnetic field for measuring magnetic field effects.
+		</p>
+		<dl>
+			<dt>Field</dt>
+			<dd>The actual field at the sample. Especially if using a cryostat, clearly different (and much less) than the field that you can generate using the coils.</dd>
+			<dt>Type</dt>
+			<dd>Type of the coils used, e.g. "Helmholtz"</dd>
+			<dt>Model</dt>
+			<dd>Actual model of the coils, if lab-built, some description</dd>
+			<dt>Power supply</dt>
+			<dd>Model name of the power supply used for the coils.</dd>
+			<dt>Gaussmeter</dt>
+			<dd>Model name of the gaussmeter used to measure the field.</dd>
+		</dl>
+	</body>
+</html>

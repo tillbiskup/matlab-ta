@@ -6,7 +6,7 @@ function varargout = TAgui_info_helpwindow(varargin)
 % See also TAGUI_HELPWINDOW
 
 % (c) 2012, Till Biskup
-% 2012-01-23
+% 2012-02-01
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -68,17 +68,36 @@ uicontrol('Tag','helptopic_popupmenu',...
     );
 
 % Create the message window
-textdisplay = uicontrol('Tag','status_text',...
-    'Style','edit',...
-    'Parent',hMainFigure,...
-    'BackgroundColor',[1 1 1],...
-    'FontUnit','Pixel','Fontsize',12,...
+% NEW: Use a Java Browser object to display HTML
+jObject = com.mathworks.mlwidgets.html.HTMLBrowserPanel;
+[browser,container] = javacomponent(jObject, [], hMainFigure);
+set(container,...
     'Units','Pixels',...
-    'HorizontalAlignment','Left',...
-    'Position',[10 50 guiSize(1)-20 guiSize(2)-135],...
-    'Enable','inactive',...
-    'Max',2,'Min',0,...
-    'String','');
+    'Position',[10 50 guiSize(1)-20 guiSize(2)-135]...
+    );
+
+uicontrol('Tag','back_pushbutton',...
+    'Style','pushbutton',...
+	'Parent', hMainFigure, ...
+    'BackgroundColor',defaultBackground,...
+    'FontUnit','Pixel','Fontsize',12,...
+    'String','<html>&larr;</html>',...
+    'TooltipString','Go to previous page in browser history',...
+    'pos',[10 10 40 30],...
+    'Enable','on',...
+    'Callback',{@pushbutton_Callback,'browserback'} ...
+    );
+uicontrol('Tag','fwd_pushbutton',...
+    'Style','pushbutton',...
+	'Parent', hMainFigure, ...
+    'BackgroundColor',defaultBackground,...
+    'FontUnit','Pixel','Fontsize',12,...
+    'String','<html>&rarr;</html>',...
+    'TooltipString','Go to next page in browser history',...
+    'pos',[50 10 40 30],...
+    'Enable','on',...
+    'Callback',{@pushbutton_Callback,'browserforward'} ...
+    );
 
 uicontrol('Tag','close_pushbutton',...
     'Style','pushbutton',...
@@ -108,9 +127,9 @@ try
         varargout{1} = hMainFigure;
     end
     % Read text for welcome message from file and display it
-    helpTextFile = fullfile(TAinfo('dir'),'GUI','private','helptexts','info','intro.txt');
-    helpText = textFileRead(helpTextFile);
-    set(textdisplay,'String',helpText);
+    helpTextFile = fullfile(TAinfo('dir'),...
+        'GUI','private','helptexts','info','intro.html');
+    browser.setCurrentLocation(helpTextFile);
 catch exception
     try
         msgStr = ['An exception occurred. '...
@@ -135,49 +154,40 @@ end
 
 function helptext_popupmenu_Callback(source,~)
     try
-        % Get handles of main window
-        gh = guihandles(hMainFigure);
-        
         helpTexts = cellstr(get(source,'String'));
         helpText = helpTexts{get(source,'Value')};
         
         switch helpText
             case 'Introduction'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','intro.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','intro.html');
+                browser.setCurrentLocation(helpTextFile);
             case 'General'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','general.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','general.html');
+                browser.setCurrentLocation(helpTextFile);
             case 'Parameters'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','parameters.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','parameters.html');
+                browser.setCurrentLocation(helpTextFile);
             case 'History'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','history.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','history.html');
+                browser.setCurrentLocation(helpTextFile);
             case 'Tools'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','tools.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','tools.html');
+                browser.setCurrentLocation(helpTextFile);
             case 'Key bindings'
                 % Read text from file and display it
-                helpTextFile = fullfile(...
-                    TAinfo('dir'),'GUI','private','helptexts','info','keybindings.txt');
-                helpText = textFileRead(helpTextFile);
-                set(textdisplay,'String',helpText);
+                helpTextFile = fullfile(TAinfo('dir'),...
+                    'GUI','private','helptexts','info','keybindings.html');
+                browser.setCurrentLocation(helpTextFile);
             otherwise
                 % That shall never happen
                 add2status('guiHelpPanel(): Unknown helptext');
@@ -202,7 +212,37 @@ function helptext_popupmenu_Callback(source,~)
     end
 end
 
-function keypress_Callback(src,evt)
+function pushbutton_Callback(~,~,action)
+    try
+        if isempty(action)
+            return;
+        end
+        switch action
+            case 'browserback'
+                browser.executeScript('javascript:history.back()');
+            case 'browserforward'
+                browser.executeScript('javascript:history.forward()');
+        end
+    catch exception
+        try
+            msgStr = ['An exception occurred. '...
+                'The bug reporter should have been opened'];
+            add2status(msgStr);
+        catch exception2
+            exception = addCause(exception2, exception);
+            disp(msgStr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % If even displaying the bug report window fails...
+            exception = addCause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
+
+function keypress_Callback(~,evt)
     try
         if isempty(evt.Character) && isempty(evt.Key)
             % In case "Character" is the empty string, i.e. only modifier key
