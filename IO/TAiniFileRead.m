@@ -33,14 +33,13 @@ function [ data, warnings ] = TAiniFileRead ( fileName, varargin )
 %                    Character used for starting a block
 %                    Default: [
 %
-%   typeConversion - char
-%                    Character used for starting a block
-%                    Default: [
+%   typeConversion - boolean
+%                    Whether or not to perform a type conversion str2num
 %
 % See also: iniFileWrite
 
 % (c) 2008-12, Till Biskup
-% 2012-01-29
+% 2012-02-01
 
 % TODO
 %	* Change handling of whitespace characters (subfunctions) thus that it

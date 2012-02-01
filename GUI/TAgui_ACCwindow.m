@@ -40,7 +40,7 @@ guiSize = get(hMainFigure,'Position');
 guiSize = guiSize([3,4]);
 
 axes(...         % the axes for plotting selected plot
-    'Tag','mainAxis',...
+    'Tag','axis',...
 	'Parent', hMainFigure, ...
     'FontUnit','Pixel','Fontsize',12,...
     'Units', 'Pixels', ...
@@ -2913,6 +2913,16 @@ function updateAxes()
                 otherwise
                     % unknown
             end
+        end
+        
+        % Set grid for main axis
+        set(gh.axis,'XGrid',ad.control.axis.grid.x);
+        set(gh.axis,'YGrid',ad.control.axis.grid.y);
+        if (isequal(ad.control.axis.grid.x,'on'))
+            set(gh.axis,'XMinorGrid',ad.control.axis.grid.minor);
+        end
+        if (isequal(ad.control.axis.grid.y,'on'))
+            set(gh.axis,'YMinorGrid',ad.control.axis.grid.minor);
         end
         
     catch exception
