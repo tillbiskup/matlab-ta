@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : MFE window : MFE</title>
+    </head>
+    <body>
+		<h1>MFE</h1>
+		<p class="intro">
+			The MFE panel lets you set all the parameters necessary for calculating the MFE and lets you perform the actual MFE calculation.
+		</p>
+		<h2>Average area</h2>
+		<p>
+			This is the area the MFE gets calculated for (as a time-averaged MFE).
+		</p>
+		<p>
+			The average area can be defined in terms of start and stop values or a start and a delta value.
+		</p>
+		<p>
+			Therefore: If you change the delta value, it will change the stop value as well, but keep the start value constant. If your delta value is too big for the current settings of the start value and given the size of the dataset in the particular dimension, then the delta value gets reset to the maximum possible value for the given start value.
+		</p>
+		<h2>MFE display options</h2>
+		<p>
+			The options here let you control what gets displayed in the main axis of the MFE GUI window.
+		</p>
+		<h3>AVG area</h3>
+		<p>
+			Display area that is averaged over for calculating the MFE. Even if you switch this off, it gets displayed in the small window on the bottom left.
+		</p>
+		<h3>Smoothing</h3>
+		<p>
+			When in "1D along y" display mode and in one of the MFE display modes that display the "DeltaMF" trace, show smoothed trace. The smoothing filter settings can be set via the "Settings" panel.
+		</p>
+		<h3>Mean</h3>
+		<p>
+			Display mean value(s) of current trace(s) as horizontal line(s) if in "1D along x" display mode. This may help to visualise the mean of a given trace.
+		</p>
+		<h3>Std deviation</h3>
+		<p>
+			If in "1D along x" display mode, display standard deviation value(s) of the calculated mean value(s) of current trace(s) as horizontal line(s)
+		</p>
+		<p>
+			If in "1D along y" display mode, these values get displayed as error bars.
+		</p>
+		<p>
+			This may help to visualise the standard deviation of the calculated mean value of a given trace.
+		</p>
+		<h2>Calculate MFE button</h2>
+		<p>
+			Pressing this button will result in calculating the MFE for the given trace with the given area to average over. The results will be displayed in the report subpanel below the button. If no area was selected, this will be stated in the report subpanel instead.
+		</p>
+		<h2>MFE report</h2>
+		<p>
+			Results of the MFE calculation.
+		</p>
+		<p>
+			The <key>Save</key> button lets you choose a file to save the report to.
+		</p>
+	</body>
+</html>

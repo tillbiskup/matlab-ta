@@ -154,9 +154,6 @@ end
 
 function helptext_popupmenu_Callback(source,~)
     try
-        % Get handles of main window
-        gh = guihandles(hMainFigure);
-        
         helpTexts = cellstr(get(source,'String'));
         helpText = helpTexts{get(source,'Value')};
         
@@ -245,7 +242,7 @@ function pushbutton_Callback(~,~,action)
     end
 end
 
-function keypress_Callback(src,evt)
+function keypress_Callback(~,evt)
     try
         if isempty(evt.Character) && isempty(evt.Key)
             % In case "Character" is the empty string, i.e. only modifier
