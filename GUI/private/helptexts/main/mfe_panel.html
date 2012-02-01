@@ -62,10 +62,16 @@
 		</p>
 		<h3>Calculate MFE</h3>
 		<p>
-			To calculate the absolute MFE, the following formula is used:
+			To calculate the absolute MFE, normally the following formula is used:
 		</p>
 		<p>
-			MFE = 1/(t2-t1) Int_t1^t2 ((DeltaDeltaA(B,t))/(DeltaA(0 mT,t))) dt
+			<img src="formula-mfe-1.png" height="40" />
+		</p>
+		<p>
+			Due to possible issues with very noisy datasets where taking the absolute of the MFon trace would cause problems, a slightly altered version of the above formula is used that gives as well the correct sign of the MFE:
+		</p>
+		<p>
+			<img src="formula-mfe-2.png" height="40" />
 		</p>
 		<p>
 			The MFE may also be calculated as a function of time: at any time t the instantaneous MFE can be calculated as the ratio of DeltaDeltaA(B,t) and DeltaA(0 mT,t). However, for noisy data, or at points where DeltaA(0 mT,t) is close to zero, this can lead to large variations in the calculated MFE. Therefore, use of time-averaged MFEs is preferential.

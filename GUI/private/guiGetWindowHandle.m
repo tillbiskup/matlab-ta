@@ -47,6 +47,8 @@ try
     windowTags.TAgui_AVG_helpwindow = 'TAgui_AVG_helpwindow';
     windowTags.TAgui_MFEwindow = 'TAgui_MFEwindow';
     windowTags.TAgui_MFE_helpwindow = 'TAgui_MFE_helpwindow';
+    windowTags.TAgui_fitwindow = 'TAgui_fitwindow';
+    windowTags.TAgui_fit_helpwindow = 'TAgui_fit_helpwindow';
     
     % Define default tag
     defaultTag = windowTags.TAgui;

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Fit window : Fit</title>
+    </head>
+    <body>
+		<h1>Fit</h1>
+		<p class="intro">
+			The fit panel lets you set all the crucial parameters for the actual fit.
+		</p>
+		<h2>Fit area</h2>
+		<p>
+			To tell the fit function which areas actually to fit, those areas need to be defined. The most convenient way to do so is to use the pointer and draw those areas.
+		</p>
+		<p>
+			This is done by pressing the toggle button "Draw". As long as this button is active, you can use your pointer to add and modify the fit areas in the main display.
+		</p>
+		<p>
+			If you want to hide the area(s), but not get rid of them, e.g. after you fitted successfully and want to inspect in more detail the fit, without loosing the settings for the fit area, press "hide", and the areas will still be present, but not displayed.
+		</p>
+		<p>
+			Finally, to completely remove all fit areas, use the "Reset" button. This will remove all fit areas present.
+		</p>
+		<p>
+			The appearance (colour and transparency) of the fit areas can be changed in the "Settings" panel. See there for details.
+		</p>
+		<h2>Fit function</h2>
+		<p>
+			The core of all fitting tasks is to select the actual function to fit to your data.
+		</p>
+			Here, you can choose between a set of predefined functions, such as "linear", "quadratic", "exponential", and "biexponential". Each of these functions is displayed in the edit field below the popup menu.
+		</p>
+		<p>
+			In a later version of this GUI, you will be provided with the possibility to define your own fit function. This will be possible by entering the fit function in a similar way as is shown for the predefined ones in the respective edit field. Using one of the predefined functions as template is highly recommended.
+		</p>
+		<p>
+			In case of a user-defined fit function you need to specify the number of coefficients to fit.
+		</p>
+		<p>
+			The button "Test" will perform a basic test of the fit function you entered, and the results of this test will be displayed in the "Report" panel below the main axis. This is to prevent Matlab to crash if you have typos in your function or defined something Matlab does not recognise or understand.
+		</p>
+		<h2>Fit method</h2>
+		<p>
+			Here, you can select which Matlab function will be used to fit the selected function to your data. Default is "fminsearch", as this is provided by Matlab without any additional toolbox.
+		</p>
+		<p>
+			For details regarding the fitting algorithm used, please refer to the Matlab documentation of the respective function.
+		</p>
+		<p>
+			NB: There are plans to extend this to allow for using the functions provided by the "Matlab Optimization Toolbox".
+		</p>
+		<h2>Coefficients</h2>
+		<p>
+			The number of coefficients to fit is determined by the function that should be fitted to the data. Furthermore, sometimes the quality (and even the overall success) of a fit depends strongly on the initial guesses for these coefficients.
+		</p>
+		<p>
+			The table gives you the possibility to change the default starting guesses for each coefficient, and will provide you with a list of the fitted values for each coefficient.
+		</p>
+		<h2>Report</h2>
+		<p>
+			The report as displayed below the main axis can be saved to a file, using the "Save" button, and it can be cleared, using "Clear".
+		</p>
+		<h2>Fit</h2>
+		<p>
+			This button performs finally the actual fit. Results will (hopefully) appear in the main axis, and a report of the fitting process will be displayed in the "Report" panel below the main axis.
+		</p>
+	</body>
+</html>

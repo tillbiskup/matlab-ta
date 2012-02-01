@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-02-01
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -137,6 +137,9 @@ try
             return;
         case 'f6'
             TAgui_MFEwindow();
+            return;
+        case 'f7'
+            TAgui_fitwindow();
             return;
         case 'f10'
             TAgui_statuswindow();

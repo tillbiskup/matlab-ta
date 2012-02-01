@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Fit window : Display</title>
+    </head>
+    <body>
+		<h1>Display</h1>
+		<p class="intro">
+			The display panel lets you choose which of the datasets currently loaded in the main GUI should be used for fitting, set the display type and the slider parameters. In addition, it allows you to measure points and set additional reference lines.
+		</p>
+		<h2>Datasets</h2>
+		<p>
+			When opening the Fit GUI, all datasets that were set to "visible" in the main GUI show up in the list of datasets. Here, you can choose the dataset you want to perform a fit at.
+		</p>
+		<h2>Slider position</h2>
+		<p>
+			Given that you loaded a 2D dataset and are currently displaying a 1D representation along one of the two axes, you can set and get the axis positions along x and y here, both as index and unit (if available).
+		</p>
+		<p>
+			The checkbox "Show" toggles between the display of red lines for the position in x and y in the main (upper) display of the BLC GUI.
+		</p>
+		<p>
+			With <key>Maximum</key> you can conveniently set the position both in x and y to the maximum of the dataset.
+		</p>
+		<h2>Measure</h2>
+		<p>
+			To measure points, press <key>Pick</key> and select a point with the mouse in the main axis. The display will show you the position both in x and y while you are moving the pointer within the axis. Once you click, the measurement is finished and the final coordinates are displayed.
+		</p>
+		<p>
+			To clear the coordinates, press <key>Clear</key>.
+		</p>
+		<h2>Reference lines</h2>
+		<p>
+			To help with the analysis, e.g. if you want to easily determine the 1/e time for a decay, you can add reference lines to the display. Those lines can be both, horizontal or vertical, and you can create multiple lines in one graph and selectively move or delete them afterwards.
+		</p>
+		<p>
+			The easiest way to create a reference line is to press one of the two buttons, either "Horiz." for horizontal reference lines, or "Vert." for vertical reference lines. Then move with the pointer inside the main axis and simply click at the right position.
+		</p>
+		<p>
+			If you place the pointer over a line, it will change and indicate that you can now drag the line. At the same time, the current position values for this line are displayed in the "Reference lines" subpanel. Right-click deletes the line.
+		</p>
+		<p>
+			Another way of adding a line is to directky type its position into the fields provided. Therefore, select the type ("h" for horizontal, "v" for vertical"), enter the position value, either index or unit, into the respective field, and press "Return". The line should appear in the main axis.
+		</p>
+		<p>
+			To remove all reference lines at once, press the "Clear" button.
+		</p>
+		<p>
+			NB: There is ideas to make lines movable via the keyboard, once they are selected.
+		</p>
+		<p>
+			NB: Another idea would be to allow the user to type such things as "max(y)/exp(1)" into the values edit field, to make it easy to have a line exactly at 1/e and therefore to determine decay times.
+		</p>
+		<h2>Display type</h2>
+		<p>
+			The display type popupmenu is the well-known control element from the main GUI that allows you to switch between 2D and 1D representations.
+		</p>
+		<p>
+			Within the Fit GUI, it is permanently visible at the bottom right, and you can conveniently switch between the different display modes via the keyboard shortcuts Ctrl+x/y/z.
+		</p>
+	</body>
+</html>
