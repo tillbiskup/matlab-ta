@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : Datasets panel</title>
+    </head>
+    <body>
+		<h1>Dataset display</h1>
+		<p class="intro">
+			The "Datasets" panel consists of controls necessary to handle loaded datasets, their visibility, save, remove, duplicate and combine them.
+		</p>
+		<h2>The controls</h2>
+		<p>
+			A short description of all the controls of the panel.
+		</p>
+		<h3>Invisible datasets</h3>
+		<p>
+			List of all datasets currently loaded to the GUI, but not (yet) set visible.
+		</p>
+		<p>
+			If you load datasets, they first appear in this list. Toggle between invisible and visible allows you to compare different datasets in an easy and quick way. Whereas in "2D plot" display mode, only one dataset is shown at a time, in all other display modes all datasets set to visible are displayed. Furthermore, you could move datasets to invisible that you are sure of that you don't want to include in accumulation.
+		</p>
+		<p>
+			You can change the label for each dataset by doubly clicking on it.
+		</p>
+		<h3>Visible datasets</h3>
+		<p>
+			List of all datasets currently loaded to the GUI and set visible.
+		</p>
+		<p>
+			Datasets in this list are all displayed in 1D display modes, and are by default accumulated via the ACC GUI window, if you don't make changes in that window. Therefore, careful visual inspection of your datasets prior to further processing and explicit toggling of their visibility is highly recommended. Nevertheless, moving a dataset from visible to invisible allows you to quickly move it back without having it to load again from the file system (especially convenient if you made changes to datasets and are not sure yet whether to save them or not).
+		</p>
+		<p>
+			You can change the label for each dataset by doubly clicking on it.
+		</p>
+		<h3>Currently active dataset</h3>
+		<p>
+			A set of operations for the currently highlighted (currently active) visible dataset.
+		</p>
+		<p>
+			<key>Save</key> saves the currently active dataset.
+		</p>
+		<p>
+			<key>Save as</key> presents a file selection dialogue to the user that allows to specify a filename to save the dataset to.
+		</p>
+		<p>
+			<key>Remove</key> removes the current dataset from the GUI (but NOT from the file system). If the dataset was modified (star left of its label), the user gets asked what to do (save and remove, remove, cancel).
+		</p>
+		<p>
+			<key>Undo</key> will provide means to undo the last changes made to the currently active dataset.
+		</p>
+		<p>
+			<key>Get info</key> will present an additional GUI window to the user providing access to all sorts of information about the currently active dataset, including the full history of operations performed with the toolbox.
+		</p>
+		<p>
+			<key>Duplicate</key> copies the currently active dataset. This is particularly useful for 2D datasets if one wants to compare different parts of the dataset (spectra at different times, time traces at different field positions). 
+		</p>
+		<p>
+			Note: <key>Undo</key> doesn't work yet.
+		</p>
+	</body>
+</html>

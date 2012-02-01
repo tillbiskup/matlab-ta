@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : Load panel</title>
+    </head>
+    <body>
+		<h1>Load data</h1>
+		<p class="intro">
+			The "Load" panel contains all controls necessary to load datasets to the GUI.
+		</p>
+		<p>
+			The basic unit of the TA GUI is a "dataset", be it 1D or 2D. Normally, one dataset consists of a single measurement, i.e. a 2D measurement of TA data (wavelength vs. time).
+		</p>
+		<h2>The controls</h2>
+		<p>
+			A short description of all the controls of the panel.
+		</p>
+		<h3>Files to load</h3>
+		<p>
+			You can select to
+		</p>
+		<ul>
+			<li>combine multiple files, or to</li>
+			<li>load all (readable) files of a directory</li>
+		</ul>
+		<p>
+			Please, be especially careful with "combining multiple files", as it is intended to be used in case that you have datasets consisting of multiple files, normally one file per time trace (as it is the case for the TA data in Freiburg).
+		</p>
+		<h3>Preprocessing on load</h3>
+		<p>
+			Basically, there are two corrections that are applied regularly to TA datasets:
+		</p>
+		<ul>
+			<li>The pretrigger offset compensation (POC), and </li>
+			<li>the background subtraction (BGC)</li>
+		</ul>
+		<p>
+			The pretrigger offset compensation subtracts the average of the pretrigger part of every time trace from the whole time trace and therefore corrects for DC offsets in the data that are frequently encountered.
+		</p>
+		<p>
+			The background subtraction is a basic background correction that takes the first few time traces, averages over those, and subtracts the average from every time trace of the dataset, therefore correcting for the laser-induced background that is visible in off-resonant signal parts. 
+		</p>
+		<p>
+			Whereas the former can be applied without damage or side effect to every dataset, the same is not necessarily true for the background subtraction.
+		</p>
+		<p>
+			If in doubt, don't check the boxes and perform the corrections afterwards manually (via the "Processing" panel) while inspecting the data.
+		</p>
+		<h3>Axis labels</h3>
+		<p>
+			Check this box if you want the GUI to try to determine the axis labels already during load of the datasets.
+		</p>
+		<p>
+			If labels could not be determined from the dataset, defaults apply. If more than one dataset is loaded at the same time, the last dataset "wins" in terms of axes labels.
+		</p>
+		<h3>File type</h3>
+		<p>
+			Although the toolbox should be capable of detecting the file formats it can read automatically, there is the possiblity to explicitly tell the toolbox which format the data are that you want to load.
+		</p>
+		<p>
+			The list of formats gets automatically read from the file "TAload.ini" that accompagnies the TAload function. Therefore, besides "automatic" here appear all the formats defined there. The string that is displayed here is the string that is defined as the field "name" in the TAload.ini file for the respective format.
+		</p>
+		<p>
+			Currently, "combine" only works if you explicitly define the format to load.
+		</p>
+		<h3>The "Load" button</h3>
+		<p>
+			Finally, pressing the "Load" button opens the file selection dialogue and allows you to select the files/the directory you want to load datasets from.
+		</p>
+	</body>
+</html>

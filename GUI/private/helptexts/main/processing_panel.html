@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : Processing panel</title>
+    </head>
+    <body>
+		<h1>Data processing</h1>
+		<p class="intro">
+			A set of standard data (pre)processing functions are available from this panel.
+		</p>
+		<h2>The controls</h2>
+		<p>
+			A short description of all the controls of the panel.
+		</p>
+		<h3>Select dataset</h3>
+		<p>
+			A list of currently visible datasets.
+		</p>
+		<h3>Standard corrections</h3>
+		<p>
+			The two corrections routinely performed on TA datasets:
+		</p>
+		<ul>
+			<li>pretrigger offset compensation (POC)</li>
+			<li>background correction (BGC)</li>
+		</ul>
+		<p>
+			The pretrigger offset compensation subtracts the average of the pretrigger part of every time trace from the whole time trace and therefore corrects for DC offsets in the data that are frequently encountered.
+		</p>
+		<p>
+			The background subtraction is a basic background correction that takes the first few time traces, averages over those, and subtracts the average from every time trace of the dataset, therefore correcting for the laser-induced background that is visible in off-resonant signal parts. 
+		</p>
+		<p>
+			Whereas the former can be applied without damage or side effect to every dataset, the same is not necessarily true for the background subtraction.
+		</p>
+		<h3>Advanced corrections (dialogues)</h3>
+		<p>
+			For more advanced "corrections", two separate GUI windows are available:
+		</p>
+		<ul>
+			<li>baseline correction (BLC)</li>
+			<li>accumulation (ACC)</li>
+		</ul>
+		<p>
+			Both GUI windows come with their separate online help.
+		</p>
+		<h3>Smoothing (running average filter)</h3>
+		<p>
+			To reduce the noise level, it is often convenient to smooth data with a running average filter with a given filter window.
+		</p>
+		<p>
+			Currently, only "boxcar" is available, being a non-weighted running average filter that averages over the given filter window width.
+		</p>
+		<p>
+			Be aware of that filtering with a window too large compared to the spectral features can easily lead to distortions of the spectra. Therefore, use with care.
+		</p>
+	</body>
+</html>

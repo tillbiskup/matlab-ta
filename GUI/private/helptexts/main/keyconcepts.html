@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : Key concepts</title>
+    </head>
+    <body>
+		<h1>Key concepts of the GUI</h1>
+		<p class="intro">
+			A very short introduction in the key concepts behind the TA toolbox and especially its GUI.
+		</p>
+		<p>
+The whole GUI was designed to be both modular and robust. Additional emphasis was on usability.
+		</p>
+		<p>
+			The current piece of software is the result of nearly six years of development of TA data processing and analysis software and two years of GUI programming using MATLAB(TM).
+		</p>
+		<p>
+			In the following, the probably less obvious aspects of data processing and analysis will be highlighted and key concepts introduced (but not yet fully implemented) with the TA GUI/toolbox described.
+		</p>
+		<h2>Metadata</h2>
+		<p>
+			A dataset not only consists of a "list" of numbers that represent the actual data, but as well, and not less important, of a list of additional information, including, but not restricted to, the measurement setup used, the typical device parameters, details about the sample, ...
+		</p>
+		<p>
+			Different groups/people developed different stategies to save these important data (throughout "metadata") together with the pure data.
+		</p>
+		<p>
+			The TA toolbox and GUI help both to collect all these metadata and to provide the user with a convenient interface to access and modify them.
+		</p>
+		<p>
+			As the GUI save function saves the complete dataset record with its full structure to an XML file (compressed in a ZIP container), it retains the full information provided for a single dataset.
+		</p>
+		<h2>History</h2>
+		<p>
+			Closely related to the metadata, the "history" of a dataset, namely the list of operations performed during processing and analysis, is of high importance.
+		</p>
+		<p>
+			Every dataset that gets loaded into the GUI has its own "history" and every function of the GUI that performs an operation on a given dataset creates a record in that history, including the function name, the parameters used, and the date of operation.
+		</p>
+		<p>
+			Once the "history browser" is implemented, this provides the user with a convenient interface to explore the complete set of operations performed on a given dataset.
+		</p>
+		<h2>Status window</h2>
+		<p>
+			To keep track of what the GUI is currently doing, a "status window" has been added (press the "F2" key or the "Status" button on the bottom, left of this panel). Therein, all operations and some additional information are listed, each with a "time stamp" for convenient assignment.
+		</p>
+	</body>
+</html>
