@@ -1,0 +1,50 @@
+
+Welcome to the TA toolbox GUI.
+
+NOTE: This message will disappear once you press one of the above buttons. You can find it again in the help: Press "F1" or either the "Help" button in the bottom left of this GUI window or the button with the blue "?" in the bottom right below the axes.
+
+
+HOW TO USE THE GUI?
+
+-= A very brief introduction =-
+
+1. Load data
+
+The first step is to load one or more datasets. That can be done via the "load" panel that is accessed by pressing the "Load" button above.
+
+2. Toggle visibility 
+
+After loading one or more datasets from files, you need to make the data appear on the main axis to the left. Therefore, hit the "Datasets" button above that will give you all necessary control.
+
+3. Sliders
+
+You can scroll through a 2D dataset in both directions, you can scale the data in both dimensions and you can displace the data in two dimensions. Therefore, press the "Slider" button above that provides you with a convenient display of the current slider values in both data points and actual units of the axes.
+
+4. Measure
+
+One of the most natural things to do with a 2D or 1D dataset displayed is to measure distances between different points. This can be done with the "Measure" panel that will appear once you press the "Measure" button above.
+
+5. Display
+
+Once you succeeded in displaying the data in a meaningful way, you may want to either export the currently displayed data to a file (MATLAB fig, EPS, PDF, PNG, ...) or to modify the figure as a conventional MATLAB figure.
+
+Furthermore, if the data you loaded do not contain the necessary information for the axis labels, you may want to correct or set them as well.
+
+Either functionality is easily accessible: Just press the "Display" button.
+
+6. Processing
+
+For the advanced user, the "Processing" panel will provide all sorts of functions for data manipulation, such as accumulating different data sets. 
+
+7. Analysis
+
+To finally analyse your data, you might want to fit different functions to them, simulate data or perform deconvolutions. All those functions are grouped within and accessible from the "Analysis" panel.
+
+8. MFE
+
+A special feature only used for a minority of TA data is the handling of measurements of the magnetic field effect (MFE). In this case, TA time traces have been recorded both without and with a static field applied. The "MFE" panel lets you perform the usual tasks on those data.
+
+9. Configure
+
+Just added for completeness in this short description: The "Configure" panel lets you at least partly adjust the behaviour of the TA toolbox and especially the GUI to your needs.
+
