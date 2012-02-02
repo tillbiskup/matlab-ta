@@ -2997,12 +2997,12 @@ function updateAxes()
                 end
                 hold off;
                 if isscalar(xvalues)
-                    set(gh.axis,'XLim',[xvalues(1)-1 xvalues(1)+1]);
+                    set(gh.axis,'XLim',[xvalues(1)-.5 xvalues(1)+.5]);
                 else
                     set(gh.axis,'XLim',[xvalues(1) xvalues(end)]);
                 end
                 if isscalar(yvalues)
-                    set(gh.axis,'YLim',[yvalues(1)-1 yvalues(1)+1]);
+                    set(gh.axis,'YLim',[yvalues(1)-.5 yvalues(1)+.5]);
                 else
                     set(gh.axis,'YLim',[yvalues(1) yvalues(end)]);
                 end

@@ -1,0 +1,39 @@
+% Sample configuration file for the TAgui_fitwindow function of the 
+% TA toolbox
+%
+% (c) 2012, Till Biskup <till@till-biskup.de>
+%
+% This file serves as an example and documentation for the real
+% configuration in the file "TAgui_fitwindow.ini" in the same directory.
+%
+% To automatically generate a valid config file from this file, 
+% use TAconf('create') at the MATLAB(r) command line.
+% Alternatively, you may use the functions provided by the "Configuration" 
+% panel of the TA toolbox main GUI.
+
+[fit]
+area.patch.color = [0.5 0.5 1]
+area.patch.alpha = 0.4
+area.patch.edge = none
+MFoff.line.color = [0 0 0]
+MFoff.line.style = -
+MFoff.line.marker = none
+MFoff.line.width = 1
+MFon.line.color = [0 0.5 0]
+MFon.line.style = -
+MFon.line.marker = none
+MFon.line.width = 1
+DeltaMF.line.color = [1 0 0]
+DeltaMF.line.style = -
+DeltaMF.line.marker = none
+DeltaMF.line.width = 1
+display.fit = 1
+display.ignorefirstn = 0
+
+[axis]
+position = 0
+grid.zero = 1
+grid.x = off
+grid.y = off
+grid.minor = off
+onlyActive = 1

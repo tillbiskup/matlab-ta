@@ -42,7 +42,7 @@ guiSize = guiSize([3,4]);
 axes(...         % the axes for plotting selected plot
     'Tag','axis',...
 	'Parent', hMainFigure, ...
-    'FontUnit','Pixel','Fontsize',12,...
+    'FontUnit','Pixel','Fontsize',14,...
     'Units', 'Pixels', ...
     'Position',[70 250 400 400]);
 uicontrol('Tag','slider',...
@@ -1282,8 +1282,6 @@ if (mainGuiWindow)
     updateAxes();
 %     update_position_display();
 end
-
-%updateAxes();
 
 if (nargout == 1)
     varargout{1} = hMainFigure;
@@ -2577,6 +2575,16 @@ function updateAxes()
                                 y,...
                                 ad.acc.data.data...
                                 );
+                    end
+                    if isscalar(xvalues)
+                        set(gh.axis,'XLim',[x(1)-.5 x(1)+.4]);
+                    else
+                        set(gh.axis,'XLim',[x(1) x(end)]);
+                    end
+                    if isscalar(yvalues)
+                        set(gh.axis,'YLim',[y(1)-.5 yvalues(end)+.5]);
+                    else
+                        set(gh.axis,'YLim',[y(1) y(end)]);
                     end
                     set(gca,'YDir','normal');
                     % Plot axis labels

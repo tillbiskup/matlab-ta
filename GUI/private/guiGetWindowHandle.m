@@ -21,7 +21,7 @@ function handle = guiGetWindowHandle(varargin)
 % If no handle could be found, an empty cell array will be returned.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-02-02
 
 try
     % Check whether we are called with input argument
@@ -31,11 +31,13 @@ try
         identifier = '';
     end
     
+    % Add all new windows to list of window tags
+    % Ideally, the window tag is identical to the mfilename
     windowTags = struct();
     windowTags.TAgui = 'TAgui_mainwindow';
+    windowTags.TAgui_helpwindow = 'TAgui_helpwindow';
     windowTags.TAgui_aboutwindow = 'TAgui_aboutwindow';
     windowTags.TAgui_statuswindow = 'TAgui_statuswindow';
-    % Add here list of other window tags
     windowTags.TAgui_combinewindow = 'TAgui_combinewindow';
     windowTags.TAgui_combine_settingswindow = 'TAgui_combine_settingswindow';
     windowTags.TAgui_bugreportwindow = 'TAgui_bugreportwindow';
@@ -49,6 +51,7 @@ try
     windowTags.TAgui_MFE_helpwindow = 'TAgui_MFE_helpwindow';
     windowTags.TAgui_fitwindow = 'TAgui_fitwindow';
     windowTags.TAgui_fit_helpwindow = 'TAgui_fit_helpwindow';
+    windowTags.TAgui_fit_parameterwindow = 'TAgui_fit_parameterwindow';
     
     % Define default tag
     defaultTag = windowTags.TAgui;
