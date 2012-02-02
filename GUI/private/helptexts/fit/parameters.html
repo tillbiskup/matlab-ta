@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
+      lang="de" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Fit window : Parameters window</title>
+    </head>
+    <body>
+		<h1>Fit Parameters</h1>
+		<p class="intro">
+			The parameters window allows you to control the behaviour of the fit function in quite some detail.
+		</p>
+		<h2>Fit method</h2>
+		<p>
+			Here, you can select which Matlab function will be used to fit the selected function to your data. Default is "fminsearch", as this is provided by Matlab without any additional toolbox.
+		</p>
+		<p>
+			For details regarding the fitting algorithm used, please refer to the Matlab documentation of the respective function.
+		</p>
+		<p>
+			NB: There are plans to extend this to allow for using the functions provided by the "Matlab Optimization Toolbox".
+		</p>
+		<h2>Fit parameters</h2>
+		<p>
+			Sometimes, the quality (and even overall success) depends on the parameters set for the fit routine used. This table gives you both an overview of the parameters that can be set (via Matlab "optimset" function) and their current values.
+		</p>
+		<p>
+			Especially the maximum number of function evaluations ("MaxFunEvals") and iterations ("MaxIter") and the tolerance ("TolX", "TolFun") are of interest.
+		</p>
+		<p>
+			If this GUI once gets upgraded so that it gives access as well to the functions provided by the "Matlab Optimization Toolbox", this table will provide you with full access to the parameters you can set for those functions as well.
+		</p>
+		<h2>Coefficients</h2>
+		<p>
+			The number of coefficients to fit is determined by the function that should be fitted to the data. Furthermore, sometimes the quality (and even the overall success) of a fit depends strongly on the initial guesses for these coefficients.
+		</p>
+		<p>
+			The table gives you the possibility to change the default starting guesses for each coefficient, and will provide you with a list of the fitted values for each coefficient.
+		</p>
+		<h2>Defaults</h2>
+		<p>
+			To reset all settings to their default values, press this button. Note: There is no way to "undo" this.
+		</p>
+	</body>
+</html>

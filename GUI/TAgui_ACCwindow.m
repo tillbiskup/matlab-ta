@@ -1451,7 +1451,6 @@ function position_edit_Callback(source,~,position)
         switch position
             case 'xindex'
                 if strcmpi(value,'end')
-                    disp('Hm...')
                     value = length(x);
                 else
                     value = round(str2double(value));
@@ -2576,13 +2575,13 @@ function updateAxes()
                                 ad.acc.data.data...
                                 );
                     end
-                    if isscalar(xvalues)
+                    if isscalar(x)
                         set(gh.axis,'XLim',[x(1)-.5 x(1)+.4]);
                     else
                         set(gh.axis,'XLim',[x(1) x(end)]);
                     end
-                    if isscalar(yvalues)
-                        set(gh.axis,'YLim',[y(1)-.5 yvalues(end)+.5]);
+                    if isscalar(y)
+                        set(gh.axis,'YLim',[y(1)-.5 y(end)+.5]);
                     else
                         set(gh.axis,'YLim',[y(1) y(end)]);
                     end
