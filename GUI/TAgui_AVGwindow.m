@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-31
+% 2012-02-02
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2895,7 +2895,6 @@ function updateAxes()
 
                 z = [ min(min(data)) max(max(data)) ];
                 hold on;
-                % Plot 2D data
                 % Plot 2D data
                 switch ad.control.axis.MFEdisplay
                     case 'MFon'
