@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-01-26
+% 2012-02-02
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -436,7 +436,11 @@ function value = getCascadedField (struct, fieldName)
         % Get number of "." in fieldName
         nDots = strfind(fieldName,'.');
         if isempty(nDots)
-            value = struct.(fieldName);
+            if isfield(struct,fieldName)
+                value = struct.(fieldName);
+            else
+                value = '';
+            end
         else
             struct = struct.(fieldName(1:nDots(1)-1));
             value = getCascadedField(...
