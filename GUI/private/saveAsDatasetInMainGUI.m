@@ -12,7 +12,7 @@ function [status,message] = saveAsDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-02-03
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -29,6 +29,9 @@ try
         
     % Preset message
     message = '';
+    
+    % Set file extension
+    zipext = '.taz';
 
     % If there is no main GUI window, silently return
     if isempty(mainWindow)
@@ -42,8 +45,8 @@ try
     
     % Create default filename
     [fpath,fname,fext] = fileparts(ad.data{id}.file.name);
-    if ~strcmp(fext,'.zip')
-        ad.data{id}.file.name = fullfile(fpath,[fname '.zip']);
+    if ~strcmp(fext,zipext)
+        ad.data{id}.file.name = fullfile(fpath,[fname zipext]);
     end
     % Need to test for existing file and in case, change default name
     if (exist(ad.data{id}.file.name,'file'))
@@ -75,12 +78,12 @@ try
         end
         ad.data{id}.file.name = fullfile(...
             fpath,...
-            sprintf('%s_%i.zip',fname,number));
+            sprintf('%s_%i%s',fname,number,zipext));
     end
     
     % Show dialog for file selection
     [FileName,PathName,~] = uiputfile(...
-        '*.zip',...
+        zipext,...
         'Save dataset in a new file',...
         ad.data{id}.file.name);
     
@@ -121,14 +124,16 @@ try
         TAsave(ad.data{id}.file.name,ad.data{id});
     
     % In case something went wrong
-    if saveStatus
+    if ~isempty(saveStatus)
         % Adding status line
         msgStr = cell(0);
-        msgStr{length(msgStr)+1} = ...
+        msgStr{end+1} = ...
             sprintf('Problems when trying to save "%s" to file',...
             ad.data{id}.label);
-        msgStr{length(msgStr)+1} = ad.data{id}.file.name;
+        msgStr{end+1} = ad.data{id}.file.name;
+        msgStr = [ msgStr saveStatus ];
         status = add2status(msgStr);
+        warndlg(msgStr,'Problems saving file','modal');
         clear msgStr;
         return;
     else
@@ -150,6 +155,7 @@ try
     msg = {...
         sprintf('Dataset %i successfully saved',id)...
         sprintf('Label: %s',ad.data{id}.label)...
+        sprintf('File: %s',filename)...
         };
     status = add2status(msg);
     
@@ -159,6 +165,7 @@ try
     update_processingPanel();
     update_mainAxis();
     
+    msgbox(msg,'Successful saving of file','help'); 
     status = 0;
     
 catch exception

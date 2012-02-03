@@ -12,7 +12,7 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-02-03
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -43,7 +43,7 @@ try
     % Check whether selected dataset has a (valid) filename
     if ~isfield(ad.data{id}.file,'name') || ...
             (strcmp(ad.data{id}.file.name,''))
-        status = datasetSaveAs(id);
+        status = saveAsDatasetInMainGUI(id);
         return;
     else
         [fpath,fname,fext] = fileparts(ad.data{id}.file.name);
@@ -90,7 +90,7 @@ try
                 'Cancel');
             switch answer
                 case 'Save as'
-                    status = datasetSaveAs(id);
+                    status = saveAsDatasetInMainGUI(id);
                     return;
                 case 'Cancel'
                     return;
@@ -105,14 +105,16 @@ try
         TAsave(ad.data{id}.file.name,ad.data{id});
     
     % In case something went wrong
-    if saveStatus
+    if ~isempty(saveStatus)
         % Adding status line
         msgStr = cell(0);
-        msgStr{length(msgStr)+1} = ...
+        msgStr{end+1} = ...
             sprintf('Problems when trying to save "%s" to file',...
             ad.data{id}.label);
-        msgStr{length(msgStr)+1} = ad.data{id}.file.name;
+        msgStr{end+1} = ad.data{id}.file.name;
+        msgStr = [ msgStr saveStatus ];
         status = add2status(msgStr);
+        warndlg(msgStr,'Problems saving file','modal');
         clear msgStr;
         status = -1;
         return;
@@ -134,6 +136,7 @@ try
     msg = {...
         sprintf('Dataset %i successfully saved',id)...
         sprintf('Label: %s',ad.data{id}.label)...
+        sprintf('File: %s',filename)...
         };
     status = add2status(msg);
     
@@ -143,6 +146,7 @@ try
     update_processingPanel();
     update_mainAxis();
     
+    msgbox(msg,'Successful saving of file','help'); 
     status = 0;
     
 catch exception

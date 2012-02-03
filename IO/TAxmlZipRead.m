@@ -15,7 +15,7 @@ function varargout = TAxmlZipRead(filename,varargin)
 %
 
 % (c) 2011-12, Till Biskup
-% 2012-01-23
+% 2012-02-03
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -70,10 +70,28 @@ try
                 struct = xml2struct(DOMnode);
                 delete(fullfile(pathstr,[name ext]));
             case '.dat'
-                data = load(fullfile(pathstr,[name ext]));
+                try
+                    data = load(fullfile(pathstr,[name ext]));
+                catch exception
+                    try
+                        data = readBinary(fullfile(pathstr,[name ext]));
+                    catch exception2
+                        exception = addCause(exception2, exception);
+                        throw(exception);
+                    end
+                end
                 delete(fullfile(pathstr,[name ext]));
             case '.on'
-                dataMFon = load(fullfile(pathstr,[name ext]));
+                try
+                    dataMFon = load(fullfile(pathstr,[name ext]));
+                catch exception
+                    try
+                        dataMFon = readBinary(fullfile(pathstr,[name ext]));
+                    catch exception2
+                        exception = addCause(exception2, exception);
+                        throw(exception);
+                    end
+                end
                 delete(fullfile(pathstr,[name ext]));
             otherwise
                 delete(fullfile(pathstr,[name ext]));
@@ -92,10 +110,28 @@ catch errmsg
     return;
 end
 if exist('data','var')
+    % Check whether data have the right dimensions - in case that we read
+    % from binary, most probably they have not - in this case, reshape
+    xdim = length(struct.axes.x.values);
+    ydim = length(struct.axes.y.values);
+    [y,x] = size(data);
+    if (x ~= xdim) || (y ~= ydim)
+        data = reshape(data,ydim,xdim);
+    end
     struct.data = data;
+    clear data
 end
 if exist('dataMFon','var')
+    % Check whether data have the right dimensions - in case that we read
+    % from binary, most probably they have not - in this case, reshape
+    xdim = length(struct.axes.x.values);
+    ydim = length(struct.axes.y.values);
+    [y,x] = size(dataMFon);
+    if ((x ~= xdim) || (y ~= ydim)) && ~isempty(dataMFon)
+        dataMFon = reshape(dataMFon,ydim,xdim);
+    end
     struct.dataMFon = dataMFon;
+    clear dataMFon
 end
 if nargout
     varargout{1} = struct;
@@ -105,4 +141,12 @@ else
     assignin('caller',varname,struct);
 end
 cd(PWD);
+end
+
+function data = readBinary(filename)
+
+fh = fopen(filename);
+data = fread(fh,inf,'real*4');
+fclose(fh);
+
 end

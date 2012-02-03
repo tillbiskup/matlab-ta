@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-12, Till Biskup
-% 2012-02-01
+% 2012-02-03
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -114,7 +114,9 @@ try
                     return;
                 % Other commands
                 case 'i'
-%                     TAgui_infowindow();
+                    if ad.control.spectra.active ~= 0
+                        TAgui_infowindow();
+                    end
                     return;
             end
         end

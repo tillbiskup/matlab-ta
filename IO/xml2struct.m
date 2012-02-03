@@ -11,8 +11,8 @@ function varargout = xml2struct(docNode)
 %
 
 % (c) 2010, Martin Hussels
-% (c) 2010-2011, Till Biskup
-% 2011-11-05
+% (c) 2010-2012, Till Biskup
+% 2012-02-03
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -68,7 +68,21 @@ function thiselement=traverse(node)
                 % Bug fix for empty elements that appear as size [1 1] in
                 % XML
                 if size(char(node.getTextContent))
-                    thiselement=reshape(char(node.getTextContent),msize);
+                    % Bug fix for strings that had originally a trailing
+                    % newline character and therefore a size too long by 1
+                    try
+                        thiselement=...
+                            reshape(char(node.getTextContent),msize);
+                    catch exception
+                        try
+                        thiselement=...
+                            reshape(char(node.getTextContent),...
+                            [msize(1) msize(2)-1]);
+                        catch exception2
+                            exception = addCause(exception2, exception);
+                            throw(exception);
+                        end
+                    end
                 else
                     thiselement = '';
                 end

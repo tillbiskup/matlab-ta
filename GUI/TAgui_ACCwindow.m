@@ -1457,11 +1457,10 @@ function position_edit_Callback(source,~,position)
                     if (value > length(x)) value = length(x); end
                     if (value < 1) value = 1; end
                 end
-                ad.acc.data.display.position.x = ...
-                    value;
+                ad.acc.data.display.position.x = value;
             case 'xunit'
                 if strcmpi(value,'end')
-                    value = x(end);
+                    ad.acc.data.display.position.x = length(x);
                 else
                     value = str2double(value);
                     if (value < x(1)) value = x(1); end
@@ -1482,12 +1481,11 @@ function position_edit_Callback(source,~,position)
                     value = round(str2double(value));
                     if (value > length(y)) value = length(y); end
                     if (value < 1) value = 1; end
-                    ad.acc.data.display.position.y = ...
-                        value;
                 end
+                ad.acc.data.display.position.y = value;
             case 'yunit'
                 if strcmpi(value,'end')
-                    value = x(end);
+                    ad.acc.data.display.position.y = length(y);
                 else
                     value = str2double(value);
                     if (value < y(1)) value = y(1); end

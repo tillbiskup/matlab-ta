@@ -1298,10 +1298,12 @@ function position_edit_Callback(source,~,position)
         if isempty(position)
             return;
         end
-        
+                
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        if (isempty(get(source,'String')) || isnan(str2double(get(source,'String'))))
+        value = get(source,'String');
+        if isempty(value) || ...
+                ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
             updateSliderPanel();
             return;
@@ -1311,51 +1313,59 @@ function position_edit_Callback(source,~,position)
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
+        active = ad.control.spectra.active;
+        
         % Be as robust as possible: if there is no axes, default is indices
-        [y,x] = size(ad.data{ad.control.spectra.active}.data);
+        [y,x] = size(ad.data{active}.data);
         x = linspace(1,x,x);
         y = linspace(1,y,y);
-        if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes,'x') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes.x,'values') ...
-                && not (isempty(ad.data{ad.control.spectra.active}.axes.x.values)))
-            x = ad.data{ad.control.spectra.active}.axes.x.values;
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'x') ...
+                && isfield(ad.data{active}.axes.x,'values') ...
+                && not (isempty(ad.data{active}.axes.x.values)))
+            x = ad.data{active}.axes.x.values;
         end
-        if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes,'y') ...
-                && isfield(ad.data{ad.control.spectra.active}.axes.y,'values') ...
-                && not (isempty(ad.data{ad.control.spectra.active}.axes.y.values)))
-            y = ad.data{ad.control.spectra.active}.axes.y.values;
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'y') ...
+                && isfield(ad.data{active}.axes.y,'values') ...
+                && not (isempty(ad.data{active}.axes.y.values)))
+            y = ad.data{active}.axes.y.values;
         end
         
         switch position
             case 'xindex'
-                value = round(str2double(get(source,'String')));
-                if (value > length(x)) value = length(x); end
-                if (value < 1) value = 1; end
-                ad.data{ad.control.spectra.active}.display.position.x = ...
-                    value;
+                if strcmpi(value,'end')
+                    value = length(x);
+                else
+                    value = round(str2double(value));
+                    if (value > length(x)) value = length(x); end
+                    if (value < 1) value = 1; end
+                end
+                ad.data{active}.display.position.x = value;
             case 'xunit'
-                value = str2double(get(source,'String'));
+                value = str2double(value);
                 if (value < x(1)) value = x(1); end
                 if (value > x(end)) value = x(end); end
-                ad.data{ad.control.spectra.active}.display.position.x = ...
+                ad.data{active}.display.position.x = ...
                     interp1(...
                     x,[1:length(x)],...
                     value,...
                     'nearest'...
                     );
             case 'yindex'
-                value = round(str2double(get(source,'String')));
-                if (value > length(y)) value = length(y); end
-                if (value < 1) value = 1; end
-                ad.data{ad.control.spectra.active}.display.position.y = ...
-                    value;
+                if strcmpi(value,'end')
+                    value = length(y);
+                else
+                    value = round(str2double(value));
+                    if (value > length(y)) value = length(y); end
+                    if (value < 1) value = 1; end
+                end
+                ad.data{active}.display.position.y = value;
             case 'yunit'
-                value = str2double(get(source,'String'));
+                value = str2double(value);
                 if (value < y(1)) value = y(1); end
                 if (value > y(end)) value = y(end); end
-                ad.data{ad.control.spectra.active}.display.position.y = ...
+                ad.data{active}.display.position.y = ...
                     interp1(...
                     y,[1:length(y)],...
                     value,...
