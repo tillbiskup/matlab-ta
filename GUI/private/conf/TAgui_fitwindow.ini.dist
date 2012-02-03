@@ -12,21 +12,32 @@
 % panel of the TA toolbox main GUI.
 
 [fit]
+dimension = x
 area.patch.color = [0.5 0.5 1]
 area.patch.alpha = 0.4
 area.patch.edge = none
-MFoff.line.color = [0 0 0]
+MFoff.line.color = [0 0 0.55]
 MFoff.line.style = -
 MFoff.line.marker = none
 MFoff.line.width = 1
-MFon.line.color = [0 0.5 0]
+MFon.line.color = [0 0.25 0]
 MFon.line.style = -
 MFon.line.marker = none
 MFon.line.width = 1
-DeltaMF.line.color = [1 0 0]
+DeltaMF.line.color = [0.45 0 0]
 DeltaMF.line.style = -
 DeltaMF.line.marker = none
 DeltaMF.line.width = 1
+reference.line.color = [0.5 0.5 0.5]
+reference.line.style = -
+reference.line.marker = none
+reference.line.width = 1
+residuals.line.color = [0.75 0 0.75]
+residuals.line.style = -
+residuals.line.marker = none
+residuals.line.width = 1
+display.area = 1
+display.residuals = 0
 display.fit = 1
 display.ignorefirstn = 0
 
