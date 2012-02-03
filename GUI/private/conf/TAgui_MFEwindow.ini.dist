@@ -44,3 +44,4 @@ grid.zero = 1
 grid.x = off
 grid.y = off
 grid.minor = off
+onlyActive = 1

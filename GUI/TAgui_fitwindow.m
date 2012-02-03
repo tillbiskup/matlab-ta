@@ -7,7 +7,7 @@ function varargout = TAgui_fitwindow(varargin)
 % See also TAGUI
 
 % (c) 2011-12, Till Biskup
-% 2012-02-01
+% 2012-02-03
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1155,6 +1155,13 @@ if (mainGuiWindow)
     % Check for availability of necessary fields in appdata
     if (isfield(admain,'data') ~= 0)
         ad.data = admain.data;
+        % Add fit struct to each dataset
+        for l=1:length(ad.data)
+            ad.data{l}.fit.area.start = 1;
+            ad.data{l}.fit.area.stop = 1;
+            ad.data{l}.fit.area.delta = 0;
+            ad.data{l}.fit.label = '';
+        end
         setappdata(hMainFigure,'data',ad.data);
         ad.origdata = admain.data;
         setappdata(hMainFigure,'origdata',ad.origdata);
@@ -1343,9 +1350,13 @@ function position_edit_Callback(source,~,position)
                 end
                 ad.data{active}.display.position.x = value;
             case 'xunit'
-                value = str2double(value);
-                if (value < x(1)) value = x(1); end
-                if (value > x(end)) value = x(end); end
+                if strcmpi(value,'end')
+                    value = x(end);
+                else
+                    value = str2double(value);
+                    if (value < x(1)) value = x(1); end
+                    if (value > x(end)) value = x(end); end
+                end
                 ad.data{active}.display.position.x = ...
                     interp1(...
                     x,[1:length(x)],...
@@ -1362,9 +1373,13 @@ function position_edit_Callback(source,~,position)
                 end
                 ad.data{active}.display.position.y = value;
             case 'yunit'
-                value = str2double(value);
-                if (value < y(1)) value = y(1); end
-                if (value > y(end)) value = y(end); end
+                if strcmpi(value,'end')
+                    value = y(end);
+                else
+                    value = str2double(value);
+                    if (value < y(1)) value = y(1); end
+                    if (value > y(end)) value = y(end); end
+                end
                 ad.data{active}.display.position.y = ...
                     interp1(...
                     y,[1:length(y)],...
@@ -1380,6 +1395,192 @@ function position_edit_Callback(source,~,position)
         
         % Update slider values display
         updateSliderPanel()
+
+        %Update main axis
+        updateAxes();
+    catch exception
+        try
+            msgStr = ['An exception occurred. '...
+                'The bug reporter should have been opened'];
+            add2status(msgStr);
+        catch exception2
+            exception = addCause(exception2, exception);
+            disp(msgStr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % If even displaying the bug report window fails...
+            exception = addCause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
+
+function area_edit_Callback(source,~,position)
+    try
+        if isempty(position)
+            return;
+        end
+        
+        % If value is empty or NaN after conversion to numeric, restore
+        % previous entry and return
+        value = get(source,'String');
+        if isempty(value) || ...
+                ((isnan(str2double(value))) && ~strcmpi(value,'end'))
+            % Update slider panel
+            updateMFEPanel();
+            return;
+        end
+        
+        % Get appdata of MFE GUI
+        mainWindow = guiGetWindowHandle(mfilename);
+        ad = getappdata(mainWindow);
+        
+        % Get handles of main window
+        gh = guihandles(mainWindow);
+        
+        % Make code lines shorter and code easier to read
+        active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
+        
+        % Be as robust as possible: if there is no axes, default is indices
+        [y,x] = size(ad.data{active}.data);
+        x = linspace(1,x,x);
+        y = linspace(1,y,y);
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'x') ...
+                && isfield(ad.data{active}.axes.x,'values') ...
+                && not (isempty(ad.data{active}.axes.x.values)))
+            x = ad.data{active}.axes.x.values;
+        end
+        if (isfield(ad.data{active},'axes') ...
+                && isfield(ad.data{active}.axes,'y') ...
+                && isfield(ad.data{active}.axes.y,'values') ...
+                && not (isempty(ad.data{active}.axes.y.values)))
+            y = ad.data{active}.axes.y.values;
+        end
+        
+        dim = x;
+        
+        switch position
+            case 'startindex'
+                if strcmpi(value,'end')
+                    value = length(dim);
+                else
+                    value = round(str2double(value));
+                    if (value > length(dim)) value = length(dim); end
+                    if (value < 1) value = 1; end
+                end
+                ad.data{active}.fit.area.start = value;
+                % Set stop value not overlapping
+                if ad.data{active}.fit.area.start > ad.data{active}.fit.area.stop
+                    % Check whether start + delta > length(dim)
+                    if (ad.data{active}.fit.area.start + ad.data{active}.fit.area.delta > length(dim))
+                        ad.data{active}.fit.area.stop = length(dim);
+                        ad.data{active}.fit.area.delta = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+                    else
+                        ad.data{active}.fit.area.stop = ...
+                            ad.data{active}.fit.area.start+ad.data{active}.fit.area.delta;
+                    end
+                end
+                % Set delta value
+                ad.data{active}.fit.area.delta = ...
+                    ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+            case 'startunit'
+                if strcmpi(value,'end')
+                    value = dim(end);
+                else
+                    value = str2double(value);
+                    if (value < dim(1)) value = dim(1); end
+                    if (value > dim(end)) value = dim(end); end
+                end
+                ad.data{active}.fit.area.start = ...
+                    interp1(...
+                    dim,1:length(dim),...
+                    value,...
+                    'nearest'...
+                    );
+                % Set stop value not overlapping
+                if ad.data{active}.fit.area.start > ad.data{active}.fit.area.stop
+                    % Check whether start + delta > length(dim)
+                    if (ad.data{active}.fit.area.start + ad.data{active}.fit.area.delta > length(dim))
+                        ad.data{active}.fit.area.stop = length(dim);
+                        ad.data{active}.fit.area.delta = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+                    else
+                        ad.data{active}.fit.area.stop = ...
+                            ad.data{active}.fit.area.start+ad.data{active}.fit.area.delta;
+                    end
+                end
+                % Set delta value
+                ad.data{active}.fit.area.delta = ...
+                    ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+            case 'stopindex'
+                if strcmpi(value,'end')
+                    value = length(dim);
+                else
+                    value = round(str2double(value));
+                    if (value > length(dim)) value = length(dim); end
+                    if (value < 1) value = 1; end
+                end
+                ad.data{active}.fit.area.stop = value;
+                % Set start value not overlapping
+                if ad.data{active}.fit.area.start > ad.data{active}.fit.area.stop
+                    % Check whether stop - delta < length(dim)
+                    if (ad.data{active}.fit.area.stop - ad.data{active}.fit.area.delta < 1)
+                        ad.data{active}.fit.area.start = 1;
+                        ad.data{active}.fit.area.delta = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+                    else
+                        ad.data{active}.fit.area.start = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.delta;
+                    end
+                end
+                % Set delta value
+                ad.data{active}.fit.area.delta = ...
+                    ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+            case 'stopunit'
+                if strcmpi(value,'end')
+                    value = dim(end);
+                else
+                    value = str2double(value);
+                    if (value < dim(1)) value = dim(1); end
+                    if (value > dim(end)) value = dim(end); end
+                end
+                ad.data{active}.fit.area.stop = ...
+                    interp1(...
+                    dim,1:length(dim),...
+                    value,...
+                    'nearest'...
+                    );
+                % Set start value not overlapping
+                if ad.data{active}.fit.area.start > ad.data{active}.fit.area.stop
+                    % Check whether stop - delta < length(dim)
+                    if (ad.data{active}.fit.area.stop - ad.data{active}.fit.area.delta < 1)
+                        ad.data{active}.fit.area.start = 1;
+                        ad.data{active}.fit.area.delta = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+                    else
+                        ad.data{active}.fit.area.start = ...
+                            ad.data{active}.fit.area.stop-ad.data{active}.fit.area.delta;
+                    end
+                end
+                % Set delta value
+                ad.data{active}.fit.area.delta = ...
+                    ad.data{active}.fit.area.stop-ad.data{active}.fit.area.start;
+            otherwise
+                disp('TAgui_MFEwindow() : area_edit_Callback() : Unknown action');
+                disp(action);
+                return;
+        end
+        
+        % Update appdata of main window
+        setappdata(mainWindow,'data',ad.data);
 
         %Update main axis
         updateAxes();
@@ -2331,7 +2532,7 @@ function updateAxes()
             get(gh.displaytype_popupmenu,'String'));
         [~,index] = max(strcmp(ad.control.axis.displayType,displayTypes));
         set(gh.displaytype_popupmenu,'Value',index);
-                
+
         % Set display only active checkbox
         set(gh.showonlyactive_checkbox,'Value',...
             ad.control.axis.onlyActive);

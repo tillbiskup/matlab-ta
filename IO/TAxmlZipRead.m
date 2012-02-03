@@ -115,7 +115,7 @@ if exist('data','var')
     xdim = length(struct.axes.x.values);
     ydim = length(struct.axes.y.values);
     [y,x] = size(data);
-    if (x ~= xdim) || (y ~= ydim)
+    if ((x ~= xdim) || (y ~= ydim))  && ~isempty(data)
         data = reshape(data,ydim,xdim);
     end
     struct.data = data;
