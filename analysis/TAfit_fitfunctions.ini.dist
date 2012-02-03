@@ -1,0 +1,65 @@
+% Configuration file for the TAfit function of the TA toolbox
+%
+% (c) 2012, Till Biskup <till@till-biskup.de>
+%
+% Each fit function that can be chosen from when calling the TAfit function
+% has its own entry in this file. The format of this entry is as follows:
+%
+% [<fit function>]
+% name = short name of the function (used to identify it)
+% description = more detailed description
+% function = the actual fit function (in Matlab syntax)
+% ncoeff = number of coefficients
+% coeff = vector containing the standard values of the coefficients 
+% bounds.lower = lower bounds for the coefficients, in same order as coeff
+% bounds.upper = upper bounds for the coefficients, in same order as coeff
+%
+% NOTE:		The boundaries get only used if the respective fit routine
+%			used to fit the function supports using boundaries.
+%
+%			If empty vector, no boundaries are used at all.
+%
+% FUNCTION: A few comments regarding the syntax for defining the functions
+% 
+%           x - dependent variable
+%           c - coefficient, with c(n) being the n-th coefficient
+%
+% HINT:		If you define different functions for the same basic mathematical
+%			function but different start values (e.g. exponential decay and
+%			exponential growth), you can speed up optimise fit results.
+
+[linear]
+name = Linear
+description = Linear polynomial
+function = c(1)*x+c(2)
+ncoeff = 2
+coeff = [1 0]
+bounds.lower = []
+bounds.upper = []
+
+[quadratic]
+name = Quadratic
+description = Quadratic polynomial
+function = c(1)*x^2+c(2)
+ncoeff = 2
+coeff = [1 0]
+bounds.lower = []
+bounds.upper = []
+
+[expdecay]
+name = Exp. decay
+description = Exponential decay
+function = c(1)*exp(c(2)*x+c(3))
+ncoeff = 3
+coeff = [1 -1 0]
+bounds.lower = []
+bounds.upper = []
+
+[biexpdecay]
+name = Biexp. decay
+description = Biexponential decay
+function = c(1)*exp(c(2)*x1+c(3))+c(4)*exp(c(5)*x+c(6))
+ncoeff = 6
+coeff = [1 -1 0 1 -1 0]
+bounds.lower = []
+bounds.upper = []

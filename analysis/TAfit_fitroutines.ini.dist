@@ -1,0 +1,31 @@
+% Configuration file for the TAfit function of the TA toolbox
+%
+% (c) 2012, Till Biskup <till@till-biskup.de>
+%
+% Each fit function that can be chosen from when calling the TAfit function
+% has its own entry in this file. The format of this entry is as follows:
+%
+% [<fit routine>]
+% parameter1 = value
+% parameter2 = value
+% ...
+% parameterN = value
+%
+% NOTE:		You can define here every fit routine that you may want to use,
+%			regardless of whether it is available in a given Matlab installation.
+%
+%			TAfit will check whether the respective routine is available.
+
+[fminsearch]
+MaxFunEvals = 200*numberofvariables
+MaxIter     = 200*numberofvariables
+TolFun      = 1.0000e-04
+TolX        = 1.0000e-04
+FunValCheck = off
+
+[lsqnonneg]
+MaxFunEvals = []
+MaxIter     = []
+TolFun      = []
+TolX        = 10*eps*norm(c,1)*length(c)
+FunValCheck = []

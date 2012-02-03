@@ -1883,11 +1883,11 @@ function popupmenu_Callback(source,~,action)
                 value = str2double(value(1:end-3));
                 switch MFEline
                     case 'MFoff'
-                        ad.MFoff.fit.line.width = value;
+                        ad.fit.MFoff.line.width = value;
                     case 'MFon'
-                        ad.MFon.fit.line.width = value;
+                        ad.fit.MFon.line.width = value;
                     case 'DeltaMF'
-                        ad.DeltaMF.fit.line.width = value;
+                        ad.fit.DeltaMF.line.width = value;
                     case 'Residuals'
                         ad.fit.residuals.line.width = value;
                     case 'Reference lines'
@@ -1904,11 +1904,11 @@ function popupmenu_Callback(source,~,action)
                     strcmpi(value,lineStyles(:,1)),2};
                 switch MFEline
                     case 'MFoff'
-                        ad.MFoff.fit.line.style = value;
+                        ad.fit.MFoff.line.style = value;
                     case 'MFon'
-                        ad.MFon.fit.line.style = value;
+                        ad.fit.MFon.line.style = value;
                     case 'DeltaMF'
-                        ad.DeltaMF.fit.line.style = value;
+                        ad.fit.DeltaMF.line.style = value;
                     case 'Residuals'
                         ad.fit.residuals.line.style = value;
                     case 'Reference lines'
@@ -1925,11 +1925,11 @@ function popupmenu_Callback(source,~,action)
                     strcmpi(value,lineMarker(:,1)),2};
                 switch MFEline
                     case 'MFoff'
-                        ad.MFoff.fit.line.marker = value;
+                        ad.fit.MFoff.line.marker = value;
                     case 'MFon'
-                        ad.MFon.fit.line.marker = value;
+                        ad.fit.MFon.line.marker = value;
                     case 'DeltaMF'
-                        ad.DeltaMF.fit.line.marker = value;
+                        ad.fit.DeltaMF.line.marker = value;
                     case 'Residuals'
                         ad.fit.residuals.line.marker = value;
                     case 'Reference lines'
@@ -2182,6 +2182,21 @@ function pushbutton_Callback(~,~,action)
                 % TODO: Here has the call to the real fit function to go
                 % fitParams = collectFitParameters();
                 % [accData,accReport] = TAACC(accDatasets,ad.acc);
+                active = ad.control.spectra.active;
+                parameters.dimension = 'x';
+                parameters.area = ad.data{active}.fit.area;
+                switch parameters.dimension
+                    case 'x'
+                        parameters.position = ad.data{active}.display.position.y;
+                    case 'y'
+                        parameters.position = ad.data{active}.display.position.x;
+                end
+                parameters.fitRoutineName = 'fminsearch';
+                parameters.fitFunName = 'Exp. decay';
+                [fit,fval,message] = TAfit(ad.data{active},parameters);
+                set(gh.summary_panel_edit,'String',message);
+                ad.fit.values = fit;
+                setappdata(mainWindow,'fit',ad.fit);
                 updateAxes();
                 return;
             case 'showmaximum'
@@ -2265,6 +2280,11 @@ function pushbutton_Callback(~,~,action)
                 updateSettingsPanel('defaults');
                 updateAxes();
                 return;
+            case 'reportclear'
+                set(gh.summary_panel_edit,'String','');
+                ad.fit.values = [];
+                setappdata(mainWindow,'fit',ad.fit);
+                updateAxes();
             case 'close'
                 msgStr = 'Fit GUI window closed.';
                 add2status(msgStr);
@@ -3101,6 +3121,39 @@ function updateAxes()
                 set(gh.axis,'CLim',z);
                 xlabel(gh.axis,sprintf('{\\it %s} / %s',xmeasure,xunit));
                 ylabel(gh.axis,sprintf('{\\it %s} / %s',ymeasure,yunit));
+                % Show area
+                if ad.data{active}.fit.area.delta && ad.fit.display.area
+                    switch ad.fit.dimension
+                        case 'x'
+                            ylim = get(gh.axis,'YLim');
+                            patch(...
+                                'XData',[...
+                                xvalues(ad.data{active}.fit.area.start) ...
+                                xvalues(ad.data{active}.fit.area.start)...
+                                xvalues(ad.data{active}.fit.area.stop) ...
+                                xvalues(ad.data{active}.fit.area.stop)],...
+                                'YData',[ylim(1) ylim(end) ylim(end) ylim(1)],...
+                                'ZData',[0 0 0 0],...
+                                'EdgeColor',ad.fit.area.patch.edge,...
+                                'FaceColor',ad.fit.area.patch.color,...
+                                'FaceAlpha',ad.fit.area.patch.alpha,...
+                                'Parent',gh.axis);
+                        case 'y'
+                            xlim = get(gh.axis,'XLim');
+                            patch(...
+                                'XData',[xlim(1) xlim(end) xlim(end) xlim(1)],...
+                                'YData',[...
+                                yvalues(ad.data{active}.fit.area.start)...
+                                yvalues(ad.data{active}.fit.area.start)...
+                                yvalues(ad.data{active}.fit.area.stop)...
+                                yvalues(ad.data{active}.fit.area.stop)],...
+                                'ZData',[0 0 0 0],...
+                                'EdgeColor',ad.fit.area.patch.edge,...
+                                'FaceColor',ad.fit.area.patch.color,...
+                                'FaceAlpha',ad.fit.area.patch.alpha,...
+                                'Parent',gh.axis);
+                    end
+                end                
 
             case '1D along x'
                 % Enable position slider only if second axis has more than one value
@@ -3142,17 +3195,17 @@ function updateAxes()
                         ZLim,...
                         'r-');
                 end
-                % Plot fitted background
-%                 if strcmp(ad.fft.bgfit.mode,'bgfit')
-%                     [fit,~,message] = doFit(...
-%                         [xvalues;...
-%                         data(...
-%                         ad.data{ad.control.spectra.active}.display.position.y,:)],...
-%                         ad.fft.bgfit.function,...
-%                         ad.fft.bgfit.ignorefirstn);
-%                     set(gh.summary_panel_edit,'String',message);
-%                     plot(gh.axis,xvalues,fit,'r-');
-%                 end
+                % Plot fit if available
+                if ~isempty(ad.fit.values)
+                    plot(gh.axis,...
+                        ad.fit.values(:,1),...
+                        ad.fit.values(:,2),...
+                        'Color',ad.fit.MFoff.line.color,...
+                        'LineStyle',ad.fit.MFoff.line.style,...
+                        'Marker',ad.fit.MFoff.line.marker,...
+                        'LineWidth',ad.fit.MFoff.line.width...
+                        );
+                end
                 hold off;
                 xlabel(gh.axis,sprintf('{\\it %s} / %s',xmeasure,xunit));
                 ylabel(gh.axis,sprintf('{\\it %s} / %s',zmeasure,zunit));

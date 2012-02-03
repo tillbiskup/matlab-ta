@@ -39,7 +39,7 @@ function [ data, warnings ] = TAiniFileRead ( fileName, varargin )
 % See also: iniFileWrite
 
 % (c) 2008-12, Till Biskup
-% 2012-02-01
+% 2012-02-03
 
 % TODO
 %	* Change handling of whitespace characters (subfunctions) thus that it
@@ -145,6 +145,10 @@ function struct = setCascadedField(struct,fieldName,value,typeConversion)
             struct.(fieldName) = value;
         else
             struct.(fieldName) = str2num(value);
+        end
+        % Handle special case of empty vector - convert into numeric
+        if strcmpi(value,'[]') && typeConversion
+            struct.(fieldName) = [];
         end
     else
         if ~isfield(struct,fieldName(1:nDots(1)-1))

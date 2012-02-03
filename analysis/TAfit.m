@@ -1,4 +1,4 @@
-function [fit,fval,message] = TAfit(data,fitFunType,ignorefirstn)
+function [fit,fval,message] = TAfit(data,parameters)
 % TAFIT Calculate FIT over a range of points in dataset with the parameters
 % provided in parameters.
 %
@@ -10,7 +10,7 @@ function [fit,fval,message] = TAfit(data,fitFunType,ignorefirstn)
 % fit        - ...
 
 % (c) 2012, Till Biskup
-% 2012-02-02
+% 2012-02-03
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -22,7 +22,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
 % p.addRequired('parameters', @(x)isstruct(x));
 % p.parse(data,parameters);
 
-    function stop = outfun(x, optimValues, state)
+    function stop = outfun(~, optimValues, ~)
         stop = false;
         message{end+1} = sprintf('  %6.0f     %6.0f    %10f  %s',...
             optimValues.iteration,optimValues.funccount,...
@@ -30,41 +30,129 @@ p.StructExpand = true; % Enable passing arguments in a structure
     end
     
     try
-        mainWindow = guiGetWindowHandle(mfilename);
-        % Get appdata from fit GUI
-        ad = getappdata(mainWindow);
+        % Assign output parameters
+        fit = [];
+        fval = [];
+        message = {};
+
+        %structdisp(parameters)
         
-        x1 = data(1,ignorefirstn+1:size(data,2));
-        x2 = data(1,1:size(data,2));
+        % Read config files
+        [path,~,~] = fileparts(mfilename('fullpath'));
+        fitRoutinesConfigFileName = 'TAfit_fitroutines.ini';
+        fitFunctionsConfigFileName = 'TAfit_fitfunctions.ini';
+        % Check for availability of configuration files
+        % If configuration files don't exist, create them from distributed
+        % configuration files.
+        if ~exist(fullfile(path,fitRoutinesConfigFileName),'file')
+            fprintf('%s\n%s',...
+                'Configuration for fit routines doesn''t exist.',...
+                'Trying to create...');
+            conf = TAiniFileRead(...
+                fullfile(path,[fitRoutinesConfigFileName '.dist']),...
+                'typeConversion',true);
+            header = 'Configuration file for TAfit function of TA toolbox';
+            TAiniFileWrite(fullfile(path,fitRoutinesConfigFileName),...
+                conf,'header',header,'overwrite',true);
+        end
+        if ~exist(fullfile(path,fitFunctionsConfigFileName),'file')
+            fprintf('%s\n%s',...
+                'Configuration for fit functions doesn''t exist.',...
+                'Trying to create...');
+            conf = TAiniFileRead(...
+                fullfile(path,[fitFunctionsConfigFileName '.dist']),...
+                'typeConversion',true);
+            header = 'Configuration file for TAfit function of TA toolbox';
+            TAiniFileWrite(fullfile(path,fitFunctionsConfigFileName),...
+                conf,'header',header,'overwrite',true);
+        end
+        [fitRoutines,warnings] = TAiniFileRead(...
+            fullfile(path,fitRoutinesConfigFileName),...
+            'typeConversion',true);
+        if ~isempty(warnings)
+            message = warnings;
+            return;
+        end
+        [fitFunctions,warnings] = TAiniFileRead(...
+            fullfile(path,'TAfit_fitfunctions.ini'),...
+            'typeConversion',true);
+        if ~isempty(warnings)
+            message = warnings;
+            return;
+        end
+        
+        % Test whether fit routine is known
+        fitRoutineNames = fieldnames(fitRoutines);
+        if ~any(strcmpi(fitRoutineNames,parameters.fitRoutineName))
+            message = sprintf('Fit routine "%s" unknown.',...
+                parameters.fitRoutineName);
+            return;
+        end
+        
+        % Test whether fit routine does exist in current Matlab
+        % installation
+        if ~exist(parameters.fitRoutineName,'file')
+            message = sprintf('Fit routine "%s" does not exist.',...
+                parameters.fitRoutineName);
+            return;
+        end
+        
+        % Test whether fit function is known
+        fitFunctionNames = structfun(@(x) cellstr(x.name),fitFunctions);
+        if ~any(strcmpi(fitFunctionNames,parameters.fitFunName))
+            message = sprintf('Fit function "%s" unknown.',...
+                parameters.fitFunName);
+            return;
+        end
+        
+        fitFunAbbrevs = fieldnames(fitFunctions);
+        fitFunAbbrev = fitFunAbbrevs{...
+            strcmpi(fitFunctionNames,parameters.fitFunName)};
+        
+        % Get data vectors for x1 and x2
+        switch lower(parameters.dimension)
+            case 'x'
+                x1 = data.data(...
+                    parameters.position,...
+                    parameters.area.start:parameters.area.stop);
+                x = (1:length(x1));
+            case 'y'
+                x1 = data.data(...
+                    parameters.area.start:parameters.area.stop,...
+                    parameters.position);
+                x = (1:length(x1));
+        end
         
         message = cell(0);
         message{end+1} = ...
             sprintf('Iteration  FuncCount    min f(x)   Procedure');
         
-        % Set options for fminsearch
-        fitopt = optimset(...
-            'Display','Off',...
-            'OutputFcn', @outfun ... 
-            );
+        % Set options for fit routine
+        fitopt = fitRoutines.(parameters.fitRoutineName);
+        % Adjust TolX and TolFun: Normalise with maximum of function value
+        fitopt.TolX = fitopt.TolX * max(x1);
+        fitopt.TolFun = fitopt.TolFun * max(x1);
+        % Set display and outputfun options
+        fitopt.Display = 'off';
+        fitopt.OutputFcn = @outfun;
 
-        switch fitFunType
-            case 'exponential'
-                % A1*exp(k1*x)
-                fun1 = @(z)z(1)*exp(z(2)*x1+z(3));
-                fun2 = @(z)z(1)*exp(z(2)*x2+z(3));
-                fitfun = @(z)sum((fun1(z)-data(2,ignorefirstn+1:end)).^2);
-                % Fit function
-                [Y,fval,exitflag,output] = fminsearch(fitfun,[1 -1 0],fitopt);
-                fit = fun2(Y);
-            case 'biexponential'
-                % A1*exp(k1*x) + A2*exp(k2*x)
-                fun1 = @(z)z(1)*exp(z(2)*x1+z(3))+z(4)*exp(z(5)*x1+z(6));
-                fun2 = @(z)z(1)*exp(z(2)*x2+z(3))+z(4)*exp(z(5)*x2+z(6));
-                fitfun = @(z)sum((fun1(z)-data(2,ignorefirstn+1:end)).^2);
-                % Fit function
-                [Y,fval,exitflag,output] = fminsearch(fitfun,[1 -1 0 1 -1 0],fitopt);
-                fit = fun2(Y);
-        end
+        % Assign fit routine name
+        fitRoutine = str2func(parameters.fitRoutineName);
+        
+        % Create fit function
+        fun = str2func(sprintf('@(c,x)%s',...
+            fitFunctions.(fitFunAbbrev).function));
+        fitfun = @(c)sum((fun(c,x)-x1).^2);
+        % Fit function
+        [Y,fval,exitflag,output] = fitRoutine(...
+            fitfun,...
+            fitFunctions.(fitFunAbbrev).coeff,...
+            fitopt);
+        % Preassign fit matrix
+        fit = zeros(length(x1),2);
+        fit(:,1) = data.axes.x.values(...
+            parameters.area.start:parameters.area.stop);
+        fit(:,2) = fun(Y,x);
         
         % Create message
         message{end+1} = ''; % Empty line
