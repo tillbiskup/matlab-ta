@@ -35,7 +35,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
         fval = [];
         message = {};
 
-        structdisp(parameters)
+        %structdisp(parameters)
         
         % Read config files
         [path,~,~] = fileparts(mfilename('fullpath'));
@@ -140,7 +140,12 @@ p.StructExpand = true; % Enable passing arguments in a structure
                 x = (1:length(x1));
         end
         
+        [~,datafname,datafext] = fileparts(data.file.name);
         message = cell(0);
+        message{end+1} = ...
+            '--------------------------------------------------------';
+        message{end+1} = 'Output of fit function:';
+        message{end+1} = '';
         message{end+1} = ...
             sprintf('Iteration  FuncCount    min f(x)   Procedure');
         
@@ -206,6 +211,23 @@ p.StructExpand = true; % Enable passing arguments in a structure
         if (exitflag ~= 1)
             message{end+1} = output.message;
         end
+
+        % Add header to message
+        header = cell(0);
+        header{end+1} = sprintf('File: %s%s',datafname,datafext);
+        header{end+1} = sprintf('Fit function: "%s"',parameters.fitFunName);
+        header{end+1} = '';
+        header{end+1} = sprintf('   %s',...
+            fitFunctions.(fitFunAbbrev).function);
+        header{end+1} = '';
+        header{end+1} = 'Coefficients:';
+        for k=1:length(Y)
+            header{end+1} = sprintf(' c(%i)\t%f',k,Y(k));
+        end
+        header{end+1} = '';
+        
+        message = [header message];
+
     catch exception
         throw(exception);
     end

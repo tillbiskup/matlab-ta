@@ -2271,10 +2271,13 @@ function pushbutton_Callback(~,~,action)
                     setappdata(mainWindow,'fit',ad.fit);
                 end
             case 'fit'
+                if ~ad.data{active}.fit.area.delta
+                    return;
+                end
                 % Collect fit parameters
                 fitParams = collectFitParameters;
                 % Perform fit
-                [ad.fit.values,fval,ad.fit.report] = ...
+                [ad.fit.values,~,ad.fit.report] = ...
                     TAfit(ad.data{active},fitParams);
                 % Set report
                 set(gh.summary_panel_edit,'String',ad.fit.report);
