@@ -48,3 +48,23 @@ a.fnmark {
 .hurry {
 	background:#ffd;
 	}
+div.footer {
+	border-top:1px solid #ccc
+	padding-top:2em;
+	margin-top:2em;
+}
+div.footer p.copyright {
+	padding-top:1em;
+	font-size:small;
+	float:left;
+	font-style:oblique;
+	color:#666;
+}
+div.footer p.lastchange {
+	padding-top:1em;
+	font-size:small;
+	float:right;
+	text-align:right;
+	font-style:oblique;
+	color:#666;
+}
