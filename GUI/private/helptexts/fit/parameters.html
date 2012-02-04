@@ -20,7 +20,7 @@
 			For details regarding the fitting algorithm used, please refer to the Matlab documentation of the respective function.
 		</p>
 		<p>
-			NB: There are plans to extend this to allow for using the functions provided by the "Matlab Optimization Toolbox".
+			NB: There are plans to extend this to allow for using the functions provided by the Matlab Optimization Toolbox&trade;.
 		</p>
 		<h2>Fit parameters</h2>
 		<p>
@@ -32,16 +32,27 @@
 		<p>
 			If this GUI once gets upgraded so that it gives access as well to the functions provided by the "Matlab Optimization Toolbox", this table will provide you with full access to the parameters you can set for those functions as well.
 		</p>
+		<h2>Fit function</h2>
+		<p>
+			This is just a "read-only" display of the fit function used. It lets you see what the different coefficients listed in the table below actually mean.
+		</p>
 		<h2>Coefficients</h2>
 		<p>
-			The number of coefficients to fit is determined by the function that should be fitted to the data. Furthermore, sometimes the quality (and even the overall success) of a fit depends strongly on the initial guesses for these coefficients.
+			The number of coefficients to fit is determined by the function that should be fitted to the data. Therefore, the table will automatically provide you with as many rows as there are coefficients of the currently chosen fit function.
 		</p>
 		<p>
-			The table gives you the possibility to change the default starting guesses for each coefficient, and will provide you with a list of the fitted values for each coefficient.
+			Sometimes the quality (and even the overall success) of a fit depends strongly on the initial guesses for these coefficients. Therefore, you may play around a bit with the initial values of the coefficients.
 		</p>
-		<h2>Defaults</h2>
 		<p>
-			To reset all settings to their default values, press this button. Note: There is no way to "undo" this.
+			Currently, the two columns "Lower" and "Upper" are untested, they are only useful for the case of fit routines that allow you to set borders for the coefficients, such as <code>lsqnonlin</code> and <code>lsqcurvefit</code>, both included in the Matlab Optimization Toolbox&trade;.
+		</p>
+		<h2>Apply</h2>
+		<p>
+			The idea of this button is to apply the current settings to the Fit GUI without having to close the parameters window.
+		</p>
+		<h2>Reset</h2>
+		<p>
+			To reset all settings to their default values (read from the respective configuration files of the <code>TAfit</code> function), press this button. Note: There is no way to "undo" this.
 		</p>
 	</body>
 </html>

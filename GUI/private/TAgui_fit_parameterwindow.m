@@ -16,6 +16,9 @@ function varargout = TAgui_fit_parameterwindow(varargin)
 singleton = findobj('Tag','TAgui_fit_parameterwindow');
 if (singleton)
     figure(singleton);
+    if nargin
+        varargout{1} = varargin{1};
+    end
     return;
 end
 
@@ -242,13 +245,31 @@ function pushbutton_Callback(~,~,action)
         if isempty(action)
             return;
         end
+        mainWindow = guiGetWindowHandle(mfilename);
+        ad = getappdata(mainWindow);
         switch lower(action)
             case 'help'
                 TAgui_fit_helpwindow('parameters');
                 return;
+            case 'apply'
+                % Apply ad.fit to main Fit GUI
+                setappdata(guiGetWindowHandle('TAgui_fitwindow'),...
+                    'fit',ad.fit);
+                return;
+            case 'reset'
+                if isfield(ad.fit,'options')
+                    ad.fit = rmfield(ad.fit,'options');
+                end
+                if isfield(ad.fit,'coeff')
+                    ad.fit = rmfield(ad.fit,'coeff');
+                end
+                if isfield(ad.fit,'bounds')
+                    ad.fit = rmfield(ad.fit,'bounds');
+                end
+                setappdata(mainWindow,'fit',ad.fit);
+                updatePanels();
+                return;
             case 'close'
-                mainWindow = guiGetWindowHandle(mfilename);
-                ad = getappdata(mainWindow);
                 delete(hMainFigure);
                 varargout{1} = ad.fit;
             otherwise

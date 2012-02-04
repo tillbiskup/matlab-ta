@@ -140,7 +140,6 @@ p.StructExpand = true; % Enable passing arguments in a structure
                 x = (1:length(x1));
         end
         
-        [~,datafname,datafext] = fileparts(data.file.name);
         message = cell(0);
         message{end+1} = ...
             '--------------------------------------------------------';
@@ -214,6 +213,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
 
         % Add header to message
         header = cell(0);
+        [~,datafname,datafext] = fileparts(data.file.name);
         header{end+1} = sprintf('File: %s%s',datafname,datafext);
         header{end+1} = sprintf('Fit function: "%s"',parameters.fitFunName);
         header{end+1} = '';

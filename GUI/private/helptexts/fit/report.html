@@ -12,11 +12,28 @@
 		<p class="intro">
 			The report panel displays a summary report of the fit performed, with all important and interesting parameters necessary to make a sound decision about the quality of the fit.
 		</p>
+		<h2>Details of the report</h2>
 		<p>
-			Details of what will be included in the report will be added later on, as soon as that has been decided about.
+			The most important informations are summed up at the very beginning of the report. They include:
+		</p>
+		<ul>
+			<li>File name of the dataset the fit was performed for.</li>
+			<li>Fit function used (both its display name and its Matlab representation).</li>
+			<li>Values of the coefficients after the fit.</li>
+		</ul>
+		<p>
+			This is followed by the complete output of the fit function and a summary.
 		</p>
 		<p>
-			The report can be saved to a text file via the "Save" button in the "Fit" panel.
+			<strong>Please note:</strong> It is very important to have a short look at the very end of the report to see whether the fit function returned happily or whether it exited due to exceeding one of the options. In the latter case, it is highly recommended either to change the initial values for the coefficients or to change the respective option in the parameter window.
+		</p>
+		<h2>Clear</h2>
+		<p>
+			To clear the report window, press the <key>Clear</key> button below.
+		</p>
+		<h2>Save</h2>
+		<p>
+			The report can be saved to a text file via the <key>Save</key> button. This will open the OS-specific file dialogue and lets you choose a (text) file name to save the report to.
 		</p>
 	</body>
 </html>

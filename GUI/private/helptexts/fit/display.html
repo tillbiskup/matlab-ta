@@ -14,17 +14,23 @@
 		</p>
 		<h2>Datasets</h2>
 		<p>
-			When opening the Fit GUI, all datasets that were set to "visible" in the main GUI show up in the list of datasets. Here, you can choose the dataset you want to perform a fit at.
+			When opening the Fit GUI, all datasets that were set to "visible" in the main GUI show up in the list of datasets. Here, you can choose the dataset you want to fit.
+		</p>
+		<p>
+			The checkbox "Show only active dataset" currently does nothing, the two buttons to the right, <key>&lt;&lt;</key> and <key>&gt;&gt;</key>, can be used to scroll through the datasets.
 		</p>
 		<h2>Slider position</h2>
 		<p>
 			Given that you loaded a 2D dataset and are currently displaying a 1D representation along one of the two axes, you can set and get the axis positions along x and y here, both as index and unit (if available).
 		</p>
 		<p>
-			The checkbox "Show" toggles between the display of red lines for the position in x and y in the main (upper) display of the BLC GUI.
+			The checkbox "Show" toggles between the display of red lines for the position in x and y in the display.
 		</p>
 		<p>
 			With <key>Maximum</key> you can conveniently set the position both in x and y to the maximum of the dataset.
+		</p>
+		<p>
+			<strong>Hint:</strong> You can use the keyword "end" in all these edit fields to specify the end of the respective axis. This is true both for the "index" and for the "unit" edit fields.
 		</p>
 		<h2>Measure</h2>
 		<p>
@@ -33,6 +39,7 @@
 		<p>
 			To clear the coordinates, press <key>Clear</key>.
 		</p>
+<!--
 		<h2>Reference lines</h2>
 		<p>
 			To help with the analysis, e.g. if you want to easily determine the 1/e time for a decay, you can add reference lines to the display. Those lines can be both, horizontal or vertical, and you can create multiple lines in one graph and selectively move or delete them afterwards.
@@ -55,12 +62,13 @@
 		<p>
 			NB: Another idea would be to allow the user to type such things as "max(y)/exp(1)" into the values edit field, to make it easy to have a line exactly at 1/e and therefore to determine decay times.
 		</p>
-		<h2>Display type</h2>
+//-->
+		<h2>Display types</h2>
 		<p>
-			The display type popupmenu is the well-known control element from the main GUI that allows you to switch between 2D and 1D representations.
+			The display types popupmenus are the well-known control elements from the main GUI that allow you to switch both between 2D and 1D representations and between the different MFE display modes.
 		</p>
 		<p>
-			Within the Fit GUI, it is permanently visible at the bottom right, and you can conveniently switch between the different display modes via the keyboard shortcuts Ctrl+x/y/z.
+			<strong>Hint:</strong> You can conveniently switch between the different 2D and 1D display modes via the keyboard shortcuts <key>Ctrl+x</key>, <key>Ctrl+y</key>, and <key>Ctrl+z</key>.
 		</p>
 	</body>
 </html>
