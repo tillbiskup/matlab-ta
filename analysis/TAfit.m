@@ -10,7 +10,7 @@ function [fit,fval,message] = TAfit(data,parameters)
 % fit        - ...
 
 % (c) 2012, Till Biskup
-% 2012-02-03
+% 2012-02-04
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -54,6 +54,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
             header = 'Configuration file for TAfit function of TA toolbox';
             TAiniFileWrite(fullfile(path,fitRoutinesConfigFileName),...
                 conf,'header',header,'overwrite',true);
+            fprintf(' done\n');
         end
         if ~exist(fullfile(path,fitFunctionsConfigFileName),'file')
             fprintf('%s\n%s',...
@@ -65,6 +66,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
             header = 'Configuration file for TAfit function of TA toolbox';
             TAiniFileWrite(fullfile(path,fitFunctionsConfigFileName),...
                 conf,'header',header,'overwrite',true);
+            fprintf(' done\n');
         end
         [fitRoutines,warnings] = TAiniFileRead(...
             fullfile(path,fitRoutinesConfigFileName),...
@@ -109,17 +111,32 @@ p.StructExpand = true; % Enable passing arguments in a structure
         fitFunAbbrev = fitFunAbbrevs{...
             strcmpi(fitFunctionNames,parameters.fitFunName)};
         
-        % Get data vectors for x1 and x2
+        % Get data vectors for x1 and x
+        % Set data dependend on MFE display type
+        switch parameters.mfetrace
+            case 'MFoff'
+                X = data.data;
+            case 'MFon'
+                X = data.dataMFon;
+            case 'DeltaMF'
+                X = data.dataMFon-data.data;
+            case 'sum(MFoff,MFon)'
+                X = (data.dataMFon+data.data)./2;
+            otherwise
+                message = sprintf('Unknown MFE trace "%s"',...
+                    parameters.mfetrace);
+                return;
+        end
         switch lower(parameters.dimension)
             case 'x'
-                x1 = data.data(...
+                x1 = X(...
                     parameters.position,...
                     parameters.area.start:parameters.area.stop);
                 x = (1:length(x1));
             case 'y'
-                x1 = data.data(...
+                x1 = X(...
                     parameters.area.start:parameters.area.stop,...
-                    parameters.position);
+                    parameters.position)';
                 x = (1:length(x1));
         end
         
@@ -150,8 +167,14 @@ p.StructExpand = true; % Enable passing arguments in a structure
             fitopt);
         % Preassign fit matrix
         fit = zeros(length(x1),2);
-        fit(:,1) = data.axes.x.values(...
-            parameters.area.start:parameters.area.stop);
+        switch lower(parameters.dimension)
+            case 'x'
+                fit(:,1) = data.axes.x.values(...
+                    parameters.area.start:parameters.area.stop);
+            case 'y'
+                fit(:,1) = data.axes.y.values(...
+                    parameters.area.start:parameters.area.stop);
+        end
         fit(:,2) = fun(Y,x);
         
         % Create message

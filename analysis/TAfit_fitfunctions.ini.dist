@@ -40,7 +40,7 @@ bounds.upper = []
 [quadratic]
 name = Quadratic
 description = Quadratic polynomial
-function = c(1)*x^2+c(2)
+function = c(1)*x.^2+c(2)
 ncoeff = 2
 coeff = [1 0]
 bounds.lower = []
@@ -58,7 +58,7 @@ bounds.upper = []
 [biexpdecay]
 name = Biexp. decay
 description = Biexponential decay
-function = c(1)*exp(c(2)*x1+c(3))+c(4)*exp(c(5)*x+c(6))
+function = c(1)*exp(c(2)*x+c(3))+c(4)*exp(c(5)*x+c(6))
 ncoeff = 6
 coeff = [1 -1 0 1 -1 0]
 bounds.lower = []
