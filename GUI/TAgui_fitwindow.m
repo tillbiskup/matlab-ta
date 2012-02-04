@@ -1213,6 +1213,7 @@ ad.configuration = getappdata(hMainFigure,'configuration');
 ad.fit = struct();
 ad.fit = ad.configuration.fit;
 ad.fit.values = [];
+ad.fit.report = cell(0);
 
 setappdata(hMainFigure,'data',ad.data);
 setappdata(hMainFigure,'origdata',ad.origdata);
@@ -1256,19 +1257,6 @@ if (mainGuiWindow)
     
     updateSpectra();
     ad = getappdata(hMainFigure);
-end
-
-% Set fit GUI specific fields in control structure
-ad.control.axis.position = false;
-ad.control.axis.ignorefirstn = ad.configuration.fit.display.ignorefirstn;
-setappdata(hMainFigure,'control',ad.control);
-
-updateAxes();
-updateFitPanel();
-update_position_display();
-
-if (nargout == 1)
-    varargout{1} = hMainFigure;
 end
 
 % Create function-global cell arrays with line styles and markers
@@ -1329,14 +1317,14 @@ if ~exist(fullfile(path,fitFunctionsConfigFileName),'file')
         conf,'header',header,'overwrite',true);
     fprintf(' done\n');
 end
-[fitRoutines,warnings] = TAiniFileRead(...
+[ad.fit.fitRoutines,warnings] = TAiniFileRead(...
     fullfile(path,fitRoutinesConfigFileName),...
     'typeConversion',true);
 if ~isempty(warnings)
     message = warnings;
     return;
 end
-[fitFunctions,warnings] = TAiniFileRead(...
+[ad.fit.fitFunctions,warnings] = TAiniFileRead(...
     fullfile(path,'TAfit_fitfunctions.ini'),...
     'typeConversion',true);
 if ~isempty(warnings)
@@ -1345,23 +1333,32 @@ if ~isempty(warnings)
 end
 % Set popupmenu contents for fit functions accordingly
 set(gh.fitfunction_popupmenu,'String',...
-    structfun(@(x) cellstr(x.name),fitFunctions))
-%fitFunctionNames = structfun(@(x) cellstr(x.name),fitFunctions);
+    structfun(@(x) cellstr(x.name),ad.fit.fitFunctions))
 
 % Test whether fit routines exist in current Matlab installation
 % If not, remove part of struct from fitRoutines
-fitRoutineNames = fieldnames(fitRoutines);
+fitRoutineNames = fieldnames(ad.fit.fitRoutines);
 for k=1:length(fitRoutineNames)
     if ~exist(fitRoutineNames{k},'file')
-        fitRoutines.(fitRoutineNames) = [];
+        ad.fit.fitRoutines.(fitRoutineNames) = [];
     end
 end
-
-ad.fit.fitRoutines = fitRoutines;
-ad.fit.fitFunctions = fitFunctions;
 setappdata(hMainFigure,'fit',ad.fit);
 % END OF Read config files for fit function (TAfit)
 % ------------------------------------------------------------------------
+
+% Set fit GUI specific fields in control structure
+ad.control.axis.position = false;
+ad.control.axis.ignorefirstn = ad.configuration.fit.display.ignorefirstn;
+setappdata(hMainFigure,'control',ad.control);
+
+updateAxes();
+updateFitPanel();
+update_position_display();
+
+if (nargout == 1)
+    varargout{1} = hMainFigure;
+end
 
 % Add keypress function to every element that can have one...
 handles = findall(...
@@ -1944,8 +1941,22 @@ function popupmenu_Callback(source,~,action)
                 updateAxes();
             case 'fitfunction'
                 fitFunNames = cellstr(get(gh.fitfunction_popupmenu,'String'));
-                ad.fit.fitFunction = ...
+                fitFunction = ...
                     fitFunNames{get(gh.fitfunction_popupmenu,'Value')};
+                % If the fit function has changed, clear options, coeff and
+                % boundaries in ad.fit structure
+                if ~strcmpi(fitFunction,ad.fit.fitFunction)
+                    if isfield(ad.fit,'options')
+                        ad.fit = rmfield(ad.fit,'options');
+                    end
+                    if isfield(ad.fit,'coeff')
+                        ad.fit = rmfield(ad.fit,'coeff');
+                    end
+                    if isfield(ad.fit,'bounds')
+                        ad.fit = rmfield(ad.fit,'bounds');
+                    end
+                end
+                ad.fit.fitFunction = fitFunction;
                 setappdata(mainWindow,'fit',ad.fit);
                 updateFitPanel();
             case 'line'
@@ -2254,15 +2265,19 @@ function pushbutton_Callback(~,~,action)
                 updateAxes();
                 return;
             case 'fitparameters'
-                TAgui_fit_parameterwindow();
+                parameters = TAgui_fit_parameterwindow(ad.fit);
+                if ~isempty(parameters) && isstruct(parameters)
+                    ad.fit = parameters;
+                    setappdata(mainWindow,'fit',ad.fit);
+                end
             case 'fit'
                 % Collect fit parameters
                 fitParams = collectFitParameters;
                 % Perform fit
-                [ad.fit.values,fval,message] = ...
+                [ad.fit.values,fval,ad.fit.report] = ...
                     TAfit(ad.data{active},fitParams);
                 % Set report
-                set(gh.summary_panel_edit,'String',message);
+                set(gh.summary_panel_edit,'String',ad.fit.report);
                 setappdata(mainWindow,'fit',ad.fit);
                 updateAxes();
                 return;
@@ -2347,10 +2362,31 @@ function pushbutton_Callback(~,~,action)
                 updateAxes();
                 return;
             case 'reportclear'
-                set(gh.summary_panel_edit,'String','');
+                set(gh.summary_panel_edit,'String',...
+                    'Nothing to report yet...');
                 ad.fit.values = [];
+                ad.fit.report = cell(0);
                 setappdata(mainWindow,'fit',ad.fit);
                 updateAxes();
+                return;
+            case 'reportsave'
+                if isempty(ad.fit.report)
+                    return;
+                end
+                [fpath,fname,~] = fileparts(...
+                    ad.data{ad.control.spectra.active}.file.name);
+                reportSaveFile = sprintf('%s-fitreport.txt',...
+                    fullfile(fpath,fname));
+                [fname,fpath] = uiputfile('*.txt',...
+                    'Select file to save fit report to',reportSaveFile);
+                if ~isempty(fname)
+                    status = textFileWrite(...
+                        fullfile(fpath,fname),ad.fit.report);
+                    if ~isempty(status)
+                        add2status(status);
+                    end
+                end
+                return;
             case 'close'
                 msgStr = 'Fit GUI window closed.';
                 add2status(msgStr);
@@ -2999,16 +3035,25 @@ function updateFitPanel()
             ad.fit.display.area);
         set(gh.fit_display_residuals_checkbox,'Value',...
             ad.fit.display.residuals);
-        
+
+        % Set fit dimension popupmenu
+        fitDimensions = cellstr(get(gh.dimension_popupmenu,'String'));
+        set(gh.dimension_popupmenu,'Value',...
+            find(strncmpi(ad.fit.dimension,fitDimensions,1)));
+
         % Set fit function panel
-        fitFunctionNames = structfun(@(x) cellstr(x.name),fitFunctions);
-        fitFunAbbrevs = fieldnames(fitFunctions);
+        fitFunctionPopupmenuItems = get(gh.fitfunction_popupmenu,'String');
+        set(gh.fitfunction_popupmenu,'Value',...
+            find(strcmpi(fitFunctionPopupmenuItems,ad.fit.fitFunction)));
+        fitFunctionNames = ...
+            structfun(@(x) cellstr(x.name),ad.fit.fitFunctions);
+        fitFunAbbrevs = fieldnames(ad.fit.fitFunctions);
         fitFunAbbrev = fitFunAbbrevs{...
             strcmpi(fitFunctionNames,ad.fit.fitFunction)};
         set(gh.fitfunction_edit,'String',...
-            fitFunctions.(fitFunAbbrev).function);
+            ad.fit.fitFunctions.(fitFunAbbrev).function);
         set(gh.ncoefficients_edit,'String',...
-            fitFunctions.(fitFunAbbrev).ncoeff);
+            ad.fit.fitFunctions.(fitFunAbbrev).ncoeff);
 
         if ~isfield(ad,'data') || isempty(ad.data)
             set(findall(...
@@ -3860,11 +3905,20 @@ function parameters = collectFitParameters()
             case 'y'
                 parameters.position = ad.data{active}.display.position.x;
         end
-        parameters.fitRoutineName = 'fminsearch';
+        parameters.fitRoutineName = ad.fit.fitRoutine;
         fitFunNames = cellstr(get(gh.fitfunction_popupmenu,'String'));
         parameters.fitFunName = ...
             fitFunNames{get(gh.fitfunction_popupmenu,'Value')};
-        %parameters.fitFunName = 'Exp. decay';
+        parameters.fitFunName = ad.fit.fitFunction;
+        if isfield(ad.fit,'options')
+            parameters.options = ad.fit.options;
+        end
+        if isfield(ad.fit,'coeff')
+            parameters.coeff = ad.fit.coeff;
+        end
+        if isfield(ad.fit,'bounds')
+            parameters.bounds = ad.fit.bounds;
+        end
     catch exception
         try
             msgStr = ['An exception occurred. '...

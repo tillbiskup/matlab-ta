@@ -35,7 +35,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
         fval = [];
         message = {};
 
-        %structdisp(parameters)
+        structdisp(parameters)
         
         % Read config files
         [path,~,~] = fileparts(mfilename('fullpath'));
@@ -145,13 +145,36 @@ p.StructExpand = true; % Enable passing arguments in a structure
             sprintf('Iteration  FuncCount    min f(x)   Procedure');
         
         % Set options for fit routine
-        fitopt = fitRoutines.(parameters.fitRoutineName);
+        if isfield(parameters,'options')
+            fitopt = parameters.options;
+        else
+            fitopt = fitRoutines.(parameters.fitRoutineName);
+        end
+        % Handle problems with silly Matlab not accepting nice options
+        if ischar(fitopt.MaxFunEvals)
+            fitopt.MaxFunEvals = str2num(strrep(...
+                fitopt.MaxFunEvals,'numberofvariables',...
+                num2str(fitFunctions.(fitFunAbbrev).ncoeff))); %#ok<ST2NM>
+        end
+        if ischar(fitopt.MaxIter)
+            fitopt.MaxIter = str2num(strrep(...
+                fitopt.MaxIter,'numberofvariables',...
+                num2str(fitFunctions.(fitFunAbbrev).ncoeff))); %#ok<ST2NM>
+        end
+
         % Adjust TolX and TolFun: Normalise with maximum of function value
         fitopt.TolX = fitopt.TolX * max(x1);
         fitopt.TolFun = fitopt.TolFun * max(x1);
         % Set display and outputfun options
         fitopt.Display = 'off';
         fitopt.OutputFcn = @outfun;
+        
+        % Set coefficients for fit function
+        if isfield(parameters,'coeff')
+            fitcoeff = parameters.coeff;
+        else
+            fitcoeff = fitFunctions.(fitFunAbbrev).coeff;
+        end
 
         % Assign fit routine name
         fitRoutine = str2func(parameters.fitRoutineName);
@@ -161,10 +184,7 @@ p.StructExpand = true; % Enable passing arguments in a structure
             fitFunctions.(fitFunAbbrev).function));
         fitfun = @(c)sum((fun(c,x)-x1).^2);
         % Fit function
-        [Y,fval,exitflag,output] = fitRoutine(...
-            fitfun,...
-            fitFunctions.(fitFunAbbrev).coeff,...
-            fitopt);
+        [Y,fval,exitflag,output] = fitRoutine(fitfun,fitcoeff,fitopt);
         % Preassign fit matrix
         fit = zeros(length(x1),2);
         switch lower(parameters.dimension)

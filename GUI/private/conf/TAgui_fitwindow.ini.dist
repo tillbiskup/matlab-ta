@@ -13,6 +13,8 @@
 
 [fit]
 dimension = x
+fitFunction = Exp. decay
+fitRoutine = fminsearch
 area.patch.color = [0.5 0.5 1]
 area.patch.alpha = 0.4
 area.patch.edge = none
