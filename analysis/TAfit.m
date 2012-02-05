@@ -10,7 +10,7 @@ function [fit,fval,message] = TAfit(data,parameters)
 % fit        - ...
 
 % (c) 2012, Till Biskup
-% 2012-02-04
+% 2012-02-05
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -167,8 +167,8 @@ p.StructExpand = true; % Enable passing arguments in a structure
         end
 
         % Adjust TolX and TolFun: Normalise with maximum of function value
-        fitopt.TolX = fitopt.TolX * max(x1);
-        fitopt.TolFun = fitopt.TolFun * max(x1);
+        fitopt.TolX = fitopt.TolX * max(abs(x1));
+        fitopt.TolFun = fitopt.TolFun * max(abs(x1));
         % Set display and outputfun options
         fitopt.Display = 'off';
         fitopt.OutputFcn = @outfun;
