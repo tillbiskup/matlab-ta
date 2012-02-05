@@ -17,7 +17,7 @@
 % tip     - Whether to show a "Did you know...?" message at start.
 [start]
 welcome = 1
-tip = 0
+tip = 1
 
 % Configuration for the load panel
 %
