@@ -4,10 +4,20 @@ The new <strong>Fit GUI</strong> allows you to fit nearly arbitrary functions to
 
 You can <strong>close this window</strong> by hiting "Esc" or "Ctrl-w", or with the "Close" button.
 
-Every window of the TA Toolbox GUI can be closed by "Ctrl-w".
+You can <strong>close every window</strong> of the TA Toolbox GUI by hitting "Ctrl-w".
 
 The new <strong>toolbox file format</strong> saves the data as binary (32-bit float) to save memory and speed up loading.
 
-Double-click on a dataset in the dataset listbox lets you change its label. Try it out!
+Double-click on a dataset in the dataset listbox lets you <strong>change its label</strong>. Try it out!
 
 The topic &quot;<strong>New features</strong>&quot; in the TA Toolbox Help window lists the new features of every version.
+
+Nearly every GUI window can now be <strong>configured</strong>, easiest using the "Configure panel" of the Main GUI.
+
+The GUI comes with extensive <strong>built-in help</strong>. You can access it by either hitting "F1" or pressing the button with the blue question mark.
+
+The help usually contains a section "<strong>If in a hurry</strong>" for the busy users.
+
+<strong>Power users</strong> may set "<tt>welcome = 0</tt>" in the Main GUI configuration file for a faster start.
+
+You can scroll with the <strong>arrow keys</strong>, &larr; and &rarr;, of your <em>keyboard</em> through these tips.
