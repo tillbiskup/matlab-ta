@@ -24,6 +24,9 @@ function varargout = TAconf(action,varargin)
 %   files     - Return full file names (including paths) of all recognised
 %               config files
 %
+%   distfiles - Return full file names (including paths) of all recognised
+%               distributed config files
+%
 % Parameters
 %
 %   overwrite - logical (true/false)
@@ -35,8 +38,8 @@ function varargout = TAconf(action,varargin)
 %               the distributed config file (i.e., "<basename>.ini", not
 %               "<basename>.ini.dist").
 
-% (c) 2011, Till Biskup
-% 2011-12-07
+% (c) 2011-12, Till Biskup
+% 2012-02-05
 
 % If none or the wrong input parameter, display help and exit
 if nargin == 0 || isempty(action) || ~ischar(action)
@@ -97,6 +100,19 @@ try
         case 'files'
             confFiles = dir(...
                 fullfile(TAinfo('dir'),'GUI','private','conf','*.ini'));
+            if isempty(confFiles)
+                varargout{1} = cell(0);
+                return;
+            end
+            confFileNames = cell(length(confFiles),1);
+            for k=1:length(confFiles)
+                confFileNames{k} = fullfile(...
+                    TAinfo('dir'),'GUI','private','conf',confFiles(k).name);
+            end
+            varargout{1} = confFileNames;
+        case 'distfiles'
+            confFiles = dir(...
+                fullfile(TAinfo('dir'),'GUI','private','conf','*.ini.dist'));
             if isempty(confFiles)
                 varargout{1} = cell(0);
                 return;
