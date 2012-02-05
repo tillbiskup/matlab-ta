@@ -1326,6 +1326,7 @@ if ~isempty(warnings)
     return;
 end
 % Set popupmenu contents for fit functions accordingly
+gh = guihandles(hMainFigure);
 set(gh.fitfunction_popupmenu,'String',...
     structfun(@(x) cellstr(x.name),ad.fit.fitFunctions))
 
