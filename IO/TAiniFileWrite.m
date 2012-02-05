@@ -144,6 +144,8 @@ catch exception
     throw(exception);
 end
 
+warnings = '';
+
 end
 
 

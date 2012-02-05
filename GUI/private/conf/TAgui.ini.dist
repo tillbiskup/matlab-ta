@@ -1,6 +1,6 @@
 % Sample configuration file for the TAgui function of the TA toolbox
 %
-% (c) 2011, Till Biskup <till@till-biskup.de>
+% (c) 2011-12, Till Biskup <till@till-biskup.de>
 %
 % This file serves as an example and documentation for the real
 % configuration in the file "TAgui.ini" in the same directory.
@@ -9,6 +9,15 @@
 % use TAconf('create') at the MATLAB(r) command line.
 % Alternatively, you may use the functions provided by the "Configuration" 
 % panel of the GUI.
+
+% Configuration of the behaviour of the toolbox when started
+%
+% welcome - Whether to show the "Welcome panel" at start.
+%           Alternatively, directly the "Load panel" is displayed.
+% tip     - Whether to show a "Did you know...?" message at start.
+[start]
+welcome = 1
+tip = 0
 
 % Configuration for the load panel
 %

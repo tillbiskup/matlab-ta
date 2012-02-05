@@ -2,8 +2,7 @@ function status = guiConfigApply(guiname)
 % GUICONFIGAPPLY Apply configuration parameters to a given GUI window.
 %
 % Used normally when initialising a GUI. The GUI needs to have a field
-% "configuration" in its appdata structure. To actually read configuration
-% settings from a file, use guiConfigLoad.
+% "configuration" in its appdata structure.
 %
 % Usage
 %   guiConfigApply(guiname)

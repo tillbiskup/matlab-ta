@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-04
+% 2012-02-05
 
 % Make GUI effectively a singleton
 singleton = findobj('Tag','TAgui_mainwindow');
@@ -556,10 +556,21 @@ uicontrol('Tag','next_pushbutton',...
 
 % Apply configuration
 guiConfigApply(mfilename);
+% Get appdata for immediate use
+ad = getappdata(hMainFigure);
 
-% Make the GUI visible.
-set(hMainFigure,'Visible','on');
-set(hp0,'Visible','on');
+% Be very careful, such as not to break old installations without updated
+% config files
+if isfield(ad.configuration,'start') && ...
+        isfield(ad.configuration.start,'welcome')
+    if ad.configuration.start.welcome
+        set(hp0,'Visible','on');
+    else
+        switchMainPanel('Load');
+    end
+else
+    set(hp0,'Visible','on');
+end
 
 % Initialize some button group properties. 
 set(hbg,'SelectionChangeFcn',{@tbg_Callback});
@@ -610,6 +621,28 @@ handles = findall(...
 for k=1:length(handles)
     set(handles(k),'KeyPressFcn',@guiKeyBindings);
 end
+
+% Make the GUI visible.
+set(hMainFigure,'Visible','on');
+
+% Be very careful, such as not to break old installations without updated
+% config files
+if isfield(ad.configuration,'start') && ...
+        isfield(ad.configuration.start,'tip')
+    if ad.configuration.start.tip
+        showTips = showTip('File',fullfile(...
+            TAinfo('dir'),'GUI','private','helptexts','tips.txt'));
+        if ~showTips
+            conf = guiConfigLoad(mfilename);
+            conf.start.tip = showTips;
+            warnings = guiConfigWrite(mfilename,conf);
+            if warnings
+                add2status(warnings);
+            end
+        end
+    end
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks

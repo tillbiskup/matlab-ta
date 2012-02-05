@@ -1,0 +1,13 @@
+The TA Toolbox consists of nearly <strong>50.000 lines</strong> of code (&gt;40.000 for the GUI) in 90 files (<em>v.0.0.8</em>).
+
+The new <strong>Fit GUI</strong> allows you to fit nearly arbitrary functions to  1D traces of your datasets.
+
+You can <strong>close this window</strong> by hiting "Esc" or "Ctrl-w", or with the "Close" button.
+
+Every window of the TA Toolbox GUI can be closed by "Ctrl-w".
+
+The new <strong>toolbox file format</strong> saves the data as binary (32-bit float) to save memory and speed up loading.
+
+Double-click on a dataset in the dataset listbox lets you change its label. Try it out!
+
+The topic &quot;<strong>New features</strong>&quot; in the TA Toolbox Help window lists the new features of every version.
