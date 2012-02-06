@@ -25,7 +25,7 @@ parser.KeepUnmatched = true; % Enable errors on unmatched arguments
 parser.StructExpand = true; % Enable passing arguments in a structure
 parser.addRequired('filename', @(x)ischar(x) || iscell(x));
 % Note, this is to be compatible with TAload - currently without function!
-p.addParamValue('checkFormat',logical(true),@islogical);
+parser.addParamValue('checkFormat',logical(true),@islogical);
 parser.parse(filename);
 % Do the real stuff
 if ~exist(filename,'file')
