@@ -50,7 +50,7 @@ function [data,warnings] = TAOXread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011-12, Till Biskup
-% 2012-01-31
+% 2012-02-06
 
 % TODO: Combining - Handle different parameters for each time trace
 % properly, especially different filters etc.
@@ -70,6 +70,8 @@ p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 p.addParamValue('combine',logical(false),@islogical);
 p.addParamValue('average',logical(false),@islogical);
 p.addParamValue('sortfiles',logical(true),@islogical);
+% Note, this is to be compatible with TAload - currently without function!
+p.addParamValue('checkFormat',logical(true),@islogical);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser

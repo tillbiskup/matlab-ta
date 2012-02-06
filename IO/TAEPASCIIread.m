@@ -32,8 +32,8 @@ function [data,warnings] = TAEPASCIIread(fileName,varargin)
 %
 % See also: TAload, TAdataStructure
 
-% (c) 2011, Till Biskup
-% 2011-12-09
+% (c) 2011-12, Till Biskup
+% 2012-02-06
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -49,7 +49,7 @@ p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('checkFormat',logical(true),@islogical);
 p.addParamValue('sortfiles',logical(true),@islogical);
-p.parse(fileName);
+p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 checkFormat = p.Results.checkFormat;

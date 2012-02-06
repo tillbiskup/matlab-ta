@@ -56,7 +56,7 @@ function [data,warnings] = TAload(fileName, varargin)
 % See also TAOXREAD, TADATASTRUCTURE.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-20
+% 2012-02-06
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -257,7 +257,7 @@ elseif max(strcmpi(format,formatNames))
     % Basically that means that "format" has been found in the formats
     functionHandle = str2func(fileFormats.(format).function);
     [data,warnings] = functionHandle(fileName,'combine',combine,...
-        'average',average);
+        'average',average,'checkFormat',false);
 else
     warnings{end+1} = sprintf('File format %s not recognised.',format);
 end
