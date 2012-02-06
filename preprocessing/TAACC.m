@@ -17,7 +17,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              a copy is copied to the history.info field
 
 % (c) 2011-12, Till Biskup
-% 2012-01-31
+% 2012-02-06
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -222,7 +222,9 @@ try
         length(accData.axes.x.values),...
         length(data));
     
-    accData.dataMFon = accData.data;
+    if isfield(data{masterId},'dataMFon')
+        accData.dataMFon = accData.data;
+    end
     
     % Check for axes steppings and handle interpolation accordingly, or,
     % for the time being, complain that interpolation is not supported yet.
