@@ -559,6 +559,13 @@ guiConfigApply(mfilename);
 % Get appdata for immediate use
 ad = getappdata(hMainFigure);
 
+% Initialize some button group properties. 
+set(hbg,'SelectionChangeFcn',{@tbg_Callback});
+set(hbg,'SelectedObject',[]);  % None selected
+set(hbg,'Visible','on');
+
+set(hbg_fb,'Visible','on');
+
 % Be very careful, such as not to break old installations without updated
 % config files
 if isfield(ad.configuration,'start') && ...
@@ -571,13 +578,6 @@ if isfield(ad.configuration,'start') && ...
 else
     set(hp0,'Visible','on');
 end
-
-% Initialize some button group properties. 
-set(hbg,'SelectionChangeFcn',{@tbg_Callback});
-set(hbg,'SelectedObject',[]);  % None selected
-set(hbg,'Visible','on');
-    
-set(hbg_fb,'Visible','on');
     
 xlabel(hPlotAxes,'time / s');
 ylabel(hPlotAxes,'intensity / a.u.');
