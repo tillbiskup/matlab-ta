@@ -10,7 +10,7 @@ function status = TAinstall()
 %
 
 % (c) 2012, Till Biskup
-% 2012-02-05
+% 2012-02-06
 
 % There are several tasks a good installation program should perform:
 %
@@ -74,8 +74,17 @@ cellfun(@(x)addpath(char(x)),paths);
 fprintf('\nSaving path... ')
 spstatus = savepath;
 if spstatus
-    fprintf('failed!');
-    fprintf('Error: %s',spstatus);
+    fprintf('failed!\n');
+    % Test whether global pathdef.m is writable
+    pathdefFileName = fullfile(matlabroot,'toolbox','local','pathdef.m');
+    fh = fopen(pathdefFileName,'w');
+    if fh == -1
+        fprintf('You have no write permissions to the file\n   %s.\n',...
+            pathdefFileName);
+        fprintf('Therefore, you need to manually save the Matlab path.');
+    else
+        close(fh);
+    end 
 else
     fprintf('done.\n');
 end
