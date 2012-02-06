@@ -74,14 +74,14 @@ cellfun(@(x)addpath(char(x)),paths);
 fprintf('\nSaving path... ')
 spstatus = savepath;
 if spstatus
-    fprintf('failed!\n');
+    fprintf('FAILED!\n');
     % Test whether global pathdef.m is writable
     pathdefFileName = fullfile(matlabroot,'toolbox','local','pathdef.m');
     fh = fopen(pathdefFileName,'w');
     if fh == -1
-        fprintf('You have no write permissions to the file\n   %s.\n',...
+        fprintf('\n   You have no write permissions to the file\n   %s.\n',...
             pathdefFileName);
-        fprintf('Therefore, you need to manually save the Matlab path.');
+        fprintf('   Therefore, you need to manually save the Matlab path.\n');
     else
         close(fh);
     end 
