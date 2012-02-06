@@ -141,7 +141,8 @@ function struct = setCascadedField(struct,fieldName,value,typeConversion)
     % Get number of "." in fieldName
     nDots = strfind(fieldName,'.');
     if isempty(nDots)
-        if isempty(str2num(value)) || ~typeConversion
+        if isempty(str2num(value)) || ~typeConversion || ...
+                strcmpi(value,'linear')
             struct.(fieldName) = value;
         else
             struct.(fieldName) = str2num(value);
