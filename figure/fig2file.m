@@ -34,8 +34,8 @@ function status = fig2file(figHandle,fileName,varargin)
 %                'fig2file.ini' that is in the same directory as fig2file.m
 %
 
-% (c) 2011, Till Biskup
-% 2011-12-12
+% (c) 2011-12, Till Biskup
+% 2012-02-06
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
@@ -108,19 +108,22 @@ try
                 % afterwards, all the font settings are those from the axis
                 % handle, even if there were different settings for the
                 % labels.
-                axisHandle = findobj(allchild(figHandle),'type','axes');
+                axisHandle = findobj(allchild(figHandle),'type','axes',...
+                    '-not','tag','legend');
                 if ~isempty(axisHandle)
                     oldParams.(fieldNames{k}) = get(axisHandle,fieldNames{k});
                     set(axisHandle,fieldNames{k},...
                         exportFormats.(exportFormat).(fieldNames{k}));
-                end                    
+                end
                 % Try to get text handles that are child of axes
-                textHandles = findobj(allchild(...
-                    findobj(allchild(figHandle),'type','axes')),'type','text');
-                % If there are any, set their text properties
-                if ~isempty(textHandles)
-                    set(textHandles,fieldNames{k},...
-                        exportFormats.(exportFormat).(fieldNames{k}));
+                for hidx=1:length(axisHandle)
+                    textHandles = findobj(allchild(axisHandle(hidx)),...
+                        'type','text');
+                    % If there are any, set their text properties
+                    if ~isempty(textHandles)
+                        set(textHandles,fieldNames{k},...
+                            exportFormats.(exportFormat).(fieldNames{k}));
+                    end
                 end
             end
         end
@@ -129,7 +132,8 @@ try
         % rectangle, but taking care of tick marks, labels, and title
         % Therefore, try to get axis handle, and if there is one, set
         % properties.
-        axisHandle = findobj(allchild(figHandle),'type','axes');
+        axisHandle = findobj(allchild(figHandle),'type','axes',...
+            '-not','tag','legend');
         if ~isempty(axisHandle)
             oldAxisUnits = get(axisHandle,'Unit');
             oldAxisPosition = get(axisHandle,'Position');
@@ -178,18 +182,21 @@ try
                 % handle, even if there were different settings for the
                 % labels.
                 % Try to get axis handle
-                axisHandle = findobj(allchild(figHandle),'type','axes');
+                axisHandle = findobj(allchild(figHandle),'type','axes',...
+                    '-not','tag','legend');
                 if ~isempty(axisHandle)
                     set(axisHandle,fieldNames{k},...
                         oldParams.(fieldNames{k}));
                 end                    
                 % Try to get text handles that are child of axes
-                textHandles = findobj(allchild(...
-                    findobj(allchild(figHandle),'type','axes')),'type','text');
-                % If there are any, set their text properties
-                if ~isempty(textHandles)
-                    set(textHandles,fieldNames{k},...
-                        oldParams.(fieldNames{k}));
+                for hidx=1:length(axisHandle)
+                    textHandles = findobj(allchild(axisHandle(hidx)),...
+                        'type','text');
+                    % If there are any, set their text properties
+                    if ~isempty(textHandles)
+                        set(textHandles,fieldNames{k},...
+                            oldParams.(fieldNames{k}));
+                    end
                 end
             end    
         end

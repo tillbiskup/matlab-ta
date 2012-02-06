@@ -647,7 +647,7 @@ switch ad.control.axis.displayType
             ad.control.axis.labels.z.measure,...
             ad.control.axis.labels.z.unit));
         % Display legend - internal function
-        display_legend();
+        display_legend(mainAxes);
     case '1D along y' % B0 spectrum
         % Enable sliders
         sliderHandles = findobj(...
@@ -1133,7 +1133,7 @@ switch ad.control.axis.displayType
             ad.control.axis.labels.z.measure,...
             ad.control.axis.labels.z.unit));
         % Display legend - internal function
-        display_legend();
+        display_legend(mainAxes);
     otherwise
         msg = sprintf('Display type %s currently unsupported',displayType);
         add2status(msg);    
@@ -1154,7 +1154,7 @@ status = 0;
 end
 
 
-function display_legend()
+function display_legend(mainAxes)
 
 mainWindow = guiGetWindowHandle;
 % Get handles from main window
@@ -1163,7 +1163,7 @@ gh = guidata(mainWindow);
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
 
-mainAxes = findobj(allchild(gh.mainAxes_panel),'Type','axes');
+%mainAxes = findobj(allchild(gh.mainAxes_panel),'Type','axes');
 
 % If there is no legend to be displayed
 if (isequal(ad.control.axis.legend.location,'none'))
