@@ -49,7 +49,7 @@ try
     for k=length(dataset):-1:1
         if ~p.Results.force
             if ~any(ad.control.spectra.modified==dataset)
-                removedDatasetsLabels{end+1} = ad.data{dataset(k)}.label;
+                removedDatasetsLabels{end+1} = ad.data{dataset(k)}.label; %#ok<*AGROW>
                 ad.data(dataset(k)) = [];
                 ad.origdata(dataset(k)) = [];
                 ad.control.spectra.visible(...

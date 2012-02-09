@@ -21,3 +21,5 @@ The help usually contains a section "<strong>If in a hurry</strong>" for the bus
 <strong>Power users</strong> may set "<tt>welcome = 0</tt>" in the Main GUI configuration file for a faster start.
 
 You can scroll with the <strong>arrow keys</strong>, &larr; and &rarr;, of your <em>keyboard</em> through these tips.
+
+You can <strong>display a legend</strong>, and even move it around with the mouse. But beware: It may slightly change position during export.
