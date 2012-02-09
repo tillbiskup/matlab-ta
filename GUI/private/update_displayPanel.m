@@ -7,7 +7,7 @@ function status = update_displayPanel()
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-01-17
+% 2012-02-09
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
@@ -25,8 +25,10 @@ ad = getappdata(mainWindow);
 % Toggle "Highlight active"
 if isempty(ad.control.axis.highlight.method)
     set(gh.display_panel_highlight_checkbox,'Value',0);
+    set(gh.display_panel_highlight2_checkbox,'Value',0);
 else
     set(gh.display_panel_highlight_checkbox,'Value',1);
+    set(gh.display_panel_highlight2_checkbox,'Value',1);
 end
 
 % Set axis labels fields
