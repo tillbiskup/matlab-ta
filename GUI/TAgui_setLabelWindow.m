@@ -3,7 +3,7 @@ function varargout = TAgui_setLabelWindow(varargin)
 %     for a given dataset.
 
 % (c) 2012, Till Biskup
-% 2012-01-19
+% 2012-02-09
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -32,7 +32,8 @@ hMainFigure = figure('Tag','TAgui_setLabelWindow',...
     'Resize','off',...
     'NumberTitle','off', ...
     'WindowStyle','modal',...
-    'Menu','none','Toolbar','none',...
+    'Menu','none','Toolbar','none', ...
+    'KeyPressFcn',@keypress_Callback,...
     'CloseRequestFcn',{@setLabel_Callback,'cancel'});
 
 defaultBackground = get(hMainFigure,'Color');
@@ -131,6 +132,37 @@ function setLabel_Callback(~,~,action)
             varargout{1} = oldLabel;
         otherwise
             disp('Whatever you did, but that shall never happen...');
+    end
+end
+
+function keypress_Callback(~,evt)
+    try
+        if isempty(evt.Character) && isempty(evt.Key)
+            % In case "Character" is the empty string, i.e. only modifier
+            % key was pressed...
+            return;
+        end
+        if ~isempty(evt.Modifier)
+            if (strcmpi(evt.Modifier{1},'command')) || ...
+                    (strcmpi(evt.Modifier{1},'control'))
+                switch evt.Key
+                    case 'w'
+                        delete(hMainFigure);
+                        varargout{1} = oldLabel;
+                    otherwise
+                        return;
+                end
+            end
+        end
+        switch evt.Key
+            case 'escape'
+                delete(hMainFigure);
+                varargout{1} = oldLabel;
+            otherwise
+                return;
+        end
+    catch exception
+        throw(exception);
     end
 end
 

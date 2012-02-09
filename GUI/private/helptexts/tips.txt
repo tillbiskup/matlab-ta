@@ -23,3 +23,7 @@ The help usually contains a section "<strong>If in a hurry</strong>" for the bus
 You can scroll with the <strong>arrow keys</strong>, &larr; and &rarr;, of your <em>keyboard</em> through these tips.
 
 You can <strong>display a legend</strong>, and even move it around with the mouse. But beware: It may slightly change position during export.
+
+You can use <strong>TeX strings</strong> in axis labels, such as <tt>\Delta</tt>, to display Greek characters. 
+
+The <strong>labels</strong> of your datasets get used in the figure legend. Use that for proper figure legends.
