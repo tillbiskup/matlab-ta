@@ -2705,6 +2705,7 @@ function dataexport_pushbutton_Callback(~,~)
             otherwise
                 msg = 'Cannot determine cross section direction (2D mode)';
                 add2status(msg);
+                msgbox(msg,'Error with exporting 1D','error');
         end
         export1Dparameters.header.character = ...
             get(gh.display_panel_dataexport_header_edit,'String');
@@ -2719,6 +2720,12 @@ function dataexport_pushbutton_Callback(~,~)
             ad.data{ad.control.spectra.active},fileName,export1Dparameters);
         if status
             add2status(status);
+            msgbox(status,'Problems with exporting 1D','warn');
+        else
+            msgbox(sprintf('%s\n%s',...
+                'Current 1D display successfully exported to file',...
+                fileName),...
+                'Exporting 1D','help');
         end
     catch exception
         try
