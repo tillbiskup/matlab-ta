@@ -7,7 +7,7 @@ function varargout = TAgui_ACCwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-02
+% 2012-02-13
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2518,7 +2518,7 @@ function updateAxes()
             cla(gca,'reset');
             return;
         end
-
+        
         % In case that there are accumulated data, just show those
         %
         % ATTENTION PROGRAMMERS!
@@ -2916,7 +2916,13 @@ function updateAxes()
                     cla reset;
                     hold on
                     if ad.control.axis.onlyActive
-                        [y,x] = size(ad.data{active});
+                        data = ad.data{active}.data;
+                        if isfield(ad.data{active},'dataMFon')
+                            dataMFon = ad.data{active}.dataMFon;
+                        else
+                            dataMFon = ad.data{active}.data;
+                        end
+                        [y,x] = size(data);
                         x = linspace(1,x,x);
                         if (isfield(ad.data{active},'axes') ...
                                 && isfield(ad.data{active}.axes,'x') ...
@@ -2924,10 +2930,10 @@ function updateAxes()
                                 && not (isempty(ad.data{active}.axes.x.values)))
                             x = ad.data{active}.axes.x.values;
                         end
-                        y = ad.data{active}.data(...
+                        y = data(...
                             ad.data{active}.display.position.y,...
                             :);
-                        yMF = ad.data{active}.dataMFon(...
+                        yMF = dataMFon(...
                             ad.data{active}.display.position.y,...
                             :);
                         % In case that we loaded 1D data...
@@ -3003,6 +3009,12 @@ function updateAxes()
                         for idx=1:length(ad.control.spectra.accumulated)
                             k = ad.control.spectra.accumulated(idx);
                             [~,x] = size(ad.data{k});
+                            data = ad.data{k}.data;
+                            if isfield(ad.data{k},'dataMFon')
+                                dataMFon = ad.data{k}.dataMFon;
+                            else
+                                dataMFon = ad.data{k}.data;
+                            end
                             x = linspace(1,x,x);
                             if (isfield(ad.data{k},'axes') ...
                                     && isfield(ad.data{k}.axes,'x') ...
@@ -3010,10 +3022,10 @@ function updateAxes()
                                     && not (isempty(ad.data{k}.axes.x.values)))
                                 x = ad.data{k}.axes.x.values;
                             end
-                            y = ad.data{k}.data(...
+                            y = data(...
                                 ad.data{k}.display.position.y,...
                                 :);
-                            yMF = ad.data{k}.dataMFon(...
+                            yMF = dataMFon(...
                                 ad.data{k}.display.position.y,...
                                 :);
                             % In case that we loaded 1D data...
@@ -3111,6 +3123,12 @@ function updateAxes()
                     cla reset;
                     hold on;
                     if ad.control.axis.onlyActive
+                        data = ad.data{active}.data;
+                        if isfield(ad.data{active},'dataMFon')
+                            dataMFon = ad.data{active}.dataMFon;
+                        else
+                            dataMFon = ad.data{active}.data;
+                        end
                         [y,x] = size(ad.data{active}.data);
                         y = linspace(1,y,y);
                         if (isfield(ad.data{active},'axes') ...
@@ -3119,10 +3137,8 @@ function updateAxes()
                                 && not (isempty(ad.data{active}.axes.y.values)))
                             y = ad.data{active}.axes.y.values;
                         end
-                        x = ad.data{active}.data(...
-                            :,ad.data{active}.display.position.x);
-                        xMF = ad.data{active}.dataMFon(...
-                            :,ad.data{active}.display.position.x);
+                        x = data(:,ad.data{active}.display.position.x);
+                        xMF = dataMFon(:,ad.data{active}.display.position.x);
                         % In case that we loaded 1D data...
                         if isscalar(x)
                             x = [x x+1];
@@ -3195,7 +3211,14 @@ function updateAxes()
                         end
                     else
                         for idx=1:length(ad.control.spectra.accumulated)
+                            k = ad.control.spectra.accumulated(idx);
                             [y,x] = size(ad.data{k}.data);
+                            data = ad.data{k}.data;
+                            if isfield(ad.data{k},'dataMFon')
+                                dataMFon = ad.data{k}.dataMFon;
+                            else
+                                dataMFon = ad.data{k}.data;
+                            end
                             y = linspace(1,y,y);
                             if (isfield(ad.data{k},'axes') ...
                                     && isfield(ad.data{k}.axes,'y') ...
@@ -3203,10 +3226,8 @@ function updateAxes()
                                     && not (isempty(ad.data{k}.axes.y.values)))
                                 y = ad.data{k}.axes.y.values;
                             end
-                            x = ad.data{k}.data(...
-                                :,ad.data{k}.display.position.x);
-                            xMF = ad.data{k}.dataMFon(...
-                                :,ad.data{k}.display.position.x);
+                            x = data(:,ad.data{k}.display.position.x);
+                            xMF = dataMFon(:,ad.data{k}.display.position.x);
                             % In case that we loaded 1D data...
                             if isscalar(x)
                                 x = [x x+1];
