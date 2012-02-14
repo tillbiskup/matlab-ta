@@ -22,7 +22,7 @@
 %
 
 % (c) 2012, Till Biskup
-% 2012-02-13
+% 2012-02-14
 
 function status = TAexport1D(data,fileName,parameters)
 
@@ -30,12 +30,6 @@ try
     % Check whether we have data
     if ~isfield(data,'data') || isempty(data.data)
         status = 'No data';
-        return;
-    end
-    
-    % Check whether data are 2D
-    if min(size(data.data)) < 2
-        status = 'Data are (most probably) not 2D';
         return;
     end
     
