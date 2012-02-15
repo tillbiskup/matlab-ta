@@ -104,6 +104,22 @@ try
                     end
                 end
             end
+            
+            % Set display panel's settings
+            if isfield(ad.configuration.display,'thresholdMin')
+                set(gh.display_panel_threshold_min_checkbox,...
+                    'Value',ad.configuration.display.thresholdMin);
+            end
+            if isfield(ad.configuration.display,'thresholdMax')
+                set(gh.display_panel_threshold_max_checkbox,...
+                    'Value',ad.configuration.display.thresholdMax);
+            end
+            if isfield(ad.configuration.display,'thresholdAll')
+                set(gh.display_panel_threshold_all_checkbox,...
+                    'Value',ad.configuration.display.thresholdAll);
+            end
+            
+            % Apply config settings to control structure
             ad.control.axis.onlyActive = ...
                 ad.configuration.datasets.onlyActive;
             setappdata(handle,'configuration',ad.configuration);
