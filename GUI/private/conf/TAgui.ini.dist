@@ -32,11 +32,16 @@ tip = 1
 [load]
 combine = 0
 loaddir = 0
-AVG = 0
+infofile = 0
+AVG = 1
 POC = 0
 BGC = 0
 labels = 1
 format = EP LP920 ASCII
+
+% Configuration for the datasets panel
+[datasets]
+onlyActive = 0
 
 % Configuration for the measure panel
 [measure]
@@ -56,6 +61,7 @@ export1Dincludeaxis = 1
 display3DoffsetAuto = 1
 thresholdMin = 0
 thresholdMax = 0
+thresholdAll = 0
 
 % Configuration for the configuration panel
 [configuration]

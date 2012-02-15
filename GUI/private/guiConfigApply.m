@@ -14,7 +14,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-12, Till Biskup
-% 2012-01-29
+% 2012-02-15
 
 status = 0;
 
@@ -74,6 +74,10 @@ try
                 set(gh.load_panel_files_directory_checkbox,...
                     'Value',ad.configuration.load.loaddir);
             end
+            if isfield(ad.configuration.load,'infofile')
+                set(gh.load_panel_infofile_checkbox,...
+                    'Value',ad.configuration.load.infofile);
+            end
             if isfield(ad.configuration.load,'AVG')
                 set(gh.load_panel_preprocessing_avg_checkbox,...
                     'Value',ad.configuration.load.AVG);
@@ -100,6 +104,9 @@ try
                     end
                 end
             end
+            ad.control.axis.onlyActive = ...
+                ad.configuration.datasets.onlyActive;
+            setappdata(handle,'configuration',ad.configuration);
         otherwise
             return;
     end
