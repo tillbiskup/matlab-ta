@@ -10,7 +10,7 @@
 %              is assumed to originate from the TA toolbox and the
 %              respective importer (TAload) function.
 % fileName   - string
-%              Name of the file the figure should be saved to
+%              Name of the file the data should be saved to
 %              Should at least be a filename with extension
 % parameters - struct
 %              parameters controlling the position and direction of the
@@ -22,7 +22,7 @@
 %
 
 % (c) 2012, Till Biskup
-% 2012-02-14
+% 2012-02-16
 
 function status = TAexport1D(data,fileName,parameters)
 
@@ -63,6 +63,14 @@ try
             || ~isfield(parameters.axis,'include')
         parameters.axis.include = 1;
     end
+    if ~isfield(parameters,'stdev') ...
+            || ~isfield(parameters.stdev,'include')
+        parameters.stdev.include = 0;
+    end
+    if ~isfield(parameters,'display') ...
+            || ~isfield(parameters.display,'MFEdisplay')
+        parameters.display.MFEdisplay = 'MFoff';
+    end
     if ~isfield(parameters,'file') || ~isfield(parameters.file,'type')
         parameters.file.type = 'ASCII';
     end
@@ -94,7 +102,18 @@ try
                     'dimensions of dataset');
                 return;
             end
-            crosssection = data.data(parameters.crosssection.position,:)';
+            switch parameters.display.MFEdisplay
+                case 'MFoff'
+                    crosssection = ...
+                        data.data(parameters.crosssection.position,:)';
+                case 'MFon'
+                    crosssection = ...
+                        data.dataMFon(parameters.crosssection.position,:)';
+                case 'DeltaMF'
+                    crosssection = ...
+                        data.dataMFon(parameters.crosssection.position,:)'-...
+                        data.data(parameters.crosssection.position,:)';
+            end
             if ~isfield(data,'axes') || ~isfield(data.axes,'x') ... 
                     || ~isfield(data.axes.x,'values')
                 axis = 1:dimx;
@@ -109,7 +128,18 @@ try
                     'dimensions of dataset');
                 return;
             end
-            crosssection = data.data(:,parameters.crosssection.position);
+            switch parameters.display.MFEdisplay
+                case 'MFoff'
+                    crosssection = ...
+                        data.data(:,parameters.crosssection.position);
+                case 'MFon'
+                    crosssection = ...
+                        data.dataMFon(:,parameters.crosssection.position);
+                case 'DeltaMF'
+                    crosssection = ...
+                        data.dataMFon(:,parameters.crosssection.position)-...
+                        data.data(:,parameters.crosssection.position);
+            end
             if ~isfield(data,'axes') || ~isfield(data.axes,'y') ... 
                     || ~isfield(data.axes.y,'values')
                 axis = 1:dimy;
@@ -150,15 +180,19 @@ try
             if strcmpi(parameters.crosssection.direction,'x') ...
                     && isfield(data.display.scaling,'x')
                 axis = linspace(...
-                    (((axis(end)-axis(1))/2)+axis(1))-((axis(end)-axis(1))*data.display.scaling.x/2),...
-                    (((axis(end)-axis(1))/2)+axis(1))+((axis(end)-axis(1))*data.display.scaling.x/2),...
+                    (((axis(end)-axis(1))/2)+axis(1))-...
+                    ((axis(end)-axis(1))*data.display.scaling.x/2),...
+                    (((axis(end)-axis(1))/2)+axis(1))+...
+                    ((axis(end)-axis(1))*data.display.scaling.x/2),...
                     length(axis));
             end
             if strcmpi(parameters.crosssection.direction,'y') ...
                     && isfield(data.display.scaling,'y')
                 axis = linspace(...
-                    (((axis(end)-axis(1))/2)+axis(1))-((axis(end)-axis(1))*data.display.scaling.y/2),...
-                    (((axis(end)-axis(1))/2)+axis(1))+((axis(end)-axis(1))*data.display.scaling.y/2),...
+                    (((axis(end)-axis(1))/2)+axis(1))-...
+                    ((axis(end)-axis(1))*data.display.scaling.y/2),...
+                    (((axis(end)-axis(1))/2)+axis(1))+...
+                    ((axis(end)-axis(1))*data.display.scaling.y/2),...
                     length(axis));
             end            
         end
@@ -200,9 +234,47 @@ try
             for k=1:length(header)
                 fprintf(fid,'%s\n',header{k});
             end
-            if parameters.axis.include
+            if parameters.axis.include && parameters.stdev.include && ...
+                    isfield(data,'avg') && isfield(data.avg,'stdev')
+                switch parameters.display.MFEdisplay
+                    case 'MFoff'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f %20.12f\n',axis(l),...
+                                crosssection(l),data.avg.stdev.MFoff(l));
+                        end
+                    case 'MFon'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f %20.12f\n',axis(l),...
+                                crosssection(l),data.avg.stdev.MFon(l));
+                        end
+                    case 'DeltaMF'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f %20.12f\n',axis(l),...
+                                crosssection(l),data.avg.stdev.DeltaMF(l));
+                        end
+                end
+            elseif parameters.axis.include
                 for l=1:length(crosssection)
                     fprintf(fid,'%20.12f %20.12f\n',axis(l),crosssection(l));
+                end
+            elseif parameters.stdev.include && ...
+                    isfield(data,'avg') && isfield(data.avg,'stdev')
+                switch parameters.display.MFEdisplay
+                    case 'MFoff'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f\n',...
+                                crosssection(l),data.avg.stdev.MFoff(l));
+                        end
+                    case 'MFon'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f\n',...
+                                crosssection(l),data.avg.stdev.MFon(l));
+                        end
+                    case 'DeltaMF'
+                        for l=1:length(crosssection)
+                            fprintf(fid,'%20.12f %20.12f\n',...
+                                crosssection(l),data.avg.stdev.DeltaMF(l));
+                        end
                 end
             else
                 for l=1:length(crosssection)

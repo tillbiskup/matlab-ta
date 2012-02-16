@@ -2899,10 +2899,10 @@ function dataexport_pushbutton_Callback(~,~)
         
         % Generate default file name if possible, be very defensive
         if ad.control.spectra.visible
-            [p,f,e] = ...
+            [~,f,~] = ...
                 fileparts(ad.data{ad.control.spectra.visible(1)}.file.name);
             fileNameSuggested = [f '-1Dcrosssection'];
-            clear p f e;
+            clear f;
         else
             fileNameSuggested = '';
         end
@@ -2946,8 +2946,12 @@ function dataexport_pushbutton_Callback(~,~)
             get(gh.display_panel_dataexport_header_edit,'String');
         export1Dparameters.axis.include = ...
             get(gh.display_panel_dataexport_includeaxis_checkbox,'Value');
+        export1Dparameters.stdev.include = ...
+            get(gh.display_panel_dataexport_includestdev_checkbox,'Value');
         export1Dparameters.file.type = fileType;
         export1Dparameters.file.overwrite = 1;
+        
+        structdisp(export1Dparameters)
         
         % Save 1D cross section, depending on settings for file type and
         % additional parameters
