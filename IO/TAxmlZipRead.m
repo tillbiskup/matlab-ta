@@ -16,7 +16,7 @@ function varargout = TAxmlZipRead(filename,varargin)
 % SEE ALSO TAXMLZIPWRITE
 
 % (c) 2011-12, Till Biskup
-% 2012-02-06
+% 2012-02-17
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -30,8 +30,16 @@ parser.parse(filename);
 
 % Do the real stuff
 if iscell(filename)
-    filename = filename{1};
+    data = cell(length(filename),1);
+    warning = cell(length(filename),1);
+    for k=1:length(filename)
+        [data{k},warning{k}] = TAxmlZipRead(filename{k},varargin{:});
+    end
+    varargout{1} = data;
+    varargout{2} = warning;
+    return;
 end
+
 if ~exist(filename,'file')
     fprintf('"%s" seems not to be a valid filename. Abort.',filename);
     if nargout, varargout{1} = logical(false); end;
