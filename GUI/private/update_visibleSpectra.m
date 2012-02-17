@@ -117,10 +117,13 @@ end
 % Update list of spectra of the processing panel
 procPLbox = gh.processing_panel_datasets_listbox;
 set(procPLbox,'String',labels);
+procPLbox2 = gh.processing_panel_datasets2_listbox;
+set(procPLbox2,'String',labels);
 
 % Highlight currently active
 if ad.control.spectra.active
     set(procPLbox,'Value',find(vis==ad.control.spectra.active));
+    set(procPLbox2,'Value',find(vis==ad.control.spectra.active));
 end
 
 % Update list of spectra of the display panel

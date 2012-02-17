@@ -1712,7 +1712,7 @@ function checkbox_Callback(source,~,action)
             case 'stdev'
                  ad.control.axis.stdev = get(source,'Value');
             otherwise
-                disp(['TAgui_MFEwindow() : pushbutton_Callback() : '...
+                disp([mfilename '() : pushbutton_Callback() : '...
                     'Unknown action "' action '"']);
                 return;
         end
@@ -1770,7 +1770,7 @@ function popupmenu_Callback(source,~,action)
                     ad.data{active}.line.marker.faceColor = value;
                 end
             otherwise
-                disp(['TAgui_MFEwindow() : popupmenu_Callback() : '...
+                disp([mfilename '() : popupmenu_Callback() : '...
                     'Unknown action "' action '"']);
                 return;
         end

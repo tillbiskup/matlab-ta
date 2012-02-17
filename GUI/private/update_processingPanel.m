@@ -89,6 +89,35 @@ set(gh.processing_panel_average_y_unit_edit,...
     'String',...
     num2str((y(2)-y(1))*str2num(get(gh.processing_panel_average_y_points_edit,'String'))));
 
+% Update primary and secondary spectra listboxes
+% Get indices of visible spectra
+vis = ad.control.spectra.visible;
+% Get names for display in listbox
+labels = cell(0);
+for k=1:length(vis)
+    if (find(vis(k)==ad.control.spectra.modified))
+        labels{k} = ['*' ad.data{vis(k)}.label];
+    else
+        labels{k} = ad.data{vis(k)}.label;
+    end
+end
+primaryLbox = gh.processing_panel_primary_listbox;
+secondaryLbox = gh.processing_panel_secondary_listbox;
+set(primaryLbox,'String',labels);
+set(secondaryLbox,'String',labels);
+% Update selected
+if (get(primaryLbox,'Value')>length(vis))
+    set(primaryLbox,'Value',length(vis));
+end
+if get(primaryLbox,'Value')==0
+    set(primaryLbox,'Value',1);
+end
+if (get(secondaryLbox,'Value')>length(vis))
+    set(secondaryLbox,'Value',length(vis));
+end
+if get(secondaryLbox,'Value')==0
+    set(secondaryLbox,'Value',1);
+end
 
 status = 0;
 
