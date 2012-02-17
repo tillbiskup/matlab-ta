@@ -103,7 +103,7 @@ if ad.control.spectra.active
     
     % Set line marker
     lineMarkers = {'none','+','o','*','.','x','s','d','^','v','>','<','p','h'};
-    lineMarker = ad.data{ad.control.spectra.active}.line.marker;
+    lineMarker = ad.data{ad.control.spectra.active}.line.marker.type;
     for k=1:length(lineMarkers)
         if strcmp(lineMarkers{k},lineMarker)
             lineMarkerIndex = k;

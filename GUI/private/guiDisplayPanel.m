@@ -2767,37 +2767,39 @@ function linemarker_popupmenu_Callback(~,~)
             cellstr(get(gh.display_panel_linemarker_popupmenu,'String'));
         lineMarker = ...
             lineMarkers{get(gh.display_panel_linemarker_popupmenu,'Value')};
-                
+        
+        active = ad.control.spectra.active;
+        
         if ad.control.spectra.active
             switch lineMarker
                 case 'none'
-                    ad.data{ad.control.spectra.active}.line.marker = 'none';
+                    ad.data{active}.line.marker.type = 'none';
                 case 'plus'
-                    ad.data{ad.control.spectra.active}.line.marker = '+';
+                    ad.data{active}.line.marker.type = '+';
                 case 'circle'
-                    ad.data{ad.control.spectra.active}.line.marker = 'o';
+                    ad.data{active}.line.marker.type = 'o';
                 case 'asterisk'
-                    ad.data{ad.control.spectra.active}.line.marker = '*';
+                    ad.data{active}.line.marker.type = '*';
                 case 'point'
-                    ad.data{ad.control.spectra.active}.line.marker = '.';
+                    ad.data{active}.line.marker.type = '.';
                 case 'cross'
-                    ad.data{ad.control.spectra.active}.line.marker = 'x';
+                    ad.data{active}.line.marker.type = 'x';
                 case 'square'
-                    ad.data{ad.control.spectra.active}.line.marker = 's';
+                    ad.data{active}.line.marker.type = 's';
                 case 'diamond'
-                    ad.data{ad.control.spectra.active}.line.marker = 'd';
+                    ad.data{active}.line.marker.type = 'd';
                 case 'triangle up'
-                    ad.data{ad.control.spectra.active}.line.marker = '^';
+                    ad.data{active}.line.marker.type = '^';
                 case 'triangle down'
-                    ad.data{ad.control.spectra.active}.line.marker = 'v';
+                    ad.data{active}.line.marker.type = 'v';
                 case 'triangle right'
-                    ad.data{ad.control.spectra.active}.line.marker = '<';
+                    ad.data{active}.line.marker.type = '<';
                 case 'triangle left'
-                    ad.data{ad.control.spectra.active}.line.marker = '>';
+                    ad.data{active}.line.marker.type = '>';
                 case 'pentagram'
-                    ad.data{ad.control.spectra.active}.line.marker = 'p';
+                    ad.data{active}.line.marker.type = 'p';
                 case 'hexagram'
-                    ad.data{ad.control.spectra.active}.line.marker = 'h';
+                    ad.data{active}.line.marker.type = 'h';
                 otherwise
                     % That shall never happen
                     add2status('TAgui : guiDisplayPanel: Unknown line marker');
