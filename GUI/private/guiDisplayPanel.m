@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-16
+% 2012-02-17
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1583,16 +1583,16 @@ function pushbutton_Callback(~,~,action)
         % Get handles of main window
         gh = guihandles(mainWindow);
 
+        % Make life easier
+        active = ad.control.spectra.active;
+        
+        % Return immediately if there is no active dataset
+        if active == 0
+            return;
+        end
+        
         switch action
             case 'colourPalette'
-                % Make life easier
-                active = ad.control.spectra.active;
-                
-                % Return immediately if there is no active dataset
-                if active == 0
-                    return;
-                end
-                
                 colors = {...
                     'b',[0 0 1]; ...
                     'g',[0 1 0]; ...
@@ -1622,6 +1622,80 @@ function pushbutton_Callback(~,~,action)
                 % Update main axis
                 update_mainAxis();
                 return;
+            case 'markerEdgeColourPalette'
+                colors = {...
+                    'b',[0 0 1]; ...
+                    'g',[0 1 0]; ...
+                    'r',[1 0 0]; ...
+                    'c',[0 1 1]; ...
+                    'm',[1 0 1]; ...
+                    'y',[1 1 0]; ...
+                    'k',[0 0 0]; ...
+                    'w',[1 1 1]; ...
+                    };
+                
+                if ischar(ad.data{active}.line.marker.edgeColor)
+                    ad.data{active}.line.marker.edgeColor = colors{...
+                        strcmpi(ad.data{active}.line.marker.edgeColor,...
+                        colors(:,1)),2};
+                end
+                ad.data{active}.line.marker.edgeColor = uisetcolor(...
+                    ad.data{active}.line.marker.edgeColor,...
+                    'Set MFoff line marker edge colour');
+        
+                % Update appdata of main window
+                setappdata(mainWindow,'data',ad.data);
+                
+                % Update display panel
+                update_displayPanel();
+                
+                % Update main axis
+                update_mainAxis();
+                return;
+            case 'markerFaceColourPalette'
+                colors = {...
+                    'b',[0 0 1]; ...
+                    'g',[0 1 0]; ...
+                    'r',[1 0 0]; ...
+                    'c',[0 1 1]; ...
+                    'm',[1 0 1]; ...
+                    'y',[1 1 0]; ...
+                    'k',[0 0 0]; ...
+                    'w',[1 1 1]; ...
+                    };
+                
+                if ischar(ad.data{active}.line.marker.faceColor)
+                    ad.data{active}.line.marker.faceColor = colors{...
+                        strcmpi(ad.data{active}.line.marker.faceColor,...
+                        colors(:,1)),2};
+                end
+                ad.data{active}.line.marker.faceColor = uisetcolor(...
+                    ad.data{active}.line.marker.faceColor,...
+                    'Set MFoff line marker face colour');
+        
+                % Update appdata of main window
+                setappdata(mainWindow,'data',ad.data);
+                
+                % Update display panel
+                update_displayPanel();
+                
+                % Update main axis
+                update_mainAxis();
+                return;
+            case 'markerDefaults'
+                ad.data{active}.line.marker.style = 'none';
+                ad.data{active}.line.marker.edgeColor = 'auto';
+                ad.data{active}.line.marker.faceColor = 'none';
+                ad.data{active}.line.marker.size = 6;
+                % Update appdata of main window
+                setappdata(mainWindow,'data',ad.data);
+                
+                % Update display panel
+                update_displayPanel();
+                
+                % Update main axis
+                update_mainAxis();
+                return;                
             otherwise
                 disp(['TAgui : guiDisplayPanel() : pushbutton_Callback(): '...
                     'Unknown action "' action '"']);
@@ -1696,17 +1770,35 @@ function popupmenu_Callback(source,~,action)
         % Get appdata of main GUI
         mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
+
+        values = cellstr(get(source,'String'));
+        value = values{get(source,'Value')};
+        
+        active = ad.control.spectra.active;
         
         switch action
-%             case 'markerEdgeColour'
-%             case 'markerFaceColour'
+            case 'markerEdgeColour'
+                if strcmpi(value,'colour')
+                    ad.data{active}.line.marker.edgeColor = ...
+                        ad.data{active}.line.color;
+                else
+                    ad.data{active}.line.marker.edgeColor = value;
+                end
+            case 'markerFaceColour'
+                if strcmpi(value,'colour')
+                    ad.data{active}.line.marker.faceColor = ...
+                        ad.data{active}.line.color;
+                else
+                    ad.data{active}.line.marker.faceColor = value;
+                end
             otherwise
                 disp(['TAgui_MFEwindow() : popupmenu_Callback() : '...
                     'Unknown action "' action '"']);
                 return;
         end
-        setappdata(mainWindow,'control',ad.control);
-        
+        setappdata(mainWindow,'data',ad.data);
+        % Update display panel
+        update_displayPanel();
         % Update main axis
         update_mainAxis();
     catch exception
@@ -1738,15 +1830,23 @@ function edit_Callback(source,~,action)
         mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
+        active = ad.control.spectra.active;
+        if isempty(active) && ~active
+            return;
+        end
+        
         switch action
-%             case 'markerSize'
+            case 'markerSize'
+                ad.data{active}.line.marker.size = ...
+                    str2double(get(source,'String'));
             otherwise
                 disp(['TAgui_MFEwindow() : edit_Callback() : '...
                     'Unknown action "' action '"']);
                 return;
         end
-        setappdata(mainWindow,'control',ad.control);
-        
+        setappdata(mainWindow,'data',ad.data);
+        % Update display panel
+        update_displayPanel();
         % Update main axis
         update_mainAxis();
     catch exception
