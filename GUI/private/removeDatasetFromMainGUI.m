@@ -13,7 +13,7 @@ function [status,message] = removeDatasetFromMainGUI(dataset,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-01-31
+% 2012-02-17
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -45,6 +45,10 @@ try
     % Cell array for labels of removed datasets
     removedDatasetsLabels = cell(0);
     
+    % Get position of currently active dataset in visible listbox
+    gh = guihandles(mainWindow); % Get handles of main window
+    activePosition = get(gh.data_panel_visible_listbox,'Value');
+    
     % Remove dataset(s) from main GUI
     for k=length(dataset):-1:1
         if ~p.Results.force
@@ -70,8 +74,15 @@ try
                     ad.control.spectra.modified>dataset(k)) = ...
                     ad.control.spectra.modified(...
                     ad.control.spectra.modified>dataset(k)) -1;
-                if ad.control.spectra.active >= dataset(k)
-                    ad.control.spectra.active = ad.control.spectra.active-1;
+                % Set currently active spectrum to new (valid) value
+                if isempty(ad.control.spectra.visible)
+                    ad.control.spectra.active = 0;
+                elseif activePosition > length(ad.control.spectra.visible)
+                    ad.control.spectra.active = ...
+                        ad.control.spectra.visible(end);
+                else
+                    ad.control.spectra.active = ...
+                        ad.control.spectra.visible(activePosition);
                 end
             else
                 remove = false;
@@ -119,10 +130,15 @@ try
                         ad.control.spectra.modified>dataset(k)) = ...
                         ad.control.spectra.modified(...
                         ad.control.spectra.modified>dataset(k)) -1;
+                    % Set currently active spectrum to new (valid) value
                     if isempty(ad.control.spectra.visible)
                         ad.control.spectra.active = 0;
-                    elseif ad.control.spectra.active >= dataset(k)
-                        ad.control.spectra.active = ad.control.spectra.active-1;
+                    elseif activePosition > length(ad.control.spectra.visible)
+                        ad.control.spectra.active = ...
+                            ad.control.spectra.visible(end);
+                    else
+                        ad.control.spectra.active = ...
+                            ad.control.spectra.visible(activePosition);
                     end
                 end
             end
@@ -148,10 +164,15 @@ try
                 ad.control.spectra.modified>dataset(k)) = ...
                 ad.control.spectra.modified(...
                 ad.control.spectra.modified>dataset(k)) -1;
+            % Set currently active spectrum to new (valid) value
             if isempty(ad.control.spectra.visible)
                 ad.control.spectra.active = 0;
-            elseif ad.control.spectra.active >= dataset(k)
-                ad.control.spectra.active = ad.control.spectra.active-1;
+            elseif activePosition > length(ad.control.spectra.visible)
+                ad.control.spectra.active = ...
+                    ad.control.spectra.visible(end);
+            else
+                ad.control.spectra.active = ...
+                    ad.control.spectra.visible(activePosition);
             end
         end
     end
