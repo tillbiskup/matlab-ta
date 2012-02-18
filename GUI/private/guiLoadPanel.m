@@ -322,8 +322,8 @@ function load_pushbutton_Callback(~,~)
             average = false;
         end
         
-        data = TAload(FileName,'format',fileFormat,'combine',state.comb,...
-            'average',average);
+        [data,warnings] = TAload(FileName,'format',fileFormat,...
+            'combine',state.comb,'average',average);
         
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
@@ -360,19 +360,21 @@ function load_pushbutton_Callback(~,~)
             % Remove datasets from data cell array
             data(nNoData) = [];
         else
-            if not(isnumeric(data.data))
+            if ~isnumeric(data.data)
                 fnNoData = data.file.name;
                 data = [];
             end
         end
         
         % Add status line
-        if not (isempty(fnNoData))
+        if ~isempty(fnNoData)
             msgStr = cell(0);
             msgStr{length(msgStr)+1} = ...
                 'The following files contained no numerical data (and were DISCARDED):';
             msg = [msgStr fnNoData];
             add2status(msg);
+            add2status('TAload returned the following message:');
+            add2status(warnings);
             clear msgStr msg;
         end
         

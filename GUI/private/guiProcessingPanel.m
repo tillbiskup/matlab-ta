@@ -527,8 +527,8 @@ function pushbutton_Callback(~,~,action)
                 % If result is not empty, assign
                 if ~isempty(resdata)
                     ad.data{primary} = resdata;
-                    if ~any(ad.control.spectra.modified==active)
-                        ad.control.spectra.modified(end+1) = active;
+                    if ~any(ad.control.spectra.modified==primary)
+                        ad.control.spectra.modified(end+1) = primary;
                     end
                     setappdata(mainWindow,'data',ad.data);
                     setappdata(mainWindow,'control',ad.control);

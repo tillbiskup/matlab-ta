@@ -15,7 +15,7 @@ function [parameters,report] = TAhistoryDisplay(history)
 %              "Report" panel of the info window
 
 % (c) 2012, Till Biskup
-% 2012-01-23
+% 2012-02-17
 
 try
     parameters = cell(0);
@@ -119,6 +119,10 @@ try
                 history.parameters.parameters.smoothing.method);
             parameters{end+1} = sprintf('                index: %i',...
                 history.parameters.parameters.smoothing.index);
+        case 'TAalgebra'
+            parameters{end+1} = sprintf('operation: %s',...
+                history.parameters.operation);
+            report = history.info;
         otherwise
             parameters{end+1} = 'No parameters to display currently';
     end

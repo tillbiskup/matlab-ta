@@ -41,11 +41,11 @@ try
     end
 
     % Convert operations
-    if strfind(lower(operation),'add')
-        operation = '+';
+    if any(strfind(lower(operation),'add')) || strcmpi(operation,'+')
+        operation = 'addition';
     end
-    if strfind(lower(operation),'sub')
-        operation = '-';
+    if any(strfind(lower(operation),'sub')) || strcmpi(operation,'-')
+        operation = 'subtraction';
     end
     
     
@@ -74,7 +74,7 @@ try
                         data{k}.display.scaling.z;
                     if isfield(data{k},'dataMFon')
                         data{k}.dataMFon = data{k}.dataMFon * ...
-                            data{k}.display.displacement.z;
+                            data{k}.display.scaling.z;
                     end
                 end
                 % TODO: Scaling in x, y
@@ -107,13 +107,13 @@ try
                     for l=1:dimx
                         data{k}.data(:,l) = filterfun(...
                             data{k}.data(:,l),...
-                            data{k}.display.smoothing.x.value);
+                            data{k}.display.smoothing.y.value);
                     end
                     if isfield(data{k},'dataMFon')
                         for l=1:dimx
                             data{k}.dataMFon(:,l) = filterfun(...
                                 data{k}.dataMFon(:,l),...
-                                data{k}.display.smoothing.x.value);
+                                data{k}.display.smoothing.y.value);
                         end
                     end
                 end
@@ -126,7 +126,7 @@ try
     
     % Perform actual arithmetic functions
     switch operation
-        case '+'
+        case 'addition'
             resdata.data = data{1}.data + data{2}.data;
             if isfield(data{1},'dataMFon')
                 if isfield(data{2},'dataMFon')
@@ -135,7 +135,7 @@ try
                     resdata.dataMFon = data{1}.dataMFon + data{2}.data;
                 end
             end
-        case '-'
+        case 'subtraction'
             resdata.data = data{1}.data - data{2}.data;
             if isfield(data{1},'dataMFon')
                 if isfield(data{2},'dataMFon')
@@ -171,8 +171,52 @@ try
     
     % Assign complete accReport to info field of history
     history.info = cell(0);
-    history.info{end+1} = sprintf('Primary dataset: %s',data{1}.label);
-    history.info{end+1} = sprintf('Secondary dataset: %s',data{2}.label);
+    history.info{end+1} = sprintf('Primary dataset:    %s',data{1}.label);
+    if data{1}.display.displacement.z ~= 0
+        history.info{end+1} = sprintf('  Displacement (z): %f',...
+            data{1}.display.displacement.z);
+    end
+    if data{1}.display.scaling.z ~= 1
+        history.info{end+1} = sprintf('  Scaling (z):      %f',...
+            data{1}.display.scaling.z);
+    end
+    if data{1}.display.smoothing.x.value ~= 1
+        history.info{end+1} = sprintf('  Smoothing (x):');
+        history.info{end+1} = sprintf('            points: %i',...
+            data{1}.display.smoothing.x.value);
+        history.info{end+1} = sprintf('          function: %s',...
+            data{1}.display.smoothing.x.filterfun);
+    end
+    if data{1}.display.smoothing.y.value ~= 1
+        history.info{end+1} = sprintf('  Smoothing (y):');
+        history.info{end+1} = sprintf('            points: %i',...
+            data{1}.display.smoothing.y.value);
+        history.info{end+1} = sprintf('          function: %s',...
+            data{1}.display.smoothing.y.filterfun);
+    end
+    history.info{end+1} = sprintf('Secondary dataset:  %s',data{2}.label);
+    if data{2}.display.displacement.z ~= 0
+        history.info{end+1} = sprintf('  Displacement (z): %f',...
+            data{2}.display.displacement.z);
+    end
+    if data{2}.display.scaling.z ~= 1
+        history.info{end+1} = sprintf('  Scaling (z):      %f',...
+            data{2}.display.scaling.z);
+    end
+    if data{2}.display.smoothing.x.value ~= 1
+        history.info{end+1} = sprintf('  Smoothing (x):');
+        history.info{end+1} = sprintf('            points: %i',...
+            data{2}.display.smoothing.x.value);
+        history.info{end+1} = sprintf('          function: %s',...
+            data{2}.display.smoothing.x.filterfun);
+    end
+    if data{2}.display.smoothing.y.value ~= 1
+        history.info{end+1} = sprintf('  Smoothing (y):');
+        history.info{end+1} = sprintf('            points: %i',...
+            data{2}.display.smoothing.y.value);
+        history.info{end+1} = sprintf('          function: %s',...
+            data{2}.display.smoothing.y.filterfun);
+    end
     
     % Assign history to dataset of accumulated data
     resdata.history{end+1} = history;

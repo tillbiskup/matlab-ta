@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-05
+% 2012-02-18
 
 % Make GUI effectively a singleton
 singleton = findobj('Tag','TAgui_mainwindow');
@@ -1197,6 +1197,9 @@ function previous_pushbutton_Callback(~,~)
         % Update display panel
         update_displayPanel();
         
+        % Update display panel
+        update_MFEPanel();
+        
         % Update visible spectra listboxes (in diverse panels!)
         update_visibleSpectra();
         
@@ -1266,6 +1269,9 @@ function next_pushbutton_Callback(~,~)
         
         % Update display panel
         update_displayPanel();
+        
+        % Update display panel
+        update_MFEPanel();
         
         % Update visible spectra listboxes (in diverse panels!)
         update_visibleSpectra();
