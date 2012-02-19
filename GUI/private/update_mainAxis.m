@@ -1928,10 +1928,15 @@ if (isequal(ad.control.axis.legend.location,'none'))
     return;
 end
 
-legendLabels = cell(1,length(ad.control.spectra.visible));
-for k = 1 : length(ad.control.spectra.visible)
-    legendLabels{k} = strrep(...
-        ad.data{ad.control.spectra.visible(k)}.label,'_','\_');
+if ad.control.axis.onlyActive
+    legendLabels = strrep(...
+            ad.data{ad.control.spectra.active}.label,'_','\_');
+else
+    legendLabels = cell(1,length(ad.control.spectra.visible));
+    for k = 1 : length(ad.control.spectra.visible)
+        legendLabels{k} = strrep(...
+            ad.data{ad.control.spectra.visible(k)}.label,'_','\_');
+    end
 end
 
 legend(mainAxes,legendLabels,'Location',ad.control.axis.legend.location);

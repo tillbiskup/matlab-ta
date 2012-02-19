@@ -3018,14 +3018,23 @@ function dataexport_pushbutton_Callback(~,~)
         MFEline = MFElines{...
             get(gh.display_panel_dataexport_line_popupmenu,'Value')};
         
+        % Set directory where to save files to
+        if isfield(ad,'control') && isfield(ad.control,'dir') && ...
+                isfield(ad.control.dir,'lastExport')  && ...
+                ~isempty(ad.control.dir.lastExport)
+            startDir = ad.control.dir.lastExport;
+        else
+            startDir = pwd;
+        end
+        
         % Generate default file name if possible, be very defensive
         if ad.control.spectra.visible
             [~,f,~] = ...
                 fileparts(ad.data{ad.control.spectra.visible(1)}.file.name);
-            fileNameSuggested = [f '-1Dcrosssection'];
+            fileNameSuggested = fullfile(startDir,[f '-1Dcrosssection']);
             clear f;
         else
-            fileNameSuggested = '';
+            fileNameSuggested = startDir;
         end
         
         switch fileType
@@ -3046,6 +3055,12 @@ function dataexport_pushbutton_Callback(~,~)
         end
         % Create filename with full path
         fileName = fullfile(pathName,fileName);
+
+        % set lastExport Dir in appdata
+        if exist(pathName,'dir')
+            ad.control.dir.lastExport = pathName;
+        end
+        setappdata(mainWindow,'control',ad.control);
         
         % Create parameters structure
         export1Dparameters = struct();
