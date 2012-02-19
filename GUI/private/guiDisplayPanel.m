@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-17
+% 2012-02-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2916,11 +2916,11 @@ function axesexport_pushbutton_Callback(~,~)
         % Open new figure window
         newFig = figure();
         
-        % Make new figure window invisible
-        set(newFig,'Visible','off');
-        
         % Plot into new figure window
         update_mainAxis(newFig);
+        
+        % Make new figure window invisible
+        set(newFig,'Visible','off');
 
         % Get export format
         figExportFormats = cellstr(...
@@ -2934,14 +2934,23 @@ function axesexport_pushbutton_Callback(~,~)
         fileType = fileTypes{...
             get(gh.display_panel_axesexport_filetype_popupmenu,'Value')};
         
+        % Set directory where to save files to
+        if isfield(ad,'control') && isfield(ad.control,'dir') && ...
+                isfield(ad.control.dir,'lastFigSave')  && ...
+                ~isempty(ad.control.dir.lastFigSave)
+            startDir = ad.control.dir.lastFigSave;
+        else
+            startDir = pwd;
+        end
+        
         % Generate default file name if possible, be very defensive
         if ad.control.spectra.visible
             [~,f,~] = ...
                 fileparts(ad.data{ad.control.spectra.visible(1)}.file.name);
-            fileNameSuggested = f;
+            fileNameSuggested = fullfile(startDir,f);
             clear f;
         else
-            fileNameSuggested = '';
+            fileNameSuggested = startDir;
         end
         
         % Ask user for file name
@@ -2955,6 +2964,12 @@ function axesexport_pushbutton_Callback(~,~)
         end
         % Create filename with full path
         fileName = fullfile(pathName,fileName);
+
+        % set lastFigSave Dir in appdata
+        if exist(pathName,'dir')
+            ad.control.dir.lastFigSave = pathName;
+        end
+        setappdata(mainWindow,'control',ad.control);
         
         % Save figure, depending on settings for file type and format
         status = fig2file(newFig,fileName,...

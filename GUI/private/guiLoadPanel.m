@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-15
+% 2012-02-19
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -231,8 +231,10 @@ function load_pushbutton_Callback(~,~)
         end
       
         % Set directory where to load files from
-        if isfield(ad,'control') && isfield(ad.control,'lastLoadDir')
-            startDir = ad.control.lastLoadDir;
+        if isfield(ad,'control') && isfield(ad.control,'dir') && ...
+                isfield(ad.control.dir,'lastLoad')  && ...
+                ~isempty(ad.control.dir.lastLoad)
+            startDir = ad.control.dir.lastLoad;
         else
             startDir = pwd;
         end
@@ -284,13 +286,13 @@ function load_pushbutton_Callback(~,~)
         end
         
         % Set lastLoadDir in appdata
-        if exist('PathName','dir')
-            ad.control.lastLoadDir = PathName;
+        if exist(PathName,'dir')
+            ad.control.dir.lastLoad = PathName;
         else
             if iscell(FileName)
-                ad.control.lastLoadDir = FileName{1};
+                ad.control.dir.lastLoad = FileName{1};
             else
-                ad.control.lastLoadDir = FileName;
+                ad.control.dir.lastLoad = FileName;
             end
         end
         setappdata(mainWindow,'control',ad.control);
