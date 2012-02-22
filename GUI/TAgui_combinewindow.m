@@ -12,7 +12,7 @@ function varargout = TAgui_combinewindow(varargin)
 % See also TAGUI, TAGUI_COMBINE_SETTINGSWINDOW, TACOMBINE, TASCALE
 
 % (c) 2012, Till Biskup
-% 2012-01-22
+% 2012-02-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -35,7 +35,7 @@ formatNames = fieldnames(fileFormats);
 for k=1:length(formatNames)
     if isfield(fileFormats.(formatNames{k}),'combineMultiple') && ...
             strcmpi(fileFormats.(formatNames{k}).combineMultiple,'true')
-        combinableFormats{end+1} = fileFormats.(formatNames{k}).name;
+        combinableFormats{end+1} = fileFormats.(formatNames{k}).name; %#ok<AGROW>
     end
 end
 
@@ -1194,7 +1194,7 @@ function updateFileformats()
         for l=1:length(uniqueFormats)
             if max(strcmp(uniqueFormats{l},combinableFormats)) ...
                     && length(find(strcmpi(uniqueFormats{l},formats)))>1
-                displayFormats{end+1} = uniqueFormats{l};
+                displayFormats{end+1} = uniqueFormats{l}; %#ok<AGROW>
             end
         end
         % Display combinable file formats in listbox
@@ -1243,12 +1243,12 @@ function updateBasenames()
         % Get file formats
         formats = cellfun(@(x) x.file.format,ad.data,'UniformOutput',false);
         % Get unique formats
-        uniqueFormats = unique(formats);
+        %uniqueFormats = unique(formats);
         
         ad.combine.spectra.notcombine = find(strcmp(selectedFormat,formats));
         
         % Get datasets in selected format
-        [~,filebasenames,fileexts] = cellfun(@(x) fileparts(x.file.name),...
+        [~,filebasenames,~] = cellfun(@(x) fileparts(x.file.name),...
             ad.data(ad.combine.spectra.notcombine),...
             'UniformOutput',false);
         uniqueFilebasenames = unique(filebasenames);
@@ -1303,6 +1303,8 @@ function updateSpectra()
         set(gh.notcombine_listbox,'String',fileNames);
         % Cope with multiple selects
         selected = get(gh.notcombine_listbox,'Value');
+        selected(selected>max(ad.combine.spectra.notcombine)) = [];
+        set(gh.notcombine_listbox,'Value',selected);        
         if length(selected)>length(fileNames)
             set(gh.notcombine_listbox,'Value',selected(1:length(fileNames)));
         end

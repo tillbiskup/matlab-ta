@@ -27,3 +27,6 @@ You can <strong>display a legend</strong>, and even move it around with the mous
 You can use <strong>TeX strings</strong> in axis labels, such as <tt>\Delta</tt>, to display Greek characters. 
 
 The <strong>labels</strong> of your datasets get used in the figure legend. Use that for proper figure legends.
+
+If you don't provide a unit of for an axis label, the slash will not be displayed.
+
