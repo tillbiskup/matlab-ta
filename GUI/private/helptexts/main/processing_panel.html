@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
-      lang="de" dir="ltr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="../help.css" />
@@ -12,9 +12,9 @@
 		<p class="intro">
 			A set of standard data (pre)processing functions are available from this panel.
 		</p>
-		<h2>The controls</h2>
+		<h2>Page 1: POC, BGC, BLC, ACC, Smoothing</h2>
 		<p>
-			A short description of all the controls of the panel.
+			A set of standard preprocessing options, such as pretrigger offset correction (POC), background correction (BGC), baseline correction (BLC), accumulation (ACC), and 1D filtering (smoothing).
 		</p>
 		<h3>Select dataset</h3>
 		<p>
@@ -58,12 +58,34 @@
 		<p>
 			Be aware of that filtering with a window too large compared to the spectral features can easily lead to distortions of the spectra. Therefore, use with care.
 		</p>
+		<h2>Page 2: MFE related functions</h2>
+		<p>
+			Currently only the option to move the MFon data permanently to the MFoff data.
+		</p>
+		<h3>Select dataset</h3>
+		<p>
+			A list of currently visible datasets.
+		</p>
+		<h3>MFE</h3>
+		<p>
+			Permanently sum MFon and MFoff data together in the MFoff trace. Used e.g. for background traces that were recorded with both field-on and field-off traces to improve S/N.
+		</p>
+		<p>
+			Applying this operation to a dataset will lead to the dataset only having MFoff data.
+		</p>
+		<h2>Page 3: Arithmetics</h2>
+		<p>
+			Adding and subtracting one dataset from the other 
+		</p>
+		<p>
+			<strong>Please note:</strong> Currently, this feature is still very experimental and only tested for 1D datasets. Applying it to 2D datasets may lead to unpredictable effects and most probably errors. Only the <key>Apply</key> works currently. Therefore, try to work always with copies of your datasets.
+		</p>
 		<div class="footer">
 		<p class="copyright">
 			&copy; 2011-12, Till Biskup
 		</p>
 		<p class="lastchange">
-			2012-02-04
+			2012-02-22
 		</p>
 		</div>
 	</body>

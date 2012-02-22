@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
-      lang="de" dir="ltr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="../help.css" />
@@ -19,6 +19,9 @@
 		<p>
 			The axis labels can be determined from the currently active dataset (if possible), the axis limits are normally set to "automatic", meaning that they are optimised to fit all currently visible datasets into the axes.
 		</p>
+		<p>
+			<strong>Please note:</strong> If you set the unit of an axis to the empty string, the "/" between measure and unit will not get displayed. And if you set both measure and unit to the empty string, nothing will be displayed as axis label. Furthermore, as it is standard in the sciences, measure and unit get separated by the "/", and the measure is set in italics (although not visible for the x axis if displayed under Mac OS X, that's a Matlab/Mac bug), whereas the unit is always upright. You can use all the usual TeX/LaTeX expressions for the axis labels, such as greek letters.
+		</p>
 		<h2>Page 2: Grid, Legend, Normalize, Highlighting</h2>
 		<h3>Grid</h3>
 		<p>
@@ -30,6 +33,9 @@
 		<h3>Legend</h3>
 		<p>
 			Legends are only displayed in 1D mode. You can determine the legend position manually (NW, NE, SW, SE) or let Matlab(r) determine what it thinks is the "optimal" position.
+		</p>
+		<p>
+			<strong>Please note:</strong> You can move the legend with your mouse to any arbitrary position within the axes. But be aware that the size and position of the legend might change if you export the current display to a file.
 		</p>
 		<h3>Normalise</h3>
 		<p>
@@ -48,6 +54,10 @@
 		<p>
 			Here, both method and value for the given method of highlighting can be controlled, and one can switch off the highlighting completely. The latter is of special interest for exporting figures, where no highlighting of the "currently active dataset" is necessary, and indeed rather confusing.
 		</p>
+		<h3>AVG settings</h3>
+		<p>
+			Suppose that you have averaged your data in one dimension and want to display the standard deviation as error bars. That can be done by ticking "Std deviation" in this panel.
+		</p>
 		<h2>Page 3: Line settings</h3>
 		<p>
 			To distinguish between different (visible) datasets, the line settings of each dataset can be controlled as far as Matlab(r) allows to do so, meaning line colour, width, style, and marker.
@@ -57,6 +67,9 @@
 		</p>
 		<p>
 			To show only the (unconnected) data points, set "Style" to none and choose from one of the "Markers".
+		</p>
+		<p>
+			<strong>Tip:</strong> Especially if you want to display several lines at once, it is very helpful to use different colours and probably marker settings. In combination with the legend, you can produce figures that are at least directly useful for presentations. The label of the datasets will be used in the legend as well, so adjust them to your needs.
 		</p>
 		<h2>Page 4: Export figure & 1D datasets</h2>
 		<p>
@@ -96,7 +109,7 @@
 			&copy; 2011-12, Till Biskup
 		</p>
 		<p class="lastchange">
-			2012-02-04
+			2012-02-22
 		</p>
 		</div>
 	</body>

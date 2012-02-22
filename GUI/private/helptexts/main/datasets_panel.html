@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de"
-      lang="de" dir="ltr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <link rel="stylesheet" type="text/css" href="../help.css" />
@@ -21,20 +21,31 @@
 			List of all datasets currently loaded to the GUI, but not (yet) set visible.
 		</p>
 		<p>
-			If you load datasets, they first appear in this list. Toggle between invisible and visible allows you to compare different datasets in an easy and quick way. Whereas in "2D plot" display mode, only one dataset is shown at a time, in all other display modes all datasets set to visible are displayed. Furthermore, you could move datasets to invisible that you are sure of that you don't want to include in accumulation.
+			If you load datasets, they first appear in this list. Toggle between invisible and visible allows you to compare different datasets in an easy and quick way. Whereas in "2D plot" display mode, only one dataset is shown at a time (but see the option "Show only active" below), in all other display modes all datasets set to visible are displayed. Furthermore, you could move datasets to invisible that you are sure of that you don't want to include in accumulation.
 		</p>
 		<p>
-			You can change the label for each dataset by doubly clicking on it.
+			You can change the label for each dataset by doubly clicking on it (or hitting <key>Return</key>).
 		</p>
 		<h3>Visible datasets</h3>
 		<p>
 			List of all datasets currently loaded to the GUI and set visible.
 		</p>
 		<p>
-			Datasets in this list are all displayed in 1D display modes, and are by default accumulated via the ACC GUI window, if you don't make changes in that window. Therefore, careful visual inspection of your datasets prior to further processing and explicit toggling of their visibility is highly recommended. Nevertheless, moving a dataset from visible to invisible allows you to quickly move it back without having it to load again from the file system (especially convenient if you made changes to datasets and are not sure yet whether to save them or not).
+			Datasets in this list are all displayed in 1D display modes (but see the option "Show only active" below), and are by default accumulated via the ACC GUI window, if you don't make changes in that window. Therefore, careful visual inspection of your datasets prior to further processing and explicit toggling of their visibility is highly recommended. Nevertheless, moving a dataset from visible to invisible allows you to quickly move it back without having it to load again from the file system (especially convenient if you made changes to datasets and are not sure yet whether to save them or not).
 		</p>
 		<p>
-			You can change the label for each dataset by doubly clicking on it.
+			You can change the label for each dataset by doubly clicking on it (or hitting <key>Return</key>).
+		</p>
+		<h3>Arrows</h3>
+		<p>
+			To move dataset(s) between invisible and visible, there are four arrow buttons between the two list boxes. The two corresponding buttons with double arrows, <key>&dArr;</key> and <key>&uArr;</key>, move all datasets into the other list. The remaining two arrow buttons, <key>&darr;</key> and <key>&uarr;</key>, move the currently selected dataset, respectively.
+		</p>
+		<h3>Multiple datasets</h3>
+		<p>
+			Operations for multiple datasets. Currently this is <key>Combine</key>, a function that is mainly used with Oxford data, but in general applicable to all data that consist of several files that need to be combined to give a full dataset (i.e., a spectrum).
+		</p>
+		<p>
+			The "Show only active" checkbox provides you with an easy way to just display the currently active dataset in the main axes. The advantage of this is that you can easily scroll through your multiple datasets without having to move them manually between visible and invisible.
 		</p>
 		<h3>Currently active dataset</h3>
 		<p>
@@ -66,7 +77,7 @@
 			&copy; 2011-12, Till Biskup
 		</p>
 		<p class="lastchange">
-			2012-02-04
+			2012-02-22
 		</p>
 		</div>
 	</body>
