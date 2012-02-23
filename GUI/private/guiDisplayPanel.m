@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-19
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1816,7 +1816,7 @@ function edit_Callback(source,~,action)
         switch action
             case 'markerSize'
                 ad.data{active}.line.marker.size = ...
-                    str2double(get(source,'String'));
+                    str2double(strrep(get(source,'String'),',','.'));
             otherwise
                 disp(['TAgui_MFEwindow() : edit_Callback() : '...
                     'Unknown action "' action '"']);
@@ -1976,41 +1976,52 @@ function axislimits_edit_Callback(source,~,limit)
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
         
+        % Get value of edit field and replace comma with dot
+        value = strrep(get(source,'String'),',','.');
+        
+        % If value is empty or NaN after conversion to numeric, restore
+        % previous entry and return
+        if (isempty(value) || isnan(str2double(value)))
+            % Update slider panel
+            update_displayPanel();
+            return;
+        end
+        
         switch limit
             case 'xmin'
-                ad.control.axis.limits.x.min = str2double(get(source,'String'));
+                ad.control.axis.limits.x.min = str2double(value);
             case 'xmax'
                 % Test whether value is larger than min for same axis
-                if (str2num(get(source,'String')) > ad.control.axis.limits.x.min)
-                    ad.control.axis.limits.x.max = str2double(get(source,'String'));
+                if (str2double(value) > ad.control.axis.limits.x.min)
+                    ad.control.axis.limits.x.max = str2double(value);
                 else
                     set(source,'String',num2str(ad.control.axis.limits.x.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    status = add2status(msgstr);
+                    add2status(msgstr);
                     return;
                 end
             case 'ymin'
-                ad.control.axis.limits.y.min = str2double(get(source,'String'));
+                ad.control.axis.limits.y.min = str2double(value);
             case 'ymax'
                 % Test whether value is larger than min for same axis
-                if (str2num(get(source,'String')) > ad.control.axis.limits.y.min)
-                    ad.control.axis.limits.y.max = str2double(get(source,'String'));
+                if (str2double(value) > ad.control.axis.limits.y.min)
+                    ad.control.axis.limits.y.max = str2double(value);
                 else
                     set(source,'String',num2str(ad.control.axis.limits.y.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    status = add2status(msgstr);
+                    add2status(msgstr);
                     return;
                 end
             case 'zmin'
-                ad.control.axis.limits.z.min = str2double(get(source,'String'));
+                ad.control.axis.limits.z.min = str2double(value);
             case 'zmax'
                 % Test whether value is larger than min for same axis
-                if (str2num(get(source,'String')) > ad.control.axis.limits.z.min)
-                    ad.control.axis.limits.z.max = str2double(get(source,'String'));
+                if (str2double(value) > ad.control.axis.limits.z.min)
+                    ad.control.axis.limits.z.max = str2double(value);
                 else
                     set(source,'String',num2str(ad.control.axis.limits.z.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    status = add2status(msgstr);
+                    add2status(msgstr);
                     return;
                 end
             otherwise
@@ -2020,12 +2031,15 @@ function axislimits_edit_Callback(source,~,limit)
                     mfilename ...
                     )...
                     };
-                status = add2status(msgstr);
+                add2status(msgstr);
                 return;
         end
         
         % Update appdata of main window
         setappdata(mainWindow,'control',ad.control);
+        
+        % Update slider panel
+        update_displayPanel();
         
         %Update main axis
         update_mainAxis();
@@ -3464,8 +3478,17 @@ function threshold_edit_Callback(source,~,label)
         if ~ad.control.spectra.active
             return;
         end
-
-        value = get(source,'String');
+        
+        % Get value of edit field and replace comma with dot
+        value = strrep(get(source,'String'),',','.');
+        
+        % If value is empty or NaN after conversion to numeric, restore
+        % previous entry and return
+        if (isempty(value) || isnan(str2double(value)))
+            % Update slider panel
+            update_displayPanel();
+            return;
+        end
         
         active = ad.control.spectra.active;
         

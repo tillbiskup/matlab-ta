@@ -7,7 +7,7 @@ function handle = guiProcessingPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-17
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -677,7 +677,7 @@ function listbox_Callback(~,~,action)
     end
 end
 
-function average_edit_Callback(source,~,value)
+function average_edit_Callback(source,~,action)
     try
         % Get appdata of main window
         mainWindow = guiGetWindowHandle;
@@ -690,112 +690,114 @@ function average_edit_Callback(source,~,value)
             return;
         end
         
-        [y,x] = size(ad.data{ad.control.spectra.active}.data);
+        % Get value of edit field and replace comma with dot
+        value = str2double(strrep(get(source,'String'),',','.'));
+        
+        % If value is empty or NaN after conversion to numeric, restore
+        % previous entry and return
+        if (isempty(value) || isnan(str2double(value)))
+            % Update slider panel
+            update_processingPanel();
+            return;
+        end
+        
+        active = ad.control.spectra.active;
+        
+        [y,x] = size(ad.data{active}.data);
 
-        switch value
+        switch action
             case 'xindex'
                 % Fix values: only integers >= 1
-                if (str2double(get(source,'String')) < 1) || ...
-                        isnan(str2double(get(source,'String')))
+                if value < 1 
                     set(source,'String','1');
-                elseif (str2double(get(source,'String')) > x)
+                elseif (value > x)
                     set(source,'String',num2str(x));
                 else
-                    set(source,...
-                        'String',...
-                        num2str(round(str2double(get(source,'String')))));
+                    set(source,'String',num2str(round(value)));
                 end
                 
-                ad.data{ad.control.spectra.active}.display.smoothing.x.value = ...
-                    str2num(get(source,'String'));
+                ad.data{active}.display.smoothing.x.value = ...
+                    value;
             case 'xunit'
                 x = linspace(1,x,x);
-                y = linspace(1,y,y);
-                if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                        && isfield(ad.data{ad.control.spectra.active}.axes,'x') ...
-                        && isfield(ad.data{ad.control.spectra.active}.axes.x,'values') ...
-                        && not (isempty(ad.data{ad.control.spectra.active}.axes.x.values)))
-                    x = ad.data{ad.control.spectra.active}.axes.x.values;
+                if (isfield(ad.data{active},'axes') ...
+                        && isfield(ad.data{active}.axes,'x') ...
+                        && isfield(ad.data{active}.axes.x,'values') ...
+                        && not (isempty(ad.data{active}.axes.x.values)))
+                    x = ad.data{active}.axes.x.values;
                 end
                 
                 % Get "atomic" value
                 atomic = x(2)-x(1);
                 
                 % Fix values: only those in range of the axis are allowed
-                if (str2double(get(source,'String')) < atomic) || ...
-                        isnan(str2double(get(source,'String')))
+                if value < atomic
                     set(source,'String',num2str(atomic));
-                elseif (str2double(get(source,'String')) > (atomic*length(x)))
+                elseif value > (atomic*length(x))
                     set(source,'String',num2str(atomic*length(x)));
                 else
                     set(source,...
                         'String',...
-                        num2str(round(str2double(get(source,'String'))/atomic)*atomic)...
+                        num2str(round(value/atomic)*atomic)...
                         );
                 end
                 
                 set(gh.processing_panel_average_x_points_edit,...
-                    'String',...
-                    num2str(round(str2double(get(source,'String'))/atomic))...
+                    'String',num2str(round(value/atomic))...
                     );
                 
-                ad.data{ad.control.spectra.active}.display.smoothing.x.value = ...
-                    round(str2double(get(source,'String'))/atomic);
+                ad.data{active}.display.smoothing.x.value = ...
+                    round(value/atomic);
             case 'yindex'
-                if (str2double(get(source,'String')) < 1) || ...
-                        isnan(str2double(get(source,'String')))
+                if value < 1
                     set(source,'String','1');
-                elseif (str2double(get(source,'String')) > y)
+                elseif value > y
                     set(source,'String',num2str(x));
                 else
-                    set(source,...
-                        'String',...
-                        num2str(round(str2double(get(source,'String')))));
+                    set(source,'String',num2str(round(value)));
                 end
                 
-                ad.data{ad.control.spectra.active}.display.smoothing.y.value = ...
-                    str2num(get(source,'String'));
+                ad.data{active}.display.smoothing.y.value = value;
             case 'yunit'
-                x = linspace(1,x,x);
                 y = linspace(1,y,y);
-                if (isfield(ad.data{ad.control.spectra.active},'axes') ...
-                        && isfield(ad.data{ad.control.spectra.active}.axes,'y') ...
-                        && isfield(ad.data{ad.control.spectra.active}.axes.y,'values') ...
-                        && not (isempty(ad.data{ad.control.spectra.active}.axes.y.values)))
-                    y = ad.data{ad.control.spectra.active}.axes.y.values;
+                if (isfield(ad.data{active},'axes') ...
+                        && isfield(ad.data{active}.axes,'y') ...
+                        && isfield(ad.data{active}.axes.y,'values') ...
+                        && not (isempty(ad.data{active}.axes.y.values)))
+                    y = ad.data{active}.axes.y.values;
                 end
                 
                 % Get "atomic" value
                 atomic = y(2)-y(1);
                 
                 % Fix values: only those in range of the axis are allowed
-                if (str2double(get(source,'String')) < atomic) || ...
-                        isnan(str2double(get(source,'String')))
+                if value < atomic
                     set(source,'String',num2str(atomic));
-                elseif (str2double(get(source,'String')) > (atomic*length(y)))
+                elseif value > (atomic*length(y))
                     set(source,'String',num2str(atomic*length(y)));
                 else
                     set(source,...
                         'String',...
-                        num2str(round(str2double(get(source,'String'))/atomic)*atomic)...
+                        num2str(round(value/atomic)*atomic)...
                         );
                 end
                 
                 set(gh.processing_panel_average_y_points_edit,...
-                    'String',...
-                    num2str(round(str2double(get(source,'String'))/atomic))...
+                    'String',num2str(round(value/atomic))...
                     );
                 
-                ad.data{ad.control.spectra.active}.display.smoothing.y.value = ...
-                    round(str2double(get(source,'String'))/atomic);
+                ad.data{active}.display.smoothing.y.value = ...
+                    round(value/atomic);
             otherwise
                 disp('guiProcessingPanel : average_edit_Callback : unknown value');
                 disp(value);
         end
         
-        filterTypes = cellstr(get(gh.processing_panel_average_type_popupmenu,'String'));
-        filterType = filterTypes{get(gh.processing_panel_average_type_popupmenu,'Value')};
-        ad.data{ad.control.spectra.active}.display.smoothing.x.filterfun = ...
+        filterTypes = cellstr(...
+            get(gh.processing_panel_average_type_popupmenu,'String'));
+        filterType = filterTypes{...
+            get(gh.processing_panel_average_type_popupmenu,'Value')};
+        ad.data{active}.display.smoothing.x.filterfun = ...
             sprintf('TAfilter_%s',filterType);
         
         % Update appdata of main window

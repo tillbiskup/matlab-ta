@@ -7,7 +7,7 @@ function handle = guiMFEPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-22
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -911,13 +911,13 @@ function edit_Callback(source,~,action)
                 switch MFEline
                     case 'MFoff'
                         ad.data{active}.line.marker.size = ...
-                            str2double(get(source,'String'));
+                            str2double(strrep(get(source,'String'),',','.'));
                     case 'MFon'
                         ad.data{active}.display.MFon.line.marker.size = ...
-                            str2double(get(source,'String'));
+                            str2double(strrep(get(source,'String'),',','.'));
                     case 'DeltaMF'
                         ad.data{active}.display.DeltaMF.line.marker.size = ...
-                            str2double(get(source,'String'));
+                            str2double(strrep(get(source,'String'),',','.'));
                     otherwise
                         disp(['TAgui : guiMFEPanel() : '...
                             'edit_Callback(): Unknown MFElineType '...
