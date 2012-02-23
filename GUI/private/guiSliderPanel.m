@@ -383,9 +383,11 @@ function position_edit_Callback(source,~,action)
         % Get source string and replace comma with dot
         value = strrep(get(source,'String'),',','.');
 
-        % If value is empty or NaN after conversion to numeric, restore
-        % previous entry and return
-        if (isempty(value) || isnan(str2double(value)))
+        % If value is empty or NaN after conversion to numeric (as long as
+        % it does not contain "end"), restore previous entry and return
+        if (isempty(value) || (isnan(str2double(value))) && ...
+                ~any(strfind(value,'end')))
+            disp('Hm...')
             % Update slider panel
             update_sliderPanel();
             return;
@@ -416,7 +418,8 @@ function position_edit_Callback(source,~,action)
         
         switch action
             case 'xindex'
-                value = round(str2double(value));
+                % Replace end with number - and use str2num, not str2double
+                value = round(str2num(strrep(value,'end',num2str(length(x))))); %#ok<ST2NM>
                 if (value > length(x)) 
                     value = length(x); 
                 end
@@ -426,7 +429,8 @@ function position_edit_Callback(source,~,action)
                 ad.data{active}.display.position.x = ...
                     value;
             case 'xunit'
-                value = str2double(value);
+                % Replace end with number - and use str2num, not str2double
+                value = str2num(strrep(value,'end',num2str(x(end)))); %#ok<ST2NM>
                 if (value < x(1)) 
                     value = x(1); 
                 end
@@ -440,7 +444,8 @@ function position_edit_Callback(source,~,action)
                     'nearest'...
                     );
             case 'yindex'
-                value = round(str2double(value));
+                % Replace end with number - and use str2num, not str2double
+                value = round(str2num(strrep(value,'end',num2str(length(y))))); %#ok<ST2NM>
                 if (value > length(y)) 
                     value = length(y); 
                 end
@@ -449,7 +454,8 @@ function position_edit_Callback(source,~,action)
                 end
                 ad.data{active}.display.position.y = value;
             case 'yunit'
-                value = str2double(value);
+                % Replace end with number - and use str2num, not str2double
+                value = str2num(strrep(value,'end',num2str(y(end)))); %#ok<ST2NM>
                 if (value < y(1)) 
                     value = y(1); 
                 end
