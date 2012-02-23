@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-01-26
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2974,6 +2974,10 @@ function parameter_edit_Callback(source,~,value)
             % Check whether there is some function to apply first
             if ~isempty(matching{index,3})
                 fun = str2func(matching{index,3});
+                if strcmp(matching{index,3},'str2double') || ...
+                        strcmp(matching{index,3},'str2num')
+                    fieldValue = strrep(fieldValue,',','.');
+                end
                 fieldValue = fun(fieldValue);
             end
             % Check whether we should get only a particular element

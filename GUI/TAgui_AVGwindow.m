@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-17
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1347,7 +1347,7 @@ function position_edit_Callback(source,~,position)
         
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        value = get(source,'String');
+        value = strrep(get(source,'String'),',','.');
         if isempty(value) || ...
                 ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
@@ -1384,7 +1384,7 @@ function position_edit_Callback(source,~,position)
                     value = length(x);
                 else
                     value = round(str2double(value));
-                    if (value > length(x)) value = length(x); end
+                    if (value > length(x)) value = length(x); end %#ok<*SEPEX>
                     if (value < 1) value = 1; end
                 end
                 ad.data{active}.display.position.x = ...
@@ -1398,7 +1398,7 @@ function position_edit_Callback(source,~,position)
                     if (value > x(end)) value = x(end); end
                 end
                 ad.data{active}.display.position.x = ...
-                    interp1(x,[1:length(x)],value,'nearest');
+                    interp1(x,1:length(x),value,'nearest');
             case 'yindex'
                 if strcmpi(value,'end')
                     value = length(y);
@@ -2967,7 +2967,7 @@ function updateAxes()
         cla(gh.axis,'reset');
         set(gh.axis,'Box','on');
         set(gh.axis,'Layer','top');
-        axes(gh.axis);
+        axes(gh.axis); %#ok<MAXES>
         switch ad.control.axis.displayType
             case '2D plot'
                 % Disable position slider
@@ -3939,12 +3939,9 @@ function trackPointer(varargin)
                     findobj('Parent',hPlotAxes,'-and','Type','line'),...
                     'ydata');
             end
-    
-            % Get id of current spectrum (to shorten lines afterwards)
-            active = ad.control.spectra.active;
             
-            % If we are in 1D display mode and there are more than one spectrum
-            % and/or a zero line displayed
+            % If we are in 1D display mode and there are more than one
+            % spectrum and/or a zero line displayed
             if ( (strcmp(ad.control.axis.displayType,'1D along x') || ...
                     strcmp(ad.control.axis.displayType,'1D along y')) ) && ...
                     (iscell(xdata) && iscell(ydata))

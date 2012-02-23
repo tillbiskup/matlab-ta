@@ -7,7 +7,7 @@ function varargout = TAgui_ACCwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-17
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1246,32 +1246,32 @@ if (mainGuiWindow)
     % Apply scaling and displacement to spectra
     % TODO: - Scaling
     %       - Frequency correction when displacing along the field axis...!
-    for k=1:length(ad.data)
+    for idx=1:length(ad.data)
         % Handle displacement along all three axes
-        if (ad.data{k}.display.displacement.x ~= 0)
+        if (ad.data{idx}.display.displacement.x ~= 0)
             % Get axis stepping
-            xStep = ad.data{k}.axes.x.values(2)-ad.data{k}.axes.x.values(1);
+            xStep = ad.data{idx}.axes.x.values(2)-ad.data{idx}.axes.x.values(1);
             % Set new axes values
-            ad.data{k}.axes.x.values = ad.data{k}.axes.x.values + ...
-                (xStep*ad.data{k}.display.displacement.x);
+            ad.data{idx}.axes.x.values = ad.data{idx}.axes.x.values + ...
+                (xStep*ad.data{idx}.display.displacement.x);
         end
-        if (ad.data{k}.display.displacement.y ~= 0)
+        if (ad.data{idx}.display.displacement.y ~= 0)
             % Get axis stepping
-            yStep = ad.data{k}.axes.y.values(2)-ad.data{k}.axes.y.values(1);
+            yStep = ad.data{idx}.axes.y.values(2)-ad.data{idx}.axes.y.values(1);
             % Set new axes values
-            ad.data{k}.axes.y.values = ad.data{k}.axes.y.values + ...
-                (yStep*ad.data{k}.display.displacement.y);
+            ad.data{idx}.axes.y.values = ad.data{idx}.axes.y.values + ...
+                (yStep*ad.data{idx}.display.displacement.y);
         end
-        if (ad.data{k}.display.displacement.z ~= 0)
-            ad.data{k}.data = ...
-                ad.data{k}.data + ad.data{k}.display.displacement.z;
+        if (ad.data{idx}.display.displacement.z ~= 0)
+            ad.data{idx}.data = ...
+                ad.data{idx}.data + ad.data{idx}.display.displacement.z;
         end
         % Handle scaling along all three axes
-        if (ad.data{k}.display.scaling.x ~= 0)
+        if (ad.data{idx}.display.scaling.x ~= 0)
         end
-        if (ad.data{k}.display.scaling.y ~= 0)
+        if (ad.data{idx}.display.scaling.y ~= 0)
         end
-        if (ad.data{k}.display.scaling.z ~= 0)
+        if (ad.data{idx}.display.scaling.z ~= 0)
         end
         % set appdata
         setappdata(hMainFigure,'data',ad.data);
@@ -1294,8 +1294,8 @@ handles = findall(...
     '-or','style','edit',...
     '-or','style','listbox',...
     '-or','style','popupmenu');
-for k=1:length(handles)
-    set(handles(k),'KeyPressFcn',@keypress_Callback);
+for idx=1:length(handles)
+    set(handles(idx),'KeyPressFcn',@keypress_Callback);
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1419,7 +1419,7 @@ function position_edit_Callback(source,~,position)
         
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        value = get(source,'String');
+        value = strrep(get(source,'String'),',','.');
         if isempty(value) || ...
                 ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
@@ -1454,8 +1454,12 @@ function position_edit_Callback(source,~,position)
                     value = length(x);
                 else
                     value = round(str2double(value));
-                    if (value > length(x)) value = length(x); end
-                    if (value < 1) value = 1; end
+                    if (value > length(x)) 
+                        value = length(x); 
+                    end
+                    if (value < 1) 
+                        value = 1; 
+                    end
                 end
                 ad.acc.data.display.position.x = value;
             case 'xunit'
@@ -1463,12 +1467,16 @@ function position_edit_Callback(source,~,position)
                     ad.acc.data.display.position.x = length(x);
                 else
                     value = str2double(value);
-                    if (value < x(1)) value = x(1); end
-                    if (value > x(end)) value = x(end); end
+                    if (value < x(1)) 
+                        value = x(1); 
+                    end
+                    if (value > x(end)) 
+                        value = x(end); 
+                    end
                     if length(x)>1
                         ad.acc.data.display.position.x = ...
                             interp1(...
-                            x,[1:length(x)],...
+                            x,1:length(x),...
                             value,...
                             'nearest'...
                             );
@@ -1479,8 +1487,12 @@ function position_edit_Callback(source,~,position)
                     value = length(y);
                 else
                     value = round(str2double(value));
-                    if (value > length(y)) value = length(y); end
-                    if (value < 1) value = 1; end
+                    if (value > length(y)) 
+                        value = length(y); 
+                    end
+                    if (value < 1) 
+                        value = 1; 
+                    end
                 end
                 ad.acc.data.display.position.y = value;
             case 'yunit'
@@ -1488,12 +1500,16 @@ function position_edit_Callback(source,~,position)
                     ad.acc.data.display.position.y = length(y);
                 else
                     value = str2double(value);
-                    if (value < y(1)) value = y(1); end
-                    if (value > y(end)) value = y(end); end
+                    if (value < y(1)) 
+                        value = y(1); 
+                    end
+                    if (value > y(end)) 
+                        value = y(end); 
+                    end
                     if length(y)>1
                         ad.acc.data.display.position.y = ...
                             interp1(...
-                            y,[1:length(y)],...
+                            y,1:length(y),...
                             value,...
                             'nearest'...
                             );
@@ -1539,9 +1555,6 @@ function edit_Callback(~,~,position)
         % Get appdata of main window
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
-        
-        % Get handles of main window
-        gh = guihandles(mainWindow);
 
         % IDEA: If user types "end", replace that with the maximum index in
         % the respective dimension - would be a very convenient way for the
@@ -2612,7 +2625,7 @@ function updateAxes()
                     end
                     % Do the actual plotting
                     cla reset;
-                    [y,x] = size(ad.acc.data.data);
+                    [~,x] = size(ad.acc.data.data);
                     x = linspace(1,x,x);
                     if (isfield(ad.acc.data,'axes') ...
                             && isfield(ad.acc.data.axes,'x') ...
@@ -2729,7 +2742,7 @@ function updateAxes()
                     end
                     % Do the actual plotting
                     cla reset;
-                    [y,x] = size(ad.data{k}.data);
+                    [y,~] = size(ad.acc.data.data);
                     y = linspace(1,y,y);
                     if (isfield(ad.acc.data,'axes') ...
                             && isfield(ad.acc.data.axes,'y') ...
@@ -2922,7 +2935,7 @@ function updateAxes()
                         else
                             dataMFon = ad.data{active}.data;
                         end
-                        [y,x] = size(data);
+                        [~,x] = size(data);
                         x = linspace(1,x,x);
                         if (isfield(ad.data{active},'axes') ...
                                 && isfield(ad.data{active}.axes,'x') ...
@@ -3006,8 +3019,8 @@ function updateAxes()
                                     );
                         end
                     else
-                        for idx=1:length(ad.control.spectra.accumulated)
-                            k = ad.control.spectra.accumulated(idx);
+                        for ind=1:length(ad.control.spectra.accumulated)
+                            k = ad.control.spectra.accumulated(ind);
                             [~,x] = size(ad.data{k});
                             data = ad.data{k}.data;
                             if isfield(ad.data{k},'dataMFon')
@@ -3030,10 +3043,10 @@ function updateAxes()
                                 :);
                             % In case that we loaded 1D data...
                             if isscalar(x)
-                                x = [x x+1];
+                                x = [x x+1]; %#ok<AGROW>
                             end
                             if isscalar(y)
-                                y = [y y+1];
+                                y = [y y+1]; %#ok<AGROW>
                             end
                             switch ad.control.axis.MFEdisplay
                                 case 'MFon'
@@ -3129,7 +3142,7 @@ function updateAxes()
                         else
                             dataMFon = ad.data{active}.data;
                         end
-                        [y,x] = size(ad.data{active}.data);
+                        [y,~] = size(ad.data{active}.data);
                         y = linspace(1,y,y);
                         if (isfield(ad.data{active},'axes') ...
                                 && isfield(ad.data{active}.axes,'y') ...
@@ -3210,9 +3223,9 @@ function updateAxes()
                                     );
                         end
                     else
-                        for idx=1:length(ad.control.spectra.accumulated)
-                            k = ad.control.spectra.accumulated(idx);
-                            [y,x] = size(ad.data{k}.data);
+                        for ind=1:length(ad.control.spectra.accumulated)
+                            k = ad.control.spectra.accumulated(ind);
+                            [y,~] = size(ad.data{k}.data);
                             data = ad.data{k}.data;
                             if isfield(ad.data{k},'dataMFon')
                                 dataMFon = ad.data{k}.dataMFon;
@@ -3230,11 +3243,11 @@ function updateAxes()
                             xMF = dataMFon(:,ad.data{k}.display.position.x);
                             % In case that we loaded 1D data...
                             if isscalar(x)
-                                x = [x x+1];
-                                xMF = [xMF xMF+1];
+                                x = [x x+1];  %#ok<AGROW>
+                                xMF = [xMF xMF+1];  %#ok<AGROW>
                             end
                             if isscalar(y)
-                                y = [y y+1];
+                                y = [y y+1]; %#ok<AGROW>
                             end
                             switch ad.control.axis.MFEdisplay
                                 case 'MFon'

@@ -7,7 +7,7 @@ function varargout = TAgui_fitwindow(varargin)
 % See also TAGUI
 
 % (c) 2011-12, Till Biskup
-% 2012-02-17
+% 2012-02-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1445,7 +1445,7 @@ function position_edit_Callback(source,~,position)
                 
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        value = get(source,'String');
+        value = strrep(get(source,'String'),',','.');
         if isempty(value) || ...
                 ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
@@ -1562,7 +1562,7 @@ function area_edit_Callback(source,~,position)
         
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        value = get(source,'String');
+        value = strrep(get(source,'String'),',','.');
         if isempty(value) || ...
                 ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
