@@ -9,7 +9,7 @@ function status = update_mainAxis(varargin)
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-02-23
+% 2012-02-27
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle();
@@ -63,7 +63,7 @@ if ~(ad.control.spectra.active)
 end
 
 % IMPORTANT: Set main axis to active axis
-axes(mainAxes);
+axes(mainAxes); %#ok<MAXES>
 
 % For shorter and easier to read code:
 active = ad.control.spectra.active;
