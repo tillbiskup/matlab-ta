@@ -33,7 +33,7 @@ function [data,warnings] = TAEPASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011-12, Till Biskup
-% 2012-02-06
+% 2012-03-21
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -266,6 +266,12 @@ data.axes.x.values = raw.data(:,1);
 data.axes.x.unit = 'ns';
 data.axes.y.measure = 'wavelength';
 data.axes.z.unit = '';
+
+% Assign parameters.transient values
+data.parameters.transient.points = size(data.data,2);
+data.parameters.transient.length = ...
+    data.axes.x.values(end)/(size(data.data,2)-1)*size(data.data,2);
+data.parameters.transient.unit = data.axes.x.unit;
 
 % Set file structure
 data.file.name = fileName;
