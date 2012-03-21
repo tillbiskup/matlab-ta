@@ -246,10 +246,14 @@ for k=1:length(headerLines)
     switch lower(headerLines{k}{1})
         case 'labels'
             % Create y axis values vector
-            wl = cellfun(@(x) regexp(x,'\d*\s*([\d.]*).*','tokens'),...
+            wl = cellfun(@(x) regexp(x,'\d*\s*([\d.]*)*','tokens'),...
                 headerLines{k}(2:end-1),'UniformOutput',false);
             for m=1:length(wl)
-                data.axes.y.values(m) = str2double(wl{1,m}{1});
+                if isnan(str2double(wl{1,m}{2}))
+                    data.axes.y.values(m) = str2double(wl{1,m}{1});
+                else
+                    data.axes.y.values(m) = str2double(wl{1,m}{2});
+                end
             end
             % Try to read unit
             unit = regexp(headerLines{k}{2},'\d*\s*[\d.]*\s*([A-Za-z]*)','tokens');
