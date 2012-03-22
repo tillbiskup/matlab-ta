@@ -170,6 +170,7 @@ formatNameString = 'Edinburgh Photonics TA data (ASCII)';
 nLinesTestHeaderLength = 20;
 
 warnings = cell(0);
+csv = logical(false);
 
 % Assign empty structure to output argument
 data = TAdataStructure();
@@ -211,6 +212,7 @@ raw = importdata(fileName,'\t',headerLength);
 % Check if that worked, if not, use COMMA as separator
 if ~isfield(raw,'data')
     raw = importdata(fileName,',',headerLength);
+    csv = logical(true);
 end
 
 % If there is still no "data" field in "raw", something went wrong...
@@ -233,10 +235,17 @@ data.label = raw.textdata{1,1};
 
 % Parse header lines
 % 1st step: split lines into single strings
-headerLines = cellfun(...
-    @(x) regexp(x,'\t','split'),...
-    data.header,...
-    'UniformOutput', false);
+if csv
+    headerLines = cellfun(...
+        @(x) regexp(x,',','split'),...
+        data.header,...
+        'UniformOutput', false);
+else
+    headerLines = cellfun(...
+        @(x) regexp(x,'\t','split'),...
+        data.header,...
+        'UniformOutput', false);
+end
 
 for k=1:length(headerLines)
     if length(headerLines{k})>1
@@ -248,6 +257,9 @@ for k=1:length(headerLines)
             % Create y axis values vector
             wl = cellfun(@(x) regexp(x,'\d*\s*([\d.]*)*','tokens'),...
                 headerLines{k}(2:end-1),'UniformOutput',false);
+            % Try to read unit
+            unit = regexp(headerLines{k}{2},'\d*\s*[\d.]*\s*([A-Za-z]*)','tokens');
+            data.axes.y.unit = char(unit{1}{1});
             for m=1:length(wl)
                 if isnan(str2double(wl{1,m}{2}))
                     data.axes.y.values(m) = str2double(wl{1,m}{1});
@@ -255,9 +267,6 @@ for k=1:length(headerLines)
                     data.axes.y.values(m) = str2double(wl{1,m}{2});
                 end
             end
-            % Try to read unit
-            unit = regexp(headerLines{k}{2},'\d*\s*[\d.]*\s*([A-Za-z]*)','tokens');
-            data.axes.y.unit = char(unit{1}{1});
         case 'xaxis'
             data.axes.x.measure = lower(headerLines{k}{2});
         case 'yaxis'
