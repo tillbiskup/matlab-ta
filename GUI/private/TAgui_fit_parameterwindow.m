@@ -6,7 +6,7 @@ function varargout = TAgui_fit_parameterwindow(varargin)
 % See also TAGUI_FITWINDOW
 
 % (c) 2012, Till Biskup
-% 2012-02-04
+% 2012-03-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -361,7 +361,7 @@ function tableCellEdit_Callback(~,eventdata,action)
         end
         
         %eventdata
-                
+        
         switch lower(action)
             case 'fitparameters'
                 paramNames = ...
@@ -378,7 +378,8 @@ function tableCellEdit_Callback(~,eventdata,action)
                     ad.fit.options = ad.fit.fitRoutines.(ad.fit.fitRoutine);
                 end
                 if isnumeric(ad.fit.fitRoutines.(ad.fit.fitRoutine).(paramName))
-                    ad.fit.options.(paramName) = str2num(eventdata.NewData); %#ok<ST2NM>
+                    ad.fit.options.(paramName) = ...
+                        str2num(strrep(eventdata.NewData,',','.')); %#ok<ST2NM>
                 else
                     ad.fit.options.(paramName) = eventdata.NewData;
                 end
@@ -389,6 +390,8 @@ function tableCellEdit_Callback(~,eventdata,action)
                 fitFunAbbrevs = fieldnames(ad.fit.fitFunctions);
                 fitFunAbbrev = fitFunAbbrevs{...
                     strcmpi(fitFunctionNames,ad.fit.fitFunction)};
+                eventdata.NewData = ...
+                    str2num(strrep(eventdata.NewData,',','.')); %#ok<ST2NM>
                 switch num2str(eventdata.Indices(2))
                     case '1'
                         if ~isfield(ad.fit,'coeff')
