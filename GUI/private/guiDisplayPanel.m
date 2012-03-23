@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-23
+% 2012-03-23
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3101,8 +3101,6 @@ function dataexport_pushbutton_Callback(~,~)
             get(gh.display_panel_dataexport_includestdev_checkbox,'Value');
         export1Dparameters.file.type = fileType;
         export1Dparameters.file.overwrite = 1;
-        
-        structdisp(export1Dparameters)
         
         % Save 1D cross section, depending on settings for file type and
         % additional parameters
