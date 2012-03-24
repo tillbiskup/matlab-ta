@@ -119,6 +119,8 @@ try
         end
     end
     
+    busyWindow('start','Trying to save spectra...<br />please wait.');
+    
     % Do the actual saving
     [ saveStatus, exception ] = ...
         TAsave(ad.data{id}.file.name,ad.data{id});
@@ -133,7 +135,8 @@ try
         msgStr{end+1} = ad.data{id}.file.name;
         msgStr = [ msgStr saveStatus ];
         status = add2status(msgStr);
-        warndlg(msgStr,'Problems saving file','modal');
+        busyWindow('stop','Trying to save spectra...<br /><b>failed</b>.');
+        %warndlg(msgStr,'Problems saving file','modal');
         clear msgStr;
         return;
     else
@@ -165,7 +168,8 @@ try
     update_processingPanel();
     update_mainAxis();
     
-    msgbox(msg,'Successful saving of file','help'); 
+    busyWindow('stop','Trying to save spectra...<br /><b>done</b>.');
+    %msgbox(msg,'Successful saving of file','help'); 
     status = 0;
     
 catch exception

@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-19
+% 2012-03-24
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -20,8 +20,8 @@ defaultBackground = get(parentHandle,'Color');
 fileFormats = TAiniFileRead(fullfile(TAinfo('dir'),'IO','TAload.ini'));
 fileFormatIdentifiers = fieldnames(fileFormats);
 fileFormatNames = cell(1,length(fileFormatIdentifiers));
-for k=1:length(fileFormatIdentifiers)
-    fileFormatNames{k} = fileFormats.(fileFormatIdentifiers{k}).name;
+for m=1:length(fileFormatIdentifiers)
+    fileFormatNames{m} = fileFormats.(fileFormatIdentifiers{m}).name;
 end 
 
 handle = uipanel('Tag','load_panel',...
@@ -311,12 +311,7 @@ function load_pushbutton_Callback(~,~)
         add2status(msg);
         clear msgStr msg;
         
-        hMsgBox = msgWindow(...
-            'Loading spectra... please wait.',...
-            'Loading spectra',...
-            'Help','modal',0);
-        hMessageText = findobj(hMsgBox,'Tag','msgwindow_text');
-        messageText = get(hMessageText,'String');
+        busyWindow('start','Trying to load spectra...<br />please wait.');
         
         if (get(handle_avg_cb,'Value') == 1)
             average = true;
@@ -330,19 +325,7 @@ function load_pushbutton_Callback(~,~)
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
             add2status(msg);
-            if ishandle(hMsgBox)
-                set(hMessageText,'String',...
-                    strrep(messageText,'please wait.','FAILED!'));
-                % Show "OK" button
-                set(...
-                    findobj(hMsgBox,'Tag','msgwindow_button'),...
-                    'visible','on');
-            else
-                hMsgBox = msgWindow(...
-                    'Loading spectra... FAILED!',...
-                    'Loading spectra',...
-                    'Help','modal');
-            end
+            busyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
             return;
         end
         
@@ -353,10 +336,10 @@ function load_pushbutton_Callback(~,~)
             for k=1:length(data)
                 if not(isfield(data{k},'data'))
                     fnNoData{k} = 'unknown';
-                    nNoData = [ nNoData k ];
+                    nNoData = [ nNoData k ]; %#ok<AGROW>
                 elseif not(isnumeric(data{k}.data))
                     fnNoData{k} = data{k}.file.name;
-                    nNoData = [ nNoData k ];
+                    nNoData = [ nNoData k ]; %#ok<AGROW>
                 end
             end
             % Remove datasets from data cell array
@@ -381,19 +364,7 @@ function load_pushbutton_Callback(~,~)
         end
         
         if isempty(data)
-            if ishandle(hMsgBox)
-                set(hMessageText,'String',...
-                    strrep(messageText,'please wait.','FAILED!'));
-                % Show "OK" button
-                set(...
-                    findobj(hMsgBox,'Tag','msgwindow_button'),...
-                    'visible','on');
-            else
-                hMsgBox = msgWindow(...
-                    'Loading spectra... FAILED!',...
-                    'Loading spectra',...
-                    'Help','modal');
-            end
+            busyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
             return;
         end
         
@@ -482,22 +453,10 @@ function load_pushbutton_Callback(~,~)
         msgStr{length(msgStr)+1} = ...
             sprintf('%i data set(s) successfully loaded:',length(data));
         msg = [msgStr fileNames];
-        status = add2status(msg);
+        add2status(msg);
         clear msgStr msg;
-        
-        if ishandle(hMsgBox)
-            % Show "OK" button
-            set(...
-                findobj(hMsgBox,'Tag','msgwindow_button'),...
-                'visible','on');
-            set(hMessageText,'String',...
-                strrep(messageText,'please wait.','DONE.'));
-        else
-            hMsgBox = msgWindow(...
-                'Loading spectra... DONE  ',...
-                'Loading spectra',...
-                'Help','modal');
-        end
+
+        busyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
         
         % Get appdata again after making changes to it before
         ad = getappdata(mainWindow);

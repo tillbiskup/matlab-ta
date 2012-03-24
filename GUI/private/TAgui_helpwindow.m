@@ -331,7 +331,7 @@ end
 function startBrowser(~,~,url)
     if any(strfind(platform,'Windows'))
         dos(['start ' url]);
-    else % In case we are on a Mac
+    else
         web(url,'-browser');
     end
 end
@@ -431,7 +431,7 @@ function helptext_selector(helpText)
             otherwise
                 % That shall never happen
                 add2status('TAgui_helpwindow(): Unknown helptext');
-                set(textdisplay,'String','');
+                browser.setCurrentLocation('');
         end
     catch exception
         try
