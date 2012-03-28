@@ -6,7 +6,7 @@ function varargout = busyWindow(varargin)
 %       Returns the handle of the window.
 
 % (c) 2012, Till Biskup
-% 2012-03-24
+% 2012-03-28
 
 title = 'Processing...';
 position = [220,350,270,120];
@@ -120,7 +120,11 @@ switch action
         drawnow;
     case 'stop'
         jObj.stop;
-        jObj.setBusyText('Done');
+        try
+            jObj.setBusyText('Done');
+        catch exception
+            add2status(exception.message);
+        end
         set(hBtn,'Visible','on');
         set(hMainFigure,'KeyPressFcn',@keypress_Callback);
         if isfield(parameters,'title')
