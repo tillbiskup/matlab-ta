@@ -4,7 +4,7 @@ function varargout = TAgui_aboutwindow()
 %                   to the help command. 
 
 % (c) 2011-12, Till Biskup
-% 2012-03-23
+% 2012-03-24
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -213,6 +213,13 @@ end
                             return;
                     end
                 end
+            end
+            switch evt.Key
+                case 'escape'
+                    closeWindow()
+                    return;
+                otherwise
+                    return;
             end
         catch exception
             try
