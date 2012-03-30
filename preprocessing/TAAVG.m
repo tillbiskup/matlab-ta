@@ -22,7 +22,7 @@ function [avgData] = TAAVG(data,parameters)
 %              from the averaging in the history.parameters field
 
 % (c) 2012, Till Biskup
-% 2012-01-29
+% 2012-03-30
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -38,6 +38,9 @@ try
     % As we inherit most of the fields from the original dataset, copy
     % original dataset completely in avgData
     avgData = data;
+    
+    % Remove filename
+    avgData.file.name = '';
     
     % Perform averaging...
     switch parameters.dimension
