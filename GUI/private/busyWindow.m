@@ -6,7 +6,7 @@ function varargout = busyWindow(varargin)
 %       Returns the handle of the window.
 
 % (c) 2012, Till Biskup
-% 2012-03-28
+% 2012-03-30
 
 title = 'Processing...';
 position = [220,350,270,120];
@@ -76,7 +76,6 @@ bgColor = num2cell(defaultBackground);
 % Text label for general description
 jTextLabel1 = javaObjectEDT('javax.swing.JLabel',ad.description);
 jTextLabel1.setBackground(java.awt.Color(bgColor{:}));
-%jTextLabel1.setVerticalAlignment(jTextLabel1.TOP);
 javacomponent(jTextLabel1,[90 50 ad.position(3)-90-10 ad.position(4)-50-10],hMainFigure);
 
 % Close button
@@ -95,10 +94,8 @@ hBtn = uicontrol('Tag','close_pushbutton',...
 % Spinning dots
 iconsClassName = 'com.mathworks.widgets.BusyAffordance$AffordanceSize';
 iconsSizeEnums = javaMethod('values',iconsClassName);
-SIZE_32x32 = iconsSizeEnums(2);  % (1) = 16x16
-%SIZE_16x16 = iconsSizeEnums(1);  % (1) = 16x16
-jObj = com.mathworks.widgets.BusyAffordance(SIZE_32x32,'Busy...');
-%jObj = com.mathworks.widgets.BusyAffordance(SIZE_16x16,'Loading...');
+% iconsSizeEnums(1) = 16x16; (2) = 32x32
+jObj = com.mathworks.widgets.BusyAffordance(iconsSizeEnums(2),'Busy...');
 javacomponent(jObj.getComponent,[10,floor((ad.position(4)-60)/2),80,80],gcf);
 jObj.getComponent.setBackground(java.awt.Color(bgColor{:}));
 jObj.setPaintsWhenStopped(true);
