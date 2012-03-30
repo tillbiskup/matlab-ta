@@ -17,7 +17,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              a copy is copied to the history.info field
 
 % (c) 2011-12, Till Biskup
-% 2012-02-06
+% 2012-03-30
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -115,6 +115,19 @@ try
     accData.parameters = data{masterId}.parameters;
     if isfield(data{masterId},'display')
         accData.display = data{masterId}.display;
+    end
+    
+    % Handle sample parameters
+    sampleFieldNames = fieldnames(accData.sample);
+    for k=1:length(sampleFieldNames)
+        if sum(strcmpi(data{masterId}.sample.(sampleFieldNames{k}),...
+                cellfun(@(x)x.sample.(sampleFieldNames{k}),...
+                data,'UniformOutput',false))) == length(data)
+            accData.sample.(sampleFieldNames{k}) = ...
+                data{masterId}.sample.(sampleFieldNames{k});
+        else
+            accData.sample.(sampleFieldNames{k}) = 'N/A';
+        end
     end
     
     % Check for axes steppings and handle interpolation accordingly.
@@ -300,12 +313,8 @@ try
                 accData.dataMFon = sum(accData.dataMFon,3)/length(data);
             end
             % Handle number of averages
-            accData.parameters.recorder.averages = 0;
-            for k=1:length(data)
-                accData.parameters.recorder.averages = ...
-                    accData.parameters.recorder.averages + ...
-                    data{k}.parameters.recorder.averages;
-            end
+            accData.parameters.recorder.averages = ...
+                sum(cellfun(@(x)x.parameters.recorder.averages,data));
         case 'weighted'
             accData = [];
             accReport = {...
@@ -394,7 +403,7 @@ try
     end
     history.system.platform = platform;
     history.system.matlab = version;
-    history.system.TA= TAinfo('version');
+    history.system.TA = TAinfo('version');
     
     
     % Fiddle around with parameters structure, as it gets to hold all
