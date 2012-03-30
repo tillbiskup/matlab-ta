@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-23
+% 2012-03-30
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1490,7 +1490,7 @@ function area_edit_Callback(source,~,position)
         
         % If value is empty or NaN after conversion to numeric, restore
         % previous entry and return
-        value = get(source,'String');
+        value = strrep(get(source,'String'),',','.');
         if isempty(value) || ...
                 ((isnan(str2double(value))) && ~strcmpi(value,'end'))
             % Update slider panel
@@ -1507,6 +1507,10 @@ function area_edit_Callback(source,~,position)
         
         % Make code lines shorter and code easier to read
         active = ad.control.spectra.active;
+
+        if ~active
+            return;
+        end
         
         % Be as robust as possible: if there is no axes, default is indices
         [y,x] = size(ad.data{active}.data);
@@ -1940,6 +1944,9 @@ function togglebutton_Callback(source,~,action)
         if value % If toggle switched ON
             switch lower(action)
                 case 'measurepick'
+                    if ~ad.control.spectra.active
+                        return;
+                    end
                     % Switch off zoom
                     zoom(mainWindow,'off');
                     % Set pointer callback functions
@@ -2082,7 +2089,7 @@ function pushbutton_Callback(~,~,action)
                 updateSliderPanel();
             case 'showMaximum'
                 % If no datasets are loaded, return
-                if isempty(ad.data)
+                if isempty(ad.data) || ~ad.control.spectra.active
                     return;
                 end
                 [~,ximax] = max(max(ad.data{ad.control.spectra.active}.data));
@@ -2110,6 +2117,9 @@ function pushbutton_Callback(~,~,action)
                 set(gh.measure_y_unit_edit,'String','0');
                 return;
             case 'averageClear'
+                if ~ad.control.spectra.active
+                    return;
+                end
                 ad.data{ad.control.spectra.active}.avg.area.start = 1;
                 ad.data{ad.control.spectra.active}.avg.area.stop = 1;
                 ad.data{ad.control.spectra.active}.avg.area.delta = 0;
@@ -2526,6 +2536,10 @@ function updateAveragePanel()
 
         % Make codelines shorter and easier to read
         active = ad.control.spectra.active;
+        
+        if ~active
+            return;
+        end
         
         % Set label field
         if isempty(ad.data{active}.avg.label)
