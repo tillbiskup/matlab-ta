@@ -12,7 +12,7 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-03-24
+% 2012-03-30
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -29,6 +29,9 @@ try
         
     % Preset message
     message = '';
+    
+    % Set file extension
+    zipext = '.taz';
 
     % If there is no main GUI window, silently return
     if isempty(mainWindow)
@@ -47,8 +50,8 @@ try
         return;
     else
         [fpath,fname,fext] = fileparts(ad.data{id}.file.name);
-        if ~strcmp(fext,'.zip')
-            ad.data{id}.file.name = fullfile(fpath,[fname '.zip']);
+        if ~strcmp(fext,zipext)
+            ad.data{id}.file.name = fullfile(fpath,[fname zipext]);
             % Need to test for existing file and in case, ask user...
             if (exist(ad.data{id}.file.name,'file'))
                 answer = questdlg(...
@@ -129,6 +132,9 @@ try
     
     % Remove from modified
     ad.control.spectra.modified(ad.control.spectra.modified == id) = [];
+    
+    % Set last save dir
+    ad.control.dirs.lastSave = fpath;
     
     % Write appdata
     setappdata(mainWindow,'data',ad.data);

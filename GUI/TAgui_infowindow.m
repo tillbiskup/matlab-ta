@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-03-28
+% 2012-03-30
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2630,12 +2630,12 @@ if (mainGuiWindow)
         ad.control.spectra = rmfield(ad.control.spectra,'visible');
         ad.control.spectra = rmfield(ad.control.spectra,'invisible');
         % Set history record cell array to default value
-        for k=1:length(ad.control.spectra.loaded)
-            ad.control.spectra.history{k} = 0;
+        for m=1:length(ad.control.spectra.loaded)
+            ad.control.spectra.history{m} = 0;
         end
         % Set info file cell array to default values
-        for k=1:length(ad.control.spectra.loaded)
-            ad.control.spectra.infoFile{k} = struct(...
+        for m=1:length(ad.control.spectra.loaded)
+            ad.control.spectra.infoFile{m} = struct(...
                 'input',struct(...
                     'name','',...
                     'format',''...
@@ -2686,8 +2686,8 @@ handles = findall(...
     '-or','style','edit',...
     '-or','style','listbox',...
     '-or','style','popupmenu');
-for k=1:length(handles)
-    set(handles(k),'KeyPressFcn',@keypress_Callback);
+for m=1:length(handles)
+    set(handles(m),'KeyPressFcn',@keypress_Callback);
 end
 
 % Temporary "fix": Disable all elements of the "Display settings" panel
@@ -2695,8 +2695,8 @@ displayPanelHandles = findall(...
     allchild(p4),'style','edit',...
     '-or','style','pushbutton',...
     '-or','style','popupmenu');
-for k=1:length(displayPanelHandles)
-    set(displayPanelHandles(k),'Enable','inactive');
+for m=1:length(displayPanelHandles)
+    set(displayPanelHandles(m),'Enable','inactive');
 end
 % Add exceptions for p4 here (ONLY TEMPORARILY!)
 set(allchild(p4p1),'Enable','on');
@@ -2864,9 +2864,6 @@ function parameter_edit_Callback(source,~,value)
         if isempty(ad.data)
             return;
         end
-        
-        % Get handles from info GUI
-        gh = guidata(mainWindow);
         
         % Cell array matching values to data structure
         % The first column contains the value (third input parameter).
@@ -3056,99 +3053,6 @@ function parameter_edit_Callback(source,~,value)
     end
 end     
 
-function colour_type_popupmenu_Callback(source,~)
-    try
-        % Get handles of main window
-        gh = guihandles(hMainFigure);
-        
-        colourTypes = cellstr(get(source,'String'));
-        colourType = colourTypes{get(source,'Value')};
-        
-        switch colourType
-            case 'name'
-                set(gh.display_panel_colour_type2_popupmenu,'String',...
-                    'b|g|r|c|m|y|k'...
-                    );
-                set(gh.display_panel_colour_r_edit,'Enable','Off');
-                set(gh.display_panel_colour_g_edit,'Enable','Off');
-                set(gh.display_panel_colour_b_edit,'Enable','Off');
-            case 'RGB'
-                set(gh.display_panel_colour_type2_popupmenu,'String',...
-                    '0-1|0-255|0-FF'...
-                    );
-                set(gh.display_panel_colour_r_edit,'Enable','On');
-                set(gh.display_panel_colour_g_edit,'Enable','On');
-                set(gh.display_panel_colour_b_edit,'Enable','On');
-            otherwise
-                % That shall never happen
-                add2status('TAgui_infowindow(): Unknown colour type');
-        end
-    catch exception
-        try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
-    end
-end
-
-function colour_type2_popupmenu_Callback(source,~)
-    try
-        % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
-        ad = getappdata(mainWindow);
-
-        % Get handles of main window
-        gh = guihandles(mainWindow);
-
-        colourTypes = ...
-            cellstr(get(gh.display_panel_colour_type_popupmenu,'String'));
-        colourType = ...
-            colourTypes{get(gh.display_panel_colour_type_popupmenu,'Value')};
-                
-        switch colourType
-            case 'name'
-                colourNames = cellstr(get(source,'String'));
-                if ad.control.spectra.active
-                    ad.data{ad.control.spectra.active}.line.color = ...
-                        colourNames{get(source,'Value')};
-                    % Update appdata of main window
-                    setappdata(mainWindow,'data',ad.data);
-                end
-            case 'RGB'
-            otherwise
-                % That shall never happen
-                add2status('TAgui_infowindow(): Unknown colour type');
-        end
-    catch exception
-        try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
-    end
-end
-
 function history_listbox_Callback(source,~)
     try
         % Get appdata of main window
@@ -3200,8 +3104,12 @@ function pushbutton_Callback(~,~,action)
                 % TODO: Make this dependend on the popupmenu for the file
                 % type
                 FilterSpec = '*.info';
+                [filePath,~,~] = fileparts(...
+                    ad.data{ad.control.spectra.active}.file.name);
                 [infoFileName,infoPathName] = uigetfile(...
-                    FilterSpec,'Get Info File Name','MultiSelect','off');
+                    FilterSpec,'Get Info File Name',...
+                    'MultiSelect','off',...
+                    filePath);
                 if ischar(infoFileName)
                     ad.control.spectra.infoFile{...
                         ad.control.spectra.active}.input.name = ...
@@ -3967,9 +3875,6 @@ function updateToolsPanel()
         if isempty(ad.data)
             return;
         end
-
-        % Get handles from info GUI
-        gh = guidata(mainWindow);
 
     catch exception
         try

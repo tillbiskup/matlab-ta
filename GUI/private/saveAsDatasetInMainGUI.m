@@ -12,7 +12,7 @@ function [status,message] = saveAsDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-03
+% 2012-03-30
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -45,6 +45,9 @@ try
     
     % Create default filename
     [fpath,fname,fext] = fileparts(ad.data{id}.file.name);
+    if ~isempty(ad.control.dirs.lastSave)
+        fpath = ad.control.dirs.lastSave;
+    end
     if ~strcmp(fext,zipext)
         ad.data{id}.file.name = fullfile(fpath,[fname zipext]);
     end
@@ -148,6 +151,9 @@ try
     % Remove from modified
     ad.control.spectra.modified(...
         (ad.control.spectra.modified == id)) = [];
+    
+    % Set last save dir
+    ad.control.dirs.lastSave = PathName;
     
     % Write appdata
     setappdata(mainWindow,'data',ad.data);
