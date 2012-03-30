@@ -69,12 +69,14 @@ p.addRequired('filename', @(x)ischar(x) || iscell(x) || isstruct(x));
 p.addParamValue('format','automatic',@ischar);
 p.addParamValue('combine',logical(false),@islogical);
 p.addParamValue('average',logical(false),@islogical);
+p.addParamValue('loadInfoFile',logical(false),@islogical);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 format = p.Results.format;
 combine = p.Results.combine;
 average = p.Results.average;
+loadInfoFile = p.Results.loadInfoFile;
 
 warnings = cell(0);
 
@@ -233,7 +235,8 @@ if strcmpi(format,'automatic')
                     fileFormats.(binaryFileFormats{m}).function);
                 [data{k},warnings{k}] = ...
                     functionHandle(fileName{uniqueIndices(k)},...
-                    'average',average);
+                    'average',average,'combine',combine,...
+                    'checkFormat',false,'loadInfoFile',loadInfoFile);
                 if ~isempty(data{k})
                     break;
                 end
@@ -245,7 +248,8 @@ if strcmpi(format,'automatic')
                     fileFormats.(asciiFileFormats{m}).function);
                 [data{k},warnings{k}] = ...
                     functionHandle(fileName{uniqueIndices(k)},...
-                    'average',average);
+                    'average',average,'combine',combine,...
+                    'checkFormat',false,'loadInfoFile',loadInfoFile);
                 if ~isempty(data{k})
                     break;
                 end
@@ -257,7 +261,7 @@ elseif max(strcmpi(format,formatNames))
     % Basically that means that "format" has been found in the formats
     functionHandle = str2func(fileFormats.(format).function);
     [data,warnings] = functionHandle(fileName,'combine',combine,...
-        'average',average,'checkFormat',false);
+        'average',average,'checkFormat',false,'loadInfoFile',loadInfoFile);
 else
     warnings{end+1} = sprintf('File format %s not recognised.',format);
 end

@@ -319,8 +319,15 @@ function load_pushbutton_Callback(~,~)
             average = false;
         end
         
+        if (get(handle_infofile_cb,'Value') == 1)
+            loadInfoFile = true;
+        else
+            loadInfoFile = false;
+        end
+        
         [data,warnings] = TAload(FileName,'format',fileFormat,...
-            'combine',state.comb,'average',average);
+            'combine',state.comb,'average',average,...
+            'loadInfoFile',loadInfoFile);
         
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
@@ -450,11 +457,19 @@ function load_pushbutton_Callback(~,~)
         
         % Adding status line
         msgStr = cell(0);
-        msgStr{length(msgStr)+1} = ...
+        msgStr{end+1} = ...
             sprintf('%i data set(s) successfully loaded:',length(data));
         msg = [msgStr fileNames];
         add2status(msg);
         clear msgStr msg;
+        
+        if ~isempty(warnings)
+            msgStr = cell(0);
+            msgStr{end+1} = 'Some warnings occurred while reading files:';
+            msg = [msgStr warnings{:}];
+            add2status(msg);
+            clear msgStr msg;
+        end
 
         busyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
         

@@ -49,11 +49,13 @@ p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('checkFormat',logical(true),@islogical);
 p.addParamValue('sortfiles',logical(true),@islogical);
+p.addParamValue('loadInfoFile',logical(false),@islogical);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 checkFormat = p.Results.checkFormat;
 sortfiles = p.Results.sortfiles;
+loadInfoFile = p.Results.loadInfoFile;
 
 warnings = cell(0);
 
@@ -134,7 +136,8 @@ end
 
 data = cell(length(uniqueIndices),1);
 for k=1:length(uniqueIndices)
-    [data{k},warning] = loadFile(fileName{uniqueIndices(k)},checkFormat);
+    [data{k},warning] = loadFile(fileName{uniqueIndices(k)},...
+        checkFormat,loadInfoFile);
     if ~isempty(warning)
         warnings{end+1} = warning;
     end
@@ -146,20 +149,24 @@ end
 
 end
 
-function [data,warnings] = loadFile(fileName,checkFormat)
+function [data,warnings] = loadFile(fileName,checkFormat,loadInfoFile)
 % LOADFILE Load file and return contents. 
 %
-% fileName    - string
-%               Name of a file (normally including full path)
+% fileName     - string
+%                Name of a file (normally including full path)
 %
-% checkFormat - logical (true/false)
-%               Whether to check for proper format
+% checkFormat  - logical (true/false)
+%                Whether to check for proper format
 %
-% data        - structure
-%               According to the toolbox data structure
+% loadInfoFile - logical (true/false)
+%                Whether to load accompanying info file (with same
+%                basename)
 %
-% warnings    - cell array of strings
-%               Contains warnings if there are any, otherwise empty.
+% data         - structure
+%                According to the toolbox data structure
+%
+% warnings     - cell array of strings
+%                Contains warnings if there are any, otherwise empty.
 
 % As we're called only internally, there's no need for parameter checking.
 
@@ -289,5 +296,35 @@ data.parameters.transient.unit = data.axes.x.unit;
 % Set file structure
 data.file.name = fileName;
 data.file.format = formatNameString;
+
+% Try to load info file
+if loadInfoFile 
+    [fpath,fname,~] = fileparts(fileName);
+    infoFileName = fullfile(fpath,[fname '.info']);
+    if exist(infoFileName,'file')
+        [parameters,ifpwarnings] = TAinfoFileParse(infoFileName,'map');
+        if isempty(ifpwarnings)
+            data = structcopy(data,parameters);
+            % Set time axis parameters according to new values
+            data.axes.x.values = ...
+                -data.parameters.transient.length/...
+                data.parameters.transient.points * ...
+                (data.parameters.transient.triggerPosition - 1) : ...
+                data.parameters.transient.length/...
+                data.parameters.transient.points : ...
+                data.parameters.transient.length - ...
+                data.parameters.transient.length/...
+                data.parameters.transient.points * ...
+                data.parameters.transient.triggerPosition;
+            data.axes.x.unit = ...
+                data.parameters.transient.unit;
+        else
+            warnings{end+1} = ifpwarnings;
+        end
+    else
+        warnings{end+1} = 'Could not find accompanying info file.';
+    end
+    
+end
 
 end
