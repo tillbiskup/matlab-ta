@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-02-09
+% 2012-03-30
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -367,6 +367,7 @@ try
     parts = regexp(parameters.transient.length,' ','split','once');
     dataStructure.parameters.transient.length = str2double(parts{1});
     dataStructure.parameters.transient.unit = parts{2};
+    dataStructure.axes.x.unit = dataStructure.parameters.transient.unit;
     
     % TODO: Handle timeProfiles, especially the filters at different
     %       wavelengths
