@@ -290,6 +290,7 @@ data.axes.z.unit = '';
 % In case of "Delta OD" as z axis measure, rewrite it to \DeltaA
 if strcmpi(data.axes.z.measure,'Delta OD')
     data.axes.z.measure = '\DeltaA';
+    data.axes.z.unit = 'a.u.';
 end
 
 % Assign parameters.transient values
