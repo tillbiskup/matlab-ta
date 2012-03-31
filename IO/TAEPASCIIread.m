@@ -33,7 +33,7 @@ function [data,warnings] = TAEPASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011-12, Till Biskup
-% 2012-03-22
+% 2012-03-31
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -286,6 +286,11 @@ data.axes.x.values = raw.data(:,1);
 data.axes.x.unit = 'ns';
 data.axes.y.measure = 'wavelength';
 data.axes.z.unit = '';
+
+% In case of "Delta OD" as z axis measure, rewrite it to \DeltaA
+if strcmpi(data.axes.z.measure,'Delta OD')
+    data.axes.z.measure = '\DeltaA';
+end
 
 % Assign parameters.transient values
 data.parameters.transient.points = size(data.data,2);
