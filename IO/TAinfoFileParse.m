@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 
 % (c) 2012, Till Biskup
-% 2012-03-31
+% 2012-04-01
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -419,6 +419,21 @@ function parameters = parseBlocks(blockData)
 
 % Assign output parameter
 parameters = struct();
+
+% If we have continued lines (starting with whitespace character), add them
+% to previous line
+continuingLines = find(cellfun(@(x)isspace(x(1)),blockData));
+if any(continuingLines)
+    for k=length(continuingLines):-1:1
+        % Add line to previous line and use "\n" as delimiter (for later
+        % resplitting)
+        blockData{continuingLines(k)-1} = [ ...
+            blockData{continuingLines(k)-1} '\n' ...
+            strtrim(blockData{continuingLines(k)}) ];
+        % Delete element in cell array
+        blockData(continuingLines(k)) = [];
+    end
+end
 blockLines = cellfun(...
     @(x) regexp(x,':','split','once'),...
     blockData,...
@@ -429,8 +444,14 @@ for k=1:length(blockLines)
         % If not convertible into number - or containing commas
         if isnan(str2double(blockLines{k}{2})) || ...
                 any(strfind(blockLines{k}{2},','))
-            parameters.(str2fieldName(blockLines{k}{1})) = ...
-                strtrim(blockLines{k}{2});
+            % If line was concatenated earlier, split it again
+            if strfind(blockLines{k}{2},'\n')
+                parameters.(str2fieldName(blockLines{k}{1})) = ...
+                    regexp(strtrim(blockLines{k}{2}),'\\n','split');
+            else
+                parameters.(str2fieldName(blockLines{k}{1})) = ...
+                    strtrim(blockLines{k}{2});
+            end
         else
             parameters.(str2fieldName(blockLines{k}{1})) = ...
                 str2double(strtrim(blockLines{k}{2}));
