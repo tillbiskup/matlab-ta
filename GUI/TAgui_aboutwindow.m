@@ -4,7 +4,7 @@ function varargout = TAgui_aboutwindow()
 %                   to the help command. 
 
 % (c) 2011-12, Till Biskup
-% 2012-04-01
+% 2012-04-02
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -56,9 +56,9 @@ javacomponent(jLabel,[20 position(4)-128-20 128 128],hMainFigure);
 
 % Set length of scrolling panel depending on the platform
 if any(strfind(platform,'Linux'))
-    scrollPanelHeight = position(4)+1570;
+    scrollPanelHeight = position(4)+1560;
 elseif any(strfind(platform,'Windows'))
-    scrollPanelHeight = position(4)+1330;
+    scrollPanelHeight = position(4)+1310;
 else % In case we are on a Mac
     scrollPanelHeight = position(4)+1730;
 end
@@ -175,7 +175,7 @@ t1 = timer( ...
     'ExecutionMode', 'fixedRate');
 t2 = timer( ...
     'StartDelay', 2, ...
-    'Period', 0.005, ...
+    'Period', 0.05, ...
     'TasksToExecute', scrollPanelHeight-130, ...
     'ExecutionMode', 'fixedRate');
 
