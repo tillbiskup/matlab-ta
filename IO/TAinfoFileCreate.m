@@ -42,10 +42,10 @@ p.parse(parameters,varargin{:});
 warnings = cell(0);
 
 % Define identifierString for Info File format
-identifierString = 'TA Info file -  v. 0.2d (2012-03-31)';
+identifierString = 'TA Info file - v. 0.2d (2012-03-31)';
 
 % Define length of parameter field
-fieldNameLength = 25;
+fieldNameLength = 24;
 
 try
     % Assemble file contents in cell array

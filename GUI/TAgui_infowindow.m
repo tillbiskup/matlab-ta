@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-04-04
+% 2012-04-05
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2727,6 +2727,17 @@ set(allchild(p4p5),'Enable','inactive');
 % Get all edit fields that are marked as "Handle carefully"
 warningBackgroundEditFields = findall(...
     allchild(hMainFigure),'BackgroundColor',editableWarningBackground);
+
+% Enable "tipWhentruncatedEnabled" for single-line text edits
+try
+    gh = guihandles(hMainFigure);
+    set(findjobj(gh.tools_panel_infofileread_format_edit),...
+        'TipWhenTruncatedEnabled',true);
+    set(findjobj(gh.tools_panel_infofilewrite_format_edit),...
+        'TipWhenTruncatedEnabled',true);
+catch exception
+    TAgui_bugreportwindow(exception);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks
