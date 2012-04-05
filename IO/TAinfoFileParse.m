@@ -27,6 +27,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 % warnings   - cell array of strings
 %              empty if there are no warnings
 %
+% See also: TAINFOFILECREATE, TAINFOFILEWRITE
 
 % (c) 2012, Till Biskup
 % 2012-04-05
