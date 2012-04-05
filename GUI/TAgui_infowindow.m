@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-03-31
+% 2012-04-04
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3135,6 +3135,9 @@ function pushbutton_Callback(~,~,action)
             case 'infofilereadfilename'
                 % TODO: Make this dependend on the popupmenu for the file
                 % type
+                if isempty(ad.data)
+                    return;
+                end
                 FilterSpec = '*.info';
                 [filePath,~,~] = fileparts(...
                     ad.data{ad.control.spectra.active}.file.name);
@@ -3156,6 +3159,9 @@ function pushbutton_Callback(~,~,action)
                         'String',infoFileName);
                 end
             case 'infofilereadshow'
+                if isempty(ad.data)
+                    return;
+                end
                 if isempty(ad.control.spectra.infoFile{...
                         ad.control.spectra.active}.input.name)
                     return;
@@ -3170,6 +3176,9 @@ function pushbutton_Callback(~,~,action)
                 set(gh.tools_panel_infofileread_format_edit,...
                     'String',[fn ext]);
             case 'infofilereadapply'
+                if isempty(ad.data)
+                    return;
+                end
                 if isempty(ad.control.spectra.infoFile{...
                         ad.control.spectra.active}.input.name)
                     return;
