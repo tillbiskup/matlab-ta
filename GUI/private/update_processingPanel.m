@@ -89,6 +89,11 @@ set(gh.processing_panel_average_y_unit_edit,...
     'String',...
     num2str((y(2)-y(1))*str2num(get(gh.processing_panel_average_y_points_edit,'String'))));
 
+% Update scaling edit field
+if isnan(str2double(get(gh.processing_panel_scaling_edit,'String')))
+    set(gh.processing_panel_scaling_edit,'String','1');
+end
+
 % Update primary and secondary spectra listboxes
 % Get indices of visible spectra
 vis = ad.control.spectra.visible;

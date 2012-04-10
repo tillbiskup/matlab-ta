@@ -15,7 +15,7 @@ function [parameters,report] = TAhistoryDisplay(history)
 %              "Report" panel of the info window
 
 % (c) 2012, Till Biskup
-% 2012-02-17
+% 2012-04-10
 
 try
     parameters = cell(0);
@@ -123,6 +123,10 @@ try
             parameters{end+1} = sprintf('operation: %s',...
                 history.parameters.operation);
             report = history.info;
+            if strcmpi(history.parameters.operation,'scaling')
+                parameters{end+1} = sprintf('scaling factor: %f',...
+                    history.parameters.scalingFactor);
+            end
         otherwise
             parameters{end+1} = 'No parameters to display currently';
     end

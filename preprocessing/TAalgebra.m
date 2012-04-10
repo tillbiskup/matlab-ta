@@ -19,7 +19,7 @@ function [resdata,warnings] = TAalgebra(data,operation,varargin)
 %              Empty if everything went well, otherwise contains message.
 
 % (c) 2012, Till Biskup
-% 2012-02-17
+% 2012-04-10
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -35,7 +35,7 @@ try
     warnings = '';
     resdata = [];
     
-    if size(data) ~= 2
+    if (length(data) ~= 2) && ~strcmpi(operation,'scaling')
         warnings = 'Other than two datasets, therefore no operation done';
         return;
     end
@@ -144,6 +144,23 @@ try
                     resdata.dataMFon = data{1}.dataMFon - data{2}.data;
                 end
             end
+        case 'scaling'
+            if nargin < 3
+                warnings = 'No scaling factor specified.';
+                return;
+            else
+                scalingFactor = varargin{1};
+                if ~isnumeric(scalingFactor)
+                    scalingFactor = str2double(scalingFactor);
+                    if isnan(scalingFactor)
+                        warnings = 'Scaling factor not understood.';
+                    end
+                end
+            end
+            resdata.data = data{1}.data * scalingFactor;
+            if isfield(data{1},'dataMFon')
+                resdata.dataMFon = data{1}.dataMFon * scalingFactor;
+            end
         otherwise
             warnings = sprintf('Operation "%s" not understood.',operation);
             return;
@@ -169,9 +186,17 @@ try
     % Add parameters
     history.parameters.operation = operation;
     
+    switch operation
+        case 'scaling'
+            history.parameters.scalingFactor = scalingFactor;
+    end
+    
     % Assign complete accReport to info field of history
     history.info = cell(0);
-    history.info{end+1} = sprintf('Primary dataset:    %s',data{1}.label);
+    if length(data) > 1
+        history.info{end+1} = ...
+            sprintf('Primary dataset:    %s',data{1}.label);
+    end
     if data{1}.display.displacement.z ~= 0
         history.info{end+1} = sprintf('  Displacement (z): %f',...
             data{1}.display.displacement.z);
@@ -194,28 +219,30 @@ try
         history.info{end+1} = sprintf('          function: %s',...
             data{1}.display.smoothing.y.filterfun);
     end
-    history.info{end+1} = sprintf('Secondary dataset:  %s',data{2}.label);
-    if data{2}.display.displacement.z ~= 0
-        history.info{end+1} = sprintf('  Displacement (z): %f',...
-            data{2}.display.displacement.z);
-    end
-    if data{2}.display.scaling.z ~= 1
-        history.info{end+1} = sprintf('  Scaling (z):      %f',...
-            data{2}.display.scaling.z);
-    end
-    if data{2}.display.smoothing.x.value ~= 1
-        history.info{end+1} = sprintf('  Smoothing (x):');
-        history.info{end+1} = sprintf('            points: %i',...
-            data{2}.display.smoothing.x.value);
-        history.info{end+1} = sprintf('          function: %s',...
-            data{2}.display.smoothing.x.filterfun);
-    end
-    if data{2}.display.smoothing.y.value ~= 1
-        history.info{end+1} = sprintf('  Smoothing (y):');
-        history.info{end+1} = sprintf('            points: %i',...
-            data{2}.display.smoothing.y.value);
-        history.info{end+1} = sprintf('          function: %s',...
-            data{2}.display.smoothing.y.filterfun);
+    if length(data) > 1
+        history.info{end+1} = sprintf('Secondary dataset:  %s',data{2}.label);
+        if data{2}.display.displacement.z ~= 0
+            history.info{end+1} = sprintf('  Displacement (z): %f',...
+                data{2}.display.displacement.z);
+        end
+        if data{2}.display.scaling.z ~= 1
+            history.info{end+1} = sprintf('  Scaling (z):      %f',...
+                data{2}.display.scaling.z);
+        end
+        if data{2}.display.smoothing.x.value ~= 1
+            history.info{end+1} = sprintf('  Smoothing (x):');
+            history.info{end+1} = sprintf('            points: %i',...
+                data{2}.display.smoothing.x.value);
+            history.info{end+1} = sprintf('          function: %s',...
+                data{2}.display.smoothing.x.filterfun);
+        end
+        if data{2}.display.smoothing.y.value ~= 1
+            history.info{end+1} = sprintf('  Smoothing (y):');
+            history.info{end+1} = sprintf('            points: %i',...
+                data{2}.display.smoothing.y.value);
+            history.info{end+1} = sprintf('          function: %s',...
+                data{2}.display.smoothing.y.filterfun);
+        end
     end
     
     % Assign history to dataset of accumulated data
