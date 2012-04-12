@@ -7,7 +7,7 @@ function status = update_displayPanel()
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-02-09
+% 2012-04-12
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
@@ -80,6 +80,26 @@ if (get(gh.display_panel_axislimits_auto_checkbox,'Value'))
 else
     set(editHandles,'Enable','On');
 end
+
+% Set zero line settings
+% Set colour sample
+set(gh.display_panel_zerolinecoloursample_text,'BackgroundColor',...
+    ad.control.axis.grid.zero.color);
+
+% Set line width
+set(gh.display_panel_zerolinewidth_edit,'String',...
+    num2str(ad.control.axis.grid.zero.width));
+
+% Set line style
+zeroLineStyles = {'-','--',':','-.','none'};
+zeroLineStyle = ad.control.axis.grid.zero.style;
+for k=1:length(zeroLineStyles)
+    if strcmp(zeroLineStyles{k},zeroLineStyle)
+        zeroLineStyleIndex = k;
+    end
+end
+set(gh.display_panel_zerolinestyle_popupmenu,'Value',zeroLineStyleIndex);
+
 
 % Set line settings
 if ad.control.spectra.active
