@@ -22,7 +22,7 @@
 		<p>
 			<strong>Please note:</strong> If you set the unit of an axis to the empty string, the "/" between measure and unit will not get displayed. And if you set both measure and unit to the empty string, nothing will be displayed as axis label. Furthermore, as it is standard in the sciences, measure and unit get separated by the "/", and the measure is set in italics (although not visible for the x axis if displayed under Mac OS X, that's a Matlab/Mac bug), whereas the unit is always upright. You can use all the usual TeX/LaTeX expressions for the axis labels, such as greek letters.
 		</p>
-		<h2>Page 2: Grid, Legend, Normalize, Highlighting</h2>
+		<h2>Page 2: Grid and legend</h2>
 		<h3>Grid</h3>
 		<p>
 			A zero line is displayed by default in case of the 1D representations (but not for the 2D display), grids in x and y direction can be added independently, and the minor grid can be added (simultaneously for both axes).
@@ -30,37 +30,23 @@
 		<p>
 			In this particular case, x and y refers to the abscissa and ordinate of the current display, not to the x, y, and z dimensions of the dataset, as everywhere else.
 		</p>
+		<h3>Zero line settings</h3>
+		<p>
+			This panel gives further control over the appearance of the zero line. The <key>Default</key> button restores the default values as provided by the configuration file.
+		</p>
 		<h3>Legend</h3>
 		<p>
-			Legends are only displayed in 1D mode. You can determine the legend position manually (NW, NE, SW, SE) or let Matlab(r) determine what it thinks is the "optimal" position.
+			Legends are only displayed in 1D mode. You can determine the legend position manually (NW, NE, SW, SE) or let Matlab&trade; determine what it thinks is the "optimal" position.
+		</p>
+		<p>
+			The box and font settings of the legend can be set as well with the controls provided in the panel "Legend style".
 		</p>
 		<p>
 			<strong>Please note:</strong> You can move the legend with your mouse to any arbitrary position within the axes. But be aware that the size and position of the legend might change if you export the current display to a file.
 		</p>
-		<h3>Normalise</h3>
-		<p>
-			As signal intensity of TREPR spectra depends in a far from straightforward way on a couple of both experimental (i.e., related to the current setup) and inherent (overlap and thus cancellation of absorptive and emissive lines in the spectrum) parameters, it normally cannot be used for quantitative analysis of the spectra.
-		</p>
-		<p>
-			Therefore, to directly compare, e.g., the decay of two different time traces, or the shape of two different spectra, normalisation of the datasets is quite helpful.
-		</p>
-		<p>
-			The two different types of normalisation provided with the GUI here is peak-peak and amplitude normalisation, whereas the former sets the complete peak-to-peak-amplitude to one, the latter the amplitude measured between zero and maximum.
-		</p>
-		<h3>Highlight of current dataset</h3>
-		<p>
-			To be able to distinguish between the currently active and other visible datasets, by default the currently active dataset is highlighted with blue colour, with all other datasets displayed with black lines.
-		</p>
-		<p>
-			Here, both method and value for the given method of highlighting can be controlled, and one can switch off the highlighting completely. The latter is of special interest for exporting figures, where no highlighting of the "currently active dataset" is necessary, and indeed rather confusing.
-		</p>
-		<h3>AVG settings</h3>
-		<p>
-			Suppose that you have averaged your data in one dimension and want to display the standard deviation as error bars. That can be done by ticking "Std deviation" in this panel.
-		</p>
 		<h2>Page 3: Line settings</h3>
 		<p>
-			To distinguish between different (visible) datasets, the line settings of each dataset can be controlled as far as Matlab(r) allows to do so, meaning line colour, width, style, and marker.
+			To distinguish between different (visible) datasets, the line settings of each dataset can be controlled as far as Matlab&trade; allows to do so, meaning line colour, width, style, and marker.
 		</p>
 		<p>
 			<strong>Please note:</strong> If "highlight currently active" is switched on, it will most probably interfere with the settings. Therefore, if the line settings seem not to work properly, you should switch of the highlighting as a first step.
@@ -99,17 +85,38 @@
 		<p>
 			The "Format" popupmenu allows to specify a format (aspect ratio, size of the graphics) that makes it easier to use the saved figures, e.g., in reports. These formats can be fully customised using the "fig2file.ini" file in the same directory as the "fig2file" function.
 		</p>
-		<h2>Page 6: Thresholds</h2>
+		<h2>Page 6: Thresholds, Normalize, Highlighting, AVG</h2>
 		<h3>Thresholds</h3>
 		<p>
 			Allow to set a threshold in y (on a per dataset basis).
+		</p>
+		<h3>Normalise</h3>
+		<p>
+			As signal intensity of TREPR spectra depends in a far from straightforward way on a couple of both experimental (i.e., related to the current setup) and inherent (overlap and thus cancellation of absorptive and emissive lines in the spectrum) parameters, it normally cannot be used for quantitative analysis of the spectra.
+		</p>
+		<p>
+			Therefore, to directly compare, e.g., the decay of two different time traces, or the shape of two different spectra, normalisation of the datasets is quite helpful.
+		</p>
+		<p>
+			The two different types of normalisation provided with the GUI here is peak-peak and amplitude normalisation, whereas the former sets the complete peak-to-peak-amplitude to one, the latter the amplitude measured between zero and maximum.
+		</p>
+		<h3>Highlight of current dataset</h3>
+		<p>
+			To be able to distinguish between the currently active and other visible datasets, by default the currently active dataset is highlighted with blue colour, with all other datasets displayed with black lines.
+		</p>
+		<p>
+			Here, both method and value for the given method of highlighting can be controlled, and one can switch off the highlighting completely. The latter is of special interest for exporting figures, where no highlighting of the "currently active dataset" is necessary, and indeed rather confusing.
+		</p>
+		<h3>AVG settings</h3>
+		<p>
+			Suppose that you have averaged your data in one dimension and want to display the standard deviation as error bars. That can be done by ticking "Std deviation" in this panel.
 		</p>
 		<div class="footer">
 		<p class="copyright">
 			&copy; 2011-12, Till Biskup
 		</p>
 		<p class="lastchange">
-			2012-02-22
+			2012-04-12
 		</p>
 		</div>
 	</body>

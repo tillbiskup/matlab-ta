@@ -2912,9 +2912,6 @@ function linestyle_popupmenu_Callback(source,~,action)
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
 
-        % Get handles of main window
-        gh = guihandles(mainWindow);
-
         lineStyles = ...
             cellstr(get(source,'String'));
         lineStyle = ...

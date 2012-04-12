@@ -2072,8 +2072,6 @@ end
 function display_legend(mainAxes)
 
 mainWindow = guiGetWindowHandle;
-% Get handles from main window
-gh = guidata(mainWindow);
 
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
