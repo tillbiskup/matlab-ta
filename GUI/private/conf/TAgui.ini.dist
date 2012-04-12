@@ -50,11 +50,19 @@ setslider = 1
 % Configuration for the display panel
 [display]
 axislimitsauto = 1
-gridzero = 1
-gridx = 0
-gridy = 0
-gridminor = 0
-legend = none
+grid.zero.visible = 1
+grid.zero.color = [0.5 0.5 0.5]
+grid.zero.width = 1
+grid.zero.style = --
+grid.x = 0
+grid.y = 0
+grid.minor = 0
+legend.location = none
+legend.box = 1
+legend.FontName = Helvetica
+legend.FontSize = 12
+legend.FontWeight = normal
+legend.FontAngle = normal
 normalise = none
 highlightactive = 1
 export1Dincludeaxis = 1

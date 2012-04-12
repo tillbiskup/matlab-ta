@@ -34,7 +34,7 @@ DeltaMF.line.width = 2
 DeltaMF.line.marker = none
 
 [axis]
-grid.zero = 1
+grid.zero.visible = 1
 grid.x = off
 grid.y = off
 grid.minor = off

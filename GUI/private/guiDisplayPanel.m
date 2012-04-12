@@ -1921,11 +1921,7 @@ function checkbox_Callback(source,~,action)
             case 'stdev'
                 ad.control.axis.stdev = get(source,'Value');
             case 'legendbox'
-                if get(source,'Value')
-                    ad.control.axis.legend.box = 'on';
-                else
-                    ad.control.axis.legend.box = 'off';
-                end
+                ad.control.axis.legend.box = get(source,'Value');
             otherwise
                 disp([mfilename '() : checkbox_Callback() : '...
                     'Unknown action "' action '"']);
@@ -2630,7 +2626,7 @@ function grid_zero_togglebutton_Callback(source,~)
         mainWindow = guiGetWindowHandle;
         ad = getappdata(mainWindow);
         
-        ad.control.axis.grid.zero = get(source,'Value');
+        ad.control.axis.grid.zero.visible = get(source,'Value');
         
         % Update appdata of main window
         setappdata(mainWindow,'control',ad.control);

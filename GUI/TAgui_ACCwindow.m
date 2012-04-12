@@ -7,7 +7,7 @@ function varargout = TAgui_ACCwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-23
+% 2012-04-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1630,7 +1630,7 @@ function togglebutton_Callback(source,~,action)
                     updateAxes();
                     return;
                 case 'gridzero'
-                    ad.control.axis.grid.zero = value;
+                    ad.control.axis.grid.zero.visible = value;
                     setappdata(mainWindow,'control',ad.control);
                     updateAxes();
                     return;
@@ -1665,7 +1665,7 @@ function togglebutton_Callback(source,~,action)
                     updateAxes();
                     return;
                 case 'gridzero'
-                    ad.control.axis.grid.zero = value;
+                    ad.control.axis.grid.zero.visible = value;
                     setappdata(mainWindow,'control',ad.control);
                     updateAxes();
                     return;
@@ -2708,7 +2708,7 @@ function updateAxes()
                                 max(max(ad.acc.data.data))*1.025]...
                                 );
                     end
-                    if (ad.control.axis.grid.zero)
+                    if (ad.control.axis.grid.zero.visible)
                         line(...
                             [ad.control.axis.limits.x.min ...
                             ad.control.axis.limits.x.max],...
@@ -2823,7 +2823,7 @@ function updateAxes()
                                 max(max(x))*1.025]...
                                 );
                     end
-                    if (ad.control.axis.grid.zero)
+                    if (ad.control.axis.grid.zero.visible)
                         line(...
                             [ad.control.axis.limits.y.min ...
                             ad.control.axis.limits.y.max],...
@@ -3099,7 +3099,7 @@ function updateAxes()
                             'XLim',[min(x) max(x)] ...
                             );
                     end
-                    if (ad.control.axis.grid.zero)
+                    if (ad.control.axis.grid.zero.visible)
                         line(...
                             [ad.control.axis.limits.x.min ...
                             ad.control.axis.limits.x.max],...
@@ -3296,7 +3296,7 @@ function updateAxes()
                             end
                         end
                     end
-                    if (ad.control.axis.grid.zero)
+                    if (ad.control.axis.grid.zero.visible)
                         line(...
                             [ad.control.axis.limits.y.min ...
                             ad.control.axis.limits.y.max],...

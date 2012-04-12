@@ -14,7 +14,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-12, Till Biskup
-% 2012-02-15
+% 2012-04-12
 
 status = 0;
 
@@ -119,10 +119,33 @@ try
                     'Value',ad.configuration.display.thresholdAll);
             end
             
+            % Copy grid settings from configuration to control
+            if ad.configuration.display.grid.x
+                ad.control.axis.grid.x = 'on';
+            else
+                ad.control.axis.grid.x = 'off';
+            end
+            if ad.configuration.display.grid.y
+                ad.control.axis.grid.y = 'on';
+            else
+                ad.control.axis.grid.y = 'off';
+            end
+            ad.control.axis.grid.zero = structcopy(...
+                ad.control.axis.grid.zero,...
+                ad.configuration.display.grid.zero);
+            
+            % Copy axis legend settings from configuration to control
+            ad.control.axis.legend = structcopy(ad.control.axis.legend,...
+                ad.configuration.display.legend);
+            
             % Apply config settings to control structure
             ad.control.axis.onlyActive = ...
                 ad.configuration.datasets.onlyActive;
             setappdata(handle,'configuration',ad.configuration);
+            setappdata(handle,'control',ad.control);
+            
+            % Update axis
+            update_mainAxis();
         otherwise
             return;
     end

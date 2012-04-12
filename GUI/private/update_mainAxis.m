@@ -2105,10 +2105,10 @@ set(ad.control.axis.legend.handle,...
     'FontSize',ad.control.axis.legend.FontSize...
     );
 
-if strcmpi(ad.control.axis.legend.box,'off')
-    set(ad.control.axis.legend.handle,'edgecolor',get(gca,'color'));
-else
+if ad.control.axis.legend.box
     set(ad.control.axis.legend.handle,'edgecolor',[0 0 0]);
+else
+    set(ad.control.axis.legend.handle,'edgecolor',get(gca,'color'));
 end
 
 setappdata(mainWindow,'control',ad.control);

@@ -22,6 +22,9 @@ gh = guidata(mainWindow);
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
 
+% Toggle legend box display
+set(gh.display_panel_legendbox_checkbox,'Value',ad.control.axis.legend.box);
+
 % Toggle "Highlight active"
 if isempty(ad.control.axis.highlight.method)
     set(gh.display_panel_highlight_checkbox,'Value',0);
