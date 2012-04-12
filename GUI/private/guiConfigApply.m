@@ -137,15 +137,13 @@ try
             % Copy axis legend settings from configuration to control
             ad.control.axis.legend = structcopy(ad.control.axis.legend,...
                 ad.configuration.display.legend);
-            
+
             % Apply config settings to control structure
             ad.control.axis.onlyActive = ...
                 ad.configuration.datasets.onlyActive;
+
             setappdata(handle,'configuration',ad.configuration);
             setappdata(handle,'control',ad.control);
-            
-            % Update axis
-            update_mainAxis();
         otherwise
             return;
     end

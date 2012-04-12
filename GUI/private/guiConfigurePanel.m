@@ -7,7 +7,7 @@ function handle = guiConfigurePanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-17
+% 2012-04-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -284,6 +284,10 @@ function pushbutton_Callback(~,~,action)
                 % For the time being, just apply configuration for TAgui
                 % main window
                 status = guiConfigApply('TAgui');
+                
+                % Update axis
+                update_mainAxis();
+                
                 if status
                     add2status(status);
                 end

@@ -2697,6 +2697,21 @@ end
 
 switchPanel('General');
 
+% Enable "tipWhentruncatedEnabled" for some single-line text edits
+% IMPORTANT: As findjobj is rather slow, do this *before* we make the GUI
+%            visible.
+try
+    gh = guihandles(hMainFigure);
+    set(findjobj(gh.tools_panel_infofileread_format_edit),...
+        'TipWhenTruncatedEnabled',true);
+    set(findjobj(gh.tools_panel_infofilewrite_format_edit),...
+        'TipWhenTruncatedEnabled',true);
+    set(findjobj(gh.parameter_panel_spectrographtype_edit),...
+        'TipWhenTruncatedEnabled',true);
+catch exception
+    TAgui_bugreportwindow(exception);
+end
+
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
 msgStr = 'Info GUI window opened';
@@ -2725,18 +2740,6 @@ set(allchild(p4p5),'Enable','inactive');
 warningBackgroundEditFields = findall(...
     allchild(hMainFigure),'BackgroundColor',editableWarningBackground);
 
-% Enable "tipWhentruncatedEnabled" for some single-line text edits
-try
-    gh = guihandles(hMainFigure);
-    set(findjobj(gh.tools_panel_infofileread_format_edit),...
-        'TipWhenTruncatedEnabled',true);
-    set(findjobj(gh.tools_panel_infofilewrite_format_edit),...
-        'TipWhenTruncatedEnabled',true);
-    set(findjobj(gh.parameter_panel_spectrographtype_edit),...
-        'TipWhenTruncatedEnabled',true);
-catch exception
-    TAgui_bugreportwindow(exception);
-end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks
