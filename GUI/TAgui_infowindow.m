@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-04-10
+% 2012-04-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3176,7 +3176,7 @@ function pushbutton_Callback(~,~,action)
                     setappdata(mainWindow,'control',ad.control);
                     infoFileText = textFileRead(...
                         fullfile(infoPathName,infoFileName),...
-                        'LineNumbers',logical(true));
+                        'LineNumbers',logical(false));
                     set(gh.tools_panel_infofiledisplay_edit,...
                         'String',infoFileText);
                     set(gh.tools_panel_infofileread_format_edit,...
@@ -3192,7 +3192,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 infoFileText = textFileRead(ad.control.spectra.infoFile{...
                     ad.control.spectra.active}.input.name,...
-                    'LineNumbers',logical(true));
+                    'LineNumbers',logical(false));
                 set(gh.tools_panel_infofiledisplay_edit,...
                     'String',infoFileText);
                 [~,fn,ext] = fileparts(ad.control.spectra.infoFile{...
@@ -3255,12 +3255,6 @@ function pushbutton_Callback(~,~,action)
                     ad.data{ad.control.spectra.active});
                 if ~isempty(warnings)
                     add2status(warnings);
-                end
-                digits = floor(log10(length(infoFileText)))+1;
-                for k=1:length(infoFileText)
-                    infoFileText{k} = sprintf(...
-                        ['%0' num2str(digits) '.0f: %s'],...
-                        k,infoFileText{k});
                 end
                 set(gh.tools_panel_infofiledisplay_edit,...
                     'String',infoFileText);
