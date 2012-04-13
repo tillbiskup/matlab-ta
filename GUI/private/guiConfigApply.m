@@ -120,23 +120,25 @@ try
             end
             
             % Copy grid settings from configuration to control
-            if ad.configuration.display.grid.x
-                ad.control.axis.grid.x = 'on';
-            else
-                ad.control.axis.grid.x = 'off';
+            if isfield(ad.configuration.display,'grid')
+                if ad.configuration.display.grid.x
+                    ad.control.axis.grid.x = 'on';
+                else
+                    ad.control.axis.grid.x = 'off';
+                end
+                if ad.configuration.display.grid.y
+                    ad.control.axis.grid.y = 'on';
+                else
+                    ad.control.axis.grid.y = 'off';
+                end
+                structure = structcopy(...
+                    ad.control.axis.grid.zero,...
+                    ad.configuration.display.grid.zero);
+                if ~isempty(structure)
+                    ad.control.axis.grid.zero = structure;
+                end
+                clear structure;
             end
-            if ad.configuration.display.grid.y
-                ad.control.axis.grid.y = 'on';
-            else
-                ad.control.axis.grid.y = 'off';
-            end
-            structure = structcopy(...
-                ad.control.axis.grid.zero,...
-                ad.configuration.display.grid.zero);
-            if ~isempty(structure)
-                ad.control.axis.grid.zero = structure;
-            end
-            clear structure;
             
             % Copy axis legend settings from configuration to control
             structure = structcopy(ad.control.axis.legend,...
