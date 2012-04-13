@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011-12, Till Biskup
-% 2012-04-12
+% 2012-04-13
 
 % Make GUI effectively a singleton
 singleton = findobj('Tag','TAgui_mainwindow');
@@ -640,6 +640,12 @@ for k=1:length(handles)
     set(handles(k),'KeyPressFcn',@guiKeyBindings);
 end
 
+% Make the GUI visible.
+set(hMainFigure,'Visible','on');
+if ishandle(initDialogue)
+    delete(initDialogue);
+end
+
 % Be very careful, such as not to break old installations without updated
 % config files
 if isfield(ad.configuration,'start') && ...
@@ -657,11 +663,6 @@ if isfield(ad.configuration,'start') && ...
         end
     end
 end
-
-% Make the GUI visible.
-set(hMainFigure,'Visible','on');
-delete(initDialogue);
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks
