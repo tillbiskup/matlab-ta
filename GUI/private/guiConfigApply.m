@@ -14,7 +14,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-12, Till Biskup
-% 2012-04-12
+% 2012-04-13
 
 status = 0;
 
@@ -130,13 +130,21 @@ try
             else
                 ad.control.axis.grid.y = 'off';
             end
-            ad.control.axis.grid.zero = structcopy(...
+            structure = structcopy(...
                 ad.control.axis.grid.zero,...
                 ad.configuration.display.grid.zero);
+            if ~isempty(structure)
+                ad.control.axis.grid.zero = structure;
+            end
+            clear structure;
             
             % Copy axis legend settings from configuration to control
-            ad.control.axis.legend = structcopy(ad.control.axis.legend,...
+            structure = structcopy(ad.control.axis.legend,...
                 ad.configuration.display.legend);
+            if ~isempty(structure)
+                ad.control.axis.legend = structure;
+            end
+            clear structure;
 
             % Apply config settings to control structure
             ad.control.axis.onlyActive = ...

@@ -1,4 +1,4 @@
-function struct = structcopy(master,tocopy)
+function structure = structcopy(master,tocopy)
 %STRUCTCOPY Copy struct array contents into another array.
 %
 % All fields (and contents) from "tocopy" get copied into "master".
@@ -19,7 +19,7 @@ function struct = structcopy(master,tocopy)
 %          created.
 
 % (c) 2012, Till Biskup
-% 2012-02-05
+% 2012-04-13
 
 if ~nargin
     help structcopy
@@ -27,14 +27,16 @@ if ~nargin
 end
 
 if ~isstruct(master)
-    fprintf('%s has wrong type',master);
+    fprintf('%s (master) has wrong type\n',master);
+    structure = struct();
     return;
 elseif ~isstruct(tocopy)
-    fprintf('%s has wrong type',tocopy);
+    fprintf('%s (tocopy) has wrong type\n',tocopy);
+    structure = struct();
     return;
 end
 
-[struct,tocopy] = traverse(master,tocopy);
+[structure,tocopy] = traverse(master,tocopy);
 
 end
 
