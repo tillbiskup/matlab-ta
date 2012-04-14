@@ -9,7 +9,7 @@ function status = update_mainAxis(varargin)
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-04-12
+% 2012-04-14
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle();
@@ -264,11 +264,11 @@ switch ad.control.axis.displayType
             % Normalise if necessary
             switch ad.control.axis.normalisation
                 case 'pkpk'
-                    y = y/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
-                    yMF = yMF/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
+                    y = y/(max(y)-min(y));
+                    yMF = yMF/(max(yMF)-min(yMF));
                 case 'amplitude'
-                    y = y/max(max(ad.data{k}.data));
-                    yMF = yMF/max(max(ad.data{k}.data));
+                    y = y/max(y);
+                    yMF = yMF/max(yMF);
             end
             % Apply filter if necessary
             if (ad.data{k}.display.smoothing.x.value > 1)
@@ -599,13 +599,13 @@ switch ad.control.axis.displayType
                 end
                 % In case that we loaded 1D data...
                 if isscalar(x)
-                    x = [x x+1];
+                    x = [x x+1]; %#ok<AGROW>
                 end
                 if isscalar(y)
-                    y = [y y+1];
+                    y = [y y+1]; %#ok<AGROW>
                 end
                 if isscalar(yMF)
-                    yMF = [yMF yMF+1];
+                    yMF = [yMF yMF+1]; %#ok<AGROW>
                 end
                 % Apply displacement if necessary
                 if (ad.data{k}.display.displacement.x ~= 0)
@@ -631,11 +631,11 @@ switch ad.control.axis.displayType
                 % Normalise if necessary
                 switch ad.control.axis.normalisation
                     case 'pkpk'
-                        y = y/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
-                        yMF = yMF/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
+                        y = y/(max(y)-min(y));
+                        yMF = yMF/(max(yMF)-min(yMF));
                     case 'amplitude'
-                        y = y/max(max(ad.data{k}.data));
-                        yMF = yMF/max(max(ad.data{k}.data));
+                        y = y/max(y);
+                        yMF = yMF/max(yMF);
                 end
                 % Apply filter if necessary
                 if (ad.data{k}.display.smoothing.x.value > 1)
@@ -1203,11 +1203,11 @@ switch ad.control.axis.displayType
             % Normalise if necessary
             switch ad.control.axis.normalisation
                 case 'pkpk'
-                    x = x/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
-                    xMF = xMF/(max(max(ad.data{k}.dataMFon))-min(min(ad.data{k}.dataMFon)));
+                    x = x/(max(x)-min(x));
+                    xMF = xMF/(max(xMF)-min(xMF));
                 case 'amplitude'
-                    x = x/max(max(ad.data{k}.data));
-                    xMF = xMF/max(max(ad.data{k}.dataMFon));
+                    x = x/max(x);
+                    xMF = xMF/max(xMF);
             end
             % Apply filter if necessary
             if (ad.data{k}.display.smoothing.y.value > 1)
@@ -1541,13 +1541,13 @@ switch ad.control.axis.displayType
                 end
                 % In case that we loaded 1D data...
                 if isscalar(x)
-                    x = [x x+1];
+                    x = [x x+1]; %#ok<AGROW>
                 end
                 if isscalar(xMF)
-                    xMF = [xMF xMF+1];
+                    xMF = [xMF xMF+1]; %#ok<AGROW>
                 end
                 if isscalar(y)
-                    y = [y y+1];
+                    y = [y y+1]; %#ok<AGROW>
                 end
                 % Apply displacement if necessary
                 if (ad.data{k}.display.displacement.y ~= 0)
@@ -1573,11 +1573,11 @@ switch ad.control.axis.displayType
                 % Normalise if necessary
                 switch ad.control.axis.normalisation
                     case 'pkpk'
-                        x = x/(max(max(ad.data{k}.data))-min(min(ad.data{k}.data)));
-                        xMF = xMF/(max(max(ad.data{k}.dataMFon))-min(min(ad.data{k}.dataMFon)));
+                        x = x/(max(x)-min(x));
+                        xMF = xMF/(max(xMF)-min(xMF));
                     case 'amplitude'
-                        x = x/max(max(ad.data{k}.data));
-                        xMF = xMF/max(max(ad.data{k}.dataMFon));
+                        x = x/max(x);
+                        xMF = xMF/max(xMF);
                 end
                 % Apply filter if necessary
                 if (ad.data{k}.display.smoothing.y.value > 1)
@@ -2156,39 +2156,54 @@ if (ad.control.axis.limits.auto)
         xmax(k) = x(end);
         ymin(k) = y(1);
         ymax(k) = y(end);
+        
+        % Workaround in case we have no dataMFon field in the dataset
+        data = ad.data{idx}.data;
+        if isfield(ad.data{idx},'dataMFon')
+            dataMFon = ad.data{idx}.dataMFon;
+        else
+            dataMFon = ad.data{idx}.data;
+        end
+        
         switch ad.control.axis.MFEdisplay
             case 'MFon'
                 % Apply thresholds
                 if ad.data{idx}.display.threshold.min.enable
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
-                        ad.data{idx}.display.threshold.min.value) = ...
-                        ad.data{idx}.display.threshold.min.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
+                            ad.data{idx}.display.threshold.min.value) = ...
+                            ad.data{idx}.display.threshold.min.value;
+                    else
+                        ad.data{idx}.data(ad.data{idx}.data<...
+                            ad.data{idx}.display.threshold.min.value) = ...
+                            ad.data{idx}.display.threshold.min.value;
+                    end
                 end
                 if ad.data{idx}.display.threshold.max.enable
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
-                        ad.data{idx}.display.threshold.max.value) = ...
-                        ad.data{idx}.display.threshold.max.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
+                            ad.data{idx}.display.threshold.max.value) = ...
+                            ad.data{idx}.display.threshold.max.value;
+                    else
+                        ad.data{idx}.data(ad.data{idx}.data>...
+                            ad.data{idx}.display.threshold.max.value) = ...
+                            ad.data{idx}.display.threshold.max.value;
+                    end
                 end
                 switch ad.control.axis.normalisation
                     case 'pkpk'
                         zmin(k) = min(min(...
-                            ad.data{idx}.dataMFon/...
-                            (max(max(ad.data{idx}.dataMFon))-...
-                            min(min(ad.data{idx}.dataMFon)))));
+                            dataMFon/...
+                            (max(max(dataMFon))-min(min(dataMFon)))));
                         zmax(k) = max(max(...
-                            ad.data{idx}.dataMFon/...
-                            (max(max(ad.data{idx}.dataMFon))-...
-                            min(min(ad.data{idx}.dataMFon)))));
+                            dataMFon/...
+                            (max(max(dataMFon))-min(min(dataMFon)))));
                     case 'amplitude'
-                        zmin(k) = min(min(ad.data{idx}.dataMFon/...
-                            max(max(ad.data{idx}.dataMFon))));
-                        zmax(k) = max(max(ad.data{idx}.dataMFon/...
-                            max(max(ad.data{k}.dataMFon))));
+                        zmin(k) = min(min(dataMFon/max(max(dataMFon))));
+                        zmax(k) = max(max(dataMFon/max(max(dataMFon))));
                     otherwise
-                        zmin(k) = ...
-                            min(min(ad.data{idx}.dataMFon));
-                        zmax(k) = ...
-                            max(max(ad.data{idx}.dataMFon));
+                        zmin(k) = min(min(dataMFon));
+                        zmax(k) = max(max(dataMFon));
                 end
              case 'DeltaMF'
                 % Apply thresholds
@@ -2196,38 +2211,40 @@ if (ad.control.axis.limits.auto)
                     ad.data{idx}.data(ad.data{idx}.data<...
                         ad.data{idx}.display.threshold.min.value) = ...
                         ad.data{idx}.display.threshold.min.value;
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
-                        ad.data{idx}.display.threshold.min.value) = ...
-                        ad.data{idx}.display.threshold.min.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
+                            ad.data{idx}.display.threshold.min.value) = ...
+                            ad.data{idx}.display.threshold.min.value;
+                    end
                 end
                 if ad.data{idx}.display.threshold.max.enable
                     ad.data{idx}.data(ad.data{idx}.data>...
                         ad.data{idx}.display.threshold.max.value) = ...
                         ad.data{idx}.display.threshold.max.value;
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
-                        ad.data{idx}.display.threshold.max.value) = ...
-                        ad.data{idx}.display.threshold.max.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
+                            ad.data{idx}.display.threshold.max.value) = ...
+                            ad.data{idx}.display.threshold.max.value;
+                    end
                 end
                 switch ad.control.axis.normalisation
                     case 'pkpk'
                         zmin(k) = min(min(...
-                            (ad.data{idx}.dataMFon-ad.data{idx}.data)/...
-                            (max(max(ad.data{idx}.dataMFon-ad.data{idx}.data))-...
-                            min(min(ad.data{idx}.dataMFon-ad.data{idx}.data)))));
+                            (dataMFon-data)/...
+                            (max(max(dataMFon-data))-...
+                            min(min(dataMFon-data)))));
                         zmax(k) = max(max(...
-                            (ad.data{idx}.dataMFon-ad.data{idx}.data)/...
-                            (max(max(ad.data{idx}.dataMFon-ad.data{idx}.data))-...
-                            min(min(ad.data{idx}.dataMFon-ad.data{idx}.data)))));
+                            (dataMFon-data)/...
+                            (max(max(dataMFon-data))-...
+                            min(min(dataMFon-data)))));
                     case 'amplitude'
-                        zmin(k) = min(min((ad.data{idx}.dataMFon-ad.data{idx}.data)/...
-                            max(max(ad.data{idx}.dataMFon-ad.data{idx}.data))));
-                        zmax(k) = max(max((ad.data{idx}.dataMFon-ad.data{idx}.data)/...
-                            max(max(ad.data{idx}.dataMFon-ad.data{idx}.data))));
+                        zmin(k) = min(min((dataMFon-data)/...
+                            max(max(dataMFon-data))));
+                        zmax(k) = max(max((dataMFon-data)/...
+                            max(max(dataMFon-data))));
                     otherwise
-                        zmin(k) = min(min(...
-                            ad.data{idx}.dataMFon-ad.data{idx}.data));
-                        zmax(k) = max(max(...
-                            ad.data{idx}.dataMFon-ad.data{idx}.data));
+                        zmin(k) = min(min(dataMFon-data));
+                        zmax(k) = max(max(dataMFon-data));
                 end
              case 'relative MFE'
                 % Apply thresholds
@@ -2235,57 +2252,49 @@ if (ad.control.axis.limits.auto)
                     ad.data{idx}.data(ad.data{idx}.data<...
                         ad.data{idx}.display.threshold.min.value) = ...
                         ad.data{idx}.display.threshold.min.value;
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
-                        ad.data{idx}.display.threshold.min.value) = ...
-                        ad.data{idx}.display.threshold.min.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon<...
+                            ad.data{idx}.display.threshold.min.value) = ...
+                            ad.data{idx}.display.threshold.min.value;
+                    end
                 end
                 if ad.data{idx}.display.threshold.max.enable
                     ad.data{idx}.data(ad.data{idx}.data>...
                         ad.data{idx}.display.threshold.max.value) = ...
                         ad.data{idx}.display.threshold.max.value;
-                    ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
-                        ad.data{idx}.display.threshold.max.value) = ...
-                        ad.data{idx}.display.threshold.max.value;
+                    if isfield(ad.data{idx},'dataMFon')
+                        ad.data{idx}.dataMFon(ad.data{idx}.dataMFon>...
+                            ad.data{idx}.display.threshold.max.value) = ...
+                            ad.data{idx}.display.threshold.max.value;
+                    end
                 end
                 % NOTE: Here, normalisation of any sort is not sensible
-                zmin(k) = min(min(...
-                    (ad.data{idx}.dataMFon-ad.data{idx}.data)./...
-                    abs(ad.data{idx}.data)));
-                zmax(k) = max(max(...
-                    (ad.data{idx}.dataMFon-ad.data{idx}.data)./...
-                    abs(ad.data{idx}.data)));
+                zmin(k) = min(min((dataMFon-data)./abs(data)));
+                zmax(k) = max(max((dataMFon-data)./abs(data)));
             otherwise
                 % Apply thresholds
                 if ad.data{idx}.display.threshold.min.enable
-                    ad.data{idx}.data(ad.data{idx}.data<...
+                    data(data<...
                         ad.data{idx}.display.threshold.min.value) = ...
                         ad.data{idx}.display.threshold.min.value;
                 end
                 if ad.data{idx}.display.threshold.max.enable
-                    ad.data{idx}.data(ad.data{idx}.data>...
+                    data(data>...
                         ad.data{idx}.display.threshold.max.value) = ...
                         ad.data{idx}.display.threshold.max.value;
                 end
                 switch ad.control.axis.normalisation
                     case 'pkpk'
                         zmin(k) = min(min(...
-                            ad.data{idx}.data/...
-                            (max(max(ad.data{idx}.data))-...
-                            min(min(ad.data{idx}.data)))));
+                            data/(max(max(data))-min(min(data)))));
                         zmax(k) = max(max(...
-                            ad.data{idx}.data/...
-                            (max(max(ad.data{idx}.data))-...
-                            min(min(ad.data{idx}.data)))));
+                            data/(max(max(data))-min(min(data)))));
                     case 'amplitude'
-                        zmin(k) = min(min(ad.data{idx}.data/...
-                            max(max(ad.data{idx}.data))));
-                        zmax(k) = max(max(ad.data{idx}.data/...
-                            max(max(ad.data{k}.data))));
+                        zmin(k) = min(min(data/max(max(data))));
+                        zmax(k) = max(max(data/max(max(data))));
                     otherwise
-                        zmin(k) = ...
-                            min(min(ad.data{idx}.data));
-                        zmax(k) = ...
-                            max(max(ad.data{idx}.data));
+                        zmin(k) = min(min(data));
+                        zmax(k) = max(max(data));
                 end
         end
     end
