@@ -2497,7 +2497,6 @@ function updateSliderPanel()
         end
         
         % update position panel
-        fieldnames(ad.acc)
         if isfield(ad.acc,'data') && ~isempty(ad.acc.data)
             set(...
                 gh.position_x_index_edit,...
