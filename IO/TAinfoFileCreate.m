@@ -3,8 +3,8 @@ function [fileContents,warnings] = TAinfoFileCreate(parameters,varargin)
 % cell array, use TAinfoFileWrite
 %
 % Usage
-%   TAinfoFileCreate(filename,parameters)
-%   [warnings] = TAinfoFileCreate(filename,parameters)
+%   [fileContents] = TAinfoFileCreate(parameters)
+%   [fileContents,warnings] = TAinfoFileCreate(filename,parameters)
 %
 % parameters   - struct
 %                structure containing parameters to write to the TA Info
@@ -21,7 +21,7 @@ function [fileContents,warnings] = TAinfoFileCreate(parameters,varargin)
 % See also: TAINFOFILEPARSE, TAINFOFILEWRITE
 
 % (c) 2012, Till Biskup
-% 2012-04-05
+% 2012-04-14
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -82,13 +82,50 @@ try
         parametersFieldNames = fieldnames(parameters);
     end
     
-    if isempty(parameters.mfe.field) || isspace(parameters.mfe.field)
+    if isempty(parameters.mfe.field) || all(isspace(parameters.mfe.field))
         parameters = rmfield(parameters,'mfe');
         parametersFieldNames = fieldnames(parameters);
     end
     
     for k=1:length(parametersFieldNames)
-        if isstruct(parameters.(parametersFieldNames{k}))
+        if strcmpi(parametersFieldNames{k},'timeprofiles') && ...
+                ~isempty(parameters.(parametersFieldNames{k})(1).filename)
+            fileContents{end+1} = blocks.(lower(parametersFieldNames{k})); %#ok<AGROW>
+            for idx = 1:length(parameters.(parametersFieldNames{k}))
+                fileContents{end+1} = sprintf('Scan %i',idx); %#ok<AGROW>
+                blockFieldNames = ...
+                    fieldnames(parameters.(parametersFieldNames{k})(idx));
+                for m=1:length(blockFieldNames)
+                    blockFieldName = ...
+                        regexprep([blockFieldNames{m} ':'],'([A-Z])',' $1');
+                    blockFieldName(1) = upper(blockFieldName(1));
+                    blockFieldName(end+1:fieldNameLength)=' ';
+                    if iscell(parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m})) && ...
+                            ~isempty(parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m}))
+                        fileContents{end+1} = sprintf('%s%s',...
+                            blockFieldName,...
+                            num2str(...
+                            parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m}){1})...
+                            ); %#ok<AGROW>
+                        if length(parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m})) > 1
+                            fileContents = [ fileContents ...
+                                cellfun(@(x)sprintf(' %s',x),...
+                                parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m})(2:end),...
+                                'UniformOutput',false)
+                                ]; %#ok<AGROW>
+                        end
+                    else
+                        fileContents{end+1} = sprintf('%s%s',...
+                            blockFieldName,...
+                            num2str(...
+                            parameters.(parametersFieldNames{k})(idx).(blockFieldNames{m}))...
+                            ); %#ok<AGROW>
+                    end
+                end
+            end
+            %...
+            fileContents{end+1} = ''; %#ok<AGROW>
+        elseif isstruct(parameters.(parametersFieldNames{k}))
             if ~isempty(fieldnames(parameters.(parametersFieldNames{k})))
                 fileContents{end+1} = blocks.(parametersFieldNames{k}); %#ok<AGROW>
                 blockFieldNames = ...
@@ -286,8 +323,39 @@ try
         num2str(parameters.parameters.transient.length),...
         parameters.parameters.transient.unit);
     
-    % TODO: Handle timeProfiles, especially the filters at different
-    %       wavelengths
+    timeProfilesMatching = {...
+        % TIME PROFILES
+        'filename','filename','copy';...
+        'wavelength','wavelength','valueunit';...
+        'averages','averages','numeric';...
+        'runs','runs','numeric';...
+        'filter','filter','copy';...
+        };
+    if isfield(parameters,'timeProfiles') && ...
+            ~isempty(parameters.timeProfiles(1).filename)
+        for idx = 1:length(parameters.timeProfiles)
+            for k=1:length(timeProfilesMatching)
+                switch timeProfilesMatching{k,3}
+                    case 'numeric'
+                        dataStructure.timeProfiles(idx).(timeProfilesMatching{k,1}) = ...
+                            num2str(parameters.timeProfiles(idx).(timeProfilesMatching{k,2}));
+                    case 'valueunit'
+                        dataStructure.timeProfiles(idx).(timeProfilesMatching{k,1}) = ...
+                            sprintf('%s %s',...
+                            num2str(parameters.timeProfiles(idx).(timeProfilesMatching{k,2}).value),...
+                            parameters.timeProfiles(idx).(timeProfilesMatching{k,2}).unit);
+                    case 'copy'
+                        dataStructure.timeProfiles(idx).(timeProfilesMatching{k,1}) = ...
+                            parameters.timeProfiles(idx).(timeProfilesMatching{k,2});
+                end
+            end
+        end
+        % Reorder struct to shift time profiles block before comment block
+        perm = [1:length(fieldnames(dataStructure))-2,...
+            length(fieldnames(dataStructure)),...
+            length(fieldnames(dataStructure))-1];
+        dataStructure = orderfields(dataStructure,perm);
+    end
 catch exception
     throw(exception);
 end

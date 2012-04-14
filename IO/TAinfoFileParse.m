@@ -30,7 +30,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 % See also: TAINFOFILECREATE, TAINFOFILEWRITE
 
 % (c) 2012, Till Biskup
-% 2012-04-05
+% 2012-04-14
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -371,8 +371,55 @@ try
     dataStructure.parameters.transient.unit = parts{2};
     dataStructure.axes.x.unit = dataStructure.parameters.transient.unit;
     
-    % TODO: Handle timeProfiles, especially the filters at different
-    %       wavelengths
+    % Handle timeProfiles
+    timeProfilesMatching = {...
+        % TIME PROFILES
+        'filename','filename','copy';...
+        'wavelength','wavelength','valueunit';...
+        'averages','averages','numeric';...
+        'runs','runs','numeric';...
+        'filter','filter','copy';...
+        };
+    if isfield(parameters,'timeProfiles') && ...
+            ~isempty(parameters.timeProfiles(1).filename)
+        for idx = 1:length(parameters.timeProfiles)
+            for k=1:length(timeProfilesMatching)
+                switch timeProfilesMatching{k,3}
+                    case 'numeric'
+                        if ischar(parameters.timeProfiles(idx).(timeProfilesMatching{k,1}))
+                            dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}) = ...
+                                num2str(parameters.timeProfiles(idx).(timeProfilesMatching{k,1}));
+                        else
+                            dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}) = ...
+                                parameters.timeProfiles(idx).(timeProfilesMatching{k,1});
+                        end
+                    case 'valueunit'
+                        if ~isempty(parameters.timeProfiles(idx).(timeProfilesMatching{k,1}))
+                            if isnumeric(parameters.timeProfiles(idx).(timeProfilesMatching{k,1}))
+                                dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).value = ...
+                                    parameters.timeProfiles(idx).(timeProfilesMatching{k,1});
+                                dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).unit = '';
+                            else
+                                parts = regexp(...
+                                    parameters.timeProfiles(idx).(timeProfilesMatching{k,1}),...
+                                    ' ','split','once');
+                                dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).value = ...
+                                    str2num(parts{1}); %#ok<ST2NM>
+                                dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).unit = ...
+                                    parts{2};
+                            end
+                        else
+                            dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).value = [];
+                            dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}).unit = [];
+                        end
+                    case 'copy'
+                        dataStructure.timeProfiles(idx).(timeProfilesMatching{k,2}) = ...
+                            parameters.timeProfiles(idx).(timeProfilesMatching{k,1});
+                end
+            end
+            
+        end
+    end
 catch exception
     throw(exception);
 end
