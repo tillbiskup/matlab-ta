@@ -19,7 +19,7 @@ function structure = structcopy(master,tocopy)
 %          created.
 
 % (c) 2012, Till Biskup
-% 2012-04-13
+% 2012-04-15
 
 if ~nargin
     help structcopy
@@ -47,6 +47,12 @@ tocopyFieldNames = fieldnames(tocopy);
 for k=1:length(tocopyFieldNames)
     if ~isfield(master,tocopyFieldNames{k})
         master.(tocopyFieldNames{k}) = tocopy.(tocopyFieldNames{k});
+    elseif length(tocopy.(tocopyFieldNames{k}))>1 ...
+            && isstruct(tocopy.(tocopyFieldNames{k})(1))
+        for idx = 1:length(tocopy.(tocopyFieldNames{k}))
+            [master.(tocopyFieldNames{k})(idx),tocopy.(tocopyFieldNames{k})(idx)] = ...
+                traverse(master.(tocopyFieldNames{k})(idx),tocopy.(tocopyFieldNames{k})(idx));
+        end
     elseif isstruct(tocopy.(tocopyFieldNames{k}))
         [master.(tocopyFieldNames{k}),tocopy.(tocopyFieldNames{k})] = ...
             traverse(master.(tocopyFieldNames{k}),tocopy.(tocopyFieldNames{k}));

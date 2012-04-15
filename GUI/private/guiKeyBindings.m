@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-12, Till Biskup
-% 2012-02-09
+% 2012-04-15
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -147,10 +147,13 @@ try
             TAgui_statuswindow();
             return;
         case 'delete'
-            if ~ad.control.spectra.active
+            if isempty(ad.data)
                 return;
             end
             if src == gh.data_panel_visible_listbox
+                if ~ad.control.spectra.active
+                    return;
+                end
                 if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
                     [status,message] = removeDatasetFromMainGUI(...
                         ad.control.spectra.active,'force',true);
@@ -160,6 +163,26 @@ try
                 else
                     [status,message] = removeDatasetFromMainGUI(...
                         ad.control.spectra.active);
+                    if status
+                        disp(message);
+                    end
+                end
+            elseif src == gh.data_panel_invisible_listbox
+                if isempty(ad.control.spectra.invisible)
+                    return;
+                else
+                    selected = ad.control.spectra.invisible(...
+                        get(gh.data_panel_invisible_listbox,'Value'));
+                end
+                if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
+                    [status,message] = removeDatasetFromMainGUI(...
+                        selected,'force',true);
+                    if status
+                        disp(message);
+                    end
+                else
+                    [status,message] = removeDatasetFromMainGUI(...
+                        selected);
                     if status
                         disp(message);
                     end
