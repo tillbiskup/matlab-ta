@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-12, Till Biskup
-% 2012-04-15
+% 2012-04-20
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -207,6 +207,34 @@ try
                     end
                 end
             end
+        case 'pageup'
+            if ~ad.control.spectra.active || ...
+                    length(ad.control.spectra.visible) == 1
+                return;
+            end
+            idx = find(ad.control.spectra.visible==ad.control.spectra.active);
+            if idx < length(ad.control.spectra.visible)
+                ad.control.spectra.active = ad.control.spectra.visible(idx+1);
+            else
+                ad.control.spectra.active = ad.control.spectra.visible(1);
+            end
+            setappdata(mainWindow,'control',ad.control);
+            update_mainAxis();
+            update_visibleSpectra();
+        case 'pagedown'
+            if ~ad.control.spectra.active || ...
+                    length(ad.control.spectra.visible) == 1
+                return;
+            end
+            idx = find(ad.control.spectra.visible==ad.control.spectra.active);
+            if idx == 1
+                ad.control.spectra.active = ad.control.spectra.visible(end);
+            else
+                ad.control.spectra.active = ad.control.spectra.visible(idx-1);
+            end
+            setappdata(mainWindow,'control',ad.control);
+            update_mainAxis();
+            update_visibleSpectra();
         otherwise
 %             disp(evt);
 %             fprintf('       Caller: %i\n\n',src);

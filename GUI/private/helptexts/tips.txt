@@ -30,3 +30,5 @@ The <strong>labels</strong> of your datasets get used in the figure legend. Use 
 
 If you don't provide a unit for an axis label, the slash will not be displayed.
 
+You can scroll through the visible datasets using the "PgUp" and "PgDown" keys
+
