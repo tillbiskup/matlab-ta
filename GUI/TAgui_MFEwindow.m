@@ -7,7 +7,7 @@ function varargout = TAgui_MFEwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-02-23
+% 2012-04-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1107,7 +1107,7 @@ uicontrol('Tag','close_pushbutton',...
 guidata(hMainFigure,guihandles);
 
 % Create appdata structure
-ad = guiDataStructure('guiappdatastructure');
+ad = TAguiDataStructure('guiappdatastructure');
 
 % Apply configuration
 guiConfigApply(mfilename);

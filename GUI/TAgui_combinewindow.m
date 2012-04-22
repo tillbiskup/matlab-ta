@@ -12,7 +12,7 @@ function varargout = TAgui_combinewindow(varargin)
 % See also TAGUI, TAGUI_COMBINE_SETTINGSWINDOW, TACOMBINE, TASCALE
 
 % (c) 2012, Till Biskup
-% 2012-02-22
+% 2012-04-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -574,7 +574,7 @@ uicontrol('Tag','close_pushbutton',...
 guidata(hMainFigure,guihandles);
 
 % Create appdata structure
-ad = guiDataStructure('guiappdatastructure');
+ad = TAguiDataStructure('guiappdatastructure');
 
 % Combine - struct
 ad.combine = struct();

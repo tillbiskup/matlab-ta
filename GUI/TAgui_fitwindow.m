@@ -7,7 +7,7 @@ function varargout = TAgui_fitwindow(varargin)
 % See also TAGUI
 
 % (c) 2011-12, Till Biskup
-% 2012-02-23
+% 2012-04-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1197,7 +1197,7 @@ uicontrol('Tag','close_pushbutton',...
 guidata(hMainFigure,guihandles);
 
 % Create appdata structure
-ad = guiDataStructure('guiappdatastructure');
+ad = TAguiDataStructure('guiappdatastructure');
 
 % Apply configuration
 guiConfigApply(mfilename);

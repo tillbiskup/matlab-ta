@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-03-30
+% 2012-04-22
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -377,7 +377,7 @@ function load_pushbutton_Callback(~,~)
         
         % Get names of successfully loaded files
         % In parallel, add additional fields to each dataset
-        guiDataStruct = guiDataStructure('datastructure');
+        guiDataStruct = TAguiDataStructure('datastructure');
         % Important: Delete "history" field not to overwrite history
         guiDataStruct = rmfield(guiDataStruct,'history');
         guiDataStructFields = fieldnames(guiDataStruct);
@@ -386,7 +386,7 @@ function load_pushbutton_Callback(~,~)
             for k = 1 : length(data)
                 [p,fn,ext] = fileparts(data{k}.file.name);
                 fileNames{k} = fullfile(p,[fn ext]);
-                if ~isfield(data{k},'label')
+                if ~isfield(data{k},'label') || isempty(data{k}.label)
                     data{k}.label = [fn ext];
                 end
                 for l=1:length(guiDataStructFields)
@@ -413,7 +413,7 @@ function load_pushbutton_Callback(~,~)
         else
             fileNames = data.file.name;
             [~,fn,ext] = fileparts(data.file.name);
-            if ~isfield(data,'label')
+            if ~isfield(data,'label') || isempty(data.label)
                 data.label = [fn ext];
             end
             for l=1:length(guiDataStructFields)

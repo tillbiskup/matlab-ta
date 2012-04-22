@@ -17,7 +17,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              a copy is copied to the history.info field
 
 % (c) 2011-12, Till Biskup
-% 2012-03-30
+% 2012-04-22
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -104,7 +104,7 @@ try
     accData.label = parameters.label;
     
     % Additional fields for dataset in GUI
-    addFields = guiDataStructure('datastructure');
+    addFields = TAguiDataStructure('datastructure');
     addFieldsNames = fieldnames(addFields);
     for k=1:length(addFieldsNames)
         accData.(addFieldsNames{k}) = addFields.(addFieldsNames{k});

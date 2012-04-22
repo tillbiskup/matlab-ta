@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011-12, Till Biskup
-% 2012-04-13
+% 2012-04-22
 
 % Make GUI effectively a singleton
 singleton = findobj('Tag','TAgui_mainwindow');
@@ -48,7 +48,7 @@ hMainFigure = figure('Tag','TAgui_mainwindow',...
     'CloseRequestFcn',@closeGUI);
 
 % Create appdata structure
-ad = guiDataStructure('guiappdatastructure');
+ad = TAguiDataStructure('guiappdatastructure');
 
 setappdata(hMainFigure,'data',ad.data);
 setappdata(hMainFigure,'origdata',ad.origdata);
