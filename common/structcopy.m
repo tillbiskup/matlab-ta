@@ -1,4 +1,4 @@
-function structure = structcopy(master,tocopy)
+function structure = structcopy(master,tocopy,varargin)
 %STRUCTCOPY Copy struct array contents into another array.
 %
 % All fields (and contents) from "tocopy" get copied into "master".
@@ -19,21 +19,38 @@ function structure = structcopy(master,tocopy)
 %          created.
 
 % (c) 2012, Till Biskup
-% 2012-04-15
+% 2012-04-23
 
 if ~nargin
     help structcopy
     return;
 end
 
+% Parse input arguments using the inputParser functionality
+p = inputParser;   % Create an instance of the inputParser class.
+p.FunctionName = mfilename; % Function name to be included in error messages
+p.KeepUnmatched = true; % Enable errors on unmatched arguments
+p.StructExpand = true; % Enable passing arguments in a structure
+
+p.addRequired('master', @(x)isstruct(x));
+p.addRequired('tocopy', @(x)isstruct(x));
+p.addParamValue('overwrite',logical(false),@islogical);
+p.parse(master,tocopy,varargin{:});
+
+
+
 if ~isstruct(master)
     fprintf('%s (master) has wrong type\n',master);
     structure = struct();
     return;
-elseif ~isstruct(tocopy)
-    fprintf('%s (tocopy) has wrong type\n',tocopy);
-    structure = struct();
-    return;
+elseif ~isstruct(tocopy) 
+    if ~p.Results.overwrite
+        fprintf('%s (tocopy) has wrong type\n',tocopy);
+        structure = struct();
+        return;
+    else
+        tocopy = struct();
+    end
 end
 
 [structure,tocopy] = traverse(master,tocopy);
