@@ -7,7 +7,7 @@ function handle = guiAnalysisPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-17
+% 2012-05-10
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -154,10 +154,10 @@ function pushbutton_Callback(~,~,action)
                             ad.data{ad.control.spectra.active},fileName);
                         if status
                             add2status(status);
-                            busyWindow('start',...
+                            busyWindow('stop',...
                                 'Trying to export dataset...<br /><b>failed</b>.');
                         else
-                            busyWindow('start',...
+                            busyWindow('stop',...
                                 'Trying to export dataset...<br /><b>done</b>.');
                         end
                         

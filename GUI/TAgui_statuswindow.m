@@ -1,10 +1,13 @@
 function varargout = TAgui_statuswindow(varargin)
-% TAGUI_STATUSWINDOW Brief description of GUI.
-%                    Comments displayed at the command line in response 
-%                    to the help command. 
+% TREPRGUI_STATUSWINDOW A GUI window displaying status messages of the
+% toolbox and GUI.
+%
+% Normally, this window is called from within the TAgui window.
+%
+% See also TAGUI
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-04-25
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -43,7 +46,8 @@ textdisplay = uicontrol('Tag','status_text',...
     'Position',[10 10 guiSize(1)-20 guiSize(2)-20],...
     'Enable','inactive',...
     'Max',2,'Min',0,...
-    'FontName','FixedWidth',...
+    'FontSize',12,...
+    'FontName','Monospaced',...
     'String','');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
