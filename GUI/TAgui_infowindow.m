@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-04-22
+% 2012-06-07
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -20,12 +20,21 @@ if (singleton)
     return;
 end
 
+% Try to get main GUI position
+mainGUIHandle = guiGetWindowHandle();
+if ishandle(mainGUIHandle)
+    mainGUIPosition = get(mainGUIHandle,'Position');
+    guiPosition = [mainGUIPosition(1)+10,mainGUIPosition(2)+10,900,670];
+else
+    guiPosition = [30,50,900,670];
+end
+
 %  Construct the components
 hMainFigure = figure('Tag','TAgui_infowindow',...
     'Visible','off',...
     'Name','TA GUI : Info Window',...
     'Units','Pixels',...
-    'Position',[30,50,900,670],...
+    'Position',guiPosition,...
     'Resize','off',...
     'NumberTitle','off', ...
     'KeyPressFcn',@keypress_Callback,...
@@ -3417,11 +3426,9 @@ function pushbutton_Callback(~,~,action)
             return;
         end
         
-        % Get appdata of main window
+        % Get appdata and handles of main window
         mainWindow = guiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
-
-        % Get handles of main window
         gh = guihandles(mainWindow);
 
         switch action
@@ -3587,6 +3594,30 @@ function pushbutton_Callback(~,~,action)
                             'String',infoFileName);
                     else
                         return;
+                    end
+                end
+                % Check whether file exists already
+                if exist(ad.control.spectra.infoFile{active}.output.name,'file')
+                    while 1
+                        button = questdlg(...
+                            sprintf('File\n  %s\n exists already. Overwrite?',...
+                            ad.control.spectra.infoFile{active}.output.name),...
+                            'File exists...',...
+                            'Yes','No','Cancel','No');
+                        switch lower(button)
+                            case 'no'
+                                [FileName,PathName] = uiputfile('*.info',...
+                                    'Select filename for info file');
+                                if ~isempty(FileName) && FileName ~= 0;
+                                    ad.control.spectra.infoFile{active}.output.name = ...
+                                        fullfile(PathName,FileName);
+                                    break;
+                                end
+                            case 'cancel'
+                                return;
+                            otherwise
+                                break;
+                        end
                     end
                 end
                 % Get contents of text display
