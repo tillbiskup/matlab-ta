@@ -402,6 +402,7 @@ if parameters.MagPiont > 1
     else
         mData = cell(0);
         for k = 1:parameters.MagPiont
+            mData{k} = data;
             mData{k}.data = data.data(:,k);
             mData{k}.data = mData{k}.data';
             mData{k}.axes = data.axes;

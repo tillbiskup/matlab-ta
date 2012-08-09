@@ -17,7 +17,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              a copy is copied to the history.info field
 
 % (c) 2011-12, Till Biskup
-% 2012-04-22
+% 2012-08-09
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -86,7 +86,7 @@ try
             interpolate = true;
         end
     end
-    
+        
     if ((max(xMin) > min(xMax)) || (max(yMin) > min(yMax)))
         accData = [];
         accReport = {...
@@ -97,7 +97,7 @@ try
             };
         return;
     end
-        
+
     % Predefine fields for accData
     accData = TAdataStructure;
     % label - string
@@ -117,10 +117,15 @@ try
         accData.display = data{masterId}.display;
     end
     
+    fprintf('\n%s: l. 120\n',mfilename);
+
     % Handle sample parameters
     sampleFieldNames = fieldnames(accData.sample);
     for k=1:length(sampleFieldNames)
-        if sum(strcmpi(data{masterId}.sample.(sampleFieldNames{k}),...
+        if isempty(data{masterId}.sample.(sampleFieldNames{k}))
+            accData.sample.(sampleFieldNames{k}) = ...
+                data{masterId}.sample.(sampleFieldNames{k});
+        elseif sum(strcmpi(data{masterId}.sample.(sampleFieldNames{k}),...
                 cellfun(@(x)x.sample.(sampleFieldNames{k}),...
                 data,'UniformOutput',false))) == length(data)
             accData.sample.(sampleFieldNames{k}) = ...
@@ -129,7 +134,7 @@ try
             accData.sample.(sampleFieldNames{k}) = 'N/A';
         end
     end
-    
+        
     % Check for axes steppings and handle interpolation accordingly.
     if ((min(xStep) ~= max(xStep)) || (min(yStep) ~= max(yStep))) || ...
             interpolate
