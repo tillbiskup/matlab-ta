@@ -30,15 +30,20 @@ function [data,warnings] = TAOXread(fileName,varargin)
 %             Whether to combine files.
 %             Default: false
 %
-% average   - logical (true/false)
-%             Whether to average multiple scans in one file.
-%             Default: false
-%
 % sortfiles - logical (true/false)
 %             Whether to sort files (prior to combining them)
 %             Sort is done by the MATLAB(r) command "sort", performing
 %             sorting of the filenames according to the ASCII table.
 %             Default: true
+%
+% average   - logical (true/false)
+%             Whether to average multiple scans in one file.
+%             Default: false
+%
+% skip      - vector
+%             Scans to skip when averaging (useful if something went wrong
+%             with one scan).
+%             Default: []
 %
 % Combining
 %
@@ -50,7 +55,7 @@ function [data,warnings] = TAOXread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2011-12, Till Biskup
-% 2012-02-06
+% 2012-08-17
 
 % TODO: Combining - Handle different parameters for each time trace
 % properly, especially different filters etc.
@@ -69,6 +74,7 @@ p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 % p.addOptional('parameters','',@isstruct);
 p.addParamValue('combine',logical(false),@islogical);
 p.addParamValue('average',logical(false),@islogical);
+p.addParamValue('skip',[],@isnumeric);
 p.addParamValue('sortfiles',logical(true),@islogical);
 % Note, this is to be compatible with TAload - currently without function!
 p.addParamValue('checkFormat',logical(true),@islogical);
@@ -76,8 +82,9 @@ p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 combine = p.Results.combine;
-average = p.Results.average;
 sortfiles = p.Results.sortfiles;
+average = p.Results.average;
+skip = p.Results.skip;
 
 warnings = cell(0);
 
@@ -158,7 +165,7 @@ end
 
 data = cell(length(uniqueIndices),1);
 for k=1:length(uniqueIndices)
-    [data{k},warning] = loadFile(fileName{uniqueIndices(k)},average);
+    [data{k},warning] = loadFile(fileName{uniqueIndices(k)},average,skip);
     if ~isempty(warning)
         warnings{end+1} = warning;
     end
@@ -186,7 +193,7 @@ end
 
 end
 
-function [data,warnings] = loadFile(fileName,average)
+function [data,warnings] = loadFile(fileName,average,skip)
 % LOADFILE Load file and return contents. 
 %
 % fileName    - string
@@ -194,6 +201,9 @@ function [data,warnings] = loadFile(fileName,average)
 %
 % average     - logical
 %               Whether or not to average multiple scans in one file
+%
+% skip        - vector
+%               Scans to skip when averaging
 %
 % data        - structure
 %               According to the toolbox data structure
@@ -396,12 +406,20 @@ if parameters.MagPiont > 1
             parameters.TimePoint,...
             parameters.MagPiont);
     end
+    % Skip measurements provided by vector "skip"
+    if ~isempty(skip)
+        for k=1:length(skip)
+            if skip(k)>0 && skip(k) <= parameters.MagPiont
+                data.data(:,k) = [];
+            end
+        end
+    end
     if average
         data.data = mean(data.data,2)';
         data.dataMFon = mean(data.dataMFon,2)';
     else
         mData = cell(0);
-        for k = 1:parameters.MagPiont
+        for k = 1:size(data.data,2)
             mData{k} = data;
             mData{k}.data = data.data(:,k);
             mData{k}.data = mData{k}.data';
@@ -414,7 +432,7 @@ if parameters.MagPiont > 1
                 mData{k}.dataMFon = mData{k}.dataMFon';
             end
             mData{k}.label = sprintf('(%i/%i) %s',...
-                k,parameters.MagPiont,data.label);
+                k,size(data.data,2),data.label);
         end
         data = mData;
     end
