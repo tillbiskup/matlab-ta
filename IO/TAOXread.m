@@ -409,10 +409,12 @@ if parameters.MagPiont > 1
     % Skip measurements provided by vector "skip"
     if ~isempty(skip)
         for k=1:length(skip)
-            if skip(k)>0 && skip(k) <= parameters.MagPiont
-                data.data(:,k) = [];
+            if skip(k)<1 || skip(k) > parameters.MagPiont
+                skip(k) = [];
             end
         end
+        data.data(:,skip) = [];
+        data.dataMFon(:,skip) = [];
     end
     if average
         data.data = mean(data.data,2)';
