@@ -27,7 +27,7 @@ p.parse(dataset,varargin{:});
 
 try
     % First, find main GUI window
-    mainWindow = guiGetWindowHandle();
+    mainWindow = TAguiGetWindowHandle();
     
     % Preset message
     message = '';

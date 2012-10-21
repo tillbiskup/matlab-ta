@@ -8,11 +8,11 @@ function status = update_invisibleSpectra()
 %            0: successfully updated panels listing the spectra
 
 % (c) 2011-12, Till Biskup
-% 2012-02-14
+% 2012-10-21
 
 % Is there currently a TAgui object?
 %mainWindow = findobj('Tag','TA_gui_mainwindow');
-mainWindow = guiGetWindowHandle();
+mainWindow = TAguiGetWindowHandle();
 if (isempty(mainWindow))
     status = -1;
     return;

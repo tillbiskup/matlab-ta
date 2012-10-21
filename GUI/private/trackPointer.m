@@ -16,10 +16,10 @@ function status = trackPointer(varargin)
 %            0: successful
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-10-21
 
 % Is there currently a TAgui object?
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;
     return;
@@ -29,7 +29,7 @@ end
 gh = guihandles(mainWindow);
 
 % Get appdata of main window
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 ad = getappdata(mainWindow);
 
 % Check for availability of necessary GUI elements

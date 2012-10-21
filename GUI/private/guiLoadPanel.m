@@ -214,7 +214,7 @@ function load_pushbutton_Callback(~,~)
         state = struct();
         
         % Get appdata and guihandles of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         gh = guihandles(mainWindow);
         

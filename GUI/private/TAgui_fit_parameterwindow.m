@@ -13,7 +13,7 @@ function varargout = TAgui_fit_parameterwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_fit_parameterwindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     if nargin
@@ -23,7 +23,7 @@ if (singleton)
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_fit_parameterwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Fit : Parameter Window',...
     'Units','Pixels',...
@@ -245,7 +245,7 @@ function pushbutton_Callback(~,~,action)
         if isempty(action)
             return;
         end
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         switch lower(action)
             case 'help'
@@ -304,7 +304,7 @@ function popupmenu_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -349,7 +349,7 @@ function tableCellEdit_Callback(~,eventdata,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -501,7 +501,7 @@ end
 function updatePanels()
     try
         % Get appdata and handles
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         gh = guihandles(mainWindow);
         

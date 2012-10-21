@@ -248,7 +248,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window

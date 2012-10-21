@@ -14,7 +14,7 @@ function varargout = TAgui_ACCwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_ACCwindow');
+singleton = TAguiGetWindowHandle(mfilename)
 if (singleton)
     figure(singleton);
     varargout{1} = singleton;
@@ -22,7 +22,7 @@ if (singleton)
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_ACCwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Accumulate (ACC) Window',...
     'Units','Pixels',...
@@ -1217,7 +1217,7 @@ set(hMainFigure,'Visible','on');
 TAmsg('ACC GUI window opened','info');
 
 % Load data from Main GUI
-mainGuiWindow = guiGetWindowHandle();
+mainGuiWindow = TAguiGetWindowHandle();
 if (mainGuiWindow)
     admain = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata
@@ -1326,7 +1326,7 @@ end
 function slider_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -1384,7 +1384,7 @@ end
 function accumulated_listbox_Callback(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -1438,7 +1438,7 @@ function position_edit_Callback(source,~,position)
         end
         
         % Get appdata of ACC GUI
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Be as robust as possible: if there is no axes, default is indices
@@ -1591,7 +1591,7 @@ function edit_Callback(~,~,position)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         % IDEA: If user types "end", replace that with the maximum index in
@@ -1626,7 +1626,7 @@ function togglebutton_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         % Get state of toggle button
@@ -1739,7 +1739,7 @@ function checkbox_Callback(source,~,action)
         end
         
         % Get appdata of MFE GUI
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         switch action
@@ -1778,7 +1778,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata and handles of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         gh = guihandles(mainWindow);
         
@@ -2141,7 +2141,7 @@ function keypress_Callback(src,evt)
             % key was pressed...
             return;
         end
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from AVG GUI
         ad = getappdata(mainWindow);
         if ~isempty(evt.Modifier)
@@ -2258,7 +2258,7 @@ function updateDimensionPanel(panel)
             return;
         end
         
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from ACC GUI
         ad = getappdata(mainWindow);
 
@@ -2358,7 +2358,7 @@ end
 
 function updateSpectra()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from ACC GUI
         ad = getappdata(mainWindow);
         
@@ -2465,7 +2465,7 @@ end
 
 function updateSliderPanel()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from ACC GUI
         ad = getappdata(mainWindow);
         
@@ -2562,7 +2562,7 @@ end
 
 function updateAxes()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from ACC GUI
         ad = getappdata(mainWindow);
         
@@ -3370,7 +3370,7 @@ end
 function setAccParameters()
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         if isempty(ad.control.spectra.accumulated)

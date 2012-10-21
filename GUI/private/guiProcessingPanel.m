@@ -518,7 +518,7 @@ end
 function pushbutton_Callback(~,~,action)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -631,7 +631,7 @@ end
 function corrections_pushbutton_Callback(~,~,correction)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % If no dataset is selected
@@ -687,7 +687,7 @@ end
 function listbox_Callback(~,~,action)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -745,7 +745,7 @@ end
 function edit_Callback(source,~,action)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -907,7 +907,7 @@ end
 function datasetChangeLabel(index)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         ad.data{index}.label = TAgui_setLabelWindow(ad.data{index}.label);

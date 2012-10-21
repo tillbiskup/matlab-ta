@@ -11,7 +11,7 @@ function [status,bugReport] = TAbugReportHelper(exception)
 %    bugReport - cell array of strings containing the bug report
 
 % (c) 2011, Till Biskup
-% 2011-09-11
+% 2011-10-21
 
 % Set name of Toolbox (makes it easier to reuse this script later on)
 tbname = 'TA toolbox';
@@ -54,7 +54,7 @@ generalInfo{end+1} = sprintf('Platform:           %s',platform);
 generalInfo{end+1} = sprintf('MATLAB(TM) version: %s',version);
 
 % Try to get status message from toolbox GUI
-mainGuiWindow = guiGetWindowHandle();
+mainGuiWindow = TAguiGetWindowHandle();
 if (mainGuiWindow)
     ad = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata

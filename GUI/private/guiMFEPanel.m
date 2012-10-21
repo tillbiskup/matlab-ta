@@ -340,7 +340,7 @@ uicontrol('Tag','mfe_panel_markerdefaults_pushbutton',...
 function mfe_displaymode_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get value from load_panel_filetype_popupmenu
@@ -380,7 +380,7 @@ function checkbox_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -446,7 +446,7 @@ function popupmenu_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -652,7 +652,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -891,7 +891,7 @@ function edit_Callback(source,~,action)
         end
         
         % Get appdata of main GUI
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window

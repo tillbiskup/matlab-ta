@@ -17,7 +17,7 @@ try
     end
     
     % Get appdata and handles of main window
-    mainWindow = guiGetWindowHandle;
+    mainWindow = TAguiGetWindowHandle;
     ad = getappdata(mainWindow);
     gh = guihandles(mainWindow);
     

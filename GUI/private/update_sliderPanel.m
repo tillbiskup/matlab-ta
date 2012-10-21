@@ -10,7 +10,7 @@ function status = update_sliderPanel()
 % 2012-10-21
 
 % Is there currently a TAgui object?
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;
     return;

@@ -23,7 +23,7 @@ p.parse(dataset,varargin{:});
 
 try
     % First, find main GUI window
-    mainWindow = guiGetWindowHandle();
+    mainWindow = TAguiGetWindowHandle();
     
     % If there is no main GUI window, silently return
     if isempty(mainWindow)

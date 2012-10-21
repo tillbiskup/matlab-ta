@@ -394,7 +394,7 @@ function position_edit_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         active = ad.control.spectra.active;
@@ -513,7 +513,7 @@ function scaling_edit_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get handles from main window
@@ -650,7 +650,7 @@ function displacement_edit_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get handles from main window
@@ -789,7 +789,7 @@ function reset_pushbutton_Callback(source,~)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Reset displacement and scaling for current spectrum

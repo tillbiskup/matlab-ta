@@ -7,7 +7,7 @@ function guiClose()
 
 try
     % Get appdata of main window
-    mainWindow = guiGetWindowHandle;
+    mainWindow = TAguiGetWindowHandle;
     ad = getappdata(mainWindow);
 
     % TODO: Check whether there is anything that is not saved...

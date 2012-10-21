@@ -19,7 +19,7 @@ function varargout = TAgui_combinewindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_combinewindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     varargout{1} = singleton;
@@ -40,7 +40,7 @@ for k=1:length(formatNames)
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_combinewindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Combine Window',...
     'Units','Pixels',...
@@ -615,7 +615,7 @@ setappdata(hMainFigure,'combine',ad.combine);
 setappdata(hMainFigure,'scale',ad.scale);
 
 % Load data from Main GUI
-mainGuiWindow = guiGetWindowHandle();
+mainGuiWindow = TAguiGetWindowHandle();
 if (mainGuiWindow)
     admain = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata
@@ -668,7 +668,7 @@ end
 
 function listbox_Callback(~,~,field)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from combine GUI
         ad = getappdata(mainWindow);
 
@@ -715,7 +715,7 @@ function edit_Callback(source,~,field)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -787,7 +787,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -994,7 +994,7 @@ function pushbutton_Callback(~,~,action)
                     disp('Hmm... some problems with removing dataset(s) from main GUI.');
                 end
                 % After successful update of main GUI, refresh GUI data
-                mainGuiWindow = guiGetWindowHandle();
+                mainGuiWindow = TAguiGetWindowHandle();
                 adMain = getappdata(mainGuiWindow);
                 ad.data = adMain.data;
                 setappdata(hMainFigure,'data',ad.data);
@@ -1045,7 +1045,7 @@ function popupmenu_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         value = get(source,'String');
@@ -1088,7 +1088,7 @@ function keypress_Callback(src,evt)
             % was pressed...
             return;
         end
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from combine GUI
         ad = getappdata(mainWindow);
 
@@ -1137,7 +1137,7 @@ end
 function status = checkForCombinableDatasets()
     try
         status = false;
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1174,7 +1174,7 @@ end
 
 function updateFileformats()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1222,7 +1222,7 @@ end
 
 function updateBasenames()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1283,7 +1283,7 @@ end
 
 function updateSpectra()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1366,7 +1366,7 @@ end
 
 function updateInfo()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1424,7 +1424,7 @@ end
 
 function updateScale()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -1475,7 +1475,7 @@ end
 
 function updateLabel()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         

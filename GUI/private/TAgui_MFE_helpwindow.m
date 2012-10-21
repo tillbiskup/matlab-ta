@@ -13,14 +13,14 @@ function varargout = TAgui_MFE_helpwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_MFE_helpwindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     return;
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_MFE_helpwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : MFE : Help Window',...
     'Units','Pixels',...

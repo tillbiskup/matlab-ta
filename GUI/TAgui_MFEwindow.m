@@ -14,7 +14,7 @@ function varargout = TAgui_MFEwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_MFEwindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     varargout{1} = singleton;
@@ -22,7 +22,7 @@ if (singleton)
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_MFEwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : MFE Window',...
     'Units','Pixels',...
@@ -1129,7 +1129,7 @@ TAmsg('MFE GUI window opened','info');
 
 
 % Load data from Main GUI
-mainGuiWindow = guiGetWindowHandle();
+mainGuiWindow = TAguiGetWindowHandle();
 if (mainGuiWindow)
     admain = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata
@@ -1237,7 +1237,7 @@ end
 
 function position_slider_Callback(source,~)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -1296,7 +1296,7 @@ function position_edit_Callback(source,~,position)
         end
         
         % Get appdata of MFE GUI
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         active = ad.control.spectra.active;
@@ -1394,7 +1394,7 @@ end
 
 function showposition_checkbox_Callback(source,~)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -1441,7 +1441,7 @@ function area_edit_Callback(source,~,position)
         end
         
         % Get appdata of MFE GUI
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -1657,7 +1657,7 @@ function checkbox_Callback(source,~,action)
         end
         
         % Get appdata of MFE GUI
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         switch action
@@ -1701,7 +1701,7 @@ end
 
 function visible_panel_listbox_Callback(source,~)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -1740,7 +1740,7 @@ function edit_Callback(source,~,field)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         value = get(source,'String');
@@ -1835,7 +1835,7 @@ function popupmenu_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         values = cellstr(get(source,'String'));
@@ -1980,7 +1980,7 @@ function togglebutton_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         % Get state of toggle button
@@ -2094,7 +2094,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -2294,7 +2294,7 @@ function slider_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -2392,7 +2392,7 @@ function keypress_Callback(src,evt)
             % was pressed...
             return;
         end
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
 
@@ -2507,7 +2507,7 @@ end
 
 function updateSliderPanel()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of MFE GUI
         ad = getappdata(mainWindow);
         
@@ -2587,7 +2587,7 @@ end
 
 function updateMFEPanel()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of MFE GUI
         ad = getappdata(mainWindow);
         
@@ -2689,7 +2689,7 @@ end
 
 function updateSettingsPanel(varargin)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
 
@@ -2880,7 +2880,7 @@ end
         
 function updateSpectra()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -2940,7 +2940,7 @@ end
 
 function update_position_display()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -3022,7 +3022,7 @@ end
 
 function updateAxes()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from MFE GUI
         ad = getappdata(mainWindow);
         
@@ -3853,7 +3853,7 @@ end
 function switchMeasurePointer(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         % Get handles from main window
@@ -3892,7 +3892,7 @@ end
 
 function trackPointer(varargin)
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         
         % Get handles of mainwindow
         gh = guihandles(mainWindow);

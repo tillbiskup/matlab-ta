@@ -27,7 +27,7 @@ end
 try
     % Get handle for GUI
     % NOTE: That means that an instance of the GUI must exist.
-    handle = guiGetWindowHandle(guiname);
+    handle = TAguiGetWindowHandle(guiname);
     if isempty(handle) or ~ishandle(handle)
         status = -2;
         return;

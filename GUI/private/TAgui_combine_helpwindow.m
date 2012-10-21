@@ -11,14 +11,14 @@ function varargout = TAgui_combine_helpwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_combine_helpwindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     return;
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_combine_helpwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Combine : Help Window',...
     'Units','Pixels',...

@@ -7,10 +7,10 @@ function status = update_displayPanel()
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-04-12
+% 2012-10-21
 
 % Is there currently a TAgui object?
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 if (isempty(mainWindow))
     status = -1;
     return;

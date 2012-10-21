@@ -12,7 +12,7 @@ function status = update_mainAxis(varargin)
 % 2012-10-21
 
 % Is there currently a TAgui object?
-mainWindow = guiGetWindowHandle();
+mainWindow = TAguiGetWindowHandle();
 if (isempty(mainWindow))
     status = -1;
     return;
@@ -2088,7 +2088,7 @@ end
 
 function display_legend(mainAxes)
 
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 
 % Get appdata from main GUI
 ad = getappdata(mainWindow);
@@ -2135,7 +2135,7 @@ end
 function setMinMax()
 
 % Get appdata from main GUI
-mainWindow = guiGetWindowHandle;
+mainWindow = TAguiGetWindowHandle;
 ad = getappdata(mainWindow);
 
 if (isempty(ad.control.spectra.visible))

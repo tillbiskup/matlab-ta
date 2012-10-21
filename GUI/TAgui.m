@@ -7,7 +7,7 @@ function varargout = TAgui(varargin)
 % 2012-10-21
 
 % Make GUI effectively a singleton
-singleton = guiGetWindowHandle();
+singleton = TAguiGetWindowHandle();
 if (singleton)
     figure(singleton);
     varargout{1} = singleton;
@@ -671,7 +671,7 @@ end
 function slider_v1_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -718,7 +718,7 @@ end
 function slider_v2_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Convert slider value to scaling factor
@@ -775,7 +775,7 @@ end
 function slider_v3_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -825,7 +825,7 @@ end
 function slider_h1_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Convert slider value to scaling factor
@@ -882,7 +882,7 @@ end
 function slider_h2_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -932,7 +932,7 @@ end
 function zoom_togglebutton_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         if (get(source,'Value'))
@@ -968,7 +968,7 @@ end
 function fullscale_pushbutton_Callback(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -1006,7 +1006,7 @@ function reset_pushbutton_Callback(source,~)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle();
+        mainWindow = TAguiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Reset displacement and scaling for current spectrum
@@ -1146,7 +1146,7 @@ end
 function displaytype_popupmenu_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         displayTypes = cellstr(get(source,'String'));
@@ -1179,7 +1179,7 @@ end
 function previous_pushbutton_Callback(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % This shall never happen, as the element should not be active in this
@@ -1252,7 +1252,7 @@ end
 function next_pushbutton_Callback(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % This shall never happen, as the element should not be active in

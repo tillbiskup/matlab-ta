@@ -13,7 +13,7 @@ function varargout = TAgui_info_helpwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = TAguiGetWindowHandle(mfilename)
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     return;

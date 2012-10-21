@@ -19,14 +19,14 @@ function varargout = TAgui_combine_settingswindow(data,varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_combine_settingswindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     return;
 end
 
 % Construct the components
-hMainFigure = figure('Tag','TAgui_combine_settingswindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Combine Settings Window',...
     'Units','Pixels',...
@@ -508,7 +508,7 @@ function edit_Callback(source,~,field)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         value = get(source,'String');
@@ -581,7 +581,7 @@ function pushbutton_Callback(~,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         switch action
@@ -631,7 +631,7 @@ function togglebutton_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
 
         % Get state of toggle button
@@ -693,7 +693,7 @@ function popupmenu_Callback(source,~,action)
         end
         
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         ad = getappdata(mainWindow);
         
         values = cellstr(get(source,'String'));
@@ -734,7 +734,7 @@ function keypress_Callback(src,evt)
             % was pressed...
             return;
         end
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata from combine GUI
         ad = getappdata(mainWindow);
 
@@ -782,7 +782,7 @@ end
 
 function updatePanel()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -843,7 +843,7 @@ end
 
 function updateAxis()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         
@@ -904,7 +904,7 @@ end
 
 function calculateScalingFactor()
     try
-        mainWindow = guiGetWindowHandle(mfilename);
+        mainWindow = TAguiGetWindowHandle(mfilename);
         % Get appdata of combine GUI
         ad = getappdata(mainWindow);
         

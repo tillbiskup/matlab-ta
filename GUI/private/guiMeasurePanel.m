@@ -344,7 +344,7 @@ uicontrol('Tag','measure_panel_clear_pushbutton',...
 try
     % Set setslider checkbox
     % Get appdata of main window
-    mainWindow = guiGetWindowHandle;
+    mainWindow = TAguiGetWindowHandle;
     ad = getappdata(mainWindow);
     
     % Get guihandles of main window
@@ -379,7 +379,7 @@ end
 function measure_setslider_checkbox_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         ad.control.measure.setslider = get(source,'Value');
@@ -414,7 +414,7 @@ end
 function measure_1point_togglebutton_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get guihandles of main window
@@ -474,7 +474,7 @@ end
 function measure_2points_togglebutton_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get guihandles of main window
@@ -558,7 +558,7 @@ end
 function switchMeasurePointer(~,~)
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Depending on nPoints
@@ -609,7 +609,7 @@ end
 function measureEnd()
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         
         % Get guihandles of main window
@@ -657,7 +657,7 @@ end
 function assignPointsToDataStructure()
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         
         % Get guihandles of main window
         gh = guihandles(mainWindow);
@@ -730,7 +730,7 @@ end
 function clearFields()
     try
         % Get appdata of main window
-        mainWindow = guiGetWindowHandle;
+        mainWindow = TAguiGetWindowHandle;
         
         % Get guihandles of main window
         gh = guihandles(mainWindow);

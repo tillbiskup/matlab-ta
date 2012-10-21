@@ -13,14 +13,14 @@ function varargout = TAgui_helpwindow(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','TAgui_helpwindow');
+singleton = TAguiGetWindowHandle(mfilename);
 if (singleton)
     figure(singleton);
     return;
 end
 
 %  Construct the components
-hMainFigure = figure('Tag','TAgui_helpwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Help Window',...
     'Units','Pixels',...
@@ -172,7 +172,7 @@ try
     % Try to show the help topic related to the currently active panel
     % Get gui handles of main figure
     % Get guihandles of main GUI window
-    mainWindow = guiGetWindowHandle;
+    mainWindow = TAguiGetWindowHandle;
     mgh = guihandles(mainWindow);
     if get(get(mgh.mainButtonGroup,'SelectedObject'),'Tag')
         helpTopicOffset = 10;

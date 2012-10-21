@@ -7,10 +7,10 @@ function status = update_MFEPanel()
 %            0: successfully updated main axis
 
 % (c) 2012, Till Biskup
-% 2012-02-17
+% 2012-10-21
 
 % Is there currently a TAgui object?
-mainWindow = guiGetWindowHandle();
+mainWindow = TAguiGetWindowHandle();
 if (isempty(mainWindow))
     status = -1;
     return;
