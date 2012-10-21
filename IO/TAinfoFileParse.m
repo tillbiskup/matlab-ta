@@ -30,7 +30,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 % See also: TAINFOFILECREATE, TAINFOFILEWRITE
 
 % (c) 2012, Till Biskup
-% 2012-04-14
+% 2012-10-21
 
 % If called without parameter, do something useful: display help
 if ~nargin && ~nargout
@@ -161,7 +161,9 @@ try
                 lineNumbers > blocks.(blocknames{k}), 1 ))-2 ...
                 );
             noScans = length(cell2mat(regexp(blockLines,'^Scan [0-9]*')));
-            nLinesSubblock = length(blockLines)/noScans;
+            % floor is used here as workaround for more than one empty line
+            % after the TIME PROFILES block
+            nLinesSubblock = floor(length(blockLines)/noScans);
             for l = 1:noScans
                 block.(blocknames{k})(l) = parseBlocks(metaFile(...
                     blocks.(blocknames{k})+2+((l-1)*nLinesSubblock) : ...

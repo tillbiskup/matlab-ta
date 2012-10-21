@@ -10,6 +10,13 @@
 % Alternatively, you may use the functions provided by the "Configuration" 
 % panel of the GUI.
 
+% General configuration settings
+%
+% dx, dy - Position of the GUI relative to the main screen
+[general]
+dx = 20
+dy = 40
+
 % Configuration of the behaviour of the toolbox when started
 %
 % welcome - Whether to show the "Welcome panel" at start.

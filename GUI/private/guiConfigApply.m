@@ -14,7 +14,7 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-12, Till Biskup
-% 2012-04-13
+% 2012-10-21
 
 status = 0;
 
@@ -64,6 +64,19 @@ try
             % This is true in particular due to the fact that only the
             % .ini.dist files get distributed, but not the actual config
             % files.
+            
+            % Set position of the main GUI window
+            if isfield(ad.configuration,'general')
+                guiPosition = get(handle,'Position');
+                if isfield(ad.configuration.general,'dx')
+                    guiPosition(1) = ad.configuration.general.dx;
+                    set(handle,'Position',guiPosition);
+                end
+                if isfield(ad.configuration.general,'dy')
+                    guiPosition(2) = ad.configuration.general.dy;
+                    set(handle,'Position',guiPosition);
+                end
+            end
             
             % Set load panel's settings
             if isfield(ad.configuration.load,'combine')
