@@ -19,10 +19,32 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Display "Splash"
+splashW = 300;
+splashH = 80;
+try
+    desktop = com.mathworks.mde.desk.MLDesktop.getInstance;
+    desktopMainFrame = desktop.getMainFrame;
+    
+    % Get desktop dimensions
+    desktopDims = desktopMainFrame.getSize;
+    desktopW = desktopDims.getWidth;
+    desktopH = desktopDims.getHeight;
+    desktopX = desktopMainFrame.getX;
+    desktopY = desktopMainFrame.getY;
+    
+    splashX = desktopW/2+desktopX-splashW/2;
+    splashY = desktopH/2+desktopY-splashH/2;
+catch exception
+    trEPRmsg('Failed to get coordinates of main Matlab window - nevermind',...
+        'warning');
+    splashX = 200;
+    splashY = 400;
+end
+
 initDialogue = dialog(...
     'WindowStyle','modal',...
     'Name','Initialising...',...
-    'Position',[200 400 300 80]);
+    'Position',[splashX splashY splashW splashH]);
 uicontrol('Tag','InitialisingText',...
     'Style','text',...
     'parent',initDialogue,...
