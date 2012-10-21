@@ -7,7 +7,7 @@ function varargout = TAgui_MFEwindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-04-22
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1125,8 +1125,7 @@ setappdata(hMainFigure,'mfe',ad.mfe);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
-msgStr = 'MFE GUI window opened';
-add2status(msgStr);
+TAmsg('MFE GUI window opened','info');
 
 
 % Load data from Main GUI
@@ -1219,9 +1218,9 @@ function tbg_Callback(source,~)
         switchPanel(get(get(source,'SelectedObject'),'String'));
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1251,9 +1250,9 @@ function position_slider_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.position.x = ...
                     int16(get(source,'value'));
             otherwise
-                msg = sprintf('Display type %s currently unsupported',...
+                msgStr = sprintf('Display type %s currently unsupported',...
                     ad.control.axis.displayType);
-                add2status(msg);
+                TAmsg(msg,'warning');
         end
         
         % Set appdata from MFE GUI
@@ -1263,9 +1262,9 @@ function position_slider_Callback(source,~)
         update_position_display();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1376,9 +1375,9 @@ function position_edit_Callback(source,~,position)
         updateAxes();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1408,9 +1407,9 @@ function showposition_checkbox_Callback(source,~)
         updateAxes();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1634,9 +1633,9 @@ function area_edit_Callback(source,~,position)
         updateAxes();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1683,9 +1682,9 @@ function checkbox_Callback(source,~,action)
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1717,9 +1716,9 @@ function visible_panel_listbox_Callback(source,~)
         update_position_display();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1812,9 +1811,9 @@ function edit_Callback(source,~,field)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1957,9 +1956,9 @@ function popupmenu_Callback(source,~,action)
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2071,9 +2070,9 @@ function togglebutton_Callback(source,~,action)
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2208,7 +2207,7 @@ function pushbutton_Callback(~,~,action)
                     status = textFileWrite(...
                         fullfile(fpath,fname),mfe.report);
                     if ~isempty(status)
-                        add2status(status);
+                        TAmsg(status,'warning');
                     end
                 end
                 return;
@@ -2255,8 +2254,7 @@ function pushbutton_Callback(~,~,action)
                 updateAxes();
                 return;
             case 'Close'
-                msgStr = 'MFE GUI window closed.';
-                add2status(msgStr);
+                TAmsg('MFE GUI window closed.','info');
 
                 % Look for MFE GUI Help window and if its there, close as
                 % well
@@ -2272,9 +2270,9 @@ function pushbutton_Callback(~,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2317,9 +2315,9 @@ function slider_Callback(source,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2370,9 +2368,9 @@ function displaytype_popupmenu_Callback(source,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2443,9 +2441,9 @@ function keypress_Callback(src,evt)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2490,9 +2488,9 @@ function switchPanel(panelName)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2570,9 +2568,9 @@ function updateSliderPanel()
             );
     catch exception
         try
-            msgstr = ['an exception occurred. '...
-                'the bug reporter should have been opened'];
-            add2status(msgstr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addcause(exception2, exception);
             disp(msgstr);
@@ -2672,9 +2670,9 @@ function updateMFEPanel()
             );
     catch exception
         try
-            msgstr = ['an exception occurred. '...
-                'the bug reporter should have been opened'];
-            add2status(msgstr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addcause(exception2, exception);
             disp(msgstr);
@@ -2863,9 +2861,9 @@ function updateSettingsPanel(varargin)
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2922,9 +2920,9 @@ function updateSpectra()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3004,9 +3002,9 @@ function update_position_display()
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3835,9 +3833,9 @@ function updateAxes()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3875,9 +3873,9 @@ function switchMeasurePointer(~,~)
         setappdata(mainWindow,'control',ad.control);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4128,9 +4126,9 @@ function trackPointer(varargin)
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

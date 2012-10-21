@@ -1,4 +1,4 @@
-function varargout = TAgui_statuswindow(varargin)
+function TAgui_statuswindow(varargin)
 % TREPRGUI_STATUSWINDOW A GUI window displaying status messages of the
 % toolbox and GUI.
 %
@@ -7,7 +7,7 @@ function varargout = TAgui_statuswindow(varargin)
 % See also TAGUI
 
 % (c) 2011-12, Till Biskup
-% 2012-04-25
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -32,12 +32,12 @@ hMainFigure = figure('Tag','TAgui_statuswindow',...
     'KeyPressFcn',@keyBindings,...
     'CloseRequestFcn',@closeGUI);
 
-defaultBackground = get(hMainFigure,'Color');
+%defaultBackground = get(hMainFigure,'Color');
 guiSize = get(hMainFigure,'Position');
 guiSize = guiSize([3,4]);
 
 % Create the message window
-textdisplay = uicontrol('Tag','status_text',...
+uicontrol('Tag','status_text',...
     'Style','edit',...
     'Parent',hMainFigure,...
     'BackgroundColor',[1 1 1],...
@@ -61,7 +61,7 @@ guidata(hMainFigure,guihandles);
 set(hMainFigure,'Visible','on');
 
 % Set string
-mainGuiWindow = guiGetWindowHandle;
+mainGuiWindow = TAguiGetWindowHandle();
 if (mainGuiWindow)
     ad = getappdata(mainGuiWindow);
     % Check for availability of necessary fields in appdata
@@ -73,7 +73,7 @@ else
         '  1: There seems to be no TA GUI main window...',...
         };
 end
-update_statuswindow(statusstring);
+TAguiUpdateStatusWindow(statusstring);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Callbacks
@@ -84,9 +84,9 @@ function closeGUI(~,~)
         delete(hMainFigure);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -101,7 +101,7 @@ function closeGUI(~,~)
     end
 end
 
-function keyBindings(src,evt)
+function keyBindings(~,evt)
     try
     if ~isempty(evt.Modifier)
         if (strcmpi(evt.Modifier{1},'command')) || ...
@@ -125,9 +125,9 @@ function keyBindings(src,evt)
     end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

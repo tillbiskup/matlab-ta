@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-04-22
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -269,7 +269,7 @@ function load_pushbutton_Callback(~,~)
         if isequal(FileName,0)
             msg = 'Loading dataset(s) cancelled by user.';
             % Update status
-            add2status(msg);
+            TAmsg(msg,'info');
             return;
         end
 
@@ -308,7 +308,7 @@ function load_pushbutton_Callback(~,~)
         msgStr = cell(0);
         msgStr{length(msgStr)+1} = 'Calling TAload and trying to load';
         msg = [ msgStr FileName];
-        add2status(msg);
+        TAmsg(msg,'info');
         clear msgStr msg;
         
         busyWindow('start','Trying to load spectra...<br />please wait.');
@@ -331,7 +331,7 @@ function load_pushbutton_Callback(~,~)
         
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
-            add2status(msg);
+            TAmsg(msg,'error');
             busyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
             return;
         end
@@ -364,9 +364,9 @@ function load_pushbutton_Callback(~,~)
             msgStr{length(msgStr)+1} = ...
                 'The following files contained no numerical data (and were DISCARDED):';
             msg = [msgStr fnNoData];
-            add2status(msg);
-            add2status('TAload returned the following message:');
-            add2status(warnings);
+            TAmsg(msg,'warning');
+            TAmsg('TAload returned the following message:','warning');
+            TAmsg(warnings,'warning');
             clear msgStr msg;
         end
         
@@ -460,14 +460,14 @@ function load_pushbutton_Callback(~,~)
         msgStr{end+1} = ...
             sprintf('%i data set(s) successfully loaded:',length(data));
         msg = [msgStr fileNames];
-        add2status(msg);
+        TAmsg(msg,'info');
         clear msgStr msg;
         
         if ~isempty(warnings)
             msgStr = cell(0);
             msgStr{end+1} = 'Some warnings occurred while reading files:';
             msg = [msgStr warnings{:}];
-            add2status(msg);
+            TAmsg(msg,'warning');
             clear msgStr msg;
         end
 
@@ -538,9 +538,9 @@ function load_pushbutton_Callback(~,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

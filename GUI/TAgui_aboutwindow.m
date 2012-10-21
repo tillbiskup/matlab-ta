@@ -4,7 +4,7 @@ function varargout = TAgui_aboutwindow()
 %                   to the help command. 
 
 % (c) 2011-12, Till Biskup
-% 2012-04-02
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -223,9 +223,9 @@ end
             end
         catch exception
             try
-                msgStr = ['An exception occurred. '...
-                    'The bug reporter should have been opened'];
-                add2status(msgStr);
+                msgStr = ['An exception occurred in ' ...
+                    exception.stack(1).name  '.'];
+                TAmsg(msgStr,'error');
             catch exception2
                 exception = addCause(exception2, exception);
                 disp(msgStr);
@@ -252,6 +252,9 @@ end
         try
             delete(hMainFigure);
         catch
+            msgStr = ['Something serious went wrong trying to close '...
+                mfilename];
+            TAmsg(msgStr,'warning');
         end
     end
 

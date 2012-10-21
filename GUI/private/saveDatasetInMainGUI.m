@@ -12,7 +12,7 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-03-30
+% 2012-10-21
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -118,7 +118,7 @@ try
             ad.data{id}.label);
         msgStr{end+1} = ad.data{id}.file.name;
         msgStr = [ msgStr saveStatus ];
-        status = add2status(msgStr);
+        status = TAmsg(msgStr,'error');
         busyWindow('stop','Trying to save spectra...<br /><b>failed</b>.');
         %warndlg(msgStr,'Problems saving file','modal');
         clear msgStr;
@@ -147,7 +147,7 @@ try
         sprintf('Label: %s',ad.data{id}.label)...
         sprintf('File: %s',filename)...
         };
-    status = add2status(msg);
+    status = TAmsg(msg,'info');
     
     % Update main GUI's axes and panels
     update_visibleSpectra();
@@ -161,9 +161,9 @@ try
     
 catch exception
     try
-        msgStr = ['An exception occurred. '...
-            'The bug reporter should have been opened'];
-        add2status(msgStr);
+        msgStr = ['An exception occurred in ' ...
+            exception.stack(1).name  '.'];
+        TAmsg(msgStr,'error');
     catch exception2
         exception = addCause(exception2, exception);
         disp(msgStr);

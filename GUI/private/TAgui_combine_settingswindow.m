@@ -12,7 +12,7 @@ function varargout = TAgui_combine_settingswindow(data,varargin)
 % See also TAGUI, TAGUI_COMBINEWINDOW, TASCALE
 
 % (c) 2012, Till Biskup
-% 2012-01-22
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -472,8 +472,7 @@ setappdata(hMainFigure,'scale',ad.scale);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
-msgStr = 'combine GUI scaling parameters window opened';
-add2status(msgStr);
+TAmsg('Combine GUI scaling parameters window opened','info');
 
 updateAxis();
 updatePanel();
@@ -558,9 +557,9 @@ function edit_Callback(source,~,field)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -597,8 +596,7 @@ function pushbutton_Callback(~,~,action)
             case 'Apply'
                 calculateScalingFactor()
             case 'Close'
-                msgStr = 'combine GUI settings window closed.';
-                add2status(msgStr);
+                TAmsg('Combine GUI settings window closed.','info');
                 delete(guiGetWindowHandle(mfilename));
                 varargout{1} = ad.scale;
             otherwise
@@ -609,9 +607,9 @@ function pushbutton_Callback(~,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -671,9 +669,9 @@ function togglebutton_Callback(source,~,action)
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -712,9 +710,9 @@ function popupmenu_Callback(source,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -761,9 +759,9 @@ function keypress_Callback(src,evt)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -826,9 +824,9 @@ function updatePanel()
         end
     catch exception
         try
-            msgstr = ['an exception occurred. '...
-                'the bug reporter should have been opened'];
-            add2status(msgstr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addcause(exception2, exception);
             disp(msgstr);
@@ -887,9 +885,9 @@ function updateAxis()
         end
     catch exception
         try
-            msgstr = ['an exception occurred. '...
-                'the bug reporter should have been opened'];
-            add2status(msgstr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addcause(exception2, exception);
             disp(msgstr);
@@ -920,9 +918,9 @@ function calculateScalingFactor()
             num2str(ad.scale.factor));
     catch exception
         try
-            msgstr = ['an exception occurred. '...
-                'the bug reporter should have been opened'];
-            add2status(msgstr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addcause(exception2, exception);
             disp(msgstr);

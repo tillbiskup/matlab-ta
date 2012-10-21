@@ -6,7 +6,7 @@ function varargout = busyWindow(varargin)
 %       Returns the handle of the window.
 
 % (c) 2012, Till Biskup
-% 2012-03-30
+% 2012-10-21
 
 title = 'Processing...';
 position = [220,350,270,120];
@@ -120,7 +120,7 @@ switch action
         try
             jObj.setBusyText('Done');
         catch exception
-            add2status(exception.message);
+            TAmsg(exception.message,'error');
         end
         set(hBtn,'Visible','on');
         set(hMainFigure,'KeyPressFcn',@keypress_Callback);
@@ -164,9 +164,9 @@ end
             end
         catch exception
             try
-                msgStr = ['An exception occurred. '...
-                    'The bug reporter should have been opened'];
-                add2status(msgStr);
+                msgStr = ['An exception occurred in ' ...
+                    exception.stack(1).name  '.'];
+                TAmsg(msgStr,'error');
             catch exception2
                 exception = addCause(exception2, exception);
                 disp(msgStr);
@@ -187,9 +187,9 @@ end
             delete(hMainFigure);
         catch exception
             try
-                msgStr = ['An exception occurred. '...
-                    'The bug reporter should have been opened'];
-                add2status(msgStr);
+                msgStr = ['An exception occurred in ' ...
+                    exception.stack(1).name  '.'];
+                TAmsg(msgStr,'error');
             catch exception2
                 exception = addCause(exception2, exception);
                 disp(msgStr);

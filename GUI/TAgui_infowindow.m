@@ -6,7 +6,7 @@ function varargout = TAgui_infowindow(varargin)
 % See also TAGUI
 
 % (c) 2012, Till Biskup
-% 2012-06-07
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2895,8 +2895,7 @@ end
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
-msgStr = 'Info GUI window opened';
-add2status(msgStr);
+TAmsg('Info GUI window opened','info');
 
 if (nargout == 1)
     varargout{1} = hMainFigure;
@@ -2932,9 +2931,9 @@ function tbg_Callback(source,~)
         switchPanel(get(get(source,'SelectedObject'),'String'));
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2954,9 +2953,9 @@ function ptbg_Callback(source,~)
         switchParameterPanel(get(get(source,'SelectedObject'),'String'));
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2991,9 +2990,9 @@ function dataset_listbox_Callback(source,~)
         updateHistoryPanel();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3072,9 +3071,9 @@ function general_edit_Callback(source,~,value)
         updateDatasets();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3212,7 +3211,7 @@ function parameter_edit_Callback(source,~,value)
         fieldValue = get(source,'String');
         
         % If value is in matching cell array
-        [matches,index] = max(strcmp(value,matching(:,1)));
+        [matches,~] = max(strcmp(value,matching(:,1)));
         [matchesTimeProfiles,index] = ...
             max(strcmp(value,matchingTimeProfiles(:,1)));
         if matches
@@ -3370,9 +3369,9 @@ function parameter_edit_Callback(source,~,value)
         updateDatasets();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3403,9 +3402,9 @@ function history_listbox_Callback(source,~)
         updateHistoryPanel();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3568,7 +3567,7 @@ function pushbutton_Callback(~,~,action)
                 [infoFileText,warnings] = TAinfoFileCreate(...
                     ad.data{ad.control.spectra.active});
                 if ~isempty(warnings)
-                    add2status(warnings);
+                    TAmsg(warnings,'warning');
                 end
                 set(gh.tools_panel_infofiledisplay_edit,...
                     'String',infoFileText);
@@ -3702,19 +3701,19 @@ function pushbutton_Callback(~,~,action)
                             % there.
                         case 'Discard & Close'
                             msgStr = 'Closing Info GUI and discarding all changes.';
-                            add2status(msgStr);
+                            TAmsg(msgStr,'info');
                             guiClose();
                             return;
                         case 'Cancel'
                             msgStr = {'Closing Info GUI aborted by user. ' ...
                                 'Reason: Modified and unsaved datasets'};
-                            add2status(msgStr);
+                            TAmsg(msgStr,'info');
                             return;
                         otherwise
                             msgStr = {...
                                 sprintf('Info GUI: Unknown answer "%s".',...
                                 answer)};
-                            add2status(msgStr);
+                            TAmsg(msgStr,'warning');
                             return;
                     end
 
@@ -3742,9 +3741,9 @@ function pushbutton_Callback(~,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3799,9 +3798,9 @@ function keypress_Callback(src,evt)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3828,14 +3827,13 @@ function guiClose()
         if ishandle(hHelpWindow)
             delete(hHelpWindow);
         end
-        msgStr = {'Closing Info GUI.'};
-        add2status(msgStr);
+        TAmsg('Closing Info GUI.','info');
         delete(guiGetWindowHandle(mfilename));
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3910,15 +3908,16 @@ function switchPanel(panelName)
                     });
                 updateToolsPanel()
             otherwise
-                msgStr = 'TAgui_infowindow(): Unknown panel.';
-                add2status(msgStr);
+                msgStr = sprintf('TAgui_infowindow(): Unknown panel %s.',...
+                    panelName);
+                TAmsg(msgStr,'warning');
                 return;
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3966,15 +3965,16 @@ function switchParameterPanel(panelName)
                 set(gh.parameter_page3_panel,'Visible','on');
                 set(gh.parameter_page3_togglebutton,'Value',1);
             otherwise
-                msgStr = 'TAgui_infowindow(): Unknown panel.';
-                add2status(msgStr);
+                msgStr = sprintf('TAgui_infowindow(): Unknown panel %s.',...
+                    panelName);
+                TAmsg(msgStr,'warning');
                 return;
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4041,9 +4041,9 @@ function updateDatasets()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4095,9 +4095,9 @@ function updateGeneralPanel()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4384,9 +4384,9 @@ function updateParameterPanel()
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4413,9 +4413,9 @@ function updateToolsPanel()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4502,9 +4502,9 @@ function updateHistoryPanel()
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -4544,9 +4544,9 @@ function value = getCascadedField (struct, fieldName)
         try
             disp(fieldName);
             disp(struct);
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

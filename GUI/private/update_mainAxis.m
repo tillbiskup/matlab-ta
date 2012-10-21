@@ -9,7 +9,7 @@ function status = update_mainAxis(varargin)
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-04-15
+% 2012-10-21
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle();
@@ -58,7 +58,7 @@ end
 % spectrum
 if ~(ad.control.spectra.active)
     msg = 'update_mainAxis(): No active spectrum';
-    add2status(msg);
+    TAmsg(msg,'info');
     return;
 end
 
@@ -2068,7 +2068,7 @@ switch ad.control.axis.displayType
         display_legend(mainAxes);
     otherwise
         msg = sprintf('Display type %s currently unsupported',displayType);
-        add2status(msg);    
+        TAmsg(msg,'warning');    
 end
 
 % Set grid

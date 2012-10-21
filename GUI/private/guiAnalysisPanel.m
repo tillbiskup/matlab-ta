@@ -7,7 +7,7 @@ function handle = guiAnalysisPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-05-10
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -153,7 +153,7 @@ function pushbutton_Callback(~,~,action)
                         status = export4glotaran(...
                             ad.data{ad.control.spectra.active},fileName);
                         if status
-                            add2status(status);
+                            TAmsg(status,'error');
                             busyWindow('stop',...
                                 'Trying to export dataset...<br /><b>failed</b>.');
                         else
@@ -173,7 +173,7 @@ function pushbutton_Callback(~,~,action)
                 % IMPORTANT: Has to go AFTER setappdata
                 msgStr = sprintf('Exported dataset %i to format %s',...
                     ad.control.spectra.active,exportFormat);
-                add2status(msgStr);
+                TAmsg(msgStr,'info');
             otherwise
                 fprintf('%s%s "%s"\n',...
                     'TAgui : guiAnalysisPanel() : ',...
@@ -183,9 +183,9 @@ function pushbutton_Callback(~,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

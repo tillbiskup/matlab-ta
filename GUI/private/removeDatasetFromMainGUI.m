@@ -13,7 +13,7 @@ function [status,message] = removeDatasetFromMainGUI(dataset,varargin)
 %           wrong.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-22
+% 2012-10-21
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -172,13 +172,13 @@ try
     for k=1:length(removedDatasetsLabels)
         msg{end+1} = sprintf('  Label: %s',removedDatasetsLabels{k});
     end
-    status = add2status(msg);
+    status = TAmsg(msg,'info');
     invStr = sprintf('%i ',ad.control.spectra.invisible);
     visStr = sprintf('%i ',ad.control.spectra.visible);
     msgStr = sprintf(...
         'Currently invisible: [ %s]; currently visible: [ %s]; total: %i',...
         invStr,visStr,length(ad.data));
-    add2status(msgStr);
+    TAmsg(msgStr,'debug');
     clear msgStr;
     
     % Update main GUI's axes and panels
@@ -192,9 +192,9 @@ try
     
 catch exception
     try
-        msgStr = ['An exception occurred. '...
-            'The bug reporter should have been opened'];
-        add2status(msgStr);
+        msgStr = ['An exception occurred in ' ...
+            exception.stack(1).name  '.'];
+        TAmsg(msgStr,'error');
     catch exception2
         exception = addCause(exception2, exception);
         disp(msgStr);

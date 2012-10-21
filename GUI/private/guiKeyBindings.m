@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-12, Till Biskup
-% 2012-04-20
+% 2012-10-21
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -35,7 +35,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '2'
@@ -43,7 +43,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '3'
@@ -51,7 +51,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '4'
@@ -59,7 +59,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '5'
@@ -67,7 +67,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '6'
@@ -75,7 +75,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '7'
@@ -83,7 +83,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '8'
@@ -91,7 +91,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 case '9'
@@ -99,7 +99,7 @@ try
                     if status
                         % Something went wrong...
                         msgStr = 'Something went wrong with switching the panels.';
-                        add2status(msgStr);
+                        TAmsg(msgStr,'warning');
                     end
                     return;
                 % SWITCH DISPLAY MODE: Ctrl/Cmd+x/y/z

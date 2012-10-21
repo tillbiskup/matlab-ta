@@ -7,7 +7,7 @@ function status = update_sliderPanel()
 %            0: successfully updated main axis
 
 % (c) 2011-12, Till Biskup
-% 2012-01-19
+% 2012-10-21
 
 % Is there currently a TAgui object?
 mainWindow = guiGetWindowHandle;
@@ -252,8 +252,9 @@ switch ad.control.axis.displayType
             ad.data{ad.control.spectra.active}.display.displacement.y...
             );
     otherwise
-        msg = sprintf('Display type %s currently unsupported',ad.control.axis.displayType);
-        add2status(msg);
+        msg = sprintf('Display type %s currently unsupported',...
+            ad.control.axis.displayType);
+        TAmsg(msg,'warning');
 end
 
 status = 0;

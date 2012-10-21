@@ -1,5 +1,6 @@
-function handle = guiGetWindowHandle(varargin)
-% GUIGETWINDOWHANDLE Private function to get window handles of GUI windows.
+function handle = TAguiGetWindowHandle(varargin)
+% TAGUIGETWINDOWHANDLE Internal function to get window handles of GUI
+% windows.
 %
 % The idea behind having this function is to have only one place where you
 % have to define the tag of the respective GUI windows (except, of course,
@@ -9,8 +10,8 @@ function handle = guiGetWindowHandle(varargin)
 % "private" directory of the GUI directory.
 %
 % Usage:
-%    handle = guiGetWindowHandle();
-%    handle = guiGetWindowHandle(identifier);
+%    handle = TAguiGetWindowHandle();
+%    handle = TAguiGetWindowHandle(identifier);
 %
 % Where, in the latter case, "identifier" is a string that defines which
 % GUI window to look for. Normally, for convenience, this should be the
@@ -21,7 +22,7 @@ function handle = guiGetWindowHandle(varargin)
 % If no handle could be found, an empty cell array will be returned.
 
 % (c) 2011-12, Till Biskup
-% 2012-02-02
+% 2012-10-21
 
 try
     % Check whether we are called with input argument
@@ -31,34 +32,44 @@ try
         identifier = '';
     end
     
-    % Add all new windows to list of window tags
-    % Ideally, the window tag is identical to the mfilename
     windowTags = struct();
     windowTags.TAgui = 'TAgui';
-    windowTags.TAgui_helpwindow = 'TAgui_helpwindow';
-    windowTags.TAgui_aboutwindow = 'TAgui_aboutwindow';
-    windowTags.TAgui_statuswindow = 'TAgui_statuswindow';
-    windowTags.TAgui_combinewindow = 'TAgui_combinewindow';
-    windowTags.TAgui_combine_settingswindow = 'TAgui_combine_settingswindow';
-    windowTags.TAgui_bugreportwindow = 'TAgui_bugreportwindow';
-    windowTags.TAgui_infowindow = 'TAgui_infowindow';
-    windowTags.TAgui_info_helpwindow = 'TAgui_info_helpwindow';
-    windowTags.TAgui_ACCwindow = 'TAgui_ACCwindow';
-    windowTags.TAgui_ACC_helpwindow = 'TAgui_ACC_helpwindow';
-    windowTags.TAgui_AVGwindow = 'TAgui_AVGwindow';
-    windowTags.TAgui_AVG_helpwindow = 'TAgui_AVG_helpwindow';
-    windowTags.TAgui_MFEwindow = 'TAgui_MFEwindow';
-    windowTags.TAgui_MFE_helpwindow = 'TAgui_MFE_helpwindow';
-    windowTags.TAgui_fitwindow = 'TAgui_fitwindow';
-    windowTags.TAgui_fit_helpwindow = 'TAgui_fit_helpwindow';
-    windowTags.TAgui_fit_parameterwindow = 'TAgui_fit_parameterwindow';
+    
+    % Fill struct with generic names - assuming everybody followed the
+    % conventions of naming GUI windows
+    
+    % Get GUI window filenames
+    guiFileNames = struct2cell(...
+        dir(fullfile(TAinfo('dir'),'GUI','TA*window.m')));
+    guiFileNames = guiFileNames(1,:);
+    guiSubWindowNames = struct2cell(...
+        dir(fullfile(TAinfo('dir'),'GUI','private','TA*window.m')));
+    % Get module subdirectories - do it generically for all modules
+    moduleDirs = struct2cell(dir(fullfile(TAinfo('dir'),'modules')));
+    moduleDirs = moduleDirs(1,[moduleDirs{4,:}]);
+    moduleDirs(strncmp(moduleDirs,'.',1)) = [];
+    if ~isempty(moduleDirs)
+        guiModuleWindowNames = cell(0);
+        for k=1:length(moduleDirs)
+            tmpNames = struct2cell(dir(fullfile(TAinfo('dir'),'modules',...
+                moduleDirs{k},'GUI','TA*window.m')));
+            guiModuleWindowNames = [guiModuleWindowNames tmpNames(1,:)]; %#ok<AGROW>
+        end
+        guiFileNames = [ guiFileNames guiSubWindowNames(1,:) ...
+            guiModuleWindowNames(1,:)];
+    else
+        guiFileNames = [ guiFileNames guiSubWindowNames(1,:)];
+    end
+    for k=1:length(guiFileNames)
+        windowTags.(guiFileNames{k}(1:end-2)) = guiFileNames{k}(1:end-2);
+    end
     
     % Define default tag
     defaultTag = windowTags.TAgui;
     
     if identifier
         if isfield(windowTags,identifier)
-            handle = findobj('Tag',getfield(windowTags,identifier));
+            handle = findobj('Tag',windowTags.(identifier));
         else
             handle = cell(0,1);
         end

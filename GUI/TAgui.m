@@ -7,7 +7,7 @@ function varargout = TAgui(varargin)
 % 2012-10-21
 
 % Make GUI effectively a singleton
-singleton = guiGetWindowHandle();%findobj('Tag','TAgui_mainwindow');
+singleton = guiGetWindowHandle();
 if (singleton)
     figure(singleton);
     varargout{1} = singleton;
@@ -36,7 +36,7 @@ uicontrol('Tag','InitialisingText',...
     'Position',[10 10 280 55]...
     );
 
-hMainFigure = figure('Tag','TAgui_mainwindow',...
+hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
     'Name','TA GUI : Main Window',...
     'Units','Pixels',...
@@ -626,8 +626,7 @@ if (nargout == 1)
 end
 
 % Set status message
-add2status('TA GUI main window initialised successfully.');
-%update_statuswindow(ad.control.status);
+TAmsg('TA GUI main window initialised successfully.','info');
 
 % Add keypress function to every element that can have one...
 handles = findall(...
@@ -659,7 +658,7 @@ if isfield(ad.configuration,'start') && ...
             conf.start.tip = showTips;
             warnings = guiConfigWrite(mfilename,conf);
             if warnings
-                add2status(warnings);
+                TAmsg(warnings,'warning');
             end
         end
     end
@@ -672,7 +671,7 @@ end
 function slider_v1_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -684,8 +683,9 @@ function slider_v1_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.position.x = ...
                     int16(get(source,'Value'));
             otherwise
-                msg = sprintf('Display type %s currently unsupported',displayType);
-                add2status(msg);
+                msgStr = sprintf('Display type %s currently unsupported',...
+                    displayType);
+                TAmsg(msgStr,'warning');
         end
         
         % Update appdata of main window
@@ -698,9 +698,9 @@ function slider_v1_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -718,7 +718,7 @@ end
 function slider_v2_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Convert slider value to scaling factor
@@ -740,8 +740,9 @@ function slider_v2_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.scaling.z = ...
                     scalingFactor;
             otherwise
-                msg = sprintf('Display type %s currently unsupported',displayType);
-                add2status(msg);
+                msgStr = sprintf('Display type %s currently unsupported',...
+                    displayType);
+                TAmsg(msgStr,'warning');
         end
         
         % Update appdata of main window
@@ -754,9 +755,9 @@ function slider_v2_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -774,7 +775,7 @@ end
 function slider_v3_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -789,8 +790,9 @@ function slider_v3_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.displacement.z = ...
                     get(source,'Value');
             otherwise
-                msg = sprintf('Display type %s currently unsupported',displayType);
-                add2status(msg);
+                msgStr = sprintf('Display type %s currently unsupported',...
+                    displayType);
+                TAmsg(msgStr,'warning');
         end
         
         % Update appdata of main window
@@ -803,9 +805,9 @@ function slider_v3_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -823,7 +825,7 @@ end
 function slider_h1_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Convert slider value to scaling factor
@@ -845,8 +847,9 @@ function slider_h1_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.scaling.y = ...
                     scalingFactor;
             otherwise
-                msg = sprintf('Display type %s currently unsupported',displayType);
-                add2status(msg);
+                msgStr = sprintf('Display type %s currently unsupported',...
+                    displayType);
+                TAmsg(msgStr,'warning');
         end
         
         % Update appdata of main window
@@ -859,9 +862,9 @@ function slider_h1_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -879,7 +882,7 @@ end
 function slider_h2_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Depending on display type settings
@@ -894,8 +897,9 @@ function slider_h2_Callback(source,~)
                 ad.data{ad.control.spectra.active}.display.displacement.y = ...
                     get(source,'Value');
             otherwise
-                msg = sprintf('Display type %s currently unsupported',displayType);
-                add2status(msg);
+                msgStr = sprintf('Display type %s currently unsupported',...
+                    displayType);
+                TAmsg(msg,'warning');
         end
         
         % Update appdata of main window
@@ -908,9 +912,9 @@ function slider_h2_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -928,7 +932,7 @@ end
 function zoom_togglebutton_Callback(source,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         if (get(source,'Value'))
@@ -944,9 +948,9 @@ function zoom_togglebutton_Callback(source,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -964,7 +968,7 @@ end
 function fullscale_pushbutton_Callback(~,~)
     try
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Get handles of main window
@@ -978,9 +982,9 @@ function fullscale_pushbutton_Callback(~,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1002,7 +1006,7 @@ function reset_pushbutton_Callback(source,~)
         end
         
         % Get appdata of main window
-        mainWindow = findobj('Tag','TAgui_mainwindow');
+        mainWindow = guiGetWindowHandle();
         ad = getappdata(mainWindow);
         
         % Reset displacement and scaling for current spectrum
@@ -1024,9 +1028,9 @@ function reset_pushbutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1050,9 +1054,9 @@ function export_pushbutton_Callback(~,~)
         update_mainAxis(newFig);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1074,13 +1078,13 @@ function tbg_Callback(source,~)
         if status
             % Something went wrong...
             msgStr = 'Something went wrong with switching the panels.';
-            add2status(msgStr);
+            TAmsg(msgStr,'warning');
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1100,9 +1104,9 @@ function closeGUI(~,~)
         guiClose();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1122,9 +1126,9 @@ function keyBindings(src,evt)
         guiKeyBindings(src,evt);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1155,9 +1159,9 @@ function displaytype_popupmenu_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1206,7 +1210,7 @@ function previous_pushbutton_Callback(~,~)
         msgStr{end+1} = sprintf(...
             'Currently invisible: [ %s]; currently visible: [ %s]; total: %i',...
             invStr,visStr,length(ad.data));
-        add2status(msgStr);
+        TAmsg(msgStr,'info');
         clear msgStr;
         
         % Update processing panel
@@ -1228,9 +1232,9 @@ function previous_pushbutton_Callback(~,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1279,7 +1283,7 @@ function next_pushbutton_Callback(~,~)
         msgStr{end+1} = sprintf(...
             'Currently invisible: [ %s]; currently visible: [ %s]; total: %i',...
             invStr,visStr,length(ad.data));
-        add2status(msgStr);
+        TAmsg(msgStr,'info');
         clear msgStr;
         
         % Update processing panel
@@ -1300,10 +1304,10 @@ function next_pushbutton_Callback(~,~)
         %Update main axis
         update_mainAxis();
     catch exception
-        try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+        try 
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

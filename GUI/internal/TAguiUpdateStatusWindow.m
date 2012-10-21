@@ -1,5 +1,5 @@
-function status = update_statuswindow(statusmessages)
-% UPDATE_STATUSWINDOW Helper function that updates the status window
+function status = TAguiUpdateStatusWindow(statusmessages)
+% TAGUIUPDATESTATUSWINDOW Helper function that updates the status window
 %   of the TA GUI, namely TAgui_statuswindow.
 %
 %   STATUSMESSAGES: cell array containing the complete status messages
@@ -11,11 +11,11 @@ function status = update_statuswindow(statusmessages)
 %   Using the findjobj function from Y. Altman, it ensures that always
 %   the last (i.e., most current) line of the status window is visible.
 
-% (c) 2011, Till Biskup
-% 2011-11-27
+% (c) 2011-12, Till Biskup
+% 2012-10-21
 
 % Is there currently a TAgui_statuswindow object?
-statuswindow = guiGetWindowHandle('TAgui_statuswindow');
+statuswindow = TAguiGetWindowHandle('TAgui_statuswindow');
 if (isempty(statuswindow))
     status = -1;
     return;

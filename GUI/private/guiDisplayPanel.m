@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-04-12
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1695,9 +1695,9 @@ function pages_buttongroup_Callback(source,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1890,9 +1890,9 @@ function pushbutton_Callback(~,~,action)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1933,9 +1933,9 @@ function checkbox_Callback(source,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -1992,9 +1992,9 @@ function popupmenu_Callback(source,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2044,9 +2044,9 @@ function edit_Callback(source,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2087,7 +2087,7 @@ function axislabels_edit_Callback(source,~,label)
                     mfilename ...
                     )...
                     };
-                add2status(msgstr);
+                TAmsg(msgstr,'warning');
                 return;
         end
         
@@ -2098,9 +2098,9 @@ function axislabels_edit_Callback(source,~,label)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2168,9 +2168,9 @@ function axislabels_getfromactivedataset_pushbutton_Callback(~,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2212,7 +2212,7 @@ function axislimits_edit_Callback(source,~,limit)
                 else
                     set(source,'String',num2str(ad.control.axis.limits.x.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    add2status(msgstr);
+                    TAmsg(msgstr,'warning');
                     return;
                 end
             case 'ymin'
@@ -2224,7 +2224,7 @@ function axislimits_edit_Callback(source,~,limit)
                 else
                     set(source,'String',num2str(ad.control.axis.limits.y.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    add2status(msgstr);
+                    TAmsg(msgstr,'warning');
                     return;
                 end
             case 'zmin'
@@ -2236,7 +2236,7 @@ function axislimits_edit_Callback(source,~,limit)
                 else
                     set(source,'String',num2str(ad.control.axis.limits.z.max));
                     msgstr = 'Upper limit of an axis must be always bigger than lower limit.';
-                    add2status(msgstr);
+                    TAmsg(msgstr,'warning');
                     return;
                 end
             otherwise
@@ -2246,7 +2246,7 @@ function axislimits_edit_Callback(source,~,limit)
                     mfilename ...
                     )...
                     };
-                add2status(msgstr);
+                TAmsg(msgstr,'warning');
                 return;
         end
         
@@ -2260,9 +2260,9 @@ function axislimits_edit_Callback(source,~,limit)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2295,9 +2295,9 @@ function axislimits_auto_checkbox_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2352,9 +2352,9 @@ function highlight_checkbox_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2405,7 +2405,7 @@ function highlight_method_popupmenu_Callback(source,eventdata)
                     'Value',1);
             otherwise
                 msg = sprintf('Highlight type %s currently unsupported',highlightType);
-                add2status(msg);
+                TAmsg(msg,'warning');
         end
         
         % Update appdata of main window
@@ -2418,9 +2418,9 @@ function highlight_method_popupmenu_Callback(source,eventdata)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2495,9 +2495,9 @@ function highlight_value_popupmenu_Callback(~,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2531,9 +2531,9 @@ function grid_x_togglebutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2567,9 +2567,9 @@ function grid_y_togglebutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2603,9 +2603,9 @@ function grid_minor_togglebutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2635,9 +2635,9 @@ function grid_zero_togglebutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2726,9 +2726,9 @@ function grid_legend_togglebutton_Callback(source,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2790,9 +2790,9 @@ function normalise_togglebutton_Callback(source,~)
         update_sliderPanel();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2844,9 +2844,9 @@ function datasets_listbox_Callback(~,~)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2885,9 +2885,9 @@ function linewidth_popupmenu_Callback(~,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -2930,7 +2930,7 @@ function linestyle_popupmenu_Callback(source,~,action)
                             ad.data{active}.line.style = 'none';
                         otherwise
                             % That shall never happen
-                            add2status('TAgui : guiDisplayPanel: Unknown line style');
+                            TAmsg('TAgui : guiDisplayPanel: Unknown line style','warning');
                     end
                 end
             case 'zeroline'
@@ -2947,14 +2947,14 @@ function linestyle_popupmenu_Callback(source,~,action)
                         ad.control.axis.grid.zero.style = 'none';
                     otherwise
                         % That shall never happen
-                        add2status('TAgui : guiDisplayPanel: Unknown line style');
+                        TAmsg('TAgui : guiDisplayPanel: Unknown line style','warning');
                 end
             otherwise
                 msgStr = sprintf([...
                     'TAgui>guiDisplayPanel>linestyle_popupmenu_Callback: ',...
                     'Unknown action "%s"'],action);
                 disp(msgStr);
-                add2status(msgStr);
+                TAmsg(msgStr,'warning');
         end
         % Update appdata of main window
         setappdata(mainWindow,'data',ad.data);
@@ -2963,9 +2963,9 @@ function linestyle_popupmenu_Callback(source,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3028,7 +3028,7 @@ function linemarker_popupmenu_Callback(~,~)
                     ad.data{active}.line.marker.type = 'h';
                 otherwise
                     % That shall never happen
-                    add2status('TAgui : guiDisplayPanel: Unknown line marker');
+                    TAmsg('TAgui : guiDisplayPanel: Unknown line marker','warning');
             end
             % Update appdata of main window
             setappdata(mainWindow,'data',ad.data);
@@ -3037,9 +3037,9 @@ function linemarker_popupmenu_Callback(~,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3123,16 +3123,16 @@ function axesexport_pushbutton_Callback(~,~)
         status = fig2file(newFig,fileName,...
             'fileType',fileType,'exportFormat',exportFormat);
         if status
-            add2status(status);
+            TAmsg(status,'warning');
         end
         
         % Close figure window
         close(newFig);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3223,7 +3223,7 @@ function dataexport_pushbutton_Callback(~,~)
                     ad.data{ad.control.spectra.active}.display.position.x;
             otherwise
                 msg = 'Cannot determine cross section direction (2D mode)';
-                add2status(msg);
+                TAmsg(msg,'error');
                 msgbox(msg,'Error with exporting 1D','error');
         end
         export1Dparameters.display.MFEdisplay = MFEline;
@@ -3241,7 +3241,7 @@ function dataexport_pushbutton_Callback(~,~)
         status = TAexport1D(...
             ad.data{ad.control.spectra.active},fileName,export1Dparameters);
         if status
-            add2status(status);
+            TAmsg(status,'warning');
             msgbox(status,'Problems with exporting 1D','warn');
         else
             msgbox(sprintf('%s\n%s',...
@@ -3251,9 +3251,9 @@ function dataexport_pushbutton_Callback(~,~)
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3343,14 +3343,14 @@ function show3d_edit_Callback(source,~,label)
                     mfilename ...
                     )...
                     };
-                add2status(msgstr);
+                TAmsg(msgstr,'warning');
                 return;
         end
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3422,9 +3422,9 @@ function show3d_pushbutton_Callback(~,~)
 
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3493,14 +3493,14 @@ function export3d_pushbutton_Callback(~,~)
         status = fig2file(figHandle,fileName,...
             'fileType',fileType,'exportFormat',exportFormat);
         if status
-            add2status(msg);
+            TAmsg(msg,'warning');
         end
         
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3583,9 +3583,9 @@ function threshold_checkbox_Callback(source,~,label)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3678,9 +3678,9 @@ function threshold_edit_Callback(source,~,label)
         update_displayPanel();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -3722,13 +3722,13 @@ function datasetChangeLabel(index)
         msgStr{end+1} = sprintf(...
             'Currently invisible: [ %s]; currently visible: [ %s]; total: %i',...
             invStr,visStr,length(ad.data));
-        add2status(msgStr);
+        TAmsg(msgStr,'info');
         clear msgStr;
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);

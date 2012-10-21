@@ -7,7 +7,7 @@ function handle = guiProcessingPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-12, Till Biskup
-% 2012-04-10
+% 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -498,9 +498,9 @@ function pages_buttongroup_Callback(source,~)
         update_visibleSpectra();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -539,7 +539,7 @@ function pushbutton_Callback(~,~,action)
             case 'MFon2MFoff'
                 [ad.data{active},warnings] = TAsumMFE(ad.data{active});
                 if ~isempty(warnings)
-                    add2status(warnings);
+                    TAmsg(warnings,'warning');
                 else
                     if ~any(ad.control.spectra.modified==active)
                         ad.control.spectra.modified(end+1) = active;
@@ -565,7 +565,7 @@ function pushbutton_Callback(~,~,action)
                 [resdata,warnings] = TAalgebra(...
                     ad.data([primary,secondary]),operation);
                 if ~isempty(warnings)
-                    add2status(warnings);
+                    TAmsg(warnings,'warning');
                 end
                 % If result is not empty, assign
                 if ~isempty(resdata)
@@ -599,7 +599,7 @@ function pushbutton_Callback(~,~,action)
                     update_processingPanel();
                     update_mainAxis();
                 else
-                    add2status(warnings);
+                    TAmsg(warnings,'warning');
                 end
             otherwise
                 disp([mfilename '() : pushbutton_Callback() : '...
@@ -611,9 +611,9 @@ function pushbutton_Callback(~,~,action)
         update_visibleSpectra();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -654,7 +654,7 @@ function corrections_pushbutton_Callback(~,~,correction)
                     'Correction method %s unknown or not (yet) supported.',...
                     correction);
                 msg{2} = 'If you think that this is a bug, please file a bug report.';
-                status = add2status(msg);
+                status = TAmsg(msg,'warning');
                 % If for whatever weird reason the TA GUI contained no
                 % status field, print it to the commmand line
                 if (status == -2)
@@ -667,9 +667,9 @@ function corrections_pushbutton_Callback(~,~,correction)
         update_visibleSpectra();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -725,9 +725,9 @@ function listbox_Callback(~,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -883,9 +883,9 @@ function edit_Callback(source,~,action)
         update_mainAxis();
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
@@ -915,9 +915,9 @@ function datasetChangeLabel(index)
         setappdata(mainWindow,'data',ad.data);
     catch exception
         try
-            msgStr = ['An exception occurred. '...
-                'The bug reporter should have been opened'];
-            add2status(msgStr);
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
         catch exception2
             exception = addCause(exception2, exception);
             disp(msgStr);
