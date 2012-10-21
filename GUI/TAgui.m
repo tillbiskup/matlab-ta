@@ -32,8 +32,8 @@ try
     desktopX = desktopMainFrame.getX;
     desktopY = desktopMainFrame.getY;
     
-    splashX = desktopW/2+desktopX-splashW/2;
-    splashY = desktopH/2+desktopY-splashH/2;
+    splashX = floor(desktopW/2+desktopX-splashW/2);
+    splashY = floor(desktopH/2+desktopY-splashH/2);
 catch exception
     trEPRmsg('Failed to get coordinates of main Matlab window - nevermind',...
         'warning');
