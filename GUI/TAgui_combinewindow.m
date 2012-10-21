@@ -1012,7 +1012,7 @@ function pushbutton_Callback(~,~,action)
 
                 % Look for all subwindows and delete them if necessary
                 delete(findobj('-regexp','Tag','TAgui_combine_*'));
-                delete(guiGetWindowHandle(mfilename));
+                delete(TAguiGetWindowHandle(mfilename));
             otherwise
                 disp(['TAgui_combinewindow: pushbutton_Callback(): '...
                     'Unknown action "' action '"']);

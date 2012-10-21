@@ -38,7 +38,7 @@ try
     delete(findobj('-regexp','Tag','TA_gui_*'));
     
     % Close GUI
-    delete(guiGetWindowHandle);
+    delete(TAguiGetWindowHandle);
     
 catch exception
     % Hm... that should really not happen.

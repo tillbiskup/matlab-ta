@@ -2246,7 +2246,7 @@ function pushbutton_Callback(~,~,action)
                 if ishandle(hHelpWindow)
                     delete(hHelpWindow);
                 end
-                delete(guiGetWindowHandle(mfilename));
+                delete(TAguiGetWindowHandle(mfilename));
             otherwise
                 msgStr = ['TAgui_fitwindow: pushbutton_Callback(): '...
                     'Unknown action ' action];

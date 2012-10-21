@@ -2400,7 +2400,7 @@ function pushbutton_Callback(~,~,action)
                         delete(hSubWindows(k));
                     end
                 end
-                delete(guiGetWindowHandle(mfilename));
+                delete(TAguiGetWindowHandle(mfilename));
             otherwise
                 disp('TAgui_fitwindow: pushbutton_Callback(): Unknown action');
                 disp(action);

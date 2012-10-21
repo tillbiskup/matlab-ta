@@ -3828,7 +3828,7 @@ function guiClose()
             delete(hHelpWindow);
         end
         TAmsg('Closing Info GUI.','info');
-        delete(guiGetWindowHandle(mfilename));
+        delete(TAguiGetWindowHandle(mfilename));
     catch exception
         try
             msgStr = ['An exception occurred in ' ...

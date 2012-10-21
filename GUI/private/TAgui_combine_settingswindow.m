@@ -597,7 +597,7 @@ function pushbutton_Callback(~,~,action)
                 calculateScalingFactor()
             case 'Close'
                 TAmsg('Combine GUI settings window closed.','info');
-                delete(guiGetWindowHandle(mfilename));
+                delete(TAguiGetWindowHandle(mfilename));
                 varargout{1} = ad.scale;
             otherwise
                 disp(['TAgui_combine_settingswindow: '...

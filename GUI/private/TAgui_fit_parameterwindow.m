@@ -253,7 +253,7 @@ function pushbutton_Callback(~,~,action)
                 return;
             case 'apply'
                 % Apply ad.fit to main Fit GUI
-                setappdata(guiGetWindowHandle('TAgui_fitwindow'),...
+                setappdata(TAguiGetWindowHandle('TAgui_fitwindow'),...
                     'fit',ad.fit);
                 return;
             case 'reset'

@@ -2019,7 +2019,7 @@ function pushbutton_Callback(~,~,action)
                 if ishandle(hHelpWindow)
                     delete(hHelpWindow);
                 end
-                delete(guiGetWindowHandle(mfilename));
+                delete(TAguiGetWindowHandle(mfilename));
             otherwise
                 msgStr = ([mfilename ' : pushbutton_Callback() : '...
                     'Unknown action "' action '"']);
