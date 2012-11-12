@@ -35,7 +35,7 @@ function status = fig2file(figHandle,fileName,varargin)
 %
 
 % (c) 2011-12, Till Biskup
-% 2012-02-06
+% 2012-11-12
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
@@ -201,7 +201,8 @@ try
             end    
         end
         % Reset axis units
-        axisHandle = findobj(allchild(figHandle),'type','axes');
+        axisHandle = findobj(allchild(figHandle),'type','axes',...
+            '-not','tag','legend');
         if ~isempty(axisHandle)
             set(axisHandle,'Unit',oldAxisUnits);
             set(axisHandle,'Position',oldAxisPosition);

@@ -17,7 +17,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              a copy is copied to the history.info field
 
 % (c) 2011-12, Till Biskup
-% 2012-08-09
+% 2012-11-12
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -97,7 +97,7 @@ try
             };
         return;
     end
-
+    
     % Predefine fields for accData
     accData = TAdataStructure;
     % label - string
@@ -117,12 +117,15 @@ try
         accData.display = data{masterId}.display;
     end
     
-    fprintf('\n%s: l. 120\n',mfilename);
-
     % Handle sample parameters
     sampleFieldNames = fieldnames(accData.sample);
     for k=1:length(sampleFieldNames)
-        if isempty(data{masterId}.sample.(sampleFieldNames{k}))
+        if ~isfield(data{masterId}.sample,sampleFieldNames{k})
+            accData.sample.(sampleFieldNames{k}) = 'N/A';
+        elseif isempty(data{masterId}.sample.(sampleFieldNames{k}))
+            accData.sample.(sampleFieldNames{k}) = ...
+                data{masterId}.sample.(sampleFieldNames{k});
+        elseif iscell(data{masterId}.sample.(sampleFieldNames{k}))
             accData.sample.(sampleFieldNames{k}) = ...
                 data{masterId}.sample.(sampleFieldNames{k});
         elseif sum(strcmpi(data{masterId}.sample.(sampleFieldNames{k}),...
