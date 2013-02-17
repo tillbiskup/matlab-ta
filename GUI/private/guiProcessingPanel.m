@@ -6,8 +6,8 @@ function handle = guiProcessingPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-02-17
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -855,6 +855,8 @@ function edit_Callback(source,~,action)
                     round(value/atomic);
             case 'scale'
                 set(source,'String',num2str(value));
+                pushbutton_Callback([],[],'scale');
+                return;
             otherwise
                 disp('guiProcessingPanel : edit_Callback : unknown action');
                 disp(action);
