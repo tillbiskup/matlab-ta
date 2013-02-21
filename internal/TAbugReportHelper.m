@@ -10,8 +10,8 @@ function [status,bugReport] = TAbugReportHelper(exception)
 %    status    - number (0 = OK, -1 = failed)
 %    bugReport - cell array of strings containing the bug report
 
-% (c) 2011, Till Biskup
-% 2011-10-21
+% (c) 2011-13, Till Biskup
+% 2013-02-21
 
 % Set name of Toolbox (makes it easier to reuse this script later on)
 tbname = 'TA toolbox';
@@ -32,7 +32,8 @@ end
 % no MException object. Therefore, check Matlab(TM) version.
 v = ver('Matlab');
 tk = regexp(v.Version,'(\d+)\.(\d+)','tokens');
-if (str2double(tk{1}{1}) < 7) || (str2double(tk{1}{2}) < 5)
+if (str2double(tk{1}{1}) < 7) || ...
+        ((str2double(tk{1}{1}) == 7) && (str2double(tk{1}{2}) < 5))
     disp('Sorry, but your version of Matlab(TM) has no MException object yet.');
     disp(['Your version of Matlab(TM) is ' version]);
     disp('There is currently no way to use the bug report helper...');
