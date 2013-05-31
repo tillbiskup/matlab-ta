@@ -1,4 +1,4 @@
-function varargout = xmlRead(filename)
+function varargout = xmlRead(filename,varargin)
 % XMLREAD Read XML file
 %
 % Usage:
@@ -15,8 +15,8 @@ function varargout = xmlRead(filename)
 %
 % SEE ALSO XMLZIPREAD
 
-% (c) 2011-12, Till Biskup
-% 2012-02-06
+% (c) 2011-13, Till Biskup
+% 2013-05-31
 
 % Parse input arguments using the inputParser functionality
 parser = inputParser;   % Create an instance of the inputParser class.
@@ -26,7 +26,7 @@ parser.StructExpand = true; % Enable passing arguments in a structure
 parser.addRequired('filename', @(x)ischar(x) || iscell(x));
 % Note, this is to be compatible with TAload - currently without function!
 parser.addParamValue('checkFormat',logical(true),@islogical);
-parser.parse(filename);
+parser.parse(filename,varargin{:});
 % Do the real stuff
 if ~exist(filename,'file')
     if nargout
