@@ -7,8 +7,8 @@ function status = appendDatasetToMainGUI(dataset,varargin)
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-06-02
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -32,6 +32,9 @@ try
     
     % Get datastructure
     dataStructure = TAguiDataStructure('datastructure');
+    
+    % Copy dataStructure into dataset
+    dataset = structcopy(dataset,dataStructure);
     
     % Sanitise dataset a bit - check for some of the necessary fields in
     % structure we need not to crash the GUI immediately

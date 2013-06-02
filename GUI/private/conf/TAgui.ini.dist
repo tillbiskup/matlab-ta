@@ -1,6 +1,6 @@
 % Sample configuration file for the TAgui function of the TA toolbox
 %
-% (c) 2011-12, Till Biskup <till@till-biskup.de>
+% (c) 2011-13, Till Biskup <till@till-biskup.de>
 %
 % This file serves as an example and documentation for the real
 % configuration in the file "TAgui.ini" in the same directory.
@@ -41,8 +41,6 @@ combine = 0
 loaddir = 0
 infofile = 0
 AVG = 1
-POC = 0
-BGC = 0
 labels = 1
 format = EP LP920 ASCII
 

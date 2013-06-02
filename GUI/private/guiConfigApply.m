@@ -13,8 +13,8 @@ function status = guiConfigApply(guiname)
 %
 % See also GUICONFIGLOAD, INIFILEREAD
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-06-01
 
 status = 0;
 
@@ -95,14 +95,10 @@ try
                 set(gh.load_panel_preprocessing_avg_checkbox,...
                     'Value',ad.configuration.load.AVG);
             end
-            if isfield(ad.configuration.load,'POC')
-                set(gh.load_panel_preprocessing_offset_checkbox,...
-                    'Value',ad.configuration.load.POC);
-            end
-            if isfield(ad.configuration.load,'BGC')
-                set(gh.load_panel_preprocessing_background_checkbox,...
-                    'Value',ad.configuration.load.BGC);
-            end
+%             if isfield(ad.configuration.load,'POC')
+%                 set(gh.load_panel_preprocessing_offset_checkbox,...
+%                     'Value',ad.configuration.load.POC);
+%             end
             if isfield(ad.configuration.load,'labels')
                 set(gh.load_panel_axislabels_checkbox,...
                     'Value',ad.configuration.load.labels);

@@ -24,7 +24,7 @@ function [data,warnings] = TAASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2013, Till Biskup
-% 2013-05-31
+% 2013-06-02
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -41,12 +41,14 @@ p.addRequired('fileName', @(x)ischar(x) || iscell(x) || isstruct(x));
 p.addParamValue('checkFormat',logical(true),@islogical);
 p.addParamValue('sortfiles',logical(true),@islogical);
 p.addParamValue('loadInfoFile',logical(false),@islogical);
+p.addParamValue('parameters',struct(),@isstruct);
 p.parse(fileName,varargin{:});
 
 % Assign optional arguments from parser
 checkFormat = p.Results.checkFormat;
 sortfiles = p.Results.sortfiles;
 loadInfoFile = p.Results.loadInfoFile;
+parameters = p.Results.parameters;
 
 warnings = cell(0);
 
@@ -128,7 +130,7 @@ end
 data = cell(length(uniqueIndices),1);
 for k=1:length(uniqueIndices)
     [data{k},warning] = loadFile(fileName{uniqueIndices(k)},...
-        checkFormat,loadInfoFile);
+        checkFormat,loadInfoFile,parameters);
     if ~isempty(warning)
         warnings{end+1} = warning;
     end
@@ -140,7 +142,7 @@ end
 
 end
 
-function [data,warnings] = loadFile(fileName,~,~)
+function [data,warnings] = loadFile(fileName,~,~,parameters)
 % LOADFILE Load file and return contents. 
 %
 % fileName     - string
@@ -152,6 +154,10 @@ function [data,warnings] = loadFile(fileName,~,~)
 % loadInfoFile - logical (true/false)
 %                Whether to load accompanying info file (with same
 %                basename)
+%
+% parameters   - struct
+%                Parameters determining how to read the file
+%                Normally retrieved from TAgui_ASCIIimporterwindow
 %
 % data         - structure
 %                According to the toolbox data structure
@@ -166,24 +172,73 @@ function [data,warnings] = loadFile(fileName,~,~)
 formatNameString = 'ASCII';
 
 warnings = cell(0);
-csv = logical(false);
 
 % Assign empty structure to output argument
 data = TAdataStructure();
 
-% First, try to read data with TAB as separator
-raw = importdata(fileName,'\t');
-% Check if that worked, if not, use COMMA as separator
-if ~isfield(raw,'data')
-    raw = importdata(fileName,',');
-    csv = logical(true);
+% Read data
+% If parameters is an empty structure (default)
+if isempty(parameters)
+    % First, try to read data with TAB as separator
+    raw = importdata(fileName,'\t');
+    % Check if that worked, if not, use COMMA as separator
+    if ~isfield(raw,'data')
+        raw = importdata(fileName,',');
+    end
+    % Check if that worked, if not, try to use bare "load" command
+    if ~isfield(raw,'data')
+        clear raw;
+        raw.data = load(fileName);
+    end
+% If we have parameters
+else
+    % First, try to read data
+    if ~isempty(parameters.separator) && parameters.nHeaderLines
+        raw = importdata(fileName,...
+            parameters.separator,parameters.nHeaderLines);
+        % If something went wrong, try with other delimiters
+        if ~isfield(raw,'data')
+            % First, try to read data with TAB as separator
+            raw = importdata(fileName,'\t',parameters.nHeaderLines);
+            % Check if that worked, if not, use COMMA as separator
+            if ~isfield(raw,'data')
+                raw = importdata(fileName,',',parameters.nHeaderLines);
+            end
+            % Check if that worked, if not, use SEMICOLON as separator
+            if ~isfield(raw,'data')
+                raw = importdata(fileName,';',parameters.nHeaderLines);
+            end
+            % Check if that worked, if not, use space as separator
+            if ~isfield(raw,'data')
+                raw = importdata(fileName,' ',parameters.nHeaderLines);
+            end
+        end
+    elseif ~isempty(parameters.separator)
+        raw = importdata(fileName,parameters.separator);
+        % If something went wrong, try with automatic detection of
+        % delimiter
+        if ~isfield(raw,'data')
+            raw.data = importdata(fileName);
+        end
+    elseif parameters.nHeaderLines
+        % First, try to read data with TAB as separator
+        raw = importdata(fileName,'\t',parameters.nHeaderLines);
+        % Check if that worked, if not, use COMMA as separator
+        if ~isfield(raw,'data')
+            raw = importdata(fileName,',',parameters.nHeaderLines);
+        end
+        % Check if that worked, if not, use SEMICOLON as separator
+        if ~isfield(raw,'data')
+            raw = importdata(fileName,';',parameters.nHeaderLines);
+        end
+        % Check if that worked, if not, use space as separator
+        if ~isfield(raw,'data')
+            raw = importdata(fileName,' ',parameters.nHeaderLines);
+        end
+    else
+        raw.data = load(fileName);
+    end
 end
-% Check if that worked, if not, try to use bare "load" command
-if ~isfield(raw,'data')
-    clear raw;
-    raw.data = load(fileName);
-end
-
 
 % If there is still no "data" field in "raw", something went wrong...
 if ~isfield(raw,'data')
@@ -195,10 +250,74 @@ end
 % Assign data
 data.data = raw.data;
 
-% Assign (remaining) axis values
-% x and y values are simply indices of data
-data.axes.x.values = 1:1:size(data.data,2);
-data.axes.y.values = 1:1:size(data.data,1);
+% As we are now sure that we have some data, handle rest of parameters, if
+% we have some
+if isempty(parameters)
+    % Assign (remaining) axis values
+    % x and y values are simply indices of data
+    data.axes.x.values = 1:1:size(data.data,2);
+    data.axes.y.values = 1:1:size(data.data,1);
+else
+    % Deal with X axes
+    data.axes.x.measure = parameters.axis.x.measure;
+    data.axes.x.unit = parameters.axis.x.unit;
+    switch lower(parameters.axis.x.values.type)
+        case 'index'
+            data.axes.x.values = 1:1:size(data.data,2);
+        case 'row/column'
+            if parameters.axis.x.values.row
+                data.axes.x.values = ...
+                    data.data(parameters.axis.x.values.row,:);
+                % Remove row from data
+                data.data(parameters.axis.x.values.row,:) = [];
+            elseif parameters.axis.x.values.column
+                data.axes.x.values = ...
+                    data.data(:,parameters.axis.x.values.column);
+                % Remove column from data
+                data.data(:,parameters.axis.x.values.column) = [];
+            end
+        case 'range'
+            % Assume equal spacing
+            data.axes.x.values = linspace(...
+                parameters.axis.x.values.start,parameters.axis.x.values.stop,...
+                size(data.data,2));
+    end
+    % Deal with Y axes
+    data.axes.y.measure = parameters.axis.y.measure;
+    data.axes.y.unit = parameters.axis.y.unit;
+    switch lower(parameters.axis.y.values.type)
+        case 'index'
+            data.axes.y.values = 1:1:size(data.data,1);
+        case 'row/column'
+            if parameters.axis.y.values.row
+                data.axes.y.values = ...
+                    data.data(parameters.axis.y.values.row,:);
+                % Remove row from data
+                data.data(parameters.axis.y.values.row,:) = [];
+            elseif parameters.axis.y.values.column
+                data.axes.y.values = ...
+                    data.data(:,parameters.axis.y.values.column);
+                % Remove column from data
+                data.data(:,parameters.axis.y.values.column) = [];
+            end
+        case 'range'
+            % Assume equal spacing
+            data.axes.y.values = linspace(...
+                parameters.axis.y.values.start,parameters.axis.y.values.stop,...
+                size(data.data,1));
+    end
+    % Deal with Z axes
+    data.axes.z.measure = parameters.axis.z.measure;
+    data.axes.z.unit = parameters.axis.z.unit;
+    % Deal with transposing data
+    if parameters.transpose
+        data.data = data.data';
+    end
+end
+
+% Use filename as label
+[~,fn,~] = fileparts(fileName);
+data.label = fn;
 
 % Set file structure
 data.file.name = fileName;

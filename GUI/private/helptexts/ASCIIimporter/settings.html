@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+    </head>
+    <body>
+		<h1>Settings</h1>
+		<p class="intro">
+			The settings panel gives you maximum control over the ASCII import process, allowing to import a great variety of ASCII files into the TA GUI.
+		</p>
+		<h2>Template</h2>
+		<p>
+			As the same kind of ASCII files needs always the same set of parameters for the import, there will be the possibility both to create/save such sets of parameters and to select them from a popupmenu.
+		</p>
+		<p>
+			<strong>Please note:</strong> This feature has not been implemented yet.
+		</p>
+		<h2>General</h2>
+		<p>
+			There is a number of important parameters for the import of ASCII files that are grouped together in the "General" panel.
+		</p>
+		<h3>Separator</h3>
+		<p>
+			The separator used in the ASCII file to separate the fields in a row from each other, such as ",", ";", "\t" (for TAB).
+		</p>
+		<p>
+			<strong>Tip:</strong> Leave the field empty for automatic detection.
+		</p>
+		<h3>Header</h3>
+		<p>
+			The number of header lines in the ASCII file.
+		</p>
+		<h3>Dimensionality</h3>
+		<p>
+			Whether it is a full 2D (normally time vs. wavelength) or a 1D dataset (time or wavelength). As with the TA GUI, the x axis is <em>always</em> associated with the time dimension, the y axis with the wavelength dimension, and the z axis with the intensity.
+		</p>
+		<p>
+			<strong>Please note:</strong> As of early June 2013, the dimensionality feature has not been thoroughly tested. Therefore, please handle with care and please, do report bugs to the author of the toolbox (either via BugZilla or directly via email).
+		</p>
+		<h3>Transpose</h3>
+		<p>
+			Whether to transpose the data in the ASCII file. Transposing is necessary if the rows are not the time profiles.
+		</p>
+		<p>
+			<strong>Please note:</strong> The data get transposed rather late in the import process. Therefore, specifying rows and/or columns for axes refers to the situation as in the file, i.e. <em>before</em> transposing the data.
+		</p>
+		<h2>Axes</h2>
+		<p>
+			As noted above and consistent with the TA GUI, the x axis is <em>always</em> associated with the time dimension, the y axis with the wavelength dimension, and the z axis with the intensity.
+		</p>
+		<p>
+			For each axis, you can provide information about measure and unit, respectively. Please note that these informations are optional and can easily be changed afterwards via the "Info GUI" in the TA GUI.
+		</p>
+		<h3>Values</h3>
+		<p>
+			For x and y axes, the values can be set in a couple of different ways, the easiest (and default) being the <strong>index</strong>, meaning that the axes values are simply the indices of the dimensions of the dataset.
+		</p>
+		<p>
+			Another option is to specify an explicit <strong>range</strong> for the axes. Here, the importer function assumes equal spacing. Therefore, setting the popup menu to "range" will allow you only to enter the boundaries of the respective axis (in the unit specified with "unit" above).
+		</p>
+		<p>
+			The third option is to use one <strong>row or column</strong> of the data, as sometimes the first row/column of the data block is the respective axis. The row/column specified gets removed from the dataset.
+		</p>
+		<h2>Save settings as template</h2>
+		<p>
+			Save a set of import parameters for a given file type to allow easy and fast import. Each template gets a short name (short enough to be sensibly displayed in the popup menu on top of the settings panel). Pressing the <key>Save</key> button will save the parameters as template with the given name.
+		</p>
+		<p>
+			<strong>Please note:</strong> This feature has not been implemented yet.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-06-02
+		</p>
+		</div>
+	</body>
+</html>
