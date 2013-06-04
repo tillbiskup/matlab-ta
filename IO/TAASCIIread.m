@@ -24,7 +24,7 @@ function [data,warnings] = TAASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2013, Till Biskup
-% 2013-06-02
+% 2013-06-04
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -178,7 +178,7 @@ data = TAdataStructure();
 
 % Read data
 % If parameters is an empty structure (default)
-if isempty(parameters)
+if isempty(fieldnames(parameters))
     % First, try to read data with TAB as separator
     raw = importdata(fileName,'\t');
     % Check if that worked, if not, use COMMA as separator
@@ -252,7 +252,7 @@ data.data = raw.data;
 
 % As we are now sure that we have some data, handle rest of parameters, if
 % we have some
-if isempty(parameters)
+if isempty(fieldnames(parameters))
     % Assign (remaining) axis values
     % x and y values are simply indices of data
     data.axes.x.values = 1:1:size(data.data,2);
