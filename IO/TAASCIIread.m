@@ -24,7 +24,7 @@ function [data,warnings] = TAASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2013, Till Biskup
-% 2013-06-04
+% 2013-06-06
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -299,6 +299,11 @@ else
                     data.data(:,parameters.axis.y.values.column);
                 % Remove column from data
                 data.data(:,parameters.axis.y.values.column) = [];
+                % In case that we've loaded x axis from row, delete first
+                % value
+                if parameters.axis.x.values.row
+                    data.axes.x.values(1) = [];
+                end
             end
         case 'range'
             % Assume equal spacing
