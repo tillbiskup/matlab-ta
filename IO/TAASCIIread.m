@@ -24,7 +24,7 @@ function [data,warnings] = TAASCIIread(fileName,varargin)
 % See also: TAload, TAdataStructure
 
 % (c) 2013, Till Biskup
-% 2013-06-06
+% 2013-06-07
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -132,7 +132,7 @@ for k=1:length(uniqueIndices)
     [data{k},warning] = loadFile(fileName{uniqueIndices(k)},...
         checkFormat,loadInfoFile,parameters);
     if ~isempty(warning)
-        warnings{end+1} = warning;
+        warnings = [warnings warning];
     end
 end
 
@@ -218,6 +218,7 @@ else
         % If something went wrong, try with automatic detection of
         % delimiter
         if ~isfield(raw,'data')
+            clear raw;
             raw.data = importdata(fileName);
         end
     elseif parameters.nHeaderLines
@@ -318,6 +319,19 @@ else
     if parameters.transpose
         data.data = data.data';
     end
+end
+
+% Check for correct dimensions of axes and data and if there are
+% inconsistencies, replace with indices
+if length(data.axes.x.values) ~= size(data.data,2)
+    data.axes.x.values = 1:1:size(data.data,2);
+    warnings{end+1} = ...
+        'X axis dimension inconsistent with data. Replaced with indices.';
+end
+if length(data.axes.y.values) ~= size(data.data,1)
+    data.axes.y.values = 1:1:size(data.data,1);
+    warnings{end+1} = ...
+        'Y axis dimension inconsistent with data. Replaced with indices.';
 end
 
 % Use filename as label
