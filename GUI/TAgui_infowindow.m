@@ -5,8 +5,8 @@ function varargout = TAgui_infowindow(varargin)
 %
 % See also TAGUI
 
-% (c) 2012, Till Biskup
-% 2012-10-21
+% (c) 2012-13, Till Biskup
+% 2013-06-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3211,8 +3211,8 @@ function parameter_edit_Callback(source,~,value)
         fieldValue = get(source,'String');
         
         % If value is in matching cell array
-        [matches,~] = max(strcmp(value,matching(:,1)));
-        [matchesTimeProfiles,index] = ...
+        [matches,index] = max(strcmp(value,matching(:,1)));
+        [matchesTimeProfiles,indexTP] = ...
             max(strcmp(value,matchingTimeProfiles(:,1)));
         if matches
             % Check whether there is some function to apply first
@@ -3275,21 +3275,21 @@ function parameter_edit_Callback(source,~,value)
                 return
             end
             % Check whether there is some function to apply first
-            if ~isempty(matching{index,3})
-                fun = str2func(matching{index,3});
-                if strcmp(matching{index,3},'str2double') || ...
-                        strcmp(matching{index,3},'str2num')
+            if ~isempty(matching{indexTP,3})
+                fun = str2func(matching{indexTP,3});
+                if strcmp(matching{indexTP,3},'str2double') || ...
+                        strcmp(matching{indexTP,3},'str2num')
                     fieldValue = strrep(fieldValue,',','.');
                 end
                 fieldValue = fun(fieldValue);
             end
             % Check whether we should get only a particular element
-            if ~isempty(matching{index,4})
-                fieldValue = fieldValue(matching{index,4});
+            if ~isempty(matching{indexTP,4})
+                fieldValue = fieldValue(matching{indexTP,4});
             end
             oldFieldValue = getCascadedField(...
                 ad.data{ad.control.spectra.active},...
-                matching{index,2});
+                matching{indexTP,2});
             % Workaround in case that oldFieldValue is an empty cell
             if iscell(oldFieldValue) && isempty(oldFieldValue)
                 oldFieldValue = '';
@@ -3311,7 +3311,7 @@ function parameter_edit_Callback(source,~,value)
                     setCascadedField(...
                     ad.data{ad.control.spectra.active}.parameters.timeProfiles(...
                     ad.control.spectra.timeProfile{ad.control.spectra.active}),...
-                    matchingTimeProfiles{index,2}, ...
+                    matchingTimeProfiles{indexTP,2}, ...
                     fieldValue);
                 % If current active spectrum is not labeled "modified", do so
                 if isempty(find(ad.control.spectra.modified==ad.control.spectra.active,1))

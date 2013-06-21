@@ -132,7 +132,7 @@ for k=1:length(uniqueIndices)
     [data{k},warning] = loadFile(fileName{uniqueIndices(k)},...
         checkFormat,loadInfoFile,parameters);
     if ~isempty(warning)
-        warnings = [warnings warning];
+        warnings = [warnings warning]; %#ok<AGROW>
     end
 end
 
