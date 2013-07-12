@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+    </head>
+    <body>
+		<h1>disp</h1>
+		<p class="intro">
+			Set various display-specific parameters.
+		</p>
+		<h2>Description</h2>
+		<p>
+			The <tt>disp</tt> command is used to change display-related settings of the GUI, starting with the display modes (<em>x</em>,<em>y</em>,<em>z</em>/2D), continuing with settings such as legend and grid.
+		</p>
+		<h2>Syntax</h2>
+		<p>
+			<tt>disp</tt>
+		</p>
+		<p>
+			<tt>disp &lt;parameter&gt;</tt>
+		</p>
+		<p>
+			<tt>disp &lt;parameter&gt; &lt;value&gt;</tt>
+		</p>
+		<p>
+			<tt>disp &lt;parameter&gt; &lt;value&gt; &lt;value&gt;</tt>
+		</p>
+		<h3>Parameters</h3>
+		<p>
+			The option <tt>&lt;parameter&gt;</tt> following the <tt>disp</tt> command can currently take the following values:
+		</p>
+		<dl>
+			<dt><tt>x|y|z</tt></dt>
+			<dd>Each of these parameters will set one of the corresponding display modes, named "1D along x", "1D along y" and "2D plot".</dd>
+			<dd>Currently, these parameters do not take any additional value.</dd>
+			<dt><tt>grid</tt></dt>
+			<dd>Set grid-related parameters.</dd>
+			<dd>Has to be followed by one of the values described in more detail in the following. Values currently supported are:</dd>
+			<dd><dl>
+				<dt><tt>x</tt></dt>
+				<dd>Toggle display of grid lines for <em>x</em> values.</dd>
+				<dt><tt>y</tt></dt>
+				<dd>Toggle display of grid lines for <em>x</em> values</dd>
+				<dt><tt>minor</tt></dt>
+				<dd>Toggle display of minor grid lines.</dd>
+				<dt><tt>zero</tt></dt>
+				<dd>Toggle display of zero line.</dd>
+			</dl></dd>
+			<dd>Each of these values can be followed by an additional parameter that can be either <tt>on</tt> or <tt>off</tt>. This allows programmatic and unambiguous setting of the respective values.</dd>
+			<dt><tt>legend</tt></dt>
+			<dd>Set legend-related parameters.</dd>
+			<dd>Has to be followed by one of the values described in more detail in the following. Values currently supported are:</dd>
+			<dd><dl>
+				<dt><tt>none</tt></dt>
+				<dd>Do not display any legend.</dd>
+				<dt><tt>auto|best</tt></dt>
+				<dd>Let Matlab&trade; decide where to place the legend.</dd>
+				<dt><tt>nw|northwest</tt></dt>
+				<dd>Locate legend in the upper left corner of the figure.</dd>
+				<dt><tt>ne|northeast</tt></dt>
+				<dd>Locate legend in the upper right corner of the figure.</dd>
+				<dt><tt>sw|southwest</tt></dt>
+				<dd>Locate legend in the lower left corner of the figure.</dd>
+				<dt><tt>se|southeast</tt></dt>
+				<dd>Locate legend in the lower right corner of the figure.</dd>
+				<dt><tt>box</tt></dt>
+				<dd>Toggle between displaying a box around the legend.</dd>
+				<dd>This value can alternatively be followed by an additional parameter that can take the values <tt>on</tt> and <tt>off</tt>, used to programmatically set the box display of the legend.</dd>
+			</dl></dd>
+			<dt><tt>onlyactive</tt></dt>
+			<dd>Toggle displaying only the active dataset.</dd>
+			<dd>Can be followed by an additional parameter that can be either <tt>on</tt> or <tt>off</tt>. This allows programmatic and unambiguous setting of the respective value.</dd>
+			<dt><tt>stdev|std</tt></dt>
+			<dd>Toggle displaying of the standard deviation (std|stdev) in combination with averaged data.</dd>
+			<dd>Can be followed by an additional parameter that can be either <tt>on</tt> or <tt>off</tt>. This allows programmatic and unambiguous setting of the respective value.</dd>
+			<dt><tt>norm|normalise|normalize|normalisation|normalization</tt></dt>
+			<dd>Set normalisation parameters.</dd>
+			<dd>Has to be followed by one of the values described in more detail in the following. Values currently supported are:</dd>
+			<dd><dl>
+				<dt><tt>none|off</tt></dt>
+				<dd>Do not normalise the display.</dd>
+				<dt><tt>pkpk|peaktopeak|pk2pk|peak2peak</tt></dt>
+				<dd>Normalise peak to peak ratio to one.</dd>
+				<dt><tt>amp|amplitude</tt></dt>
+				<dd>Normalise (positive maximum) amplitude to one.</dd>
+			</dl></dd>
+			<dt><tt>limit|limits</tt></dt>
+			<dd>Set limits of the axes in all three dimensions.</dd>
+			<dd>Has to be followed by one of the values described in more detail in the following. Values currently supported are:</dd>
+			<dd><dl>
+				<dt><tt>auto</tt></dt>
+				<dd>Set axes automatically to fit the data displayed.</dd>
+				<dd>Can be followed by an additional parameter that can be either <tt>on</tt> or <tt>off</tt>. This allows programmatic and unambiguous setting of the respective value.</dd>
+				<dt><tt>x|y|z</tt></dt>
+				<dd>Set axes in <em>x</em>, <em>y</em>, and <em>z</em> direction explicitly.</dd>
+				<dd>Has to be followed by two numeric values for the minimum and maximum.</dd>
+			</dl></dd>
+		</dl>
+		<h2>Further Information</h2>
+		<p>
+			Eventually, every display-related setting will be accessible via this or similar commands from the command line of the TA GUI.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-12
+		</p>
+		</div>
+	</body>
+</html>

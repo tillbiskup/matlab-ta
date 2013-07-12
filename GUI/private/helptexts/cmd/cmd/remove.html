@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+    </head>
+    <body>
+		<h1>remove</h1>
+		<p class="intro">
+			Remove datasets from the main GUI.
+		</p>
+		<h2>Description</h2>
+		<p>
+			The <tt>remove</tt> command is used to remove datasets. Alternatively you could click on the &quot;Hide&quot; button in the &quot;Dataset&quot; panel of the main GUI.
+		</p>
+		<h2>Syntax</h2>
+		<p>
+			<tt>remove</tt>
+		</p>
+		<p>
+			<tt>remove visible|invisible|all</tt>
+		</p>
+		<p>
+			<tt>remove visible|invisible|all force</tt>
+		</p>
+		<h3>Options</h3>
+		<p>
+			Currently, the <tt>remove</tt> command takes the following options:
+		</p>
+		<dl>
+			<dt><tt>visible</tt></dt>
+			<dd>Remove all currently visible datasets.</dd>
+			<dt><tt>invisible</tt></dt>
+			<dd>Remove all currently invisible datasets.</dd>
+			<dt><tt>all</tt></dt>
+			<dd>Remove all currently loaded datasets.</dd>
+			<dt><tt>force</tt></dt>
+			<dd>Used in combination with any of the above options, ignore unsaved changes to any of the datasets and silently remove.</dd>
+		</dl>
+		<p>
+			If called without options, <tt>remove</tt> will remove the currently active (selected) dataset. 
+		</p>
+		<h2>Further Information</h2>
+		<p>
+			The <tt>remove</tt> command provides you with a convenient way of removing datasets from the GUI, particularly if you want to remove more than one dataset or the invisible datasets. 
+		</p>
+		<p>
+			Please note: Removing datasets means that they are only removed from the GUI, not from the file system. The only way you may encounter data loss is with using the <tt>force</tt> option or discarding changes you made to datasets you are about to remove from the GUI.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-12
+		</p>
+		</div>
+	</body>
+</html>

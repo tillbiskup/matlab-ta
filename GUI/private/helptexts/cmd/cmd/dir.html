@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+    </head>
+    <body>
+		<h1>dir</h1>
+		<p class="intro">
+			Show/Set directories used internally in the TA GUI.
+		</p>
+		<h2>Description</h2>
+		<p>
+			The <tt>dir</tt> command is used to display and change the directories used internally in the TA GUI for loading, saving and exporting data. Setting each of these directories to a specific value can greatly facilitate the work with the GUI.
+		</p>
+		<h2>Syntax</h2>
+		<p>
+			<tt>dir</tt>
+		</p>
+		<p>
+			<tt>dir &lt;parameter&gt;</tt>
+		</p>
+		<p>
+			<tt>dir &lt;parameter&gt; &lt;value&gt;</tt>
+		</p>
+		<p>
+			If called without parameters, <tt>dir</tt> opens a window displaying all current directory settings of the TA GUI that allows as well to change these.
+		</p>
+		<p>
+			If called with a parameter only, but without value, the current value of the respective parameter will be displayed in the status window of the TA GUI.
+		</p>
+		<h3>Parameters</h3>
+		<p>
+			The option <tt>&lt;parameter&gt;</tt> following the <tt>dir</tt> command can currently take the following values:
+		</p>
+		<dl>
+			<dt><tt>load|loaddir</tt></dt>
+			<dd>Display/set the default directory used for loading datasets. This is the directory that is preselected in the file selection dialogue.</dd>
+			<dd>If used followed by a value, the directory is set to this value.</dd>
+			<dd>If used without value, the directory in use currently is displayed in the status window.</dd>
+			<dt><tt>save|savedir</tt></dt>
+			<dd>Display/set the default directory used for saving datasets. This is the directory that is preselected in the file selection dialogue.</dd>
+			<dd>If used followed by a value, the directory is set to this value.</dd>
+			<dd>If used without value, the directory in use currently is displayed in the status window.</dd>
+			<dt><tt>savefig|savefigdir|figsave|figsavedir|fig|figdir</tt></dt>
+			<dd>Display/set the default directory used for saving figures. This is the directory that is preselected in the file selection dialogue.</dd>
+			<dd>If used followed by a value, the directory is set to this value.</dd>
+			<dd>If used without value, the directory in use currently is displayed in the status window.</dd>
+			<dt><tt>export|exportdir</tt></dt>
+			<dd>Display/set the default directory used for exporting datasets. This is the directory that is preselected in the file selection dialogue.</dd>
+			<dd>If used followed by a value, the directory is set to this value.</dd>
+			<dd>If used without value, the directory in use currently is displayed in the status window.</dd>
+		</dl>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-12
+		</p>
+		</div>
+	</body>
+</html>
