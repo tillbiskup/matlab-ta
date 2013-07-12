@@ -23,8 +23,8 @@ function status = TAmsg(message,varargin)
 % NOTE: If there is currently no TA GUI window open, the message will
 % get displayed on the Matlab(tm) command line.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 % Define log levels
 % IDEA is to have the log levels sorted in descending order of their
@@ -106,6 +106,18 @@ if isfield(ad.control,'messages') && ~isempty(logLevel)
     end
 else
     ad.control.status = [ ad.control.status message ];
+end
+
+% Update main gui status lights if necessary
+if ~isempty(logLevel)
+    switch lower(logLevel)
+        case 'warning'
+            set(gh.status_panel_status_text,'String','WW');
+            set(gh.status_panel_status_text,'BackgroundColor',[.9 .9 .7]);
+        case 'error'
+            set(gh.status_panel_status_text,'String','EE');
+            set(gh.status_panel_status_text,'BackgroundColor',[.9 .7 .7]);
+    end
 end
 
 % Push appdata back to main gui

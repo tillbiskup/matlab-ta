@@ -1,17 +1,25 @@
 function TAgui_statuswindow(varargin)
-% TREPRGUI_STATUSWINDOW A GUI window displaying status messages of the
+% TAGUI_STATUSWINDOW A GUI window displaying status messages of the
 % toolbox and GUI.
 %
 % Normally, this window is called from within the TAgui window.
 %
 % See also TAGUI
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Reset colour of main GUI window status display
+mainGuiWindow = TAguiGetWindowHandle();
+if (mainGuiWindow)
+    gh = guidata(mainGuiWindow);
+    set(gh.status_panel_status_text,'String','OK');
+    set(gh.status_panel_status_text,'BackgroundColor',[.7 .9 .7]);
+end
 
 % Make GUI effectively a singleton
 singleton = TAguiGetWindowHandle(mfilename);
