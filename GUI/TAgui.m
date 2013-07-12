@@ -721,9 +721,9 @@ catch exception
     throw(exception);
 end
 
-handles = guihandles;
-handles.mainAxis = hPlotAxes;
-guidata(hMainFigure,handles);
+gh = guihandles;
+gh.mainAxis = hPlotAxes;
+guidata(hMainFigure,gh);
 if (nargout == 1)
     varargout{1} = hMainFigure;
 end
@@ -737,11 +737,17 @@ handles = findall(...
     '-or','style','togglebutton',...
     '-or','style','edit',...
     '-or','style','listbox',...
+    '-or','style','checkbox',...
     '-or','style','slider',...
-    '-or','style','popupmenu');
+    '-or','style','popupmenu',...
+    '-not','tag','command_panel_edit');
 for k=1:length(handles)
     set(handles(k),'KeyPressFcn',@guiKeyBindings);
 end
+
+% As Matlab seems to ignore me four lines above, set the KeyPressFcn again
+% for the command line edit control
+set(gh.command_panel_edit,'KeyPressFcn',@command_keypress_Callback);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');

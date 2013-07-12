@@ -6,8 +6,8 @@ function guiKeyBindings(src,evt)
 %     src - handle of calling source
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -117,6 +117,9 @@ try
                     if ad.control.spectra.active ~= 0
                         TAgui_infowindow();
                     end
+                    return;
+                case 'l'
+                    TAguiSetMode('command');
                     return;
             end
         end
@@ -235,6 +238,64 @@ try
             setappdata(mainWindow,'control',ad.control);
             update_mainAxis();
             update_visibleSpectra();
+        % Keys for mode switching
+        case {'c','d'}
+            if ad.control.spectra.active && ...
+                    ~strcmpi(ad.control.mode,'command') && ...
+                    ~strcmpi(ad.control.axis.displayType,'2D plot')
+                TAguiSetMode(evt.Key);
+            end
+        case {'s','z','m','p'}
+            if ad.control.spectra.active && ...
+                    ~strcmpi(ad.control.mode,'command')
+                TAguiSetMode(evt.Key);
+            end
+        case 'escape'
+            TAguiSetMode('none');
+        case {'uparrow','downarrow','leftarrow','rightarrow'}
+            if any(strcmpi(ad.control.mode,{'scroll','scale','displace'}))
+                funHandle = str2func(['gui' ad.control.mode]);
+                % TODO: Handle arrow keys
+                if ~isempty(evt.Modifier) && ...
+                        ((strcmpi(evt.Modifier{1},'command')) || ...
+                        (strcmpi(evt.Modifier{1},'control')))
+                    switch evt.Key
+                        case 'uparrow'
+                            funHandle('y',+10);
+                        case 'downarrow'
+                            funHandle('y',-10);
+                        case 'leftarrow'
+                            funHandle('x',-10);
+                        case 'rightarrow'
+                            funHandle('x',+10);
+                    end
+                elseif ~isempty(evt.Modifier) && ...
+                        (strcmpi(evt.Modifier{1},'alt'))
+                    switch evt.Key
+                        case 'uparrow'
+                            funHandle('y','last');
+                        case 'downarrow'
+                            funHandle('y','first');
+                        case 'leftarrow'
+                            funHandle('x','first');
+                        case 'rightarrow'
+                            funHandle('x','last');
+                    end
+                elseif ~isempty(evt.Modifier) && ...
+                        (strcmpi(evt.Modifier{1},'shift'))
+                else
+                    switch evt.Key
+                        case 'uparrow'
+                            funHandle('y',+1);
+                        case 'downarrow'
+                            funHandle('y',-1);
+                        case 'leftarrow'
+                            funHandle('x',-1);
+                        case 'rightarrow'
+                            funHandle('x',+1);
+                    end
+                end
+            end
         otherwise
 %             disp(evt);
 %             fprintf('       Caller: %i\n\n',src);

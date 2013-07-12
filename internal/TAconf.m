@@ -38,8 +38,8 @@ function varargout = TAconf(action,varargin)
 %               the distributed config file (i.e., "<basename>.ini", not
 %               "<basename>.ini.dist").
 
-% (c) 2011-12, Till Biskup
-% 2012-02-05
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 % If none or the wrong input parameter, display help and exit
 if nargin == 0 || isempty(action) || ~ischar(action)
@@ -66,7 +66,14 @@ try
     switch lower(action)
         case 'create'
             % Change to config directory
-            cd(fullfile(TAinfo('dir'),'GUI','private','conf'));
+            confDir = fullfile(TAinfo('dir'),'GUI','private','conf');
+            % Check whether config directory is writable
+            [~,attrib] = fileattrib(confDir);
+            if ~attrib.UserRead
+                fprintf('Config directory\n\t%s\nnot writable.\n',confDir);
+                return;
+            end
+            cd(confDir);
             % Do stuff
             confDistFiles = dir('*.ini.dist');
             if isempty(p.Results.file)
