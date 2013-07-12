@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-06-02
+% 2013-07-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -304,7 +304,7 @@ function load_pushbutton_Callback(~,~)
         TAmsg(msg,'info');
         clear msgStr msg;
         
-        busyWindow('start','Trying to load spectra...<br />please wait.');
+        TAbusyWindow('start','Trying to load spectra...<br />please wait.');
         
         if (get(handle_avg_cb,'Value') == 1)
             average = true;
@@ -325,7 +325,7 @@ function load_pushbutton_Callback(~,~)
         if isequal(data,0) || isempty(data)
             msg = 'Data could not be loaded.';
             TAmsg(msg,'error');
-            busyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
+            TAbusyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
             return;
         end
         
@@ -364,7 +364,7 @@ function load_pushbutton_Callback(~,~)
         end
         
         if isempty(data)
-            busyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
+            TAbusyWindow('stop','Trying to load spectra...<br /><b>failed</b>.');
             return;
         end
         
@@ -464,7 +464,7 @@ function load_pushbutton_Callback(~,~)
             clear msgStr msg;
         end
 
-        busyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
+        TAbusyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
         
         % Get appdata again after making changes to it before
         ad = getappdata(mainWindow);

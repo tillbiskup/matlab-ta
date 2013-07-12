@@ -6,8 +6,8 @@ function handle = guiAnalysisPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -146,7 +146,7 @@ function pushbutton_Callback(~,~,action)
                         % Create filename with full path
                         fileName = fullfile(pathName,fileName);
                         
-                        busyWindow('start',...
+                        TAbusyWindow('start',...
                             'Trying to export dataset...<br />please wait.');
                         
                         % Export using export4glotaran
@@ -154,10 +154,10 @@ function pushbutton_Callback(~,~,action)
                             ad.data{ad.control.spectra.active},fileName);
                         if status
                             TAmsg(status,'error');
-                            busyWindow('stop',...
+                            TAbusyWindow('stop',...
                                 'Trying to export dataset...<br /><b>failed</b>.');
                         else
-                            busyWindow('stop',...
+                            TAbusyWindow('stop',...
                                 'Trying to export dataset...<br /><b>done</b>.');
                         end
                         

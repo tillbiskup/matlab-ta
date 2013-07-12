@@ -11,8 +11,8 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -103,7 +103,7 @@ try
         end
     end
     
-    busyWindow('start','Trying to save spectra...<br />please wait.');
+    TAbusyWindow('start','Trying to save spectra...<br />please wait.');
     
     % Do the actual saving
     [ saveStatus, exception ] = ...
@@ -119,7 +119,7 @@ try
         msgStr{end+1} = ad.data{id}.file.name;
         msgStr = [ msgStr saveStatus ];
         status = TAmsg(msgStr,'error');
-        busyWindow('stop','Trying to save spectra...<br /><b>failed</b>.');
+        TAbusyWindow('stop','Trying to save spectra...<br /><b>failed</b>.');
         %warndlg(msgStr,'Problems saving file','modal');
         clear msgStr;
         status = -1;
@@ -156,7 +156,7 @@ try
     update_mainAxis();
     
     %msgbox(msg,'Successful saving of file','help'); 
-    busyWindow('stop','Trying to save spectra...<br /><b>done</b>.');
+    TAbusyWindow('stop','Trying to save spectra...<br /><b>done</b>.');
     status = 0;
     
 catch exception

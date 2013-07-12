@@ -1,12 +1,12 @@
-function varargout = busyWindow(varargin)
-% BUSYWINDOW Show window with message and spinning dots
+function varargout = TAbusyWindow(varargin)
+% TAbusyWindow Show window with message and spinning dots
 %
 %       Arguments: action (start, stop)
 %
 %       Returns the handle of the window.
 
-% (c) 2012, Till Biskup
-% 2012-10-21
+% (c) 2012-13, Till Biskup
+% 2013-07-12
 
 title = 'Processing...';
 position = [220,350,270,120];
@@ -39,7 +39,7 @@ end
 description = ['<html>' description '</html>'];
 
 % Make GUI effectively a singleton
-singleton = findobj('Tag','busyWindow');
+singleton = findobj('Tag','TAbusyWindow');
 if ~isempty(singleton)
     if ~nargin
         varargout{1} = figure(singleton);
@@ -52,7 +52,7 @@ if ~isempty(singleton)
     end
 else
     % Create main figure
-    hMainFigure = figure('Tag','busyWindow',...
+    hMainFigure = figure('Tag','TAbusyWindow',...
         'Visible','off',...
         'WindowStyle','modal',...
         'Name',title,...
