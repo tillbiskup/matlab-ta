@@ -67,6 +67,8 @@ end
 
 % Get appdata from mainwindow
 ad = getappdata(mainwindow);
+% Get handles from main GUI
+gh = guidata(mainwindow);
 
 % Check for availability of necessary fields in appdata
 if (isfield(ad,'control') == 0) || (isfield(ad.control,'status') == 0)

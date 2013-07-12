@@ -108,7 +108,7 @@ if isequal(data,0) || isempty(data)
     return;
 end
 
-if ~isempty(warnings)
+if ~isempty(warnings) && ~isempty(warnings{1})
     msgStr = cell(0);
     msgStr{end+1} = 'Some warnings occurred while reading files:';
     msg = [msgStr warnings{:}];

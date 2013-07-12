@@ -8,8 +8,8 @@ function status = update_mainAxis(varargin)
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-12
 
 % Is there currently a TAgui object?
 mainWindow = TAguiGetWindowHandle();
@@ -57,6 +57,8 @@ end
 % Just to be on the save side, check whether we have a currently active
 % spectrum
 if ~(ad.control.spectra.active)
+    % Set title to empty string
+    title('');
     msg = 'update_mainAxis(): No active spectrum';
     TAmsg(msg,'info');
     return;
@@ -2070,6 +2072,9 @@ switch ad.control.axis.displayType
         msg = sprintf('Display type %s currently unsupported',displayType);
         TAmsg(msg,'warning');    
 end
+
+% Set title (label of currently active dataset)
+title(['Active dataset: ' strrep(ad.data{active}.label,'_','\_')]);
 
 % Set grid
 set(gca,'XGrid',ad.control.axis.grid.x);
