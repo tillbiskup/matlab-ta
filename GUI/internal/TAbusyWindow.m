@@ -1,5 +1,6 @@
 function varargout = TAbusyWindow(varargin)
-% TAbusyWindow Show window with message and spinning dots
+% TAbusyWindow Show window with message and spinning dots (using JAVA
+% magic).
 %
 %       Arguments: action (start, stop)
 %
