@@ -111,26 +111,29 @@ end
 
 function keyBindings(~,evt)
     try
-    if ~isempty(evt.Modifier)
-        if (strcmpi(evt.Modifier{1},'command')) || ...
+        if ~isempty(evt.Modifier)
+            if (strcmpi(evt.Modifier{1},'command')) || ...
                 (strcmpi(evt.Modifier{1},'control'))
-            switch evt.Key
-                case 'w'
-                    closeGUI();
-                    return;
-                otherwise
-                    return;
+                switch evt.Key
+                    case 'w'
+                        closeGUI();
+                        return;
+                    otherwise
+                        return;
+                end
             end
         end
-    end
-    switch evt.Key
-        case 'f1'
-            return;
-        otherwise
-%             disp(evt);
-%             fprintf('       Caller: %i\n\n',src);
-            return;
-    end
+        switch evt.Key
+            case 'f1'
+                return;
+            case 'escape'
+                closeGUI();
+                return;
+            otherwise
+                disp(evt);
+                fprintf('       Caller: %i\n\n',src);
+                return;
+        end
     catch exception
         try
             msgStr = ['An exception occurred in ' ...
@@ -143,7 +146,7 @@ function keyBindings(~,evt)
         try
             TAgui_bugreportwindow(exception);
         catch exception3
-            % If even displaying the bug report window fails...
+            If even displaying the bug report window fails...
             exception = addCause(exception3, exception);
             throw(exception);
         end

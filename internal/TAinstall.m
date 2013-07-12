@@ -9,8 +9,8 @@ function status = TAinstall()
 %               Empty if everything went fine, otherwise contains message.
 %
 
-% (c) 2012, Till Biskup
-% 2012-02-06
+% (c) 2012-13, Till Biskup
+% 2013-07-13
 
 % There are several tasks a good installation program should perform:
 %
@@ -98,18 +98,27 @@ if installed
         fprintf('done.\n');
     else
         fprintf('\n\n')
-        for k=1:length(confFiles)
-            tocopy = TAiniFileRead(confFiles{k},'typeConversion',true);
-            master = TAiniFileRead([confFiles{k} '.dist'],...
-                'typeConversion',true);
-            newConf = structcopy(master,tocopy);
-            header = 'Configuration file for TA toolbox';
-            TAiniFileWrite(confFiles{k},...
-                newConf,'header',header,'overwrite',true);
-            [~,cfname,cfext] = fileparts(confFiles{k});
-            fprintf('  merging %s%s\n',cfname,cfext);
+        % Check whether config directory is readable
+        [confDir,~,~] = fileparts(confFiles{1});
+        [~,attrib] = fileattrib(confDir);
+        if ~attrib.UserRead
+            fprintf('\nfailed.\n');
+            fprintf('Configuration directory not writable:\n\t%s\n%s',...
+                confDir,'Please change and retry!');
+        else
+            for k=1:length(confFiles)
+                tocopy = TAiniFileRead(confFiles{k},'typeConversion',true);
+                master = TAiniFileRead([confFiles{k} '.dist'],...
+                    'typeConversion',true);
+                newConf = structcopy(master,tocopy);
+                header = 'Configuration file for TA toolbox';
+                TAiniFileWrite(confFiles{k},...
+                    newConf,'header',header,'overwrite',true);
+                [~,cfname,cfext] = fileparts(confFiles{k});
+                fprintf('  merging %s%s\n',cfname,cfext);
+            end
+            fprintf('\ndone.\n');
         end
-        fprintf('\ndone.\n');
     end
 end
 

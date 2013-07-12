@@ -308,6 +308,11 @@ function keypress_Callback(~,evt)
                 end
             end
         end
+        switch evt.Key
+            case 'escape'
+                closeGUI();
+                return;
+        end
     catch exception
         try
             msgStr = ['An exception occurred in ' ...
