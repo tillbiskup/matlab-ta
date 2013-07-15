@@ -14,13 +14,13 @@ function status = guiConfigApply(guiname)
 % See also GUICONFIGLOAD, INIFILEREAD
 
 % (c) 2011-13, Till Biskup
-% 2013-06-01
+% 2013-07-15
 
 status = 0;
 
 % If called without a GUI name, return
 if isempty(guiname)
-    status = sprintf('GUI "%s" could not be found',guiname);
+    status = -3; %'No GUI name provided. Aborting.';
     return;
 end
 
@@ -28,7 +28,7 @@ try
     % Get handle for GUI
     % NOTE: That means that an instance of the GUI must exist.
     handle = TAguiGetWindowHandle(guiname);
-    if isempty(handle) or ~ishandle(handle)
+    if isempty(handle) || ~ishandle(handle)
         status = -2;
         return;
     end

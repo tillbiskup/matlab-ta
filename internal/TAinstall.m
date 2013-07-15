@@ -1,4 +1,4 @@
-function status = TAinstall()
+function varargout = TAinstall()
 % TAINSTALL Installing the TA Toolbox on your system
 %
 % Usage
@@ -10,7 +10,9 @@ function status = TAinstall()
 %
 
 % (c) 2012-13, Till Biskup
-% 2013-07-13
+% 2013-07-15
+
+status = 0;
 
 % There are several tasks a good installation program should perform:
 %
@@ -85,12 +87,13 @@ if spstatus
     else
         close(fh);
     end 
+    status = -2;
 else
     fprintf('done.\n');
 end
 
 %-------------------------------------------------------------------------
-% UPDATING CONFIGURATION - only if installed before
+% UPDATING CONFIGURATION - only if installed before - otherwise CREATING
 if installed
     fprintf('\nUpdating configuration... ');
     confFiles = TAconf('files');
@@ -105,6 +108,7 @@ if installed
             fprintf('\nfailed.\n');
             fprintf('Configuration directory not writable:\n\t%s\n%s',...
                 confDir,'Please change and retry!');
+            status = -1;
         else
             for k=1:length(confFiles)
                 tocopy = TAiniFileRead(confFiles{k},'typeConversion',true);
@@ -120,6 +124,45 @@ if installed
             fprintf('\ndone.\n');
         end
     end
+else
+    fprintf('\Creating config files... ');
+    confFiles = TAconf('distfiles');
+    if isempty(confFiles)
+        fprintf('done.\n');
+    else
+        fprintf('\n\n')
+        % Check whether config directory is readable
+        [confDir,~,~] = fileparts(confFiles{1});
+        [~,attrib] = fileattrib(confDir);
+        if ~attrib.UserRead
+            fprintf('\nfailed.\n');
+            fprintf('Configuration directory not writable:\n\t%s\n%s\n%s',...
+                confDir,'Please change and try again to install/update!',...
+                'A writable configuration directory is vital for the toolbox.');
+            status = -1;
+        else
+            TAconf('create');
+            fprintf('\ndone.\n');
+        end
+    end
+end
+
+%-------------------------------------------------------------------------
+% CHECK FOR CONFIGURATION DIRECTORY
+confDir = TAparseDir('~/.ta');
+if ~exist(confDir,'dir')
+    try
+        fprintf('\nCreating local config directory... ');
+        mkdir(confDir);
+        fprintf('done.\n');
+    catch exception
+        status = exception.message;
+        fprintf('failed!\n');
+    end
+end
+snapshotDir = TAparseDir(fullfile(confDir,'snapshots'));
+if ~exist(snapshotDir,'dir')
+    mkdir(snapshotDir);
 end
 
 fprintf('\nCongratulations! The TA Toolbox has been ')
@@ -129,10 +172,17 @@ else
     fprintf('installed ')
 end
 fprintf('on your system.\n\n');
+if status
+    fprintf('CAUTION: Please note that were some warnings.\n\n')
+end
 fprintf('Please, find below a bit of information about the current install.\n\n')
 
 TAinfo;
 fprintf('\n');
+
+if nargout
+    varargout{1} = status;
+end
 
 end
 

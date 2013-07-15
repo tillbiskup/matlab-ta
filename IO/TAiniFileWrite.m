@@ -44,7 +44,7 @@ function [ warnings ] = TAiniFileWrite ( fileName, data, varargin )
 % See also: TAiniFileRead
 
 % (c) 2008-13, Till Biskup
-% 2013-07-13
+% 2013-07-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
@@ -87,7 +87,7 @@ try
     fh = fopen(fileName,'wt');
     % Test whether something went wrong with opening the file
     if fh < 1
-        fprintf('Cannot open file %s for writing:\n\t%s\nAborting.',...
+        fprintf('Cannot open file for writing:\n\t%s\nAborting.',...
             fileName);
         return;
     end
