@@ -220,6 +220,10 @@ end
 
 % Set MFE panel
 
+if ~active
+    return;
+end
+
 % Define available line styles
 lineStyles = {...
     'solid','-'; ...

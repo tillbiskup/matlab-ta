@@ -26,6 +26,16 @@ dy = 40
 welcome = 1
 tip = 1
 
+% Configuration of the directories used internally
+%
+% You may use "pwd" here instead of a full directory
+[dirs]
+lastLoad = pwd
+lastSave = pwd
+lastFigSave = pwd
+lastExport = pwd
+lastSnapshot = ~/.ta/snapshot
+
 % Configuration for the load panel
 %
 % The first lines, "combine/loaddir/POC/BGC/labels", are switches settin

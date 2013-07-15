@@ -7,8 +7,8 @@ function status = switchMainPanel(panelName)
 %
 % status    - return value of the function. Either 0 (OK) or -1 (failed)
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-15
 
 try
     % Get handles of main window
@@ -24,7 +24,7 @@ try
         gh.display_panel ...
         gh.processing_panel ...
         gh.analysis_panel ...
-        gh.mfe_panel ...
+        gh.internal_panel ...
         gh.configure_panel ...
         ];
     buttons = [...
@@ -35,7 +35,7 @@ try
         gh.tbDisplay ...
         gh.tbProcessing ...
         gh.tbAnalysis ...
-        gh.tbMFE ...
+        gh.tbInternal ...
         gh.tbConfigure ...
         ];
     
@@ -87,13 +87,13 @@ try
             set(buttons,'Value',0);
             set(gh.analysis_panel,'Visible','on');
             set(gh.tbAnalysis,'Value',1);
-        case 'MFE'
+        case 'Internal'
             set(panels,'Visible','off');
             set(buttons,'Value',0);
-            set(gh.mfe_panel,'Visible','on');
-            set(gh.tbMFE,'Value',1);
+            set(gh.internal_panel,'Visible','on');
+            set(gh.tbInternal,'Value',1);
             % Update MFE panel
-            update_MFEPanel();
+            update_internalPanel();
         case 'Configure'
             set(panels,'Visible','off');
             set(buttons,'Value',0);

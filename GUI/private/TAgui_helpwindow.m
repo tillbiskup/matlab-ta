@@ -5,8 +5,8 @@ function varargout = TAgui_helpwindow(varargin)
 % Besides that, it gives access to all the other sources of additional
 % help, such as the Matlab Help Browser and the toolbox website.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -69,7 +69,7 @@ hpm = uicontrol('Tag','helptopic_popupmenu',...
     '--- Help for Panels ---|',...
     'Load panel|Datasets panel|Slider panel|',...
     'Measure panel|Display panel|Processing panel|',...
-    'Analysis panel|MFE panel|Configure panel'],...
+    'Analysis panel|Internal panel|Configure panel'],...
     'Value',2,...
     'KeyPressFcn',@keypress_Callback,...
     'Callback',@helptext_popupmenu_Callback...
@@ -198,8 +198,8 @@ try
             case 'tbAnalysis'
                 helpText = 'Analysis panel';
                 set(hpm,'Value',helpTopicOffset+7);
-            case 'tbMFE'
-                helpText = 'MFE panel';
+            case 'tbInternal'
+                helpText = 'Internal panel';
                 set(hpm,'Value',helpTopicOffset+8);
             case 'tbConfigure'
                 helpText = 'Configure panel';
@@ -333,6 +333,29 @@ function keypress_Callback(~,evt)
 end
 
 
+function closeGUI(~,~)
+    try
+        delete(hMainFigure);
+        TAmsg('TA GUI help window closed.','info');
+    catch exception
+        try
+            msgStr = ['An exception occurred in ' ...
+                exception.stack(1).name  '.'];
+            TAmsg(msgStr,'error');
+        catch exception2
+            exception = addCause(exception2, exception);
+            disp(msgStr);
+        end
+        try
+            TAgui_bugreportwindow(exception);
+        catch exception3
+            % If even displaying the bug report window fails...
+            exception = addCause(exception3, exception);
+            throw(exception);
+        end
+    end
+end
+
 function startBrowser(~,~,url)
     if any(strfind(platform,'Windows'))
         dos(['start ' url]);
@@ -423,10 +446,10 @@ function helptext_selector(helpText)
                 helpTextFile = fullfile(TAinfo('dir'),'GUI',...
                     'private','helptexts','main','analysis_panel.html');
                 browser.setCurrentLocation(helpTextFile);
-            case 'MFE panel'
+            case 'Internal panel'
                 % Read text from file and display it
                 helpTextFile = fullfile(TAinfo('dir'),'GUI',...
-                    'private','helptexts','main','mfe_panel.html');
+                    'private','helptexts','main','internal_panel.html');
                 browser.setCurrentLocation(helpTextFile);
             case 'Configure panel'
                 % Read text from file and display it

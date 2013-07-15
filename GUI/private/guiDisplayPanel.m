@@ -2515,28 +2515,28 @@ function popupmenu_Callback(source,~,action)
             'hexagram','h' ...
             };
                 
-        switch action
+        switch lower(action)
             case 'line'
                 % Update display panel
                 update_displayPanel();
-            case 'markerEdgeColour'
+            case 'markeredgecolour'
                 if strcmpi(value,'colour')
                     ad.data{active}.line.marker.edgeColor = ...
                         ad.data{active}.line.color;
                 else
                     ad.data{active}.line.marker.edgeColor = value;
                 end
-            case 'markerFaceColour'
+            case 'markerfacecolour'
                 if strcmpi(value,'colour')
                     ad.data{active}.line.marker.faceColor = ...
                         ad.data{active}.line.color;
                 else
                     ad.data{active}.line.marker.faceColor = value;
                 end
-            case 'MFEline'
+            case 'mfeline'
                 % Update MFE panel
                 update_displayPanel();
-            case 'MFElinewidth'
+            case 'mfelinewidth'
                 % convert source string into number
                 sourceString = str2double(sourceString(1:end-3));
                 switch MFEline
@@ -2553,7 +2553,7 @@ function popupmenu_Callback(source,~,action)
                             'popupmenu_Callback(): Unknown MFElineType '...
                             '"' MFEline '"']);
                 end
-            case 'MFElinestyle'
+            case 'mfelinestyle'
                 sourceString = lineStyles{...
                     strcmpi(sourceString,lineStyles(:,1)),2};
                 switch MFEline
@@ -2570,7 +2570,7 @@ function popupmenu_Callback(source,~,action)
                             'popupmenu_Callback(): Unknown MFElineType '...
                             '"' MFEline '"']);
                 end
-            case 'MFElinemarker'
+            case 'mfelinemarker'
                 sourceString = lineMarker{...
                     strcmpi(sourceString,lineMarker(:,1)),2};
                 switch MFEline
@@ -2587,7 +2587,7 @@ function popupmenu_Callback(source,~,action)
                             'popupmenu_Callback(): Unknown MFElineType '...
                             '"' MFEline '"']);
                 end
-            case 'MFEmarkeredgecolour'
+            case 'mfemarkeredgecolour'
                 switch MFEline
                     case 'MFoff'
                         if strcmpi(sourceString,'colour')
@@ -2618,7 +2618,7 @@ function popupmenu_Callback(source,~,action)
                             'popupmenu_Callback(): Unknown MFElineType '...
                             '"' MFEline '"']);
                 end
-            case 'MFEmarkerfacecolour'
+            case 'mfemarkerfacecolour'
                 switch MFEline
                     case 'MFoff'
                         if strcmpi(sourceString,'colour')

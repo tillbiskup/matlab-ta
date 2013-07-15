@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : GUI Internals</title>
+    </head>
+    <body>
+		<h1>GUI Internals</h1>
+		<p class="intro">
+			This panel provides access to different GUI interna and their settings.
+		</p>
+		<h2>The controls</h2>
+		<p>
+			A short description of all the controls of the panel.
+		</p>
+		<h3>GUI directories</h3>
+		<p>
+			Show/set directories used by the GUI to load/save data, figures, etc.
+		</p>
+		<p>
+			The <key>Show</key> button opens a window that lets you inspect and change the directories the GUI stores internally for loading/saving data, figures, and other things.
+		</p>
+		<h3>Messages/Log levels</h3>
+		<p>
+			Set message and log levels.
+		</p>
+		<p>
+			The debug level setting affects which messages are displayed in the status window.
+		</p>
+		<p>
+			The messages setting will have some effect in the future.
+		</p>
+		<h3>Snapshots</h3>
+		<p>
+			Save/load snapshots. Snapshots are saved states of the TA GUI. They are saved as MATLAB&trade; MAT-files in a directory that can be configured using the "GUI directories" settings described above.
+		</p>
+		<p>
+			<strong>Warning:</strong> Loading snapshots will overwrite the current state of the GUI. Currently, there is no way to undo this. Therefore, it is save to first save the current state and then load another state.
+		</p>
+		<p>
+			The button <key>Show</key> opens an additional window letting you change the directory for snapshots, display information about saved snapshots, and load a selected snapshot.
+		</p>
+		<h3>Command line (CMD)</h3>
+		<p>
+			The command line (CMD) is a very powerful feature of the TA GUI. It lets you control (eventually) all features of the GUI via the builtin command line and as a consequence via scripts.
+		</p>
+		<p>
+			For an introduction to the command line (CMD), see the <a href="matlab:PWD=pwd;cd(fullfile(TAinfo('dir'),'GUI','private'));TAgui_cmd_helpwindow();cd(PWD)">builtin help</a> for the CMD.
+		</p>
+		<p>
+			With the <key>Save history</key> switch you can control whether the cmd history gets saved on the file system (and is therefore persistent between TA GUI sessions). The default location for the history file is "<tt>~/.trepr/history</tt>". This can be changed via the configuration.
+		</p>
+		<p>
+			The <key>Show history</key> button opens a separate window displaying the history and letting you evaluate selected commands from the history.
+		</p>
+		<p>
+			And the <key>Run script</key> button opens a file selection dialogue box where you can select a script file to be executed within the TA GUI. Please note that until now there is no automatic code checking for script files. Therefore, the parser will try to execute the script line by line.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-15
+		</p>
+		</div>
+	</body>
+</html>
+
+
