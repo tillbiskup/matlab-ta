@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+        <title>TA GUI : CMD : General : Scripting</title>
+    </head>
+    <body>
+		<h1>Scripting</h1>
+		<p class="intro">
+			The command line (CMD), once properly implemented, provides the user with the possibility to control most parts of the GUI. This immediately leads to the idea of scripting: performing tasks by running a set of commands saved in a file.
+		</p>
+		<div class="hurry">
+		<h2>If in a hurry</h2>
+		<p>
+			Scripting allows you to perform a set of commands by loading a script rather than by typing the commands one by one into the command line. The feature is currently still EXPERIMENTAL.
+		</p>
+		</div>
+		<h2>Running scripts</h2>
+		<p>
+			Currently, the only way to run a script is from the "internal" panel of the GUI. There you can load a script file and execute it. In the future, there will appear a <tt>run</tt> command in the command line for this.
+		</p>
+		<h2>Scripting: A few ideas</h2>
+		<p>
+			At the time of writing this text, scripting is still in its infancy. Therefore, this help serves currently as a reminder of what would be nice to have in the future.
+		</p>
+		<h3>Scripts for standard tasks</h3>
+		<p>
+			The power of scripting comes in very handy if certain tasks should be performed regularly on a dataset. Here, a well-written (and documented) script can save a lot of time.
+		</p>
+		<h3>Header of script files</h3>
+		<p>
+			Each script is just a collection of commands known by the CMD feature of the toolbox. Already now, command lines are allowed. That would allow for using a header for each script file making it easier to get an idea what the script was all about, what purpose it serves, etc.
+		</p>
+		<p>
+			Fields for such a header would be a short description, perhaps keywords, an author and a date - and perhaps even more fields. For an idea why this would be useful, see the next section.
+		</p>
+		<h3>GUI for flicking through and loading scripts</h3>
+		<p>
+			The idea: a GUI window similar to what exists already for loading snapshots: A listbox for selecting the script, and for each selected script a few additional informations making it much easier to decide whether this is the correct one.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-15
+		</p>
+		</div>
+	</body>
+</html>

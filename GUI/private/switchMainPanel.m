@@ -99,6 +99,9 @@ try
             set(buttons,'Value',0);
             set(gh.configure_panel,'Visible','on');
             set(gh.tbConfigure,'Value',1);
+        otherwise
+            status = -1;
+            return;
     end
     
     status = 0;
