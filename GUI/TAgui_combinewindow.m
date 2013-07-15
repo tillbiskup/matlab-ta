@@ -11,8 +11,8 @@ function varargout = TAgui_combinewindow(varargin)
 %
 % See also TAGUI, TAGUI_COMBINE_SETTINGSWINDOW, TACOMBINE, TASCALE
 
-% (c) 2012, Till Biskup
-% 2012-10-21
+% (c) 2012-13, Till Biskup
+% 2013-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -988,7 +988,7 @@ function pushbutton_Callback(~,~,action)
                 if status
                     disp('Hmm... some problems with appending combined dataset to main GUI.');
                 end
-                status = removeDatasetFromMainGUI(...
+                status = TAremoveDatasetFromMainGUI(...
                     ad.combine.spectra.combine,'Force',true);
                 if status
                     disp('Hmm... some problems with removing dataset(s) from main GUI.');

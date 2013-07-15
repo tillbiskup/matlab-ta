@@ -1,9 +1,9 @@
-function [status,message] = removeDatasetFromMainGUI(dataset,varargin)
-% REMOVEDATASETFROMMAINGUI Remove dataset(s) from main GUI.
+function [status,message] = TAremoveDatasetFromMainGUI(dataset,varargin)
+% TAREMOVEDATASETFROMMAINGUI Remove dataset(s) from main GUI.
 %
 % Usage:
-%   status = removeDatasetFromMainGUI(dataset);
-%   [status,message] = removeDatasetFromMainGUI(dataset);
+%   status = TAremoveDatasetFromMainGUI(dataset);
+%   [status,message] = TAremoveDatasetFromMainGUI(dataset);
 %
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
@@ -12,8 +12,8 @@ function [status,message] = removeDatasetFromMainGUI(dataset,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -55,7 +55,7 @@ try
     % Remove dataset(s) from main GUI
     for k=length(dataset):-1:1
         if ~p.Results.force
-            if ~any(ad.control.spectra.modified==dataset)
+            if ~any(ad.control.spectra.modified==dataset(k))
                 removedDatasetsLabels{end+1} = ad.data{dataset(k)}.label; %#ok<*AGROW>
                 ad.data(dataset(k)) = [];
                 ad.origdata(dataset(k)) = [];
