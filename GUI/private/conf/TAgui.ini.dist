@@ -34,7 +34,7 @@ lastLoad = pwd
 lastSave = pwd
 lastFigSave = pwd
 lastExport = pwd
-lastSnapshot = ~/.ta/snapshot
+lastSnapshot = ~/.ta/snapshots
 
 % Configuration for the load panel
 %
