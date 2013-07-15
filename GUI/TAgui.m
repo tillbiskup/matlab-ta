@@ -72,10 +72,10 @@ hMainFigure = figure('Tag',mfilename,...
 % Create appdata structure
 ad = TAguiDataStructure('guiappdatastructure');
 
-setappdata(hMainFigure,'data',ad.data);
-setappdata(hMainFigure,'origdata',ad.origdata);
-setappdata(hMainFigure,'configuration',ad.configuration);
-setappdata(hMainFigure,'control',ad.control);
+appdataFields = fieldnames(ad);
+for k=1:length(appdataFields)
+    setappdata(hMainFigure,appdataFields{k},ad.(appdataFields{k}));
+end
 
 defaultBackground = get(hMainFigure,'Color');
 guiSize = get(hMainFigure,'Position');
