@@ -10,56 +10,68 @@
     <body>
 		<h1>Welcome to the TA toolbox GUI.</h1>
 		<p class="intro">
-			How to use the GUI? A very brief introduction.
+			New here? Or interested in a more consistent introduction in the concepts of the TA toolbox and mainly its GUI? This is the place to start...
 		</p>
-		<h2>1. Load data</h2>
+		<div class="hurry">
+		<h2>If in a hurry</h2>
 		<p>
-			The first step is to load one or more datasets. That can be done via the "load" panel that is accessed by pressing the "Load" button above.
+			Suppose you don't want to read long introductions, but just start processing your data recorded right now: Read the section <a href="shortintro.html">"GUI in 2 minutes"</a>. Besides that, please note that each panel and each additional GUI window comes with its own in-built help.
 		</p>
-		<h2>2. Toggle visibility</h2>
+		</div>
 		<p>
-			After loading one or more datasets from files, you need to make the data appear on the main axis to the left. Therefore, hit the "Datasets" button above that will give you all necessary control.
+			All those with more time and interest in a slightly more detailed introduction, keep reading.
 		</p>
-		<h2>3. Sliders</h2>
+		<h2>History</h2>
 		<p>
-			You can scroll through a 2D dataset in both directions, you can scale the data in both dimensions and you can displace the data in two dimensions. Therefore, press the "Slider" button above that provides you with a convenient display of the current slider values in both data points and actual units of the axes.
-		</p>
-		<h2>4. Measure</h2>
-		<p>
-			One of the most natural things to do with a 2D or 1D dataset displayed is to measure distances between different points. This can be done with the "Measure" panel that will appear once you press the "Measure" button above.
-		</p>
-		<h2>5. Display</h2>
-		<p>
-			Once you succeeded in displaying the data in a meaningful way, you may want to either export the currently displayed data to a file (MATLAB fig, EPS, PDF, PNG, ...) or to modify the figure as a conventional MATLAB figure.
+			What you have in hands is the result of now about three years of more or less constant development. It all started out in 2010 as a clone of the trEPR toolbox, heavily in need for a similar toolbox for TA Data.
 		</p>
 		<p>
-			Furthermore, if the data you loaded do not contain the necessary information for the axis labels, you may want to correct or set them as well.
+			The question <a href="whygui.html">why a GUI</a> was introduced is covered in a separate section. The good news for all those more interested in the command line: All functionality can still be accessed via the command line, and in addition, starting with version 0.0.26 in July 2013, a command line (CMD) found its way into the GUI, laying out the path for a complete scripting of the GUI.
+		</p>
+		<h2>Key concepts</h2>
+		<p>
+			The key aspects of developing the GUI (and completely redesigning the toolbox) can be summed up with three keywords:
+		</p>
+		<ul>
+			<li>Modularity</li>
+			<li>Robustness</li>
+			<li>Usability</li>
+		</ul>
+		<p>
+			Besides that, there are a few more aspects worth to be mentioned explicitly, particularly as they are not as obvious, but thought to be at least as important if it comes to processing and handling of scientific data:
+		</p>
+		<ul>
+			<li>Metadata</li>
+			<li>History of processing</li>
+			<li>Documentation</li>
+		</ul>
+		<p>
+			These aspects are described in more detail on the <a href="keyconcepts.html">key concepts</a> page. The idea behind is to provide the user with a complete workflow for processing, analysing and displaying/representing the TA data recorded, while keeping a complete record and overview of every single step. Much of that is still work in progress, whereas the toolbox is since years in use in a productive (scientific) environment.
+		</p>
+		<h2>Development</h2>
+		<p>
+			As mentioned already, the toolbox is under constant development and as of now (May 2013) not available in a "stable" version ready for a productive environment with people not too much interested in debugging software and working around bugs.
 		</p>
 		<p>
-			Either functionality is easily accessible: Just press the "Display" button.
+			A up-to-date list of <a href="newfeatures.html">new features</a> gives an overview of the changes from version to version. There is as well a list of <a href="knownbugs.html">known bugs</a> and a bit of documentation for <a href="bugreport.html">how to file a (useful) bug report</a>.
 		</p>
-		<h2>6. Processing</h2>
+		<h2>Disclaimer</h2>
 		<p>
-			For the advanced user, the "Processing" panel will provide all sorts of functions for data manipulation, such as accumulating different data sets.
+			Although it should be fairly obvious, this software comes with no warranty whatsoever and is provided "as is". The user is solely responsible for any consequences arising out of the use of this toolbox. In terms of scientific data processing and analysis: Although great care has been taken to provide you with a set of functions that perform correct and in scientific means valid operations on the data you process with this software, the author of the software is in no way responsible nor liable for the results. Further details can be found in the <a href="disclaimer.html">disclaimer</a>.
 		</p>
-		<h2>7. Analysis</h2>
+		<h2>Acknowledgements</h2>
 		<p>
-			To finally analyse your data, you might want to fit different functions to them, simulate data or perform deconvolutions. All those functions are grouped within and accessible from the "Analysis" panel.
+			Last but not least, there is a long list of people to thank for their continuous support, for their encouragement, and for their patience with using the toolbox and reporting (and in parts even fixing) bugs.
 		</p>
-		<h2>8. MFE</h2>
 		<p>
-			A special feature only used for a minority of TA data is the handling of measurements of the magnetic field effect (MFE). In this case, TA time traces have been recorded both without and with a static field applied. The "MFE" panel lets you perform the usual tasks on those data.
-		</p>
-		<h2>9. Configure</h2>
-		<p>
-			Just added for completeness in this short description: The "Configure" panel lets you at least partly adjust the behaviour of the TA toolbox and especially the GUI to your needs.
+			Instead of listing all those people here, the user is kindly referred to the <a href="matlab:TAgui_aboutwindow()">About</a> window of the toolbox. There, they will be displayed if you are patient and wait for a few seconds.
 		</p>
 		<div class="footer">
 		<p class="copyright">
-			&copy; 2011-12, Till Biskup
+			&copy; 2011-13, Till Biskup
 		</p>
 		<p class="lastchange">
-			2012-03-23
+			2013-07-15
 		</p>
 		</div>
 	</body>

@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../help.css" />
+        <title>TA GUI : Main window : Info file</title>
+    </head>
+    <body>
+		<h1>The info file: key concept for handling metadata.</h1>
+		<p class="intro">
+			For each experiment, there is more than just the data. And a labbook is only as good as the person who uses it. Very often, one realises only long after the measurement that an important aspect has been left out of the record. One way to help avoiding this is to record <em>during</em> the experiment already a predefined set of parameters. This is where the info files come into play.
+		</p>
+<!--
+		<div class="hurry">
+		<h2>If in a hurry</h2>
+		<p>
+			Suppose you don't want to read long introductions, but just start processing your data recorded right now: Read the section <a href="shortintro.html">"GUI in 2 minutes"</a>. Besides that, please note that each panel and each additional GUI window comes with its own in-built help.
+		</p>
+		</div>
+-->
+		<p>
+			Please note: A more complete <a href="matlab:web('http://www.till-biskup.de/en/software/matlab/trepr/dev/infodatei','-browser');">reference of the info file format</a> can be found on the toolbox webpage. Please see there for details. What follows is only a description of the key concepts of the format.
+		</p>
+		<h2>Criteria for the file format</h2>
+		<p>
+			Perhaps the most important aspect of a format for an info file is its usability. It needs to be easy to handle and at the same time obviously helpful for recording necessary parameters.
+		</p>
+		<p>
+			The best format is useless if it is not used regularly. The format described here has its predecessors in Freiburg where similar files were used for a long time (more than ten years) and proved quite useful. The big change between what has been used in Freiburg before and the "new" info file format is the machine readability of the latter, that, together with the interface for the toolbox, provides the user with a convenient way of storing all necessary metadata together with the actual data recorded by the spectrometer.
+		</p>
+		<p>
+			A more technical description of the criteria for the info file format:
+		</p>
+		<ul>
+			<li>Machine readable and human readable</li>
+			<li>Pure text (<acronym title="American Standard Code for Information Interchange">ASCII</acronym>)</li>
+			<li>Uniquely identifiably</li>
+			<ul>
+				<li>Identifier string in the first or second line of the file</li>
+			</ul>
+		</ul>
+		<p>
+			These criteria led to the actual info file format layed out in a bit more detail below. Once again: For the full specification of the format including all recent updates please check out the corresponding <a href="matlab:web('http://www.till-biskup.de/en/software/matlab/trepr/dev/infodatei','-browser');">webpage</a>.
+		</p>
+		<h2>General description of the file format</h2>
+		<p>
+			For those who like to see something, rather than reading (dull and) lengthly description: an example can be found further below.
+		</p>
+		<p>
+			Following a general description of the file format. 
+		</p>
+		<ul>
+			<li>Format</li>
+			<ul>
+				<li>The file format is ASCII (7-bit)</li>
+				<li>Restriction to 7 bit ASCII character table guarantees interoperability between different operating systems.</li>
+				<li>Therefore: No umlauts or other special characters.</li>
+			</ul>
+			<li>File name and extension</li>
+			<ul>
+				<li>The file extension is ”.info”.</li>
+				<li>The filename is identical with the file basename of the corresponding data file.<a href="#fnt1" name="fnm1" class="fnmark">1</a></li>
+			</ul>
+			<li>The first line of the file consists of an identifier string.</li>
+			<ul>
+				<li>Makes it possible to uniquely identify the file format during parsing.</li>
+				<li>Separated by an empty line from the remaining file.</li>
+				<li>Should contain a version number (of the format).</li>
+			</ul>
+			<li>Field names</li>
+			<ul>
+				<li>Field names may contain spaces, but no special characters and no colons<a href="#fnt2" name="fnm2" class="fnmark">2</a>.</li>
+				<li>Field names must start with a character (no numerical!).</li>
+				<li>Every field name ends with a colon.</li>
+				<li>Field names shall not contain/repeat the block name.<a href="#fnt3" name="fnm3" class="fnmark">3</a></li>
+			</ul>
+			<li>Values</li>
+			<ul>
+				<li>Values always follow a field name</li>
+				<li>Within a block, all values get intended that way that they are left-aligned. Therefore, the longest field name defines the indentation.</li>
+				<li>Values may contain special characters<a href="#fnt4" name="fnm4" class="fnmark">4</a> and colons.</li>
+				<li>Values may span several lines. In this case, each new line needs to start with a whitespace character (such as space or tab).</li>
+			</ul>
+			<li>Use of colons</li>
+			<ul>
+				<li>Colons are used to separate field names and values</li>
+				<li>At all other places (e.g., after a block heading) no colon is allowed. Only exception are values.</li>
+				<li>Colons are used internally during parsing to separate field names and values (in Matlab: regexp with option split).</li>
+			</ul>
+			<li>The info file is divided into several blocks.</li>
+			<ul>
+				<li>Blocks are introduced by block names in capital letters.</li>
+			</ul>
+			<li>All field names and descriptions within the file should be in English to guarantee international usability.</li>
+			<li>Blocks and fields may be optional, as long as there are certain fields (acting as “switches”) that can be used while parsing to determine whether these blocks/fields exist in the file.</li>
+			<ul>
+				<li>Is no value available for a field, but removing the field seems not reasonable<a href="#fnt5" name="fnm5" class="fnmark">5</a>, the value is “N/A”.</li>
+			</ul>
+			<li>About the blocks:</li>
+			<ul>
+				<li>Each block starts with a heading (block name) in capital letters.</li>
+				<li>Each block gets separated from the previous part of the file by an empty line.</li>
+				<li>Blocks contain key-value pairs consisting of a field name, followed by its respective value.</li>
+			</ul>
+		</ul>
+		<h2>Example</h2>
+		<p>
+			Following an example of an info file for a TA measurement with the full set of fields and blocks. 
+		</p>
+		
+<pre>
+TA Info file - v. 0.2d (2012-03-31)
+
+GENERAL
+Filename:               test
+Date:                   20xx-xx-xx
+Time start:             00:00:00
+Time end:               00:00:00
+Operator:               A. Kabelschacht
+Label:                  Testprobe
+Spectrometer:           LP920-K
+Software:               L900, Version 6.9.1
+Runs:                   1
+Shot repetition rate:   0.0625 Hz
+
+SAMPLE
+Name:                   FAD
+Description:            FAD in Puffer
+Preparation:            
+Cuvette:                
+
+TRANSIENT
+Points:                 2000
+Trigger position:       341
+Length:                 10 us
+
+SPECTROGRAPH
+Type:                   Czerny-Turner with Triple Grating Turret
+Model:                  standard
+Aperture front:         
+Aperture back:          
+
+DETECTION
+Type:                   PMT
+Model:                  standard
+Power supply:           standard
+Impedance:              50 Ohm
+Time constant:          
+
+RECORDER
+Model:                  
+Averages:               10
+Sensitivity:            
+Bandwidth:              1.0
+Time base:              5 ns
+Coupling:               
+
+PUMP
+Type:                   Laser
+Model:                  
+Wavelength:             460 nm
+Power:                  
+Repetition rate:        10 Hz
+Tunable type:           OPO
+Tunable model:          
+
+PROBE
+Type:                   Lamp
+Model:                  standard
+Wavelength start:       385 nm
+Wavelength stop:        655 nm
+Wavelength step:        10 nm
+Wavelength sequence:    up
+Power:                  
+Filter:                 
+Background:             lamp
+
+TEMPERATURE
+Temperature:            285 K
+Controller:             
+Cryostat:               none
+Cryogen:                H2O
+
+COMMENT
+
+Und hier gibt's ein bisschen Freitextkommentar - aber bitte OHNE Umlaute und andere Sonderzeichen!
+</pre>
+		
+		<div class="footnotes">
+		<p>
+			<a href="#fnm1" name="fnt1" class="fnmark">1</a>This is a rather ideal case. Therefore, in reality it is not meant to be a strict rule, but rather a recommendation.
+		</p>
+		<p>
+			<a href="#fnm2" name="fnt2" class="fnmark">2</a>The only exception are currently (round) brackets. If there is need for further special characters, parsing of those could be implemented as well. Reason for the restriction is the (direct) conversion of the field names in MATLAB® structs.
+		</p>
+		<p>
+			<a href="#fnm3" name="fnt3" class="fnmark">3</a> Example: “Preparation” rather than “Sample preparation” in block “SAMPLE”. On the one hand, field names are much shorter this way, on the other hand, the file becomes easier to read.
+		</p>
+		<p>
+			<a href="#fnm4" name="fnt4" class="fnmark">4</a>In general, whenever possible one should avoid using special characters, as they normally don't survive different file encodings. Until very recently, Matlab used different encodings with different operating systems.
+		</p>
+		<p>
+			<a href="#fnm5" name="fnt5" class="fnmark">5</a> E.g., a field that might be relevant depending on the type of experiment, and only for certain experiments contains no value. In such case it is highly recommended to keep the field, as otherwise one forgets about it.
+		</p>
+		</div>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2011-13, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-15
+		</p>
+		</div>
+	</body>
+</html>
+
