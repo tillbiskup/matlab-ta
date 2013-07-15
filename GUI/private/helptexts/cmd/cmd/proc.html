@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+    </head>
+    <body>
+		<h1>proc</h1>
+		<p class="intro">
+			Perform processing of current or explicitly selected dataset.
+		</p>
+		<h2>Description</h2>
+		<p>
+			The <tt>proc</tt> command is used to perform basic processing steps of datasets. Alternatively, you can use the GUI elements in the "processing" panel.
+		</p>
+		<h2>Syntax</h2>
+		<p>
+			<tt>proc</tt>
+		</p>
+		<p>
+			<tt>proc &lt;option&gt;</tt>
+		</p>
+		<h3>Options</h3>
+		<p>
+			Currently, the <tt>proc</tt> command takes the following options:
+		</p>
+		<dl>
+			<dt>poc | pretrigger</dt>
+			<dd>Perform pretrigger offset compensation.</dd>
+			<dt>bgc | background</dt>
+			<dd>Perform background compensation.</dd>
+		</dl>
+		<p>
+			If called without a second option, <tt>proc</tt> performs the processing on the currently active dataset. Alternatively, call with the number of a dataset as second (optional) argument.
+		</p>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-07-15
+		</p>
+		</div>
+	</body>
+</html>

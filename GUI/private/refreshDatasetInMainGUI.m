@@ -7,8 +7,8 @@ function status = refreshDatasetInMainGUI(dataset,id,varargin)
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -78,7 +78,7 @@ try
             % that the corresponding dataset in the main GUI now has both a
             % different label and a different id, we savely append it to
             % the main GUI.
-            appendDatasetToMainGUI(dataset,'modified',p.Results.modified);
+            TAappendDatasetToMainGUI(dataset,'modified',p.Results.modified);
             status = 0;
             return;
         end

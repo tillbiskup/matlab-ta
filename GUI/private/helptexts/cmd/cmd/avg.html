@@ -9,26 +9,45 @@
     <body>
 		<h1>avg</h1>
 		<p class="intro">
-			Opening the AVG GUI window.
+			Performing averaging of a 2D dataset in one dimension, alternatively: opening the AVG GUI window.
 		</p>
 		<h2>Description</h2>
 		<p>
-			The <tt>avg</tt> command opens the AVG GUI window of the TA GUI. Alternatives would be to press <key>F6</key> or click on the &quot;AVG&quot; button in the main GUI.
+			The <tt>avg</tt> command without options opens the AVG GUI window of the TA GUI. Alternatives would be to press <key>F6</key> or click on the &quot;AVG&quot; button in the main GUI.
+		</p>
+		<p>
+			If used with a number of options, the <tt>avg</tt> command performs averaging of twodimensional datasets in the specified dimension from the command line without using the AVG GUI.
 		</p>
 		<h2>Syntax</h2>
 		<p>
 			<tt>avg</tt>
 		</p>
+		<p>
+			<tt>avg [&lt;dataset&gt;] &lt;x|y&gt; &lt;start:stop&gt;|&lt;center;width&gt; [&lt;label&gt;]</tt>
+		</p>
 		<h3>Options</h3>
 		<p>
-			Currently, the <tt>avg</tt> command takes no options.
+			Currently, the <tt>avg</tt> command takes the following options:
 		</p>
+		<dl>
+			<dt>dataset (OPTIONAL)</dt>
+			<dd>Number of the dataset to perform the averaging for.</dd>
+			<dd>If no number is given (<em>i.e.</em>, the first argument is not a number, but a letter), averaging is performed using the currently active dataset.</dd>
+			<dt>x|y</dt>
+			<dd>Dimension along which to perform the averaging.</dd>
+			<dt>start:stop | center,width</dt>
+			<dd>Window to perform the averaging for.</dd>
+			<dd>There are two alternative ways to specify this window, either using a colon and specifying start and stop values, or using a comma specifying center value and width.</dd>
+			<dd>All values are in units of the dataset the averaging is performed for.</dd>
+			<dt>label (OPTIONAL)</dt>
+			<dd>Label of the new dataset resulting from the averaging process.</dd>
+		</dl>
 		<div class="footer">
 		<p class="copyright">
 			&copy; 2013, Till Biskup
 		</p>
 		<p class="lastchange">
-			2013-07-12
+			2013-07-15
 		</p>
 		</div>
 	</body>

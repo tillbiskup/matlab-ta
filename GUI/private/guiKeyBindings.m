@@ -7,7 +7,7 @@ function guiKeyBindings(src,evt)
 %     evt - actual event, struct with fields "Character", "Modifier", "Key"
 
 % (c) 2011-13, Till Biskup
-% 2013-07-12
+% 2013-07-15
 
 try
     if isempty(evt.Character) && isempty(evt.Key)
@@ -158,13 +158,13 @@ try
                     return;
                 end
                 if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         ad.control.spectra.active,'force',true);
                     if status
                         disp(message);
                     end
                 else
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         ad.control.spectra.active);
                     if status
                         disp(message);
@@ -178,13 +178,13 @@ try
                         get(gh.data_panel_invisible_listbox,'Value'));
                 end
                 if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         selected,'force',true);
                     if status
                         disp(message);
                     end
                 else
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         selected);
                     if status
                         disp(message);
@@ -197,13 +197,13 @@ try
             end
             if src == gh.data_panel_visible_listbox
                 if ~isempty(evt.Modifier) && (strcmpi(evt.Modifier{1},'shift'))
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         ad.control.spectra.active,'force',true);
                     if status
                         disp(message);
                     end
                 else
-                    [status,message] = removeDatasetFromMainGUI(...
+                    [status,message] = TAremoveDatasetFromMainGUI(...
                         ad.control.spectra.active);
                     if status
                         disp(message);

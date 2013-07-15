@@ -6,8 +6,8 @@ function varargout = TAgui_AVGwindow(varargin)
 %
 % See also TAGUI
 
-% (c) 2012, Till Biskup
-% 2012-10-21
+% (c) 2012-13, Till Biskup
+% 2013-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2230,7 +2230,7 @@ function pushbutton_Callback(~,~,action)
                         if isfield(ad.avgdata{k},'display')
                             ad.avgdata{k} = rmfield(ad.avgdata{k},'display');
                         end
-                        status = appendDatasetToMainGUI(...
+                        status = TAappendDatasetToMainGUI(...
                             ad.avgdata{k},...
                             'modified',true);
                         if status

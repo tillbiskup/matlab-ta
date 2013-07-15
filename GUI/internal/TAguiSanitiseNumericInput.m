@@ -22,6 +22,7 @@ function [value,status,warnings] = TAguiSanitiseNumericInput(value,varargin)
 %
 %   status  - scalar
 %             Return value for the exit status:
+%             -2: Problems with boundaries
 %             -1: value not numeric after conversion
 %              0: successfully sanitised value
 %
@@ -43,7 +44,7 @@ function [value,status,warnings] = TAguiSanitiseNumericInput(value,varargin)
 %             Default: false
 
 % (c) 2013, Till Biskup
-% 2013-06-02
+% 2013-07-15
 
 status = 0;
 warnings = cell(0);
@@ -106,9 +107,13 @@ if ~isempty(vector)
     % Check for correct boundaries
     if value > vector(end)
         value = vector(end);
+        status = -2;
+        warnings{end+1} = 'Value larger than largest value in vector';
     end
     if value < vector(1)
         value = vector(1);
+        status = -2;
+        warnings{end+1} = 'Value smaller than smallest value in vector';
     end
     
     % Handle mapping of value to vector

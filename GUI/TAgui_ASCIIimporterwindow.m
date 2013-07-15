@@ -7,7 +7,7 @@ function varargout = TAgui_ASCIIimporterwindow(varargin)
 % See also TAGUI, TALOAD
 
 % (c) 2013, Till Biskup
-% 2013-06-02
+% 2013-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -779,7 +779,7 @@ function pushbutton_Callback(~,~,action)
                 end
                 % Append data to toolbox
                 if ~isempty(data)
-                    status = appendDatasetToMainGUI(data);
+                    status = TAappendDatasetToMainGUI(data);
                     if status
                         TAmsg('Something went wrong appending the dataset','warning');
                     end

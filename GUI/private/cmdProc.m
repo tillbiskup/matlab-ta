@@ -72,8 +72,6 @@ if ~isempty(opt)
                 numDataset = ad.control.spectra.active;
             end
             guiProcessingBGC(numDataset);
-        case {'blc','baseline'}
-            TAgui_BLCwindow();
         case {'acc','accumulate'}
             TAgui_ACCwindow();
         otherwise

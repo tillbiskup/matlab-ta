@@ -6,8 +6,8 @@ function handle = guiDatasetPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011-12, Till Biskup
-% 2012-10-21
+% (c) 2011-13, Till Biskup
+% 2013-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -461,7 +461,7 @@ function pushbutton_Callback(~,~,action)
                 % Get id of selected spectrum
                 selectedId = ad.control.spectra.visible(selected);
                 
-                removeDatasetFromMainGUI(selectedId);
+                TAremoveDatasetFromMainGUI(selectedId);
             case 'Duplicate'
                 % Get selected item of listbox
                 selected = ad.control.spectra.visible(...

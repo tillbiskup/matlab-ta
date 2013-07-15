@@ -983,7 +983,7 @@ function pushbutton_Callback(~,~,action)
                 end
 
                 % Append dataset to main GUI
-                status = appendDatasetToMainGUI(...
+                status = TAappendDatasetToMainGUI(...
                     combinedDataset,'modified',true);
                 if status
                     disp('Hmm... some problems with appending combined dataset to main GUI.');

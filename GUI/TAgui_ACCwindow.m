@@ -6,8 +6,8 @@ function varargout = TAgui_ACCwindow(varargin)
 %
 % See also TAGUI
 
-% (c) 2012, Till Biskup
-% 2012-10-21
+% (c) 2012-13, Till Biskup
+% 2012-07-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1998,7 +1998,7 @@ function pushbutton_Callback(~,~,action)
                         };
                     TAmsg(msgStr,'info');
                     % Add accData to main GUI
-                    status = appendDatasetToMainGUI(...
+                    status = TAappendDatasetToMainGUI(...
                         ad.acc.data,'modified',true);
                     if status
                         disp('Hmm... some problems with appending accumulated dataset to main GUI.');

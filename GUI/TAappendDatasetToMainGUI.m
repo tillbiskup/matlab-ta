@@ -1,14 +1,14 @@
-function status = appendDatasetToMainGUI(dataset,varargin)
-% APPENDDATASETTOMAINGUI Append dataset to main GUI.
+function status = TAappendDatasetToMainGUI(dataset,varargin)
+% TAAPPENDDATASETTOMAINGUI Append dataset to main GUI.
 %
 % Usage:
-%   status = appendDatasetToMainGUI(dataset);
+%   status = TAappendDatasetToMainGUI(dataset);
 %
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
 % (c) 2011-13, Till Biskup
-% 2013-06-02
+% 2013-07-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
