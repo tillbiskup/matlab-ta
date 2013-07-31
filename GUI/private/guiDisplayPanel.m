@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-07-15
+% 2013-07-30
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3699,11 +3699,11 @@ function axesexport_pushbutton_Callback(~,~)
         % Open new figure window
         newFig = figure();
         
-        % Plot into new figure window
-        update_mainAxis(newFig);
-        
         % Make new figure window invisible
         set(newFig,'Visible','off');
+        
+        % Plot into new figure window
+        update_mainAxis(newFig);
 
         % Get export format
         figExportFormats = cellstr(...
