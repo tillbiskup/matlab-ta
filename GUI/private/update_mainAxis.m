@@ -9,7 +9,7 @@ function status = update_mainAxis(varargin)
 %            0: successfully updated main axis
 
 % (c) 2011-13, Till Biskup
-% 2013-07-12
+% 2013-08-17
 
 % Is there currently a TAgui object?
 mainWindow = TAguiGetWindowHandle();
@@ -18,11 +18,36 @@ if (isempty(mainWindow))
     return;
 end
 
-% Get handles from main window
+% Get handles and appdata from main window
 gh = guidata(mainWindow);
-
-% Get appdata from main GUI
 ad = getappdata(mainWindow);
+
+% Set current axes to the main axes of main GUI
+mainAxes = gh.mainAxis;
+set(mainWindow,'CurrentAxes',gh.mainAxis);
+
+% Set defaults
+showTitle = true;
+
+% Check for additional input parameters
+if (nargin > 0)
+    if ishandle(varargin{1})
+        mainAxes = newplot(varargin{1});
+        % Remove first optional input argument
+        varargin(1) = [];
+    end
+    if ~isempty(varargin) && ischar(varargin{1})
+        switch lower(varargin{1})
+            case 'notitle'
+                showTitle = false;
+            otherwise
+                disp(['Optional argument "' varargin{1} '" not understood']);
+        end
+    end
+end
+
+% IMPORTANT: Set main axis to active axis
+axes(mainAxes); %#ok<MAXES>
 
 % Change enable status of pushbuttons and other elements
 mainAxisChildren = findobj(...
@@ -43,29 +68,17 @@ end
 % Set min and max for plots - internal function
 setMinMax();
 
-% Get appdata from main GUI
-ad = getappdata(mainWindow);
-
-% Set current axes to the main axes of main GUI
-if (nargin > 0) && ishandle(varargin{1})
-    mainAxes = newplot(varargin{1});
-else
-    mainAxes = gh.mainAxis;
-    set(mainWindow,'CurrentAxes',gh.mainAxis);
-end
-
 % Just to be on the save side, check whether we have a currently active
 % spectrum
 if ~(ad.control.spectra.active)
-    % Set title to empty string
-    title('');
+    if showTitle
+        % Set title to empty string
+        title('');
+    end
     msg = 'update_mainAxis(): No active spectrum';
     TAmsg(msg,'info');
     return;
 end
-
-% IMPORTANT: Set main axis to active axis
-axes(mainAxes); %#ok<MAXES>
 
 % For shorter and easier to read code:
 active = ad.control.spectra.active;
@@ -2074,7 +2087,9 @@ switch ad.control.axis.displayType
 end
 
 % Set title (label of currently active dataset)
-title(['Active dataset: ' strrep(ad.data{active}.label,'_','\_')]);
+if showTitle
+    title(['Active dataset: ' strrep(ad.data{active}.label,'_','\_')]);
+end
 
 % Set grid
 set(gca,'XGrid',ad.control.axis.grid.x);
