@@ -4,7 +4,7 @@ function varargout = TAgui(varargin)
 % Main GUI window of the TA toolbox.
 
 % (c) 2011-13, Till Biskup
-% 2013-07-15
+% 2013-08-22
 
 % Make GUI effectively a singleton
 singleton = TAguiGetWindowHandle();
@@ -1446,6 +1446,10 @@ end
 function command_Callback(source,~)
     try
         [status,warning] = TAguiCommand(get(source,'String'));
+        % In case that the command ended the GUI, check for its existence
+        if isempty(TAguiGetWindowHandle)
+            return;
+        end
         if status
             TAmsg(warning,'warning');
         end
