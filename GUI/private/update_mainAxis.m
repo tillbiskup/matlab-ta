@@ -9,7 +9,7 @@ function status = update_mainAxis(varargin)
 %            0: successfully updated main axis
 
 % (c) 2011-13, Till Biskup
-% 2013-08-17
+% 2013-08-24
 
 % Is there currently a TAgui object?
 mainWindow = TAguiGetWindowHandle();
@@ -67,6 +67,10 @@ end
 
 % Set min and max for plots - internal function
 setMinMax();
+
+% Get appdata from main window
+% IMPORTANT: Need to do that (again) after calling setMinMax()
+ad = getappdata(mainWindow);
 
 % Just to be on the save side, check whether we have a currently active
 % spectrum
