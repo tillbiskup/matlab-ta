@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-08-17
+% 2013-10-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -3717,20 +3717,11 @@ function axesexport_pushbutton_Callback(~,~)
         mainWindow = TAguiGetWindowHandle;
         ad = getappdata(mainWindow);
         gh = guihandles(mainWindow);
-
-        % Open new figure window
-        newFig = figure();
         
-        % Make new figure window invisible
-        set(newFig,'Visible','off');
-        
-        % Plot into new figure window
-        % Check whether to plot title
-        if get(gh.display_panel_axesexport_includetitle_checkbox,'Value')
-            update_mainAxis(newFig);
-        else
-            update_mainAxis(newFig,'notitle');
-        end
+        % Important: First generate filename suggestion and ask user for
+        % filename, then start redrawing the figure in a new figure window.
+        % If the user quits the file selection dialogue box, nothing is
+        % left to close in this case.
 
         % Get export format
         figExportFormats = cellstr(...
@@ -3744,24 +3735,32 @@ function axesexport_pushbutton_Callback(~,~)
         fileType = fileTypes{...
             get(gh.display_panel_axesexport_filetype_popupmenu,'Value')};
         
-        % Set directory where to save files to
-        if isfield(ad,'control') && isfield(ad.control,'dir') && ...
-                isfield(ad.control.dir,'lastFigSave')  && ...
-                ~isempty(ad.control.dir.lastFigSave)
-            startDir = ad.control.dir.lastFigSave;
-        else
-            startDir = pwd;
-        end
-        
-        % Generate default file name if possible, be very defensive
-        if ad.control.spectra.visible
-            [~,f,~] = ...
-                fileparts(ad.data{ad.control.spectra.visible(1)}.file.name);
-            fileNameSuggested = fullfile(startDir,f);
-            clear f;
-        else
-            fileNameSuggested = startDir;
-        end
+%         % Get directory where to save files to
+%         if isfield(ad,'control') && isfield(ad.control,'dir') && ...
+%                 isfield(ad.control.dir,'lastFigSave')  && ...
+%                 ~isempty(ad.control.dir.lastFigSave)
+%             startDir = ad.control.dir.lastFigSave;
+%         else
+%             startDir = pwd;
+%         end
+% 
+%         % Generate default file name if possible, be very defensive
+%         if ad.control.spectra.visible
+%             if isfield(ad.configuration,'filename') && ...
+%                     ad.configuration.useLabel
+%                 fileNameSuggested = fullfile(startDir,...
+%                     ad.data{ad.control.spectra.active}.label);
+%             else
+%             [~,f,~] = ...
+%                 fileparts(ad.data{ad.control.spectra.active}.file.name);
+%             fileNameSuggested = fullfile(startDir,f);
+%             clear f;
+%             end
+%         else
+%             fileNameSuggested = startDir;
+%         end
+
+        fileNameSuggested = suggestFilename(mainWindow);
         
         % Ask user for file name
         [fileName,pathName] = uiputfile(...
@@ -3780,7 +3779,21 @@ function axesexport_pushbutton_Callback(~,~)
             ad.control.dir.lastFigSave = pathName;
         end
         setappdata(mainWindow,'control',ad.control);
+
+        % Open new figure window
+        newFig = figure();
         
+        % Make new figure window invisible
+        set(newFig,'Visible','off');
+        
+        % Plot into new figure window
+        % Check whether to plot title
+        if get(gh.display_panel_axesexport_includetitle_checkbox,'Value')
+            update_mainAxis(newFig);
+        else
+            update_mainAxis(newFig,'notitle');
+        end
+                
         % Check whether to open caption GUI
         if get(gh.display_panel_axesexport_includecaption_checkbox,'Value')
             TAgui_figureCaptionwindow(fileName);
