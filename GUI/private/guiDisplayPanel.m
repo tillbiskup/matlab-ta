@@ -3734,33 +3734,8 @@ function axesexport_pushbutton_Callback(~,~)
             get(gh.display_panel_axesexport_filetype_popupmenu,'String'));
         fileType = fileTypes{...
             get(gh.display_panel_axesexport_filetype_popupmenu,'Value')};
-        
-%         % Get directory where to save files to
-%         if isfield(ad,'control') && isfield(ad.control,'dir') && ...
-%                 isfield(ad.control.dir,'lastFigSave')  && ...
-%                 ~isempty(ad.control.dir.lastFigSave)
-%             startDir = ad.control.dir.lastFigSave;
-%         else
-%             startDir = pwd;
-%         end
-% 
-%         % Generate default file name if possible, be very defensive
-%         if ad.control.spectra.visible
-%             if isfield(ad.configuration,'filename') && ...
-%                     ad.configuration.useLabel
-%                 fileNameSuggested = fullfile(startDir,...
-%                     ad.data{ad.control.spectra.active}.label);
-%             else
-%             [~,f,~] = ...
-%                 fileparts(ad.data{ad.control.spectra.active}.file.name);
-%             fileNameSuggested = fullfile(startDir,f);
-%             clear f;
-%             end
-%         else
-%             fileNameSuggested = startDir;
-%         end
 
-        fileNameSuggested = suggestFilename(mainWindow);
+        fileNameSuggested = suggestFilename(mainWindow,'Type','figure');
         
         % Ask user for file name
         [fileName,pathName] = uiputfile(...

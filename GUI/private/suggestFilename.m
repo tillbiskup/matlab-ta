@@ -1,19 +1,42 @@
-function filename = suggestFilename(guiHandle)
+function filename = suggestFilename(guiHandle,varargin)
 % SUGGESTFILENAME Create filename suggestion from GUI data and current
 % dataset.
 
 % (c) 2013, Till Biskup
 % 2013-10-15
 
+% Parse input arguments using the inputParser functionality
+parser = inputParser;   % Create an instance of the inputParser class.
+parser.FunctionName  = mfilename; % Include function name in error messages
+parser.KeepUnmatched = true; % Enable errors on unmatched arguments
+parser.StructExpand  = true; % Enable passing arguments in a structure
+
+parser.addRequired('guiHandle',@ishandle);
+parser.addParamValue('type','file',@ischar);
+parser.parse(guiHandle,varargin{:});
+
 % Get appdata and handles
 ad = getappdata(guiHandle);
-%gh = guihandles(guiHandle);
+
+% Handle what to save: figure, file, ...
+switch lower(parser.Results.type)
+    case 'file'
+        directory = 'lastSave';
+    case {'fig','figure'}
+        directory = 'lastFigSave';
+    otherwise
+        % This shall never happen
+        TAmsg('Damn! Some problem with determining what to save');
+        filename = '';
+        return;
+end
         
+
 % Get directory where to save files to
 if isfield(ad,'control') && isfield(ad.control,'dir') && ...
-        isfield(ad.control.dir,'lastFigSave')  && ...
-        ~isempty(ad.control.dir.lastFigSave)
-    startDir = ad.control.dir.lastFigSave;
+        isfield(ad.control.dir,directory)  && ...
+        ~isempty(ad.control.dir.(directory))
+    startDir = ad.control.dir.(directory);
 else
     startDir = pwd;
 end
