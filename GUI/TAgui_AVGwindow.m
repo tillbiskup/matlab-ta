@@ -7,7 +7,7 @@ function varargout = TAgui_AVGwindow(varargin)
 % See also TAGUI
 
 % (c) 2012-13, Till Biskup
-% 2013-07-15
+% 2013-10-16
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1160,12 +1160,12 @@ if (mainGuiWindow)
     if (isfield(admain,'data') ~= 0)
         ad.data = admain.data;
         % Add AVG struct to each dataset
-        for l=1:length(ad.data)
-            ad.data{l}.avg.area.start = 1;
-            ad.data{l}.avg.area.stop = 1;
-            ad.data{l}.avg.area.delta = 0;
-            ad.data{l}.avg.label = '';
-            ad.data{l}.avg.dimension = ad.configuration.avg.dimension;
+        for idx=1:length(ad.data)
+            ad.data{idx}.avg.area.start = 1;
+            ad.data{idx}.avg.area.stop = 1;
+            ad.data{idx}.avg.area.delta = 0;
+            ad.data{idx}.avg.label = '';
+            ad.data{idx}.avg.dimension = ad.configuration.avg.dimension;
         end
         setappdata(hMainFigure,'data',ad.data);
         ad.origdata = admain.data;

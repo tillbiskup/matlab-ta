@@ -48,6 +48,16 @@ lastSnapshot = ~/.ta/snapshots
 useLabel = 0
 sanitise = 1
 
+% Configuration of messaging
+[messages]
+display.level = all
+debug.level = all
+
+% Configuration of command line feature (cmd)
+[cmd]
+historysave = false
+historyfile = ~/.trepr/history
+
 % Configuration for the load panel
 %
 % The first lines, "combine/loaddir/POC/BGC/labels", are switches settin
