@@ -12,7 +12,7 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-13, Till Biskup
-% 2013-07-12
+% 2013-11-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -157,6 +157,7 @@ try
     
     %msgbox(msg,'Successful saving of file','help'); 
     TAbusyWindow('stop','Trying to save spectra...<br /><b>done</b>.');
+    TAbusyWindow('deletedelayed');
     status = 0;
     
 catch exception

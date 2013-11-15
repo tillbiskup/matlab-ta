@@ -12,7 +12,7 @@ function [status,message] = saveAsDatasetInMainGUI(id,varargin)
 %           wrong.
 
 % (c) 2011-13, Till Biskup
-% 2013-10-15
+% 2013-11-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -170,7 +170,7 @@ try
     update_mainAxis();
     
     TAbusyWindow('stop','Trying to save spectra...<br /><b>done</b>.');
-    %msgbox(msg,'Successful saving of file','help'); 
+    TAbusyWindow('deletedelayed');
     status = 0;
     
 catch exception

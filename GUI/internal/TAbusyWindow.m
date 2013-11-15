@@ -1,16 +1,31 @@
 function varargout = TAbusyWindow(varargin)
-% TAbusyWindow Show window with message and spinning dots (using JAVA
-% magic).
+% TABUSYWINDOW Show window with message and spinning dots using JAVA.
 %
-%       Arguments: action (start, stop)
+% Usage:
+%   TAbusyWindow(action);
+%   TAbusyWindow(action,description);
+%   TAbusyWindow(action,description,<parameter>,<value>);
+%   handle = TAbusyWindow(...);
 %
-%       Returns the handle of the window.
+%   action      - string
+%                 one of: start, stop, fail, delete, deletedelayed
+%
+%   description - string
+%                 
+% Additional parameter-value pairs can be passed at the function call.
+% Currently, the following parameters are possible:
+%
+%   position    - vector
+%                 four-element vector determining the window position
 
 % (c) 2012-13, Till Biskup
-% 2013-07-12
+% 2013-11-15
 
 title = 'Processing...';
 position = [220,350,270,120];
+
+% Delay time for closing window (in seconds)
+closeDelayTime = 2;
 
 description = ['Neque porro quisquam est qui dolorem ipsum '...
     'quia dolor sit amet, consectetur, adipisci velit...'];
@@ -131,6 +146,39 @@ switch action
             set(hMainFigure,'Name','Completed.');
         end
         clear('jObj');
+    case 'fail'
+        jObj.stop;
+        try
+            jObj.setBusyText('Failed');
+        catch exception
+            trEPRmsg(exception.message);
+        end
+        set(hBtn,'Visible','on');
+        set(hMainFigure,'KeyPressFcn',@keypress_Callback);
+        if isfield(parameters,'title')
+            set(hMainFigure,'Name',parameters.title);
+        else
+            set(hMainFigure,'Name','Failed.');
+        end
+        clear('jObj');
+    case 'delete'
+        jObj.stop;
+        clear('jObj');
+        delete(hMainFigure);
+    case 'deletedelayed'
+        jObj.stop;
+        clear('jObj');
+        % Set timer to automatically close the busyWindow.
+        % IMPORTANT: Use "StopFcn" for timer that deletes the timer itself
+        closeBusyWindowTimer = timer(...
+            'TimerFcn',sprintf(...
+            'delete(%i)',hMainFigure),...
+            'StartDelay',closeDelayTime,...
+            'TasksToExecute',1,...
+            'Name','busyWindowTimer',...
+            'StopFcn','delete(timerfind(''Name'',''busyWindowTimer''))' ...
+            );
+        start(closeBusyWindowTimer);
     otherwise
 end
 

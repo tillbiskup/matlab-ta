@@ -23,7 +23,7 @@ function [status,warnings] = cmdLoad(handle,opt,varargin)
 %             Contains warnings/error messages if any, otherwise empty
 
 % (c) 2013, Till Biskup
-% 2013-07-12
+% 2013-11-15
 
 status = 0;
 warnings = cell(0);
@@ -258,6 +258,7 @@ TAmsg([msgStr fileNames],'info');
 clear msgStr;
 
 TAbusyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
+TAbusyWindow('deletedelayed');
 
 % Get appdata again after making changes to it before
 ad = getappdata(mainWindow);

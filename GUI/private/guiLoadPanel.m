@@ -7,7 +7,7 @@ function handle = guiLoadPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-07-12
+% 2013-11-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -465,7 +465,8 @@ function load_pushbutton_Callback(~,~)
         end
 
         TAbusyWindow('stop','Trying to load spectra...<br /><b>done</b>.');
-        
+        TAbusyWindow('deletedelayed');
+
         % Get appdata again after making changes to it before
         ad = getappdata(mainWindow);
         

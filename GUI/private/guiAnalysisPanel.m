@@ -7,7 +7,7 @@ function handle = guiAnalysisPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-07-12
+% 2013-11-15
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -159,6 +159,7 @@ function pushbutton_Callback(~,~,action)
                         else
                             TAbusyWindow('stop',...
                                 'Trying to export dataset...<br /><b>done</b>.');
+                            TAbusyWindow('deletedelayed');
                         end
                         
                     otherwise
