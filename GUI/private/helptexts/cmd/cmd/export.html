@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" type="text/css" href="../../help.css" />
+    </head>
+    <body>
+		<h1>export</h1>
+		<p class="intro">
+			Export either the current axis as graphics file or datasets.
+		</p>
+		<h2>Description</h2>
+		<p>
+			The <tt>export</tt> command is used to export either the current axis or datasets. The first option determines what to export, other additional options are used to specify the export further.
+		</p>
+		<h2>Syntax</h2>
+		<p>
+			<tt>export fig|axis [format=&lt;format&gt;] [type=&lt;filetype&gt;] [&lt;filename&gt;]</tt>
+		</p>
+		<p>
+			<tt>export 1D [&lt;current|all&gt;] [&lt;single|multiple&gt;] [type=&lt;filetype&gt;] [&lt;filename&gt;]</tt>
+		</p>
+		<h3>Options</h3>
+		<p>
+			Currently, the <tt>export</tt> command takes the following options:
+		</p>
+		<dl>
+			<dt>fig|axis|1D</dt>
+			<dd>What to export.</dd>
+			<dd>&quot;fig&quot; and &quot;axis&quot; are both used to export the current axis, &quot;1D&quot; is used to export 1D datasets.</dd>
+			<dt>format (OPTIONAL)</dt>
+			<dd>Name of the figure format as defined in the <tt>fig2file.ini</tt> file.</dd>
+			<dd>Needs to be preceded by &quot;format=&quot;.</dd>
+			<dt>filetype (OPTIONAL)</dt>
+			<dd>File type the figure should be saved to, such as &quot;pdf&quot; or &quot;fig&quot;.</dd>
+			<dd>Needs to be preceded by &quot;filetype=&quot;.</dd>
+			<dt>filename (OPTIONAL)</dt>
+			<dd>Name of the file the figure or data should be saved to.</dd>
+			<dd>If no filename is provided, the user gets asked for a filename using the standard file selection dialogue boxes.</dd>
+			<dt>current|all</dt>
+			<dd>Whether to export the currently active trace or all traces displayed.</dd>
+			<dd>Default is to use the option set in the GUI. If the option is provided, it will override what is set in the GUI.</dd>
+			<dt>single|multiple</dt>
+			<dd>When exporting multiple traces, whether to save them all together in one file or each in a separate file.</dd>
+			<dd>Default is to use the option set in the GUI. If the option is provided, it will override what is set in the GUI.</dd>
+		</dl>
+		<div class="footer">
+		<p class="copyright">
+			&copy; 2013, Till Biskup
+		</p>
+		<p class="lastchange">
+			2013-11-15
+		</p>
+		</div>
+	</body>
+</html>
