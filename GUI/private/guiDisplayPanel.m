@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-11-15
+% 2013-11-16
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -1216,7 +1216,7 @@ uicontrol('Tag','display_panel_dataexport_pushbutton',...
     'TooltipString',sprintf('%s\n%s',...
     'Export currently active dataset in current (x or y) display',...
     'to file with given type'),...
-    'Callback',{@dataexport_pushbutton_Callback}...
+    'Callback',{@pushbutton_Callback,'dataExport'}...
     );
 
 handle_p5_1 = uipanel('Tag','display_panel_3Ddisplay_panel',...
@@ -2435,7 +2435,12 @@ function pushbutton_Callback(~,~,action)
                 
                 % Update main axis
                 update_mainAxis();
-                return;                
+                return;
+            case 'dataExport'
+                [status,warnings] = cmdExport(mainWindow,{'1D'});
+                if status
+                    TAmsg(warnings,'warning');
+                end
             otherwise
                 disp(['TAgui : guiDisplayPanel() : pushbutton_Callback(): '...
                     'Unknown action "' action '"']);
@@ -3833,40 +3838,6 @@ function axesexport_pushbutton_Callback(~,~)
         
         % Close figure window
         close(newFig);
-    catch exception
-        try
-            msgStr = ['An exception occurred in ' ...
-                exception.stack(1).name  '.'];
-            TAmsg(msgStr,'error');
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
-    end
-end
-
-function dataexport_pushbutton_Callback(~,~)
-    try
-        % Get appdata and handles of main window
-        mainWindow = TAguiGetWindowHandle;
-        ad = getappdata(mainWindow);
-        
-        % Check whether we have an active spectrum, otherwise return
-        if ~ad.control.spectra.active
-            return;
-        end
-
-        [status,warnings] = cmdExport(mainWindow,{'1D'});
-        if status
-            TAmsg(warnings,'warning');
-        end
     catch exception
         try
             msgStr = ['An exception occurred in ' ...

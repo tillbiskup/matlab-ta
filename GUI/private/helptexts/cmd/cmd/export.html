@@ -17,7 +17,7 @@
 		</p>
 		<h2>Syntax</h2>
 		<p>
-			<tt>export fig|axis [format=&lt;format&gt;] [type=&lt;filetype&gt;] [&lt;filename&gt;]</tt>
+			<tt>export fig[ure]|axis|axes [format=&lt;format&gt;] [type=&lt;filetype&gt;] [&lt;filename&gt;]</tt>
 		</p>
 		<p>
 			<tt>export 1D [&lt;current|all&gt;] [&lt;single|multiple&gt;] [type=&lt;filetype&gt;] [&lt;filename&gt;]</tt>
@@ -27,22 +27,23 @@
 			Currently, the <tt>export</tt> command takes the following options:
 		</p>
 		<dl>
-			<dt>fig|axis|1D</dt>
+			<dt>fig[ure]|axis|axes|1D</dt>
 			<dd>What to export.</dd>
-			<dd>&quot;fig&quot; and &quot;axis&quot; are both used to export the current axis, &quot;1D&quot; is used to export 1D datasets.</dd>
+			<dd>&quot;fig|figure&quot; and &quot;axis|axes&quot; are all used to export the current axis, &quot;1D&quot; is used to export 1D datasets.</dd>
+			<dd>The optional additional arguments depend on that initial choice and are described below.</dd>
 			<dt>format (OPTIONAL)</dt>
 			<dd>Name of the figure format as defined in the <tt>fig2file.ini</tt> file.</dd>
 			<dd>Needs to be preceded by &quot;format=&quot;.</dd>
 			<dt>filetype (OPTIONAL)</dt>
 			<dd>File type the figure should be saved to, such as &quot;pdf&quot; or &quot;fig&quot;.</dd>
-			<dd>Needs to be preceded by &quot;filetype=&quot;.</dd>
+			<dd>Needs to be preceded by &quot;type=&quot;.</dd>
 			<dt>filename (OPTIONAL)</dt>
 			<dd>Name of the file the figure or data should be saved to.</dd>
 			<dd>If no filename is provided, the user gets asked for a filename using the standard file selection dialogue boxes.</dd>
-			<dt>current|all</dt>
+			<dt>current|all (OPTIONAL)</dt>
 			<dd>Whether to export the currently active trace or all traces displayed.</dd>
 			<dd>Default is to use the option set in the GUI. If the option is provided, it will override what is set in the GUI.</dd>
-			<dt>single|multiple</dt>
+			<dt>single|multiple (OPTIONAL)</dt>
 			<dd>When exporting multiple traces, whether to save them all together in one file or each in a separate file.</dd>
 			<dd>Default is to use the option set in the GUI. If the option is provided, it will override what is set in the GUI.</dd>
 		</dl>
@@ -51,7 +52,7 @@
 			&copy; 2013, Till Biskup
 		</p>
 		<p class="lastchange">
-			2013-11-15
+			2013-11-16
 		</p>
 		</div>
 	</body>
