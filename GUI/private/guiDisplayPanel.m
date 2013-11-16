@@ -1066,7 +1066,7 @@ uicontrol('Tag','display_panel_axesexport_pushbutton',...
     'Position',[handle_size(3)-90 10 60 30],...
     'String','Export',...
     'TooltipString','Export current axis to graphics file with given format',...
-    'Callback',{@axesexport_pushbutton_Callback}...
+    'Callback',{@pushbutton_Callback,'axisExport'}...
     );
 
 handle_p4_2 = uipanel('Tag','display_panel_dataexport_panel',...
@@ -2441,6 +2441,11 @@ function pushbutton_Callback(~,~,action)
                 if status
                     TAmsg(warnings,'warning');
                 end
+            case 'axisExport'
+                [status,warnings] = cmdExport(mainWindow,{'axis'});
+                if status
+                    TAmsg(warnings,'warning');
+                end
             otherwise
                 disp(['TAgui : guiDisplayPanel() : pushbutton_Callback(): '...
                     'Unknown action "' action '"']);
@@ -3747,97 +3752,6 @@ function linemarker_popupmenu_Callback(~,~)
             % Update main axes
             update_mainAxis();
         end
-    catch exception
-        try
-            msgStr = ['An exception occurred in ' ...
-                exception.stack(1).name  '.'];
-            TAmsg(msgStr,'error');
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
-    end
-end
-
-function axesexport_pushbutton_Callback(~,~)
-    try
-        % Get appdata and handles of main window
-        mainWindow = TAguiGetWindowHandle;
-        ad = getappdata(mainWindow);
-        gh = guihandles(mainWindow);
-        
-        % Important: First generate filename suggestion and ask user for
-        % filename, then start redrawing the figure in a new figure window.
-        % If the user quits the file selection dialogue box, nothing is
-        % left to close in this case.
-
-        % Get export format
-        figExportFormats = cellstr(...
-            get(gh.display_panel_axesexport_format_popupmenu,'String'));
-        exportFormat = figExportFormats{...
-            get(gh.display_panel_axesexport_format_popupmenu,'Value')};
-
-        % Get file type to save to
-        fileTypes = cellstr(...
-            get(gh.display_panel_axesexport_filetype_popupmenu,'String'));
-        fileType = fileTypes{...
-            get(gh.display_panel_axesexport_filetype_popupmenu,'Value')};
-
-        fileNameSuggested = suggestFilename(mainWindow,'Type','figure');
-        
-        % Ask user for file name
-        [fileName,pathName] = uiputfile(...
-            sprintf('*.%s',fileType),...
-            'Get filename to export figure to',...
-            fileNameSuggested);
-        % If user aborts process, return
-        if fileName == 0
-            return;
-        end
-        % Create filename with full path
-        fileName = fullfile(pathName,fileName);
-
-        % set lastFigSave Dir in appdata
-        if exist(pathName,'dir')
-            ad.control.dir.lastFigSave = pathName;
-        end
-        setappdata(mainWindow,'control',ad.control);
-
-        % Open new figure window
-        newFig = figure();
-        
-        % Make new figure window invisible
-        set(newFig,'Visible','off');
-        
-        % Plot into new figure window
-        % Check whether to plot title
-        if get(gh.display_panel_axesexport_includetitle_checkbox,'Value')
-            update_mainAxis(newFig);
-        else
-            update_mainAxis(newFig,'notitle');
-        end
-                
-        % Check whether to open caption GUI
-        if get(gh.display_panel_axesexport_includecaption_checkbox,'Value')
-            TAgui_figureCaptionwindow(fileName);
-        end
-        
-        % Save figure, depending on settings for file type and format
-        status = fig2file(newFig,fileName,...
-            'fileType',fileType,'exportFormat',exportFormat);
-        if status
-            TAmsg(status,'warning');
-        end
-        
-        % Close figure window
-        close(newFig);
     catch exception
         try
             msgStr = ['An exception occurred in ' ...

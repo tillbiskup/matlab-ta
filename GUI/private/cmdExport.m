@@ -22,7 +22,7 @@ function [status,warnings] = cmdExport(handle,opt,varargin)
 %             Contains warnings/error messages if any, otherwise empty
 
 % (c) 2013, Till Biskup
-% 2013-11-15
+% 2013-11-16
 
 status = 0;
 warnings = cell(0);
@@ -134,6 +134,18 @@ if_warnings = cell(0);
 ad = getappdata(handle);
 gh = guihandles(handle);
 
+% Get export format
+figExportFormats = cellstr(...
+    get(gh.display_panel_axesexport_format_popupmenu,'String'));
+exportFormat = figExportFormats{...
+    get(gh.display_panel_axesexport_format_popupmenu,'Value')};
+
+% Get file type to save to
+fileTypes = cellstr(...
+    get(gh.display_panel_axesexport_filetype_popupmenu,'String'));
+fileType = fileTypes{...
+    get(gh.display_panel_axesexport_filetype_popupmenu,'Value')};
+
 % Handle additional options
 % Please note: These options of the internal function are a subset of the
 %              original options the command was called with.
@@ -146,7 +158,7 @@ if ~isempty(opt)
     % Remove respective entries from opt cell array
     opt(formatidx) = [];
     if ~isempty(formatstr)
-        imageFormat = formatstr{1}(8:end);
+        exportFormat = formatstr{1}(8:end);
     end
     
     % Check for file type
@@ -157,7 +169,74 @@ if ~isempty(opt)
     if ~isempty(typestr)
         fileType = typestr{1}(8:end);
     end
+    
+    % Finally, take remaining options as file name
+    if ~isempty(opt)
+        if allTraces
+            if_warnings{end+1} = sprintf(...
+                'Command "%s": Single filename with multiple files!',cmd,opt{1});
+            if_status = -3;
+            return;
+        end
+        fileName = strtrim('%s ',opt{:});
+    end
 end
+
+% Important: First generate filename suggestion and ask user for
+% filename, then start redrawing the figure in a new figure window.
+% If the user quits the file selection dialogue box, nothing is
+% left to close in this case.
+
+if ~exist('fileName','var')
+    fileNameSuggested = suggestFilename(mainWindow,'Type','figure');
+    
+    % Ask user for file name
+    [fileName,pathName] = uiputfile(...
+        sprintf('*.%s',fileType),...
+        'Get filename to export figure to',...
+        fileNameSuggested);
+    % If user aborts process, return
+    if fileName == 0
+        return;
+    end
+    % Create filename with full path
+    fileName = fullfile(pathName,fileName);
+end
+
+% set lastFigSave Dir in appdata
+if exist(pathName,'dir')
+    ad.control.dir.lastFigSave = pathName;
+end
+setappdata(mainWindow,'control',ad.control);
+
+% Open new figure window
+newFig = figure();
+
+% Make new figure window invisible
+set(newFig,'Visible','off');
+
+% Plot into new figure window
+% Check whether to plot title
+if get(gh.display_panel_axesexport_includetitle_checkbox,'Value')
+    update_mainAxis(newFig);
+else
+    update_mainAxis(newFig,'notitle');
+end
+
+% Check whether to open caption GUI
+if get(gh.display_panel_axesexport_includecaption_checkbox,'Value')
+    TAgui_figureCaptionwindow(fileName);
+end
+
+% Save figure, depending on settings for file type and format
+status = fig2file(newFig,fileName,...
+    'fileType',fileType,'exportFormat',exportFormat);
+if status
+    TAmsg(status,'warning');
+end
+
+% Close figure window
+close(newFig);
 
 end
 
