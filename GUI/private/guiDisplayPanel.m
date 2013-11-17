@@ -7,7 +7,7 @@ function handle = guiDisplayPanel(parentHandle,position)
 %       Returns the handle of the added panel.
 
 % (c) 2011-13, Till Biskup
-% 2013-11-16
+% 2013-11-17
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -2149,33 +2149,23 @@ function pushbutton_Callback(~,~,action)
                 update_mainAxis();
                 return;
             case 'legendFont'
-                if ad.control.axis.legend.handle && ...
+                if ~isempty(ad.control.axis.legend.handle) && ...
                         ishandle(ad.control.axis.legend.handle)
                     legendFontSettings = uisetfont(...
                         ad.control.axis.legend.handle,...
                         'Set legend font');
-                    if isstruct(legendFontSettings)
-                        ad.control.axis.legend.FontName = ...
-                            legendFontSettings.FontName;
-                        ad.control.axis.legend.FontSize = ...
-                            legendFontSettings.FontSize;
-                        ad.control.axis.legend.FontWeight = ...
-                            legendFontSettings.FontWeight;
-                        ad.control.axis.legend.FontAngle = ...
-                            legendFontSettings.FontAngle;
-                    end
                 else
                     legendFontSettings = uisetfont('Set legend font');
-                    if isstruct(legendFontSettings)
-                        ad.control.axis.legend.FontName = ...
-                            legendFontSettings.FontName;
-                        ad.control.axis.legend.FontSize = ...
-                            legendFontSettings.FontSize;
-                        ad.control.axis.legend.FontWeight = ...
-                            legendFontSettings.FontWeight;
-                        ad.control.axis.legend.FontAngle = ...
-                            legendFontSettings.FontAngle;
-                    end
+                end
+                if isstruct(legendFontSettings)
+                    ad.control.axis.legend.FontName = ...
+                        legendFontSettings.FontName;
+                    ad.control.axis.legend.FontSize = ...
+                        legendFontSettings.FontSize;
+                    ad.control.axis.legend.FontWeight = ...
+                        legendFontSettings.FontWeight;
+                    ad.control.axis.legend.FontAngle = ...
+                        legendFontSettings.FontAngle;
                 end
         
                 % Update appdata of main window
