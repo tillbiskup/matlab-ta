@@ -22,7 +22,7 @@ function [status,warnings] = cmdExport(handle,opt,varargin)
 %             Contains warnings/error messages if any, otherwise empty
 
 % (c) 2013, Till Biskup
-% 2013-11-16
+% 2013-11-17
 
 status = 0;
 warnings = cell(0);
@@ -188,7 +188,7 @@ end
 % left to close in this case.
 
 if ~exist('fileName','var')
-    fileNameSuggested = suggestFilename(mainWindow,'Type','figure');
+    fileNameSuggested = suggestFilename(handle,'Type','figure');
     
     % Ask user for file name
     [fileName,pathName] = uiputfile(...
@@ -207,7 +207,7 @@ end
 if exist(pathName,'dir')
     ad.control.dir.lastFigSave = pathName;
 end
-setappdata(mainWindow,'control',ad.control);
+setappdata(handle,'control',ad.control);
 
 % Open new figure window
 newFig = figure();
