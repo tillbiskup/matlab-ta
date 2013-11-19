@@ -195,95 +195,100 @@ end
 % Define where header begins, as this is the line "file info"
 headerBeginsWithLine = find(strcmpi(raw,'file info'),1);
 
-if isempty(headerBeginsWithLine)
-    warnings{end+1} = 'File appears to have wrong format';
-    data = [];
-    return;
+if ~isempty(headerBeginsWithLine)
+    % Cut data out of raw file
+    rawdata = raw(1:headerBeginsWithLine-1);
+    
+    % Convert into numeric matrix
+    rawdata = cell2mat(cellfun(@(x)textscan(x,'%f','Delimiter',','),rawdata));
+    
+    data.axes.x.values = rawdata(2:end,1);
+    data.axes.y.values = rawdata(1,2:end);
+    % ATTENTION: Data get transposed here...
+    data.data = rawdata(2:end,2:end)';
+    
+    data.header = raw(headerBeginsWithLine:end);
+    
+    % Process info contained in file - looks like the following lines
+    % file info
+    % Date: September 18, 2013
+    % Sample: PbS_2dips_ZnO
+    % Solvent: solid
+    % Pump energy: 200
+    % Pump wavelength (nm): 700
+    % Cuvette length (mm):
+    % Comments: Delay started from 267.000 ps
+    % Averaging time: 2.0 s
+    % Number of scans: 3
+    % Time units: ps
+    % Z axis title: dA
+    
+    % Process date
+    data.parameters.date.start = datestr(datenum(...
+        data.header{strncmpi('Date: ',data.header,6)}(7:end),...
+        'mmmm dd, yyyy'),31);
+    data.parameters.date.end = datestr(datenum(...
+        data.header{strncmpi('Date: ',data.header,6)}(7:end),...
+        'mmmm dd, yyyy'),31);
+    
+    % Process sample name
+    data.sample.name = data.header{strncmpi('Sample: ',data.header,8)}(9:end);
+    
+    % Process solvent
+    data.sample.buffer = data.header{strncmpi('Solvent: ',data.header,9)}(10:end);
+    
+    % Process pump energy
+    data.parameters.pump.power.value = str2double(...
+        data.header{strncmpi('Pump energy: ',data.header,13)}(14:end));
+    
+    % Process pump wavelength
+    data.parameters.pump.wavelength.value = str2double(...
+        data.header{strncmpi('Pump wavelength (nm): ',data.header,22)}(23:end));
+    data.parameters.pump.wavelength.unit = 'nm';
+    
+    % Process cuvette length
+    data.sample.cuvette = data.header{...
+        strncmpi('Cuvette length (mm): ',data.header,21)}(22:end);
+    
+    % Process Comments
+    data.comment = data.header{strncmpi('Comments: ',data.header,10)}(11:end);
+    
+    % Process averaging time
+    
+    % Process number of scans
+    data.parameters.runs = str2double(...
+        data.header{strncmpi('Number of scans: ',data.header,17)}(18:end));
+    
+    % Process time units
+    data.axes.x.unit = ...
+        data.header{strncmpi('Time units: ',data.header,12)}(13:end);
+    
+    % Process z axis title
+    data.axes.z.measure = ...
+        data.header{strncmpi('Z axis title: ',data.header,14)}(15:end);
+    
+    % Check for correct dimensions of axes and data and if there are
+    % inconsistencies, replace with indices
+    if length(data.axes.x.values) ~= size(data.data,2)
+        data.axes.x.values = 1:1:size(data.data,2);
+        warnings{end+1} = ...
+            'X axis dimension inconsistent with data. Replaced with indices.';
+    end
+    if length(data.axes.y.values) ~= size(data.data,1)
+        data.axes.y.values = 1:1:size(data.data,1);
+        warnings{end+1} = ...
+            'Y axis dimension inconsistent with data. Replaced with indices.';
+    end
+else
+    warnings{end+1} = 'File appears to have wrong format. Trying anyway...';
+
+    rawdata = cell2mat(cellfun(@(x)textscan(x,'%f','Delimiter',','),raw));
+    data.axes.x.values = rawdata(2:end,1);
+    data.axes.y.values = rawdata(1,2:end);
+    % ATTENTION: Data get transposed here...
+    data.data = rawdata(2:end,2:end)';
 end
 
-% Cut data out of raw file
-rawdata = raw(1:headerBeginsWithLine-1);
-
-% Convert into numeric matrix
-rawdata = cell2mat(cellfun(@(x)textscan(x,'%f','Delimiter',','),rawdata));
-
-data.axes.x.values = rawdata(2:end,1);
-data.axes.y.values = rawdata(1,2:end);
-% ATTENTION: Data get transposed here...
-data.data = rawdata(2:end,2:end)';
-
-data.header = raw(headerBeginsWithLine:end);
-
-% Process info contained in file - looks like the following lines
-% file info
-% Date: September 18, 2013
-% Sample: PbS_2dips_ZnO
-% Solvent: solid
-% Pump energy: 200
-% Pump wavelength (nm): 700
-% Cuvette length (mm): 
-% Comments: Delay started from 267.000 ps
-% Averaging time: 2.0 s
-% Number of scans: 3
-% Time units: ps
-% Z axis title: dA
-
-% Process date
-data.parameters.date.start = datestr(datenum(...
-    data.header{strncmpi('Date: ',data.header,6)}(7:end),...
-    'mmmm dd, yyyy'),31);
-data.parameters.date.end = datestr(datenum(...
-    data.header{strncmpi('Date: ',data.header,6)}(7:end),...
-    'mmmm dd, yyyy'),31);
-
-% Process sample name
-data.sample.name = data.header{strncmpi('Sample: ',data.header,8)}(9:end);
-
-% Process solvent
-data.sample.buffer = data.header{strncmpi('Solvent: ',data.header,9)}(10:end);
-
-% Process pump energy
-data.parameters.pump.power.value = str2double(...
-    data.header{strncmpi('Pump energy: ',data.header,13)}(14:end));
-
-% Process pump wavelength
-data.parameters.pump.wavelength.value = str2double(...
-    data.header{strncmpi('Pump wavelength (nm): ',data.header,22)}(23:end));
-data.parameters.pump.wavelength.unit = 'nm';
-
-% Process cuvette length
-data.sample.cuvette = data.header{...
-    strncmpi('Cuvette length (mm): ',data.header,21)}(22:end);
-
-% Process Comments
-data.comment = data.header{strncmpi('Comments: ',data.header,10)}(11:end);
-
-% Process averaging time
-
-% Process number of scans
-data.parameters.runs = str2double(...
-    data.header{strncmpi('Number of scans: ',data.header,17)}(18:end));
-
-% Process time units
-data.axes.x.unit = ...
-    data.header{strncmpi('Time units: ',data.header,12)}(13:end);
-
-% Process z axis title
-data.axes.z.measure = ...
-    data.header{strncmpi('Z axis title: ',data.header,14)}(15:end);
-
-% Check for correct dimensions of axes and data and if there are
-% inconsistencies, replace with indices
-if length(data.axes.x.values) ~= size(data.data,2)
-    data.axes.x.values = 1:1:size(data.data,2);
-    warnings{end+1} = ...
-        'X axis dimension inconsistent with data. Replaced with indices.';
-end
-if length(data.axes.y.values) ~= size(data.data,1)
-    data.axes.y.values = 1:1:size(data.data,1);
-    warnings{end+1} = ...
-        'Y axis dimension inconsistent with data. Replaced with indices.';
-end
 
 % Use filename as label
 [~,fn,~] = fileparts(fileName);
