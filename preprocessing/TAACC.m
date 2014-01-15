@@ -16,8 +16,8 @@ function [accData,accReport] = TAACC(data,parameters)
 %              used for the TAgui_ACCwindow
 %              a copy is copied to the history.info field
 
-% (c) 2011-12, Till Biskup
-% 2012-11-12
+% (c) 2011-14, Till Biskup
+% 2014-01-15
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;   % Create an instance of the inputParser class.
@@ -313,7 +313,6 @@ try
             end
         end
     end
-    
     switch parameters.method
         case 'cumulative'
             accData.data = sum(accData.data,3)/length(data);
@@ -322,7 +321,8 @@ try
             end
             % Handle number of averages
             accData.parameters.recorder.averages = ...
-                sum(cellfun(@(x)x.parameters.recorder.averages,data));
+                sum(cell2mat(cellfun(@(x)x.parameters.recorder.averages,data,...
+                'UniformOutput',false)));
         case 'weighted'
             accData = [];
             accReport = {...
