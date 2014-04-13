@@ -139,6 +139,7 @@ switch action
             TAmsg(exception.message,'error');
         end
         set(hBtn,'Visible','on');
+        set(hMainFigure,'WindowStyle','normal');
         set(hMainFigure,'KeyPressFcn',@keypress_Callback);
         if isfield(parameters,'title')
             set(hMainFigure,'Name',parameters.title);
