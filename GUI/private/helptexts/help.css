@@ -48,6 +48,13 @@ a.fnmark {
 .hurry {
 	background:#ffd;
 	}
+.hurry h2, .tip h2 {
+	margin-top:.5em;
+}
+.tip {
+    margin-top:1.5em;
+	background:#dfd;
+	}
 div.footer {
 	border-top:1px solid #ccc
 	padding-top:2em;
