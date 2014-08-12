@@ -6,8 +6,8 @@ function handle = guiAnalysisPanel(parentHandle,position)
 %
 %       Returns the handle of the added panel.
 
-% (c) 2011-13, Till Biskup
-% 2013-11-15
+% (c) 2011-14, Till Biskup
+% 2014-08-12
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -74,8 +74,8 @@ uicontrol('Tag','analysis_panel_dataexport_format_popupmenu',...
     'FontUnit','Pixel','Fontsize',12,...
     'Units','Pixels',...
     'Position',[handle_size(3)-190 15 100 20],...
-    'String','glotaran',...
-    'TooltipString','Select type of graphics file'...
+    'String','glotaran|ASCII (2D)',...
+    'TooltipString','Select format of export'...
     );
 uicontrol('Tag','analysis_panel_dataexport_pushbutton',...
     'Style','pushbutton',...
@@ -111,9 +111,11 @@ function pushbutton_Callback(~,~,action)
         % Get handles of main window
         gh = guihandles(mainWindow);
 
+        active = ad.control.spectra.active;
+        
         switch lower(action)
             case 'export'
-                if ~ad.control.spectra.active
+                if ~active
                     return;
                 end
 
@@ -125,49 +127,50 @@ function pushbutton_Callback(~,~,action)
                                 
                 switch exportFormat
                     case 'glotaran'
-                        % Generate default file name if possible, be very defensive
-                        if ad.control.spectra.active
-                            [p,f,e] = ...
-                                fileparts(ad.data{ad.control.spectra.active}.file.name);
-                            fileNameSuggested = f;
-                            clear p f e;
-                        else
-                            fileNameSuggested = '';
-                        end
-                        % Ask user for file name
-                        [fileName,pathName] = uiputfile(...
-                            sprintf('*.%s','ascii'),...
-                            'Get filename to export figure to',...
-                            fileNameSuggested);
-                        % If user aborts process, return
-                        if fileName == 0
-                            return;
-                        end
-                        % Create filename with full path
-                        fileName = fullfile(pathName,fileName);
-                        
-                        TAbusyWindow('start',...
-                            'Trying to export dataset...<br />please wait.');
-                        
-                        % Export using export4glotaran
-                        status = export4glotaran(...
-                            ad.data{ad.control.spectra.active},fileName);
-                        if status
-                            TAmsg(status,'error');
-                            TAbusyWindow('stop',...
-                                'Trying to export dataset...<br /><b>failed</b>.');
-                        else
-                            TAbusyWindow('stop',...
-                                'Trying to export dataset...<br /><b>done</b>.');
-                            TAbusyWindow('deletedelayed');
-                        end
-                        
+                        fileExtension = 'ascii';
+                        exportFunctionName = 'export4glotaran';
+                    case 'ASCII (2D)'
+                        fileExtension = 'ascii';
+                        exportFunctionName = 'TAexport2D';
                     otherwise
                         fprintf('%s%s "%s"\n',...
                             'TAgui : guiAnalysisPanel() : ',...
                             'pushbutton_Callback(): Unknown export format',...
                             exportFormat);
                         return;
+                end
+                
+                % Generate default file name
+                [~,fileNameSuggested,~] = ...
+                    fileparts(ad.data{active}.file.name);
+                % Ask user for file name
+                [fileName,pathName] = uiputfile(...
+                    sprintf('*.%s',fileExtension),...
+                    'Get filename to export figure to',...
+                    fileNameSuggested);
+                % If user aborts process, return
+                if fileName == 0
+                    return;
+                end
+                % Create filename with full path
+                fileName = fullfile(pathName,fileName);
+                
+                TAbusyWindow('start',...
+                    'Trying to export dataset...<br />please wait.');
+                
+                exportFunction = str2func(exportFunctionName);
+                
+                % Export using export4glotaran
+                status = exportFunction(...
+                    ad.data{ad.control.spectra.active},fileName);
+                if status
+                    TAmsg(status,'error');
+                    TAbusyWindow('stop',...
+                        'Trying to export dataset...<br /><b>failed</b>.');
+                else
+                    TAbusyWindow('stop',...
+                        'Trying to export dataset...<br /><b>done</b>.');
+                    TAbusyWindow('deletedelayed');
                 end
                 
                 % Add status message (mainly for debug reasons)
@@ -183,21 +186,7 @@ function pushbutton_Callback(~,~,action)
                 return;
         end
     catch exception
-        try
-            msgStr = ['An exception occurred in ' ...
-                exception.stack(1).name  '.'];
-            TAmsg(msgStr,'error');
-        catch exception2
-            exception = addCause(exception2, exception);
-            disp(msgStr);
-        end
-        try
-            TAgui_bugreportwindow(exception);
-        catch exception3
-            % If even displaying the bug report window fails...
-            exception = addCause(exception3, exception);
-            throw(exception);
-        end
+        TAexceptionHandling(exception);
     end
 end
 

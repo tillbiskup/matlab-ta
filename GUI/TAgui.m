@@ -2,9 +2,18 @@ function varargout = TAgui(varargin)
 % TAGUI A GUI to display and process transient absorption data in Matlab.
 %
 % Main GUI window of the TA toolbox.
+%
+% Usage:
+%
+%   TAgui
+%   handle = TAgui
+%
+% Note that you can only open one TAgui window at a time ("singleton"
+% concept). Calling the function multiple times will only bring the current
+% TAgui figure window in the foreground and make it active.
 
-% (c) 2011-14, Till Biskup
-% 2014-02-06
+% Copyright (c) 2011-14, Till Biskup
+% 2014-08-12
 
 % Make GUI effectively a singleton
 singleton = TAguiGetWindowHandle();
@@ -19,44 +28,7 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Display "Splash"
-splashW = 300;
-splashH = 80;
-try
-    desktop = com.mathworks.mde.desk.MLDesktop.getInstance;
-    desktopMainFrame = desktop.getMainFrame;
-    
-    % Get desktop dimensions
-    desktopDims = desktopMainFrame.getSize;
-    desktopW = desktopDims.getWidth;
-    desktopH = desktopDims.getHeight;
-    desktopX = desktopMainFrame.getX;
-    desktopY = desktopMainFrame.getY;
-    
-    splashX = floor(desktopW/2+desktopX-splashW/2);
-    splashY = floor(desktopH/2+desktopY-splashH/2);
-catch exception
-    TAmsg('Failed to get coordinates of main Matlab window - nevermind',...
-        'warning');
-    splashX = 200;
-    splashY = 400;
-end
-
-initDialogue = dialog(...
-    'WindowStyle','modal',...
-    'Name','Initialising...',...
-    'Position',[splashX splashY splashW splashH]);
-uicontrol('Tag','InitialisingText',...
-    'Style','text',...
-    'parent',initDialogue,...
-    'FontUnit','Pixel','Fontsize',14,...
-    'HorizontalAlignment','Center',...
-    'BackgroundColor',get(initDialogue,'Color'),...
-    'Visible','on',...
-    'Units','pixels',...
-    'String',{...
-    'Initialising TA toolbox...','','This may take a few seconds.'},...
-    'Position',[10 10 280 55]...
-    );
+hSplash = TAguiSplashWindow();
 
 hMainFigure = figure('Tag',mfilename,...
     'Visible','off',...
@@ -762,8 +734,8 @@ setappdata(hMainFigure,'control',ad.control);
 
 % Make the GUI visible.
 set(hMainFigure,'Visible','on');
-if ishandle(initDialogue)
-    delete(initDialogue);
+if ishandle(hSplash)
+    delete(hSplash);
 end
 
 % Be very careful, such as not to break old installations without updated
