@@ -3,7 +3,7 @@ function varargout = TAgui_combine_helpwindow(varargin)
 %          Comments displayed at the command line in response 
 %          to the help command. 
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

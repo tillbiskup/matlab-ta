@@ -6,7 +6,7 @@ function varargout = TAgui_figureCaptionwindow(varargin)
 %
 % See also TAGUI
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-08-17
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

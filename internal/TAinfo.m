@@ -50,7 +50,7 @@ function varargout = TAinfo(varargin)
 %
 % See also VER
 
-% (c) 2011, Till Biskup
+% Copyright (c) 2011, Till Biskup
 % 2011-11-26
 
 % The place to centrally manage the revision number and date is the file

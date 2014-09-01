@@ -9,7 +9,7 @@ function [fit,fval,message] = TAfit(data,parameters)
 %
 % fit        - ...
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-05
 
 % Parse input arguments using the inputParser functionality

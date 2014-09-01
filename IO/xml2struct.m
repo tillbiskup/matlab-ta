@@ -10,8 +10,8 @@ function varargout = xml2struct(docNode)
 %             content of the XML file
 %
 
-% (c) 2010, Martin Hussels
-% (c) 2010-2012, Till Biskup
+% Copyright (c) 2010, Martin Hussels
+% Copyright (c) 2010-2012, Till Biskup
 % 2012-02-03
 
 % Parse input arguments using the inputParser functionality

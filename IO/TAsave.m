@@ -1,7 +1,7 @@
 function varargout = TAsave(filename,struct)
 % Save data from the TA toolbox as ZIP-compressed XML files
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-03
 
 % Parse input arguments using the inputParser functionality

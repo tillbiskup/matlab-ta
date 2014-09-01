@@ -16,7 +16,7 @@ function conf = guiConfigLoad(guiname)
 %
 % See also GUICONFIGWRITE, GUICONFIGAPPLY, TAINIFILEREAD, TAINIFILEWRITE
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-02-05
 
 try

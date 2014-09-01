@@ -18,7 +18,7 @@ function varargout = TAbusyWindow(varargin)
 %   position    - vector
 %                 four-element vector determining the window position
 
-% (c) 2012-14, Till Biskup
+% Copyright (c) 2012-14, Till Biskup
 % 2014-04-13
 
 title = 'Processing...';

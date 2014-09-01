@@ -32,7 +32,7 @@ function [data,warnings] = TAEPASCIIread(fileName,varargin)
 %
 % See also: TAload, TAdataStructure
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-03-31
 
 % NOTE: This function uses an internal function to read the actual data.

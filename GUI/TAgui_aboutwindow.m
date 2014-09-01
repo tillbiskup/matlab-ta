@@ -3,7 +3,7 @@ function varargout = TAgui_aboutwindow()
 %                   Comments displayed at the command line in response 
 %                   to the help command. 
 
-% (c) 2011-14, Till Biskup
+% Copyright (c) 2011-14, Till Biskup
 % 2014-04-28
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

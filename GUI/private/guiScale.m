@@ -6,7 +6,7 @@ function guiScale(dimension,step)
 %     step      - scalar|string
 %                 if string, one of {'first','last','end'}
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-07-12
 
 try

@@ -20,7 +20,7 @@ function status = guiConfigWrite(guiname,conf)
 %
 % See also GUICONFIGREAD, GUICONFIGAPPLY, TAINIFILEREAD, TAINIFILEWRITE
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-05
 
 try

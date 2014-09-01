@@ -1,7 +1,7 @@
 % Sample configuration file for the TAgui_AVGwindow function of the 
 % TA toolbox
 %
-% (c) 2012, Till Biskup <till@till-biskup.de>
+% Copyright (c) 2012, Till Biskup <till@till-biskup.de>
 %
 % This file serves as an example and documentation for the real
 % configuration in the file "TAgui_AVGwindow.ini" in the same directory.

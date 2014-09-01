@@ -1,6 +1,6 @@
 % Sample configuration file for the TAgui function of the TA toolbox
 %
-% (c) 2011-13, Till Biskup <till@till-biskup.de>
+% Copyright (c) 2011-13, Till Biskup <till@till-biskup.de>
 %
 % This file serves as an example and documentation for the real
 % configuration in the file "TAgui.ini" in the same directory.

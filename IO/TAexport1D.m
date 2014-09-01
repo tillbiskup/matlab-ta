@@ -21,7 +21,7 @@
 %              Otherwise it contains an error description
 %
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-16
 
 function status = TAexport1D(data,fileName,parameters)

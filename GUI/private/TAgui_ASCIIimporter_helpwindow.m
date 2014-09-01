@@ -6,7 +6,7 @@ function varargout = TAgui_ASCIIimporter_helpwindow(varargin)
 %
 % See also TAGUI_ASCIIIMPORTERWINDOW
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-06-02
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

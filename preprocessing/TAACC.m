@@ -16,7 +16,7 @@ function [accData,accReport] = TAACC(data,parameters)
 %              used for the TAgui_ACCwindow
 %              a copy is copied to the history.info field
 
-% (c) 2011-14, Till Biskup
+% Copyright (c) 2011-14, Till Biskup
 % 2014-01-15
 
 % Parse input arguments using the inputParser functionality

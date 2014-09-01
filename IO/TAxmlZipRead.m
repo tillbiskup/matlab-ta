@@ -15,7 +15,7 @@ function varargout = TAxmlZipRead(filename,varargin)
 %
 % SEE ALSO TAXMLZIPWRITE
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-02-17
 
 % Parse input arguments using the inputParser functionality

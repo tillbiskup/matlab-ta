@@ -5,7 +5,7 @@ function varargout = TAgui_AVG_helpwindow(varargin)
 %
 % See also TAGUI_AVGWINDOW
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

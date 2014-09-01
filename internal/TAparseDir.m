@@ -2,7 +2,7 @@ function dir = TAparseDir(dir)
 %TREPRPARSEDIR Parse directory string and replace certain keywords, such as
 % "pwd" and "~".
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-07-15
 
 if any(strcmpi(dir,{'pwd',''}))

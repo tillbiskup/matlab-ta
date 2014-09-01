@@ -38,7 +38,7 @@ function [ data, warnings ] = TAiniFileRead ( fileName, varargin )
 %
 % See also: iniFileWrite
 
-% (c) 2008-12, Till Biskup
+% Copyright (c) 2008-12, Till Biskup
 % 2012-02-03
 
 % TODO

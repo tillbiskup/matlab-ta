@@ -2,7 +2,7 @@ function varargout = TAgui_setLabelWindow(varargin)
 % TAGUI_SETLABELWINDOW Display a window letting the user change the label
 %     for a given dataset.
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-09
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

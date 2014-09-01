@@ -10,7 +10,7 @@ function [status,bugReport] = TAbugReportHelper(exception)
 %    status    - number (0 = OK, -1 = failed)
 %    bugReport - cell array of strings containing the bug report
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-02-21
 
 % Set name of Toolbox (makes it easier to reuse this script later on)

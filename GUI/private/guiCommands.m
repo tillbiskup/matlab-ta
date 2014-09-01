@@ -1,7 +1,7 @@
 % Script (NOT a function!) including the assignment of GUI command line
 % commands to Matlab(tm) functions
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-07-15
 
 % PLEASE NOTE: All variables from within the context of the calling

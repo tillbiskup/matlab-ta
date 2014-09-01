@@ -21,7 +21,7 @@ function [status,warnings] = cmdSnapshot(handle,opt,varargin)
 %  warnings - cell array
 %             Contains warnings/error messages if any, otherwise empty
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-07-15
 
 status = 0;

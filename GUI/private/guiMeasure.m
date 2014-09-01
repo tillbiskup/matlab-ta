@@ -7,7 +7,7 @@ function guiMeasure(action,nPoints)
 %     nPoints - scalar
 %               Number of points: 1 - pick mode; 2 - measure mode
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-02-28
 
 try

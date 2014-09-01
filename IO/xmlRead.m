@@ -15,7 +15,7 @@ function varargout = xmlRead(filename,varargin)
 %
 % SEE ALSO XMLZIPREAD
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-05-31
 
 % Parse input arguments using the inputParser functionality

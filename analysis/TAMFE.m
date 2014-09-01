@@ -16,7 +16,7 @@ function mfe = TAMFE(data,parameters)
 %              wavelength
 %              fields: mfe, stdev
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-01-29
 
 % Parse input arguments using the inputParser functionality

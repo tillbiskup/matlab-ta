@@ -15,7 +15,7 @@ function status = trackPointer(varargin)
 %           -4: no datasets displayed
 %            0: successful
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-10-21
 
 % Is there currently a TAgui object?

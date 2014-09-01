@@ -10,7 +10,7 @@ function status = textFileWrite(filename,text)
 %              contains the text that shall get written to the file
 %
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-01-29
 
 % Parse input arguments using the inputParser functionality

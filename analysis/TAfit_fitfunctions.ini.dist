@@ -1,6 +1,6 @@
 % Configuration file for the TAfit function of the TA toolbox
 %
-% (c) 2012, Till Biskup <till@till-biskup.de>
+% Copyright (c) 2012, Till Biskup <till@till-biskup.de>
 %
 % Each fit function that can be chosen from when calling the TAfit function
 % has its own entry in this file. The format of this entry is as follows:

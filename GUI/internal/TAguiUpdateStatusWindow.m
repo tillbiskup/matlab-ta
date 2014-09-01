@@ -11,7 +11,7 @@ function status = TAguiUpdateStatusWindow(statusmessages)
 %   Using the findjobj function from Y. Altman, it ensures that always
 %   the last (i.e., most current) line of the status window is visible.
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-10-21
 
 % Is there currently a TAgui_statuswindow object?

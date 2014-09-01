@@ -11,7 +11,7 @@ function varargout = TAgui_combine_settingswindow(data,varargin)
 %
 % See also TAGUI, TAGUI_COMBINEWINDOW, TASCALE
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

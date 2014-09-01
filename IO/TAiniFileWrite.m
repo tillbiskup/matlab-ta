@@ -43,7 +43,7 @@ function [ warnings ] = TAiniFileWrite ( fileName, data, varargin )
 %
 % See also: TAiniFileRead
 
-% (c) 2008-13, Till Biskup
+% Copyright (c) 2008-13, Till Biskup
 % 2013-07-15
 
 % Parse input arguments using the inputParser functionality

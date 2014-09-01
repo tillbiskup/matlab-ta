@@ -70,7 +70,7 @@ function varargout = TAscale(varargin)
 %              and 'factor' commands.
 %
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-01-22
 
 % If there is no input parameter, display help and return

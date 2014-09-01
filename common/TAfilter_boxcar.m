@@ -11,7 +11,7 @@ function data = TAfilter_boxcar(data,window)
 %   window - filter window width
 %
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-01-19
 
 [x,y] = size(data);

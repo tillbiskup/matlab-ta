@@ -12,7 +12,7 @@ function [status,message] = TAremoveDatasetFromMainGUI(dataset,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-07-15
 
 % Parse input arguments using the inputParser functionality

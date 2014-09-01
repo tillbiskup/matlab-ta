@@ -2,7 +2,7 @@ function guiClose()
 % GUICLOSE Private function to close GUI and at the same time close all
 % subwindows that might still be open.
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-10-21
 
 try

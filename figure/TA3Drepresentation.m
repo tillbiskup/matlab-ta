@@ -16,7 +16,7 @@
 %              0 if some problems occurred
 %
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-03-01
 
 function figHandle = TA3Drepresentation(data,parameters)

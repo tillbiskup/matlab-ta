@@ -3,7 +3,7 @@ function varargout = TAgui_bugreportwindow(varargin)
 %       Comments displayed at the command line in response 
 %       to the help command. 
 
-% (c) 2011, Till Biskup
+% Copyright (c) 2011, Till Biskup
 % 2011-09-11
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

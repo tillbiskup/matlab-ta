@@ -18,7 +18,7 @@ function [warnings] = TAinfoFileWrite(filename,parameters,varargin)
 %
 % See also: TAINFOFILEPARSE, TAINFOFILECREATE
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-04-05
 
 % If called without parameter, do something useful: display help

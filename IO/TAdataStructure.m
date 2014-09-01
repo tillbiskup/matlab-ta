@@ -29,7 +29,7 @@ function varargout = TAdataStructure(varargin)
 %
 % See also TALOAD.
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-10-22
 
 % If called without parameter, do something useful: display help

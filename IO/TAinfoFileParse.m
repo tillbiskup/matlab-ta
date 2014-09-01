@@ -29,7 +29,7 @@ function [parameters,warnings] = TAinfoFileParse(filename,varargin)
 %
 % See also: TAINFOFILECREATE, TAINFOFILEWRITE
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-10-21
 
 % If called without parameter, do something useful: display help

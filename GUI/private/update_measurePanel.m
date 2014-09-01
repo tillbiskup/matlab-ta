@@ -6,7 +6,7 @@ function status = update_measurePanel()
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-10-21
 
 % Is there currently a TAgui object?

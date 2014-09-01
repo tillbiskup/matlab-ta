@@ -21,7 +21,7 @@ function [avgData] = TAAVG(data,parameters)
 %              and all usual parameters of a dataset and the parameters
 %              from the averaging in the history.parameters field
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-03-30
 
 % Parse input arguments using the inputParser functionality

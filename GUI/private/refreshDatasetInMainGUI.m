@@ -7,7 +7,7 @@ function status = refreshDatasetInMainGUI(dataset,id,varargin)
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-07-15
 
 % Parse input arguments using the inputParser functionality

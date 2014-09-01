@@ -18,7 +18,7 @@ function [status,warnings] = trEPRgui_cmd_writeToFile(command,varargin)
 %  warnings - cell array
 %             Contains warnings/error messages if any, otherwise empty
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-04-07
 
 status = 0;

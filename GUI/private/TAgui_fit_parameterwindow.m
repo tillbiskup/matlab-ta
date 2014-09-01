@@ -5,7 +5,7 @@ function varargout = TAgui_fit_parameterwindow(varargin)
 %
 % See also TAGUI_FITWINDOW
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-10-21
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

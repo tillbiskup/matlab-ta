@@ -29,7 +29,7 @@ function varargout = TAguiDataStructure(varargin)
 %
 % See also TADATASTRUCTURE.
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-07-15
 
 % Create GUI-specific fields to data structure with default values

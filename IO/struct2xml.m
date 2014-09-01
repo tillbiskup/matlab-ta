@@ -10,8 +10,8 @@ function docNode = struct2xml(str)
 %             XML tree, org.apache.xerces.dom.DocumentImpl
 %
 
-% (c) 2010, Martin Hussels
-% (c) 2010-2013, Till Biskup
+% Copyright (c) 2010, Martin Hussels
+% Copyright (c) 2010-2013, Till Biskup
 % 2013-02-15
 
 % Define precision of floats

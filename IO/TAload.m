@@ -55,7 +55,7 @@ function [data,warnings] = TAload(fileName, varargin)
 %
 % See also TAOXREAD, TADATASTRUCTURE.
 
-% (c) 2011-12, Till Biskup
+% Copyright (c) 2011-12, Till Biskup
 % 2012-02-06
 
 % Parse input arguments using the inputParser functionality

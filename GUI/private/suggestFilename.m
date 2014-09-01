@@ -2,7 +2,7 @@ function filename = suggestFilename(guiHandle,varargin)
 % SUGGESTFILENAME Create filename suggestion from GUI data and current
 % dataset.
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-10-15
 
 % Parse input arguments using the inputParser functionality

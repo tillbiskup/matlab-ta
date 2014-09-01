@@ -9,7 +9,7 @@ function varargout = TAinstall()
 %               Empty if everything went fine, otherwise contains message.
 %
 
-% (c) 2012-13, Till Biskup
+% Copyright (c) 2012-13, Till Biskup
 % 2013-07-15
 
 status = 0;

@@ -11,7 +11,7 @@ function [status,message] = saveDatasetInMainGUI(id,varargin)
 %           In case of status <> 0 contains message telling user what went
 %           wrong.
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-11-15
 
 % Parse input arguments using the inputParser functionality

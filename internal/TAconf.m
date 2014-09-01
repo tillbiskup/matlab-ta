@@ -38,7 +38,7 @@ function varargout = TAconf(action,varargin)
 %               the distributed config file (i.e., "<basename>.ini", not
 %               "<basename>.ini.dist").
 
-% (c) 2011-13, Till Biskup
+% Copyright (c) 2011-13, Till Biskup
 % 2013-07-12
 
 % If none or the wrong input parameter, display help and exit

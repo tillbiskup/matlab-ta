@@ -43,7 +43,7 @@ function [value,status,warnings] = TAguiSanitiseNumericInput(value,varargin)
 %             Whether to return index to matching value of vector.
 %             Default: false
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-07-15
 
 status = 0;

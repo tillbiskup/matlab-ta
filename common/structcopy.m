@@ -18,7 +18,7 @@ function structure = structcopy(master,tocopy,varargin)
 %          and if fields of tocopy don't exist in master, they will be
 %          created.
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-04-23
 
 if ~nargin

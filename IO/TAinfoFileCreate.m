@@ -20,7 +20,7 @@ function [fileContents,warnings] = TAinfoFileCreate(parameters,varargin)
 %
 % See also: TAINFOFILEPARSE, TAINFOFILEWRITE
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-04-14
 
 % If called without parameter, do something useful: display help

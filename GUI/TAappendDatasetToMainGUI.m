@@ -7,7 +7,7 @@ function status = TAappendDatasetToMainGUI(dataset,varargin)
 % Status:  0 - everything fine
 %         -1 - no main GUI window found
 
-% (c) 2011-14, Till Biskup
+% Copyright (c) 2011-14, Till Biskup
 % 2014-05-09
 
 % Parse input arguments using the inputParser functionality

@@ -24,7 +24,7 @@ function [data,warnings] = TAhlASCIIread(fileName,varargin)
 %
 % See also: TAload, TAdataStructure
 
-% (c) 2013, Till Biskup
+% Copyright (c) 2013, Till Biskup
 % 2013-11-19
 
 % NOTE: This function uses an internal function to read the actual data.

@@ -25,7 +25,7 @@ function [combinedDataset,status] = TAcombine(datasets,varargin)
 % otherwise the label of the first dataset that is combined gets used.
 %
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-01-22
 
 % Parse input arguments using the inputParser functionality

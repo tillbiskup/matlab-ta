@@ -14,7 +14,7 @@ function [parameters,report] = TAhistoryDisplay(history)
 %              Any additional information that gets displayed in the
 %              "Report" panel of the info window
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-04-10
 
 try

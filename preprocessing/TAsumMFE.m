@@ -10,7 +10,7 @@ function [data,warnings] = TAsumMFE(data)
 % warnings   - string
 %              Empty if everything went well, otherwise contains message.
 
-% (c) 2012, Till Biskup
+% Copyright (c) 2012, Till Biskup
 % 2012-02-17
 
 % Parse input arguments using the inputParser functionality
