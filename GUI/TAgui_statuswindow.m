@@ -6,8 +6,8 @@ function TAgui_statuswindow(varargin)
 %
 % See also TAGUI
 
-% Copyright (c) 2011-13, Till Biskup
-% 2013-07-12
+% Copyright (c) 2011-14, Till Biskup
+% 2014-10-04
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -130,8 +130,8 @@ function keyBindings(~,evt)
                 closeGUI();
                 return;
             otherwise
-                disp(evt);
-                fprintf('       Caller: %i\n\n',src);
+%                 disp(evt);
+%                 fprintf('       Caller: %i\n\n',src);
                 return;
         end
     catch exception
