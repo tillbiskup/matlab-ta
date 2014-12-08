@@ -12,7 +12,7 @@ function status = export4glotaran(dataset,filename,varargin)
 % Copyright (c) 2011, Bernd Paulus
 
 % Copyright (c) 2011, Till Biskup
-% 2011-12-06
+% 2014-12-08
 
 % Parse input arguments using the inputParser functionality
 p = inputParser;            % Create an instance of the inputParser class.
@@ -35,6 +35,10 @@ end
 
 try
     header{1} = dataset.label;
+    % Fix for dlmwrite not being able to write empty strings...
+    if isempty(header{1})
+        header{1} = ' ';
+    end
     header{2} = datestr(now);
     header{3} = 'wavelength explicit';
     header{4} = sprintf('Intervalnr %s',int2str(size(dataset.data,1)));
