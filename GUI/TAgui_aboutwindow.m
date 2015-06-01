@@ -3,8 +3,8 @@ function varargout = TAgui_aboutwindow()
 %                   Comments displayed at the command line in response 
 %                   to the help command. 
 
-% Copyright (c) 2011-14, Till Biskup
-% 2014-04-28
+% Copyright (c) 2011-15, Till Biskup
+% 2015-06-01
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  Construct the components
@@ -24,7 +24,7 @@ toolboxNameString = 'TA Toolbox';
 versionString = ...
     sprintf('v.%s (%s)',info.version.Version,info.version.Date);
 copyrightInfo = {...
-    sprintf('(c) 2011-14, Till Biskup, <%s>',info.maintainer.email)...
+    sprintf('(c) 2011-15, Till Biskup, <%s>',info.maintainer.email)...
     ''...
     sprintf('%s',info.url)...
     };
