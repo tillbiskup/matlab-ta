@@ -6,8 +6,8 @@ function status = update_sliderPanel()
 %           -1: no tEPR_gui_mainwindow found
 %            0: successfully updated main axis
 
-% Copyright (c) 2011-12, Till Biskup
-% 2012-10-21
+% Copyright (c) 2011-15, Till Biskup
+% 2015-06-02
 
 % Is there currently a TAgui object?
 mainWindow = TAguiGetWindowHandle;
@@ -49,6 +49,15 @@ end
 if isscalar(y)
     y = [y y+1];
 end
+
+% Workaround to fix bug #161
+if ad.data{ad.control.spectra.active}.display.position.x < 1
+    ad.data{ad.control.spectra.active}.display.position.x = 1;
+end
+if ad.data{ad.control.spectra.active}.display.position.y < 1
+    ad.data{ad.control.spectra.active}.display.position.y = 1;
+end
+setappdata(mainWindow,'data',ad.data);
 
 % Update scaling panel
 set(...

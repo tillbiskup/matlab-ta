@@ -24,8 +24,8 @@ function [data,warnings] = TAhlASCIIread(fileName,varargin)
 %
 % See also: TAload, TAdataStructure
 
-% Copyright (c) 2013, Till Biskup
-% 2013-11-19
+% Copyright (c) 2013-15, Till Biskup
+% 2015-11-03
 
 % NOTE: This function uses an internal function to read the actual data.
 %       Settings according name of the file format etc. need to be done
@@ -194,6 +194,11 @@ end
 
 % Define where header begins, as this is the line "file info"
 headerBeginsWithLine = find(strcmpi(raw,'file info'),1);
+% With some newer version of the ASCII export, there seems to have changed
+% the header - starts now with an empty line
+if isempty(headerBeginsWithLine)
+    headerBeginsWithLine = find(strcmpi(raw,''),1);
+end
 
 if ~isempty(headerBeginsWithLine)
     % Cut data out of raw file
@@ -208,64 +213,8 @@ if ~isempty(headerBeginsWithLine)
     data.data = rawdata(2:end,2:end)';
     
     data.header = raw(headerBeginsWithLine:end);
-    
-    % Process info contained in file - looks like the following lines
-    % file info
-    % Date: September 18, 2013
-    % Sample: PbS_2dips_ZnO
-    % Solvent: solid
-    % Pump energy: 200
-    % Pump wavelength (nm): 700
-    % Cuvette length (mm):
-    % Comments: Delay started from 267.000 ps
-    % Averaging time: 2.0 s
-    % Number of scans: 3
-    % Time units: ps
-    % Z axis title: dA
-    
-    % Process date
-    data.parameters.date.start = datestr(datenum(...
-        data.header{strncmpi('Date: ',data.header,6)}(7:end),...
-        'mmmm dd, yyyy'),31);
-    data.parameters.date.end = datestr(datenum(...
-        data.header{strncmpi('Date: ',data.header,6)}(7:end),...
-        'mmmm dd, yyyy'),31);
-    
-    % Process sample name
-    data.sample.name = data.header{strncmpi('Sample: ',data.header,8)}(9:end);
-    
-    % Process solvent
-    data.sample.buffer = data.header{strncmpi('Solvent: ',data.header,9)}(10:end);
-    
-    % Process pump energy
-    data.parameters.pump.power.value = str2double(...
-        data.header{strncmpi('Pump energy: ',data.header,13)}(14:end));
-    
-    % Process pump wavelength
-    data.parameters.pump.wavelength.value = str2double(...
-        data.header{strncmpi('Pump wavelength (nm): ',data.header,22)}(23:end));
-    data.parameters.pump.wavelength.unit = 'nm';
-    
-    % Process cuvette length
-    data.sample.cuvette = data.header{...
-        strncmpi('Cuvette length (mm): ',data.header,21)}(22:end);
-    
-    % Process Comments
-    data.comment = data.header{strncmpi('Comments: ',data.header,10)}(11:end);
-    
-    % Process averaging time
-    
-    % Process number of scans
-    data.parameters.runs = str2double(...
-        data.header{strncmpi('Number of scans: ',data.header,17)}(18:end));
-    
-    % Process time units
-    data.axes.x.unit = ...
-        data.header{strncmpi('Time units: ',data.header,12)}(13:end);
-    
-    % Process z axis title
-    data.axes.z.measure = ...
-        data.header{strncmpi('Z axis title: ',data.header,14)}(15:end);
+
+    data = processHeader(data);
     
     % Check for correct dimensions of axes and data and if there are
     % inconsistencies, replace with indices
@@ -279,6 +228,7 @@ if ~isempty(headerBeginsWithLine)
         warnings{end+1} = ...
             'Y axis dimension inconsistent with data. Replaced with indices.';
     end
+
 else
     warnings{end+1} = 'File appears to have wrong format. Trying anyway...';
 
@@ -297,5 +247,81 @@ data.label = fn;
 % Set file structure
 data.file.name = fileName;
 data.file.format = formatNameString;
+
+end
+
+function data = processHeader(data)
+
+% Process info contained in file - looks something like the following lines
+% NOTE: Has changed in the meantime a bit... therefore need to parse each
+%       line for pattern
+% file info
+% Date: September 18, 2013
+% Sample: PbS_2dips_ZnO
+% Solvent: solid
+% Pump energy: 200
+% Pump wavelength (nm): 700
+% Cuvette length (mm):
+% Comments: Delay started from 267.000 ps
+% Averaging time: 2.0 s
+% Number of scans: 3
+% Time units: ps
+% Z axis title: dA
+
+% Remove empty lines from header
+data.header(cellfun(@isempty,data.header)) = [];
+
+% Split header lines into name and value on first ":"
+[fieldNames,fieldValues] = strtok(data.header,':');
+% Remove ": " from field values
+fieldValues = cellfun(@(x)x(3:end),fieldValues,'UniformOutput',false);
+
+% Process date
+data.parameters.date.start = datestr(datenum(...
+    fieldValues{strcmpi('date',fieldNames)},...
+    'mmmm dd, yyyy'),31);
+data.parameters.date.end = datestr(datenum(...
+    fieldValues{strcmpi('date',fieldNames)},...
+    'mmmm dd, yyyy'),31);
+
+% Process sample name
+data.sample.name = fieldValues{strcmpi('sample',fieldNames)};
+
+% Process solvent
+data.sample.buffer = fieldValues{strcmpi('solvent',fieldNames)};
+
+% Process pump energy
+data.parameters.pump.power.value = str2double(...
+    fieldValues{strncmpi('pump energy',fieldNames,11)});
+
+% Process pump wavelength
+data.parameters.pump.wavelength.value = str2double(...
+    fieldValues{strncmpi('Pump wavelength',fieldNames,13)});
+data.parameters.pump.wavelength.unit = 'nm';
+
+% Process cuvette length
+data.sample.cuvette = fieldValues{...
+    strncmpi('Cuvette length',fieldNames,14)};
+
+% Process Comments
+data.comment = fieldValues{strncmpi('Comments',fieldNames,8)};
+
+% Process averaging time
+
+% Process number of scans
+data.parameters.runs = str2double(...
+    fieldValues{strncmpi('Number of scans',fieldNames,15)});
+
+% Process time units
+data.axes.x.unit = ...
+    fieldValues{strncmpi('Time units',fieldNames,10)};
+
+% Process z axis title
+data.axes.z.measure = ...
+    fieldValues{strncmpi('Z axis title',fieldNames,12)};
+
+data.axes.x.measure = 'time';
+data.axes.y.unit = 'nm';
+data.axes.y.measure = 'wavelength';
 
 end
