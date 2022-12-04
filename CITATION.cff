@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: TA toolbox
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Till
+    family-names: Biskup
+    orcid: 'https://orcid.org/0000-0003-2913-0004'
+repository-code: 'https://github.com/tillbiskup/matlab-ta'
+url: 'https://www.till-biskup.de/en/software/matlab/ta/'
+abstract: >-
+  A MATLAB(r) toolbox for preprocessing, display, analysis, and postprocessing of transient absorption (flash photolysis) spectroscopic data.
+
+  The toolbox is fully GUI-based, but all functions are accessible via command line (CLI) as well. Furthermore, the GUI is extensively documented. Starting point was the trEPR Toolbox (https://github.com/tillbiskup/matlab-trepr). Therefore, both toolboxes are very similar with respect to their general appearance and structure. The basic concept of operations is mostly identical. 
+keywords:
+  - "transient absorption spectroscopy"
+  - "TA spectroscopy"
+  - "flash photolysis"
+  - "spectroscopy"
+  - "optical spectroscopy"
+  - "magnetic field effects"
+  - "data processing and analysis"
+  - "reproducible science"
+  - "reproducible research"
+license: LGPL-3.0
+identifiers:
+  - description: "The concept DOI of the work."
+    type: doi
+    value: 10.5281/zenodo.7395548
