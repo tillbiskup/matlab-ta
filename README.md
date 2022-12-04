@@ -1,7 +1,5 @@
 # TA Toolbox
 
-[![DOI](zenodo.xxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
-
 A MATLAB(r) toolbox for preprocessing, display, analysis, and postprocessing of transient absorption (flash photolysis) spectroscopic data.
 
 The toolbox is fully GUI-based, but all functions are accessible via command line (CLI) as well. Furthermore, the GUI is extensively documented. Starting point was the [trEPR Toolbox](https://github.com/tillbiskup/matlab-trepr). Therefore, both toolboxes are very similar with respect to their general appearance and structure. The basic concept of operations is mostly identical. 
@@ -29,15 +27,6 @@ The toolbox is fully GUI-based, but all functions are accessible via command lin
 ## Installation
 
 Download the toolbox (usually as compressed archive), uncompress (if necessary), start MATLAB(r), change to the folder you have downloaded/uncompressed the toolbox files to, change to the directory `internal` and call the function `TAinstall` from within the MATLAB(r) command line. This should guide you through the installation process (and add, *inter alia*, the toolbox to the MATLAB(r) search path). To start using the TA toolbox, type `TAgui` at the MATLAB(r) command line and enjoy the GUI.
-
-
-## How to cite
-
-The TA toolbox is free software. However, if you use it for your own research, please cite it accordingly:
-
-  * Till Biskup. TA toolbox (2022). [doi:10.5281/zenodo.xxxxxxx](https://doi.org/10.5281/zenodo.xxxxxxx)
-
-    [![DOI](zenodo.xxxxxxx.svg)](https://doi.org/10.5281/zenodo.xxxxxxx)
 
 
 ## License
