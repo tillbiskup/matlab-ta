@@ -25,3 +25,7 @@ keywords:
   - "reproducible science"
   - "reproducible research"
 license: LGPL-3.0
+identifiers:
+  - description: "The concept DOI of the work."
+    type: doi
+    value: 10.5281/zenodo.7395925
